@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Product;
+use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view("admin.products.index");
+        $products = Product::with(['color', 'size', 'category'])->get();
+
+        return view("admin.products.index", compact('products'));
     }
 
     /**
@@ -46,7 +50,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -57,7 +61,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = ProductService::getDataForProductEditPage($id);
+
+        return view("admin.products.edit", $data);
     }
 
     /**
@@ -80,6 +86,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+
+        return redirect()->route("admin-products");
     }
 }

@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
+
     protected $table = "products";
 
     protected $fillable = [
@@ -26,6 +29,16 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, "category_id", "id");
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(ModelGroup::class, "group_id", "id");
+    }
+
+    public function status()
+    {
+        return $this->hasOne(ProductStatus::class, "id", "status_id");
     }
 
     public function color()

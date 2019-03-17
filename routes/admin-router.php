@@ -5,5 +5,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
    Route::group(['prefix' => "products"], function(){
        Route::get("", "ProductController@index")->name("admin-products");
+       Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
+       Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");
    });
 });
