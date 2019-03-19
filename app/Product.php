@@ -18,10 +18,10 @@ class Product extends Model
         'quantity',
         'category_id',
         'description',
-        'image',
-        'small_image',
-        'group',
-        'status',
+        //'image',
+        //'small_image',
+        'group_id',
+        'status_id',
         'color_id',
         'size_id'
     ];
@@ -49,5 +49,10 @@ class Product extends Model
     public function size()
     {
         return $this->hasOne(Size::class, "id", "size_id");
+    }
+
+    public static function getImagesAttributesKeys()
+    {
+        return ["image", "small_image"];
     }
 }
