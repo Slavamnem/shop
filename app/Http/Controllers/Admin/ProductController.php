@@ -29,7 +29,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $data = ProductService::getDataForProductCreatePage();
+
+        return view("admin.products.create", $data);
     }
 
     /**
@@ -40,7 +42,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+
+        $product->fill($request->only($product->getFillable()));
+        ProductService::saveImages($request, $product);
+
+        $product->save();
+
+        return redirect()->route("admin-products-edit", ['id' => $product->id]);
     }
 
     /**
@@ -79,7 +88,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $product->fill($request->only($product->getFillable()));
-        ProductService::saveImages($request, $product->id);
+        ProductService::saveImages($request, $product);
 
         $product->save();
 
@@ -111,6 +120,12 @@ class ProductController extends Controller
             dump(Storage::disk("public")->size("test-file.txt"));
             dump(Storage::disk("public")->lastModified("test-file.txt"));
         }
+
+        Storage::delete('test-file3.txt');
+
+        Storage::makeDirectory("new");
+
+        dump(Storage::allFiles());
 
 //        Storage::copy('old/file1.jpg', 'new/file1.jpg');
 //        Storage::move('old/file1.jpg', 'new/file1.jpg');

@@ -25,16 +25,30 @@ class ProductService
         ];
     }
 
-    public static function saveImages(Request $request, $productId)
+    public static function getDataForProductCreatePage()
+    {
+        return [
+            "categories" => Category::all(),
+            "groups" => ModelGroup::all(),
+            "statuses" => ProductStatus::all(),
+            "colors" => Color::all(),
+            "sizes" => Size::all()
+        ];
+    }
+
+    public static function saveImages(Request $request, $product)
     {
         $images = Product::getImagesAttributesKeys();
 
         foreach ($images as $img) {
             if ($request->hasFile($img)) {
+                $name = "product_" . $product->id . "_{$img}." . $request->file($img)->extension();
+                $product->$img = "products/{$name}";
                 Storage::putFileAs(
                     "products",
                     $request->file($img),
-                    "product_" . $productId . "_{$img}." . $request->file($img)->extension());
+                    $name
+                );
             }
         }
     }

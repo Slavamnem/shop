@@ -30,8 +30,17 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Список всех товаров  </h5>
-                        <p>Вся основная информация по товарам</p>
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                <h5 class="mb-0">Список всех товаров</h5>
+                                <p>Вся основная информация по товарам</p>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <a href="{{ route("admin-products-create") }}">
+                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ТОВАР</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

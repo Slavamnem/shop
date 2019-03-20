@@ -115,11 +115,21 @@
                                 <input type="file" name="image" class="custom-file-input" id="customFile">
                                 <label class="custom-file-label" for="customFile">Загрузить</label>
                             </div>
+                            @if($product->image)
+                                <div class="card-body text-center">
+                                    <img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid">
+                                </div>
+                            @endif
                             <h4>Маленькое изображение</h4>
                             <div class="custom-file mb-3">
                                 <input type="file" name="small_image" class="custom-file-input" id="customFile">
                                 <label class="custom-file-label" for="customFile">Загрузить</label>
                             </div>
+                            @if($product->small_image)
+                                <div class="card-body text-center">
+                                    <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid">
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -8,5 +8,9 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");
+       Route::any("create", "ProductController@create")->name("admin-products-create");
+       Route::any("store", "ProductController@store")->name("admin-products-store");
+
+       Route::any("test", "ProductController@storageLearn");
    });
 });

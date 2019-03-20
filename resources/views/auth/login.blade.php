@@ -1,69 +1,76 @@
-@extends('layouts.app')
+<!doctype html>
+<html lang="en">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset("public/admin/assets/vendor/bootstrap/css/bootstrap.min.css") }}">
+    <link href="{{ asset("public/admin/assets/vendor/fonts/circular-std/style.css") }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset("public/admin/assets/libs/css/style.css") }}">
+    <link rel="stylesheet" href="{{ asset("public/admin/assets/vendor/fonts/fontawesome/css/fontawesome-all.css") }}">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    </style>
+</head>
 
-                        <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
-                            <label for="login" class="col-md-4 control-label">Login</label>
-
-                            <div class="col-md-6">
-                                <input id="login" type="text" class="form-control" name="login" value="{{ old('login') }}" required autofocus>
-
-                                @if ($errors->has('login'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('login') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+<body>
+<!-- ============================================================== -->
+<!-- login page  -->
+<!-- ============================================================== -->
+<div class="splash-container">
+    <div class="card ">
+        <div class="card-header text-center"><a href="../index.html">
+            <img class="logo-img" src="{{ asset("public/admin/assets/images/logo.png") }}" alt="logo"></a>
+            <span class="splash-description">Вход в панель администратора</span>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ route('login') }}">
+                {{ csrf_field() }}
+                <div class="form-group">
+                    <input class="form-control form-control-lg" name="login" id="username" type="text" placeholder="Логин" autocomplete="off">
                 </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Пароль">
+                </div>
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="remember" type="checkbox"><span class="custom-control-label">Запомнить меня</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Войти</button>
+            </form>
+        </div>
+        <div class="card-footer bg-white p-0  ">
+            <div class="card-footer-item card-footer-item-bordered">
+                <a href="#" class="footer-link">Регистрация</a></div>
+            <div class="card-footer-item card-footer-item-bordered">
+                <a href="#" class="footer-link">Забыл пароль?</a>
             </div>
         </div>
     </div>
 </div>
-@endsection
+
+<!-- ============================================================== -->
+<!-- end login page  -->
+<!-- ============================================================== -->
+<!-- Optional JavaScript -->
+<script src="{{ asset("public/admin/assets/vendor/jquery/jquery-3.3.1.min.js") }}"></script>
+<script src="{{ asset("public/admin/assets/vendor/bootstrap/js/bootstrap.bundle.js") }}"></script>
+</body>
+
+</html>
