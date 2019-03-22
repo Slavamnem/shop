@@ -13,27 +13,21 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
-    public static function getDataForProductEditPage($id)
+    public static function getDataForProductPage($id = null)
     {
-        return [
-            "product" => Product::find($id),
+        $data = [
             "categories" => Category::all(),
             "groups" => ModelGroup::all(),
             "statuses" => ProductStatus::all(),
             "colors" => Color::all(),
             "sizes" => Size::all()
         ];
-    }
 
-    public static function getDataForProductCreatePage()
-    {
-        return [
-            "categories" => Category::all(),
-            "groups" => ModelGroup::all(),
-            "statuses" => ProductStatus::all(),
-            "colors" => Color::all(),
-            "sizes" => Size::all()
-        ];
+        if ($id) {
+            $data["product"] = Product::find($id);
+        }
+
+        return $data;
     }
 
     public static function saveImages(Request $request, $product)

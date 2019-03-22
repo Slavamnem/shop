@@ -153,7 +153,7 @@
                                 Меню
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика <span class="badge badge-success">6</span></a>
+                                <a class="nav-link @if(@$active=="stat"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика <span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
@@ -202,7 +202,46 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link" href="{{ route("admin-products") }}"><i class="fas fa-fw fa-table"></i>Товары</a>
+                                <a class="nav-link @if(@$activeMenu=="categories"){ {{ "active" }} } @endif" href="{{ route("admin-categories") }}"><i class="fas fa-fw fa-table"></i>Категории</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenu=="products"){ {{ "active" }} } @endif" href="{{ route("admin-products") }}"><i class="fas fa-fw fa-table"></i>Товары</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2">
+                                    <i class="fa fa-fw fa-rocket"></i>Свойства товаров
+                                </a>
+                                <div id="submenu-2" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route("admin-product-statuses") }}">Статусы</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route("admin-colors") }}">Цвета</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route("admin-sizes") }}">Размеры</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenu=="groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Группы</a>
+                            </li>
+
+                            <li class="nav-divider">
+                                _________________________
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenu=="orders"){ {{ "active" }} } @endif" href="{{ route("admin-orders") }}"><i class="fas fa-fw fa-table"></i>Заказы</a>
+                            </li>
+
+                            <li class="nav-divider">
+                                _________________________
                             </li>
 
                             <li class="nav-item">

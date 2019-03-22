@@ -7,9 +7,15 @@ use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        View::share("activeMenu", "products");
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data = ProductService::getDataForProductCreatePage();
+        $data = ProductService::getDataForProductPage();
 
         return view("admin.products.create", $data);
     }
@@ -60,7 +66,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $data = ProductService::getDataForProductPage($id);
 
+        return view("admin.products.show", $data);
     }
 
     /**
@@ -71,7 +79,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data = ProductService::getDataForProductEditPage($id);
+        $data = ProductService::getDataForProductPage($id);
 
         return view("admin.products.edit", $data);
     }
