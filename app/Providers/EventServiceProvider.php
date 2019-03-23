@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\NewOrderEvent;
+use App\Listeners\MailSendListener;
+use App\Listeners\NewOrderListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -16,6 +19,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
+        "Illuminate\Mail\Events\MessageSending" => [
+            MailSendListener::class
+        ],
+        NewOrderEvent::class => [
+            NewOrderListener::class
+        ]
     ];
 
     /**

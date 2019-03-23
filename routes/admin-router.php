@@ -13,6 +13,8 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
 
        Route::any("test", "ProductController@storageLearn");
+       Route::any("lang", "ProductController@lang");
+       Route::any("email", "ProductController@email");
    });
 
     Route::group(['prefix' => "categories"], function() {

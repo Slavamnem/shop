@@ -15,5 +15,7 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'test-pencil' => 'карандаш|карандаша|карандашей',
+    'test-pencil2' => '[1,2]карандаш|[3,30]карандаша|{31}карандашей',
 
 ];

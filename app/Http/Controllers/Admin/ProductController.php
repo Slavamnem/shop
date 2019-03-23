@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\NewOrderEvent;
+use App\Mail\MailSender;
+use App\Notifications\NewOrderNotification;
+use App\Order;
 use App\Product;
 use App\Services\Admin\ProductService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
@@ -137,5 +146,44 @@ class ProductController extends Controller
 
 //        Storage::copy('old/file1.jpg', 'new/file1.jpg');
 //        Storage::move('old/file1.jpg', 'new/file1.jpg');
+    }
+
+    public function lang()
+    {
+        dump(App::getLocale());
+        //dump(App::setLocale("ru"));
+        dump(App::isLocale("ru"));
+
+
+        dump(trans("auth.failed"));
+        dump(Lang::get("auth.failed"));
+
+        if (Lang::has("validation.after")) {
+            dump(Lang::get("validation.after", ["attribute" => "name"]));
+        }
+
+        dump(Lang::choice("auth.test-pencil", 2));
+    }
+
+    public function email()
+    {
+        $order = Order::find(1);
+        $order->notify(new NewOrderNotification());
+
+        dd("telegram");
+
+        /*
+         Add the Telegram BOT to the group.
+         Get the list of updates for your BOT:
+         https://api.telegram.org/bot<YourBOTToken>/getUpdates
+            {"update_id":8393,"message":{"message_id":3,"from":{"id":7474,"first_name":"AAA"},"chat":{"id":,"title":""},
+            "date":25497,"new_chat_participant":{"id":71,"first_name":"NAME","username":"YOUR_BOT_NAME"}}}
+            This is a sample of the response when you add your BOT into a group.
+            Use the "id" of the "chat" object to send your messages.
+         */
+
+        Mail::to("dance55m@gmail.com")->send(new MailSender("Money transfer"));
+        //Mail::to("dance55m@gmail.com")->cc()->send(new MailSender("Money transfer"));
+        Mail::to("dance55m@gmail.com")->later(Carbon::now()->addMinutes(5), new MailSender("Money transfer"));
     }
 }

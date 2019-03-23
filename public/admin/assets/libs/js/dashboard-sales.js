@@ -77,7 +77,7 @@ $(function() {
                 type: 'doughnut',
                 
                 data: {
-                    labels: ["Direct", " Affilliate", "Sponsored", " E-mail"],
+                    labels: ["Direct", " Affilliate", "Sponsored", " E-email"],
                     datasets: [{
                         backgroundColor: [
                             "#5969ff",

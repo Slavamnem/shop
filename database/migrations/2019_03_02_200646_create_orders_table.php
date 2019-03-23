@@ -20,8 +20,8 @@ class CreateOrdersTable extends Migration
             $table->integer("user_id")->nullable();
             $table->integer("client_id")->nullable();
             $table->text("description")->nullable();
-            $table->integer("phone")->nullable();
-            $table->integer("email")->nullable();
+            $table->string("phone", 15)->nullable();
+            $table->string("email",255)->nullable();
             $table->integer("payment_type_id")->nullable();
             $table->integer("delivery_type_id")->nullable();
             $table->timestamps();
