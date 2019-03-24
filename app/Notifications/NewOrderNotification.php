@@ -37,11 +37,11 @@ class NewOrderNotification extends Notification
 
     public function toTelegram(Order $order)
     {
-        $content = "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery->name} \nЗаказ был осуществлен: {$order->created_at}";
+        $content = "Миша!!! Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery->name} \nЗаказ был осуществлен: {$order->created_at}";
 
         return TelegramMessage::create()
-            //->to(273791920)  //OrderBot (only me)
-            ->to(-1001455732336) //Заказы MilanShop
+            ->to(273791920)  //OrderBot (only me)
+            //->to(-1001455732336) //Заказы MilanShop
             //->to(-217503824) //Бизнес конференция
             ->content($content);
     }

@@ -12,9 +12,9 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::post("store", "ProductController@store")->name("admin-products-store");
        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
 
-       Route::any("test", "ProductController@storageLearn");
-       Route::any("lang", "ProductController@lang");
-       Route::any("email", "ProductController@email");
+       #Route::any("test", "ProductController@storageLearn");
+       #Route::any("lang", "ProductController@lang");
+       #Route::any("email", "ProductController@email");
    });
 
     Route::group(['prefix' => "categories"], function() {
@@ -71,4 +71,16 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
     Route::group(['prefix' => "orders"], function() {
         Route::get("", "OrderController@index")->name("admin-orders");
     });
+
+
+});
+
+
+
+///
+Route::group(['prefix' => "learn"], function(){
+    Route::any("test", "LearnController@storageLearn");
+    Route::any("lang", "LearnController@lang");
+    Route::any("email", "LearnController@email");
+    Route::any("pagination", "LearnController@pagination");
 });
