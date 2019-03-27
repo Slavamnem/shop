@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
 
@@ -37,13 +39,18 @@ class NewOrderNotification extends Notification
 
     public function toTelegram(Order $order)
     {
-        $content = "Миша!!! Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery->name} \nЗаказ был осуществлен: {$order->created_at}";
+        $content = "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery_type->name} \nЗаказ был осуществлен: {$order->created_at}";
+        $file = Storage::get("products/product_2_image.jpeg");
+        //dump($file);
+        //$content .= $file;
 
         return TelegramMessage::create()
             ->to(273791920)  //OrderBot (only me)
             //->to(-1001455732336) //Заказы MilanShop
             //->to(-217503824) //Бизнес конференция
-            ->content($content);
+            ->content($content)
+            //->file(storage_path("app/products/product_2_image.jpeg"), 'photo')
+            ->button('Download PDF', "test.com");
     }
 
     /**

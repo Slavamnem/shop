@@ -48,7 +48,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "ProductStatusController@show")->name("admin-product-statuses-show");
     });
 
-    Route::group(['prefix' => "sizes"], function() {
+    Route::group(['prefix' => "sizes"], function() { //TODO
         Route::get("", "SizeController@index")->name("admin-sizes");
         Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
         Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
@@ -58,7 +58,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
     });
 
-    Route::group(['prefix' => "colors"], function() {
+    Route::group(['prefix' => "colors"], function() { //TODO
         Route::get("", "ColorController@index")->name("admin-colors");
         Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
         Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
@@ -70,6 +70,14 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
     Route::group(['prefix' => "orders"], function() {
         Route::get("", "OrderController@index")->name("admin-orders");
+        Route::get("edit/{id}", "OrderController@edit")->name("admin-orders-edit");
+        Route::post("update/{id}", "OrderController@update")->name("admin-orders-update");
+        Route::any("delete/{id}", "OrderpController@destroy")->name("admin-orders-delete");
+        Route::get("create", "OrderController@create")->name("admin-orders-create");
+        Route::post("store", "OrderpController@store")->name("admin-orders-store");
+        Route::get("show/{id}", "OrderController@show")->name("admin-orders-show");
+
+        Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
     });
 
 
@@ -83,4 +91,9 @@ Route::group(['prefix' => "learn"], function(){
     Route::any("lang", "LearnController@lang");
     Route::any("email", "LearnController@email");
     Route::any("pagination", "LearnController@pagination");
+    Route::any("redis", "LearnController@redis");
+    Route::any("session", "LearnController@session");
+    Route::any("blade", "LearnController@blade");
+
+    Route::any("insta", "LearnController@insta");
 });

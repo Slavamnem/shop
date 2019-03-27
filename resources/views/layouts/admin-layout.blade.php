@@ -534,6 +534,8 @@
     <script src="{{ asset("public/admin/assets/vendor/charts/c3charts/d3-5.4.0.min.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/c3charts/C3chartjs.js") }}"></script>
     <script src="{{ asset("public/admin/assets/libs/js/dashboard-ecommerce.js") }}"></script>
+
+    @yield("custom-js")
 </body>
 
 </html>

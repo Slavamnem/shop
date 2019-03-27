@@ -32,7 +32,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['color', 'size', 'category'])->get();
+        $products = Product::with(['color', 'size', 'category'])->paginate(10);
 
         return view("admin.products.index", compact('products'));
     }
