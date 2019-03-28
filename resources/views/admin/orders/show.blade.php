@@ -9,7 +9,7 @@
 
                 <div class="section-block">
                     <h1 class="section-title">
-                        {{ $group->name }}
+                        Заказ №{{$order->id }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
@@ -26,9 +26,44 @@
 
                             <div class="card">
                                 <div class="card-body">
+                                    <h4>Статус заказа</h4>
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название группы товаров</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $group->name }}" readonly="readonly">
+                                        <select name="status_id" class="form-control" readonly="readonly">
+                                            @forelse($statuses as $status)
+                                                <option <?php if($status->id == $order->status->id) echo "selected"; ?> value="{{$status->id}}">{{$status->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Сумма заказа</label>
+                                        <input id="inputText3" name="sum" type="text" class="form-control" value="{{ $order->sum }}" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Телефон клиента</label>
+                                        <input id="inputText3" name="phone" type="text" class="form-control" value="{{ $order->phone }}" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Почта клиента</label>
+                                        <input id="inputText3" name="email" type="text" class="form-control" value="{{ $order->email }}" readonly="readonly">
+                                    </div>
+                                    <h4>Способ оплаты</h4>
+                                    <div class="form-group">
+                                        <select name="payment_type_id" class="form-control" readonly="readonly">
+                                            @forelse($payment_types as $type)
+                                                <option <?php if($type->id == $order->payment_type->id) echo "selected"; ?> value="{{$type->id}}">{{$type->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                    <h4>Способ доставки</h4>
+                                    <div class="form-group">
+                                        <select name="delivery_type_id" class="form-control" readonly="readonly">
+                                            @forelse($delivery_types as $type)
+                                                <option <?php if($type->id == $order->delivery_type->id) echo "selected"; ?> value="{{$type->id}}">{{$type->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +72,13 @@
                     </div>
                 </div>
 
+            <button class="btn btn-danger push-to-telegram" type="submit" data-id="{{ $order->id }}" data-link="{{ $url }}" data-token="{{ csrf_token() }}">Push to Telegram</button>
+
         </div>
 
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/orders/main.js") }}"></script>
 @endsection

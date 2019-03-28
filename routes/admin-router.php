@@ -76,6 +76,8 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "OrderController@create")->name("admin-orders-create");
         Route::post("store", "OrderpController@store")->name("admin-orders-store");
         Route::get("show/{id}", "OrderController@show")->name("admin-orders-show");
+        Route::any("email", "OrderController@email")->name("admin-orders-email");
+        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
 
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
     });

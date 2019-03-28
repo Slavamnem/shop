@@ -27,6 +27,22 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('test-command')->everyMinute();
+//        $schedule->command('test-command')
+//            ->everyMinute()
+//            ->fridays()
+//            ->between("12:00", "15:00")
+//            ->when(function(){
+//                return true;
+//            })
+//            ->withoutOverlapping()    //не запускать если еще предыдущий звапуск работает
+//            ->before(function () {
+//               // Перед запуском задачи...
+//            })
+//            ->after(function () {
+//               // Задача завершена...
+//            })
+//            ->sendOutputTo($filePath);
     }
 
     /**

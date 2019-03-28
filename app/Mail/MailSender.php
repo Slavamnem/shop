@@ -15,16 +15,29 @@ class MailSender extends Mailable
      *
      * @var string
      */
-    protected $theme;
+    public $theme;
+
+    /**
+     * Экземпляр заказа.
+     *
+     * @var string
+     */
+    public $email = "000";
+
+    protected $template;
 
     /**
      * Создание нового экземпляра сообщения.
-     *
+     * @param $theme
+     * @param $email
+     * @param $template
      * @return void
      */
-    public function __construct($theme)
+    public function __construct($theme, $email, $template = "template")
     {
         $this->theme = $theme;
+        $this->email = $email;
+        $this->template = $template;
     }
 
     /**
@@ -36,13 +49,14 @@ class MailSender extends Mailable
     {
         //return $this->view('email.template');
 
-        return $this->view("email.template")
-            ->attach(storage_path("app/products/product_2_image.jpeg"))
-            ->with([
-                "theme" => $this->theme,
-                "name" => "Slava",
-                "age" => 25
-            ]);
+        return $this->view("email.{$this->template}");
+            //->attach(storage_path("app/products/product_2_image.jpeg"))
+//            ->with([
+//                "theme"   => $this->theme,
+//                "message" => "---"
+//            ]);
+
+
 
         //text(), attach("file/to/path"), attachData($file, "filename"), with(['name'=>"Slava"), from("vzelinskiy@stud.onu.edu")
 //        return $this->view('emails.orders.shipped')

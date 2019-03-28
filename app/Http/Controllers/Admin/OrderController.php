@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DeliveryType;
+use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\OrderStatus;
@@ -10,6 +11,7 @@ use App\PaymentType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
@@ -63,26 +65,34 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $order = Order::find($id);
-
-        return view("admin.orders.show", compact("order"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function show(Request $request, $id)
     {
         $data = [
             "order"          => Order::find($id),
             "statuses"       => OrderStatus::all(),
             "payment_types"  => PaymentType::all(),
             "delivery_types" => DeliveryType::all(),
+            "url"            => env("DOMAIN_NAME") . "/" . $request->path()
+        ];
+
+        return view("admin.orders.show", $data);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Request $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, $id)
+    {
+        $data = [
+            "order"          => Order::find($id),
+            "statuses"       => OrderStatus::all(),
+            "payment_types"  => PaymentType::all(),
+            "delivery_types" => DeliveryType::all(),
+            "url"            => env("DOMAIN_NAME") . "/" . $request->path()
         ];
 
         return view("admin.orders.edit", $data);
@@ -117,16 +127,39 @@ class OrderController extends Controller
         $group = Order::find($id);
         $group->delete();
 
-        return redirect()->route("admin-groups");
+        return redirect()->route("admin-orders");
     }
 
     //
 
-    public function pushToTelegram($id)
+    public function pushToTelegram(Request $request, $id)
     {
         $order = Order::find($id);
-        $order->notify(new NewOrderNotification());
+        $order->notify(new NewOrderNotification($request->input("link")));
 
+        //return json_encode($request->input("link"));
         //return redirect()->route("admin-orders-edit", ['id' => $order->id]);
+    }
+
+    public function email(Request $request)
+    {
+        $data = [
+            "login" => env("MAIL_USERNAME"),
+            "password" => env("MAIL_PASSWORD"),
+            "email" => $request->input("email", "Ошибка"),
+        ];
+
+        return view("admin.orders.email", $data);
+    }
+
+    public function sendEmail(Request $request)
+    {
+        Mail::to($request->input("receiver_email"))->send(new MailSender(
+            "Уведомление от MilanShop",
+             $request->input("message"),
+            "order-answer"
+        ));
+
+        return redirect()->route("admin-orders");
     }
 }

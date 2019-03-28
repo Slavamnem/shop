@@ -30,9 +30,9 @@ class TestJob implements ShouldQueue
      */
     public function handle()
     {
-//        foreach (range(1, 5) as $item) {
-//            dump($item);
-//        }
+        foreach (range(1, 5) as $item) {
+            dump($item);
+        }
         Log::info("success");
     }
 

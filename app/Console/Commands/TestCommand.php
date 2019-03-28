@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\TestJob;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class TestCommand extends Command
 {
@@ -40,14 +41,17 @@ class TestCommand extends Command
     public function handle()
     {
         $job = new TestJob();
+
+        Log::info("command done");
+
         //$job->handle();
 
         //dispatch((new TestJob())->delay(Carbon::now()->addSeconds(5)));
-        dispatch((new TestJob())
-            //->delay(Carbon::now()->addSeconds(10))
-            ->onQueue("test1")
-            ->onConnection("database")
-        );
+//        dispatch((new TestJob())
+//            //->delay(Carbon::now()->addSeconds(10))
+//            ->onQueue("test1")
+//            ->onConnection("database")
+//        );
 
         //$job->dispatch();
     }

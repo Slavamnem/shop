@@ -80,7 +80,7 @@
 
             {{--<form method="POST" action="{{ route("admin-orders-push-to-telegram", ['id' => $order->id]) }}">--}}
                 {{--{{ csrf_field() }}--}}
-                <button class="btn btn-danger push-to-telegram" type="submit" data-id="{{ $order->id }}" data-token="{{ csrf_token() }}">Push to Telegram</button>
+                <button class="btn btn-danger push-to-telegram" type="submit" data-id="{{ $order->id }}" data-link="{{ $url }}" data-token="{{ csrf_token() }}">Push to Telegram</button>
             {{--</form>--}}
 
         </div>

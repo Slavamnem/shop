@@ -65,7 +65,6 @@
                                                 {{ $order->id }}
                                             </a>
                                         </td>
-                                        <a href="{{ route("admin-orders-show", ['id' => $order->id]) }}">
                                         <td>
                                            {{ $order->status->name }}
                                         </td>
@@ -76,7 +75,9 @@
                                             {{ $order->phone }}
                                         </td>
                                         <td>
-                                            {{ $order->email }}
+                                            <a href="{{ route("admin-orders-email", ['email' => $order->email]) }}">
+                                                {{ $order->email }}
+                                            </a>
                                         </td>
                                         <td>
                                             {{ $order->payment_type->name }}

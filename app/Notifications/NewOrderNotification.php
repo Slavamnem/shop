@@ -16,14 +16,15 @@ class NewOrderNotification extends Notification
 {
     use Queueable;
 
+    private $link;
     /**
      * Create a new notification instance.
-     *
+     * @param string $link
      * @return void
      */
-    public function __construct()
+    public function __construct($link)
     {
-        //
+        $this->link = $link;
     }
 
     /**
@@ -50,7 +51,7 @@ class NewOrderNotification extends Notification
             //->to(-217503824) //Бизнес конференция
             ->content($content)
             //->file(storage_path("app/products/product_2_image.jpeg"), 'photo')
-            ->button('Download PDF', "test.com");
+            ->button('Download PDF', $this->link);
     }
 
     /**
