@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Color;
 use App\ModelGroup;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\ProductService;
+use App\Size;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
@@ -40,14 +44,24 @@ class ModelGroupController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  ProductService $productService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ProductService $productService)
     {
+        //dd($request->all());
         $group = new ModelGroup();
 
         $group->fill($request->only($group->getFillable()));
         $group->save();
+
+        //
+        if ($request->has("generator")) {
+            $productService->createModifications($request, $group->id);
+            dd("has");
+        }
+        dd("has not");
+        //
 
         return redirect()->route("admin-groups-edit", ['id' => $group->id]);
     }
@@ -108,5 +122,16 @@ class ModelGroupController extends Controller
         $group->delete();
 
         return redirect()->route("admin-groups");
+    }
+
+    //
+    public function getModificationsBlock()
+    {
+        $data = [
+            "colors" => Color::all(),
+            "sizes" => Size::all()
+        ];
+
+        return view("admin.groups.modifications", $data)->render();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Admin\ProductService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -38,6 +39,11 @@ class AppServiceProvider extends ServiceProvider
             // $event->job->payload()
             Log::info("after");
         });
+
+        $this->app->bind('ProductService', function ($app) {
+            return new ProductService();
+        });
+
     }
 
     /**

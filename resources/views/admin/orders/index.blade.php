@@ -75,7 +75,7 @@
                                             {{ $order->phone }}
                                         </td>
                                         <td>
-                                            <a href="{{ route("admin-orders-email", ['email' => $order->email]) }}">
+                                            <a href="{{ route("admin-new-email", ['email' => $order->email]) }}">
                                                 {{ $order->email }}
                                             </a>
                                         </td>
@@ -90,10 +90,13 @@
                                         </td>
                                         <td>
                                             <a href="{{ route("admin-orders-edit", ['id' => $order->id]) }}">
-                                                <img src="{{ asset("public/admin/assets/images/pencil.png") }}" alt="" style="max-width:20px; max-height:20px">
+                                                <img src="{{ asset("public/admin/assets/images/pencil.png") }}" alt="" style="max-width:15px; max-height:20px">
+                                            </a>
+                                            <a href="{{ route("admin-orders-show", ['id' => $order->id]) }}">
+                                                <img src="{{ asset("public/admin/assets/images/show.jpg") }}" alt="" style="max-width:15px; max-height:20px">
                                             </a>
                                             <a href="{{ route("admin-orders-delete", ['id' => $order->id]) }}">
-                                                <img src="{{ asset("public/admin/assets/images/trash.jpg") }}" alt="" style="max-width:20px; max-height:20px">
+                                                <img src="{{ asset("public/admin/assets/images/trash.jpg") }}" alt="" style="max-width:15px; max-height:20px">
                                             </a>
                                         </td>
                                     </tr>

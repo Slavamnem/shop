@@ -55,4 +55,12 @@ class Product extends Model
     {
         return ["image", "small_image"];
     }
+
+    public static function getModificationsAttributes()
+    {
+        return [
+            "colors" => Color::class,
+            "sizes" => Size::class
+        ];
+    }
 }

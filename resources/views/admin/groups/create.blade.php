@@ -32,6 +32,20 @@
                                         <label for="inputText3" class="col-form-label">Название группы товаров</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="">
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Создать все вариации товаров</label>
+                                        <div class="col-12 col-sm-8 col-lg-6 pt-1">
+                                            <div class="switch-button switch-button-yesno">
+                                                <input type="checkbox" name="generator" class="generator" id="switch19">
+                                                <span>
+                                                     <label for="switch19"></label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="variations"></div>
                                 </div>
                             </div>
 
@@ -46,4 +60,8 @@
         </div>
 
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/groups/main.js") }}"></script>
 @endsection

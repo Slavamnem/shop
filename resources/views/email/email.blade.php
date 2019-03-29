@@ -7,7 +7,7 @@
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
 
-        <form method="POST" action="{{ route("admin-orders-send-email") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("admin-send-email") }}" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="section-block">
             <h1 class="section-title">

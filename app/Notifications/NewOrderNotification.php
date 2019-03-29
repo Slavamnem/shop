@@ -41,7 +41,7 @@ class NewOrderNotification extends Notification
     public function toTelegram(Order $order)
     {
         $content = "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery_type->name} \nЗаказ был осуществлен: {$order->created_at}";
-        $file = Storage::get("products/product_2_image.jpeg");
+        //$file = Storage::get("products/product_2_image.jpeg");
         //dump($file);
         //$content .= $file;
 

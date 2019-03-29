@@ -35,6 +35,8 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
         Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
         Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
+
+        Route::any("modifications", "ModelGroupController@getModificationsBlock")->name("admin-groups-get-modifications");
     });
 
     //
@@ -50,22 +52,22 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
     Route::group(['prefix' => "sizes"], function() { //TODO
         Route::get("", "SizeController@index")->name("admin-sizes");
-        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
-        Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
-        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-groups-delete");
-        Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
-        Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
-        Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
+//        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
+//        Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
+//        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-groups-delete");
+//        Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
+//        Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
+//        Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
     });
 
     Route::group(['prefix' => "colors"], function() { //TODO
         Route::get("", "ColorController@index")->name("admin-colors");
-        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
-        Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
-        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-groups-delete");
-        Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
-        Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
-        Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
+//        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-colors-edit");
+//        Route::post("update/{id}", "ModelGroupController@update")->name("admin-colors-update");
+//        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-colors-delete");
+//        Route::get("create", "ModelGroupController@create")->name("admin-colors-create");
+//        Route::post("store", "ModelGroupController@store")->name("admin-colors-store");
+//        Route::get("show/{id}", "ModelGroupController@show")->name("admin-colors-show");
     });
 
     Route::group(['prefix' => "orders"], function() {
@@ -82,6 +84,10 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
     });
 
+    Route::group(['prefix' => "email"], function() {
+        Route::any("new", "EmailController@newEmail")->name("admin-new-email");
+        Route::post("send-email", "EmailController@sendEmail")->name("admin-send-email");
+    });
 
 });
 

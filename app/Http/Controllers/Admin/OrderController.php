@@ -136,30 +136,6 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
         $order->notify(new NewOrderNotification($request->input("link")));
-
-        //return json_encode($request->input("link"));
-        //return redirect()->route("admin-orders-edit", ['id' => $order->id]);
     }
 
-    public function email(Request $request)
-    {
-        $data = [
-            "login" => env("MAIL_USERNAME"),
-            "password" => env("MAIL_PASSWORD"),
-            "email" => $request->input("email", "Ошибка"),
-        ];
-
-        return view("admin.orders.email", $data);
-    }
-
-    public function sendEmail(Request $request)
-    {
-        Mail::to($request->input("receiver_email"))->send(new MailSender(
-            "Уведомление от MilanShop",
-             $request->input("message"),
-            "order-answer"
-        ));
-
-        return redirect()->route("admin-orders");
-    }
 }
