@@ -44,6 +44,62 @@
                             </div>
 
                         </div>
+
+                        <div id="model-group-products">
+
+                            <div class="table-responsive">
+                                <table id="example4" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Цена</th>
+                                        <th>Количество</th>
+                                        <th>Статус</th>
+                                        <th>Цвет</th>
+                                        <th>Размер</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($group->products as $product)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route("admin-products-show", ['id' => $product->id]) }}">
+                                                    {{ $product->name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ $product->base_price }}
+                                            </td>
+                                            <td>
+                                                {{ $product->quantity }}
+                                            </td>
+                                            <td>
+                                                {{ $product->status->name }}
+                                            </td>
+                                            <td>
+                                                {{ $product->color->name }}
+                                            </td>
+                                            <td>
+                                                {{ $product->size->name }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <p>Товаров нет</p>
+                                    @endforelse
+                                    </tbody>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Цена</th>
+                                        <th>Количество</th>
+                                        <th>Статус</th>
+                                        <th>Цвет</th>
+                                        <th>Размер</th>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
 

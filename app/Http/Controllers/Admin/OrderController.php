@@ -75,13 +75,12 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $data = $this->service->getData($request, $id);
+        $data = $this->service->getData($id);
 
         return view("admin.orders.show", $data);
     }
@@ -89,13 +88,12 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
-        $data = $this->service->getData($request, $id);
+        $data = $this->service->getData($id);
 
         return view("admin.orders.edit", $data);
     }
