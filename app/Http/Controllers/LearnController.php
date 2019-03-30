@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Color;
+use App\Events\NewOrderEvent;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
@@ -10,11 +11,14 @@ use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use InstagramAPI\Instagram;
 use NotificationChannels\Telegram\Telegram;
@@ -211,5 +215,57 @@ class LearnController extends Controller
         $name = "slava";
         $peoples = ["Slava", "Olga", "Tom", "Jon"];
         return view("test", compact('name', 'peoples'));
+    }
+
+
+
+    //
+    public function api1()
+    {
+        return [
+            [
+                "name" => "Apple X",
+                "price" => 3000
+            ]
+        ];
+
+//        return json_encode(["data"=>[
+//            "name" => "Apple X",
+//            "price" => 3000
+//        ]]);
+//        return response()->json([
+//            "data" => [
+//                "name" => "Apple X",
+//                "price" => 3000
+//            ]
+//        ]);
+    }
+
+    public function api2()
+    {
+//        Response::success([
+//            "name" => "Apple X",
+//            "price" => 3000
+//        ]);
+    }
+
+    public function api3()
+    {
+
+    }
+
+    public function testF1()
+    {
+        $totalPrice = Product::all()->count("price");
+        return 57;
+        return $totalPrice;
+    }
+
+    public function testF2()
+    {
+        Event::fire(new NewOrderEvent("test123"));
+
+        return "user-login: " . Auth::user()->login;
+        //return 77;
     }
 }

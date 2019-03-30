@@ -58,9 +58,9 @@ class ModelGroupController extends Controller
         //
         if ($request->has("generator")) {
             $productService->createModifications($request, $group->id);
-            dd("has");
+            //dd("has");
         }
-        dd("has not");
+        //dd("has not");
         //
 
         return redirect()->route("admin-groups-edit", ['id' => $group->id]);
