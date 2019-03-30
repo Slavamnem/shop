@@ -32,6 +32,16 @@
                                         <label for="inputText3" class="col-form-label">Название группы товаров</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $group->name }}">
                                     </div>
+
+                                    <h4>Категория</h4>
+                                    <div class="form-group">
+                                        <select name="category_id" class="form-control">
+                                            @forelse($categories as $category)
+                                                <option <?php if($category->id == $group->category->id) echo "selected"; ?> value="{{$category->id}}">{{$category->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 

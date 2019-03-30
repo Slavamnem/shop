@@ -9,9 +9,14 @@ use Illuminate\Support\Facades\View;
 
 class ProductStatusController extends Controller
 {
+    const MENU_ITEM_NAME = "product-statuses";
+
+    /**
+     * ProductStatusController constructor.
+     */
     public function __construct()
     {
-        View::share("activeMenu", "product-statuses");
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
     /**

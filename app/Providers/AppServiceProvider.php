@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
@@ -42,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind('ProductService', function ($app) {
             return new ProductService();
+        });
+
+        $this->app->bind('OrderService', function ($app) {
+            return new OrderService();
         });
 
     }

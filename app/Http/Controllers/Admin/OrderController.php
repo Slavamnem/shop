@@ -8,6 +8,7 @@ use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
+use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -16,9 +17,21 @@ use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
 {
-    public function __construct()
+    const MENU_ITEM_NAME = "orders";
+
+    /**
+     * @var OrderService
+     */
+    private $service;
+
+    /**
+     * OrderController constructor.
+     * @param OrderService $service
+     */
+    public function __construct(OrderService $service)
     {
-        View::share("activeMenu", "orders");
+        $this->service = $service;
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
     /**
@@ -62,18 +75,13 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
     {
-        $data = [
-            "order"          => Order::find($id),
-            "statuses"       => OrderStatus::all(),
-            "payment_types"  => PaymentType::all(),
-            "delivery_types" => DeliveryType::all(),
-            "url"            => env("DOMAIN_NAME") . "/" . $request->path()
-        ];
+        $data = $this->service->getData($request, $id);
 
         return view("admin.orders.show", $data);
     }
@@ -81,19 +89,13 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
-        $data = [
-            "order"          => Order::find($id),
-            "statuses"       => OrderStatus::all(),
-            "payment_types"  => PaymentType::all(),
-            "delivery_types" => DeliveryType::all(),
-            "url"            => env("DOMAIN_NAME") . "/" . $request->path()
-        ];
+        $data = $this->service->getData($request, $id);
 
         return view("admin.orders.edit", $data);
     }
@@ -130,8 +132,10 @@ class OrderController extends Controller
         return redirect()->route("admin-orders");
     }
 
-    //
-
+    /**
+     * @param Request $request
+     * @param $id
+     */
     public function pushToTelegram(Request $request, $id)
     {
         $order = Order::find($id);

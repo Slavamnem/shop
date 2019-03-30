@@ -153,7 +153,7 @@
                                 Меню
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$active=="stat"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика <span class="badge badge-success">6</span></a>
+                                <a class="nav-link @if(@$activeMenuItem == "stat"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика <span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
@@ -202,11 +202,11 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenu=="categories"){ {{ "active" }} } @endif" href="{{ route("admin-categories") }}"><i class="fas fa-fw fa-table"></i>Категории</a>
+                                <a class="nav-link @if(@$activeMenuItem == "categories"){ {{ "active" }} } @endif" href="{{ route("admin-categories") }}"><i class="fas fa-fw fa-table"></i>Категории</a>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenu=="products"){ {{ "active" }} } @endif" href="{{ route("admin-products") }}"><i class="fas fa-fw fa-table"></i>Товары</a>
+                                <a class="nav-link @if(@$activeMenuItem == "products"){ {{ "active" }} } @endif" href="{{ route("admin-products") }}"><i class="fas fa-fw fa-table"></i>Товары</a>
                             </li>
 
                             <li class="nav-item">
@@ -229,7 +229,7 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenu=="groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Группы</a>
+                                <a class="nav-link @if(@$activeMenuItem == "groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Группы</a>
                             </li>
 
                             <li class="nav-divider">
@@ -237,7 +237,7 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenu=="orders"){ {{ "active" }} } @endif" href="{{ route("admin-orders") }}"><i class="fas fa-fw fa-table"></i>Заказы</a>
+                                <a class="nav-link @if(@$activeMenuItem == "orders"){ {{ "active" }} } @endif" href="{{ route("admin-orders") }}"><i class="fas fa-fw fa-table"></i>Заказы</a>
                             </li>
 
                             <li class="nav-divider">

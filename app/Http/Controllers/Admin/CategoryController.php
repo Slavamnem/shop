@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\View;
 
 class CategoryController extends Controller
 {
+    const MENU_ITEM_NAME = "categories";
+
+    /**
+     * CategoryController constructor.
+     */
     public function __construct()
     {
-        View::share("activeMenu", "categories");
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
     /**

@@ -33,6 +33,16 @@
                                         <input id="inputText3" name="name" type="text" class="form-control" value="">
                                     </div>
 
+                                    <h4>Категория</h4>
+                                    <div class="form-group">
+                                        <select name="category_id" class="form-control">
+                                            @forelse($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Создать все вариации товаров</label>
                                         <div class="col-12 col-sm-8 col-lg-6 pt-1">

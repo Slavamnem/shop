@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public function newEmail(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function newEmail(Request $request) //TODO
     {
         $data = [
             "login" => env("MAIL_USERNAME"),
@@ -20,6 +24,10 @@ class EmailController extends Controller
         return view("email.email", $data);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function sendEmail(Request $request)
     {
         Mail::to($request->input("receiver_email"))->send(new MailSender(

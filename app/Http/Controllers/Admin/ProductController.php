@@ -20,9 +20,21 @@ use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
-    public function __construct()
+    const MENU_ITEM_NAME = "products";
+
+    /**
+     * @var ProductService
+     */
+    private $service;
+
+    /**
+     * ProductController constructor.
+     * @param ProductService $service
+     */
+    public function __construct(ProductService $service)
     {
-        View::share("activeMenu", "products");
+        $this->service = $service;
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
     /**
@@ -44,7 +56,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data = ProductService::getDataForProductPage();
+        $data = $this->service->getData();
 
         return view("admin.products.create", $data);
     }
@@ -60,8 +72,7 @@ class ProductController extends Controller
         $product = new Product();
 
         $product->fill($request->only($product->getFillable()));
-        ProductService::saveImages($request, $product);
-
+        $this->service->saveImages($product);
         $product->save();
 
         return redirect()->route("admin-products-edit", ['id' => $product->id]);
@@ -75,7 +86,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $data = ProductService::getDataForProductPage($id);
+        $data = $this->service->getData($id);
 
         return view("admin.products.show", $data);
     }
@@ -88,7 +99,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data = ProductService::getDataForProductPage($id);
+        $data = $this->service->getData($id);
 
         return view("admin.products.edit", $data);
     }
@@ -105,7 +116,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $product->fill($request->only($product->getFillable()));
-        ProductService::saveImages($request, $product);
+        $this->service->saveImages($product);
 
         $product->save();
 

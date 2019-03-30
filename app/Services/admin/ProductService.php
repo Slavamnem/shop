@@ -8,43 +8,62 @@ use App\Enums\ProductStatusEnum;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\TranslatorService;
 use App\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ProductService
+class ProductService implements ProductServiceInterface
 {
-    public static function getDataForProductPage($id = null)
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * ProductServiceInterface constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
     {
-        $data = [
-            "categories" => Category::all(),
-            "groups" => ModelGroup::all(),
-            "statuses" => ProductStatus::all(),
-            "colors" => Color::all(),
-            "sizes" => Size::all()
-        ];
-
-        if ($id) {
-            $data["product"] = Product::find($id);
-        }
-
-        return $data;
+        $this->request = $request;
     }
 
-    public static function saveImages(Request $request, $product)
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getData($id = null)
+    {
+        return [
+            "product"    => ($id)? Product::find($id) : null,
+            "categories" => Category::all(),
+            "groups"     => ModelGroup::all(),
+            "statuses"   => ProductStatus::all(),
+            "colors"     => Color::all(),
+            "sizes"      => Size::all()
+        ];
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function saveImages(Product $product)
     {
         $images = Product::getImagesAttributesKeys();
 
         foreach ($images as $img) {
-            if ($request->hasFile($img)) {
-                $name = "product_" . $product->id . "_{$img}." . $request->file($img)->extension();
-                $product->$img = "products/{$name}";
+            if ($this->request->hasFile($img)) {
+                $imageName = $this->generateProductImageName($product, $img);
+                $product->$img = "products/{$imageName}";
+
                 Storage::putFileAs(
                     "products",
-                    $request->file($img),
-                    $name
+                    $this->request->file($img),
+                    $imageName
                 );
             }
         }
@@ -53,72 +72,84 @@ class ProductService
     /**
      * Store chose product modifications for new group
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  $groupId
-     * @return \Illuminate\Http\Response
+     * @param  ModelGroup $group
      */
-    public function createModifications(Request $request, $groupId)
+    public function createModifications(ModelGroup $group)
     {
         $newProducts = collect();
-        foreach ($request->input("colors") as $colorId)
-        {
-            foreach ($request->input("sizes") as $sizeId)
-            {
-                $productName = $request->name
-                    . " "
-                    . Color::find($colorId)->name
-                    . " "
-                    . Size::find($sizeId)->name;
-                $productSlug = $request->name
-                    . "_"
-                    . TranslatorService::translate(Color::find($colorId)->name)
-                    . "_"
-                    . TranslatorService::translate(Size::find($sizeId)->name);
 
-                $newProducts->push([
-                    'name' => $productName,
-                    'slug' => $productSlug,
-                    'base_price' => 0,
-                    'quantity' => 0,
-                    'category_id' => 1, // TODO category_id field in model group
-                    'description' => '',
-                    'image' => '',
-                    'small_image' => '',
-                    'group_id' => $groupId,
-                    'status_id' => ProductStatusEnum::SOON_AVAILABLE,
-                    'color_id' => $colorId,
-                    'size_id' => $sizeId,
-                ]);
+        foreach ($this->request->input("colors") as $colorId)
+        {
+            foreach ($this->request->input("sizes") as $sizeId)
+            {
+                $this->addNewProduct($newProducts, $group, $colorId, $sizeId);
             }
         }
 
         DB::table("products")->insert($newProducts->toArray());
-        //dump($newProducts->toArray());
+    }
 
-//        foreach (Product::getModificationsAttributes() as $attribute => $modelClass) {
-//            if ($request->has($attribute))
-//            {
-//                dump($request->input($attribute));
-//                $products = [];
-//                foreach ($request->input($attribute) as $itemId) {
-//                    $products[] = [
-//                        'name' => $request->name . " " . $modelClass::select("name")->find($itemId)->name,
-//                        'slug' => $request->name,
-//                        'base_price' => 0,
-//                        'quantity' => 0,
-//                        'category_id' => 1,
-//                        'description' => '',
-//                        'image' => '',
-//                        'small_image' => '',
-//                        'group_id' => $groupId,
-//                        'status_id' => 1,
-//                        'color_id' => 1,
-//                        'size_id' => 1,
-//                    ];
-//                }
-//                dump($products);
-//                //DB::table("products")->create($products);
-//            }
-//        }
+    /**
+     * @param Collection $newProducts
+     * @param $group
+     * @param $colorId
+     * @param $sizeId
+     */
+    private function addNewProduct(Collection $newProducts, $group, $colorId, $sizeId)
+    {
+        $newProducts->push([
+            'name'        => $this->generateProductName($colorId, $sizeId),
+            'slug'        => $this->generateProductSlug($colorId, $sizeId),
+            'base_price'  => 0,
+            'quantity'    => 0,
+            'category_id' => $group->category_id,
+            'description' => '',
+            'image'       => '',
+            'small_image' => '',
+            'group_id'    => $group->id,
+            'status_id'   => ProductStatusEnum::SOON_AVAILABLE,
+            'color_id'    => $colorId,
+            'size_id'     => $sizeId,
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @param string $imageField
+     * @return string
+     */
+    private function generateProductImageName(Product $product, string $imageField)
+    {
+        $productId = $product->id ?? DB::table("products")->max("id") + 1;
+        return "product_" . $productId . "_{$imageField}." . $this->request->file($imageField)->extension();
+    }
+
+    /**
+     * @param $colorId
+     * @param $sizeId
+     * @return string
+     */
+    private function generateProductName($colorId, $sizeId)
+    {
+        return $this->request->name
+            . " "
+            . Color::find($colorId)->name
+            . " "
+            . Size::find($sizeId)->name;
+
+    }
+
+    /**
+     * @param $colorId
+     * @param $sizeId
+     * @return string
+     */
+    private function generateProductSlug($colorId, $sizeId)
+    {
+        return $this->request->name
+        . "_"
+        . TranslatorService::translate(Color::find($colorId)->name)
+        . "_"
+        . TranslatorService::translate(Size::find($sizeId)->name);
     }
 }

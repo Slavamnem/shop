@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Color;
 use App\ModelGroup;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
@@ -13,9 +14,14 @@ use Illuminate\Support\Facades\View;
 
 class ModelGroupController extends Controller
 {
+    const MENU_ITEM_NAME = "groups";
+
+    /**
+     * ModelGroupController constructor.
+     */
     public function __construct()
     {
-        View::share("activeMenu", "groups");
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
     /**
@@ -37,7 +43,8 @@ class ModelGroupController extends Controller
      */
     public function create()
     {
-        return view("admin.groups.create");
+        $categories = Category::all();
+        return view("admin.groups.create", compact("categories"));
     }
 
     /**
@@ -49,19 +56,14 @@ class ModelGroupController extends Controller
      */
     public function store(Request $request, ProductService $productService)
     {
-        //dd($request->all());
         $group = new ModelGroup();
 
         $group->fill($request->only($group->getFillable()));
         $group->save();
 
-        //
         if ($request->has("generator")) {
-            $productService->createModifications($request, $group->id);
-            //dd("has");
+            $productService->createModifications($group);
         }
-        //dd("has not");
-        //
 
         return redirect()->route("admin-groups-edit", ['id' => $group->id]);
     }
@@ -75,8 +77,9 @@ class ModelGroupController extends Controller
     public function show($id)
     {
         $group = ModelGroup::find($id);
+        $categories = Category::all();
 
-        return view("admin.groups.show", compact("group"));
+        return view("admin.groups.show", compact("group", "categories"));
     }
 
     /**
@@ -85,11 +88,12 @@ class ModelGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id) // TODO
     {
         $group = ModelGroup::find($id);
+        $categories = Category::all();
 
-        return view("admin.groups.edit", compact("group"));
+        return view("admin.groups.edit", compact("group", "categories"));
     }
 
     /**
@@ -124,8 +128,11 @@ class ModelGroupController extends Controller
         return redirect()->route("admin-groups");
     }
 
-    //
-    public function getModificationsBlock()
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function getModificationsBlock() // TODO
     {
         $data = [
             "colors" => Color::all(),

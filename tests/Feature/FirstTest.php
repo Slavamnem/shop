@@ -86,6 +86,15 @@ class FirstTest extends TestCase
             ->assertStatus(200);
 
         dump($response->getContent());
+
+        //$this->assertDatabaseHas('rules', ['name' => 'admin']);
+    }
+
+    public function testF3()
+    {
+        //$rule = factory(Rule::class)->make();
+        $rule = factory(Rule::class)->create();
+        dump($rule->toArray());
     }
 
     //

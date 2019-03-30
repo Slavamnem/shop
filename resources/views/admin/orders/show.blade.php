@@ -69,9 +69,49 @@
                             </div>
 
                         </div>
+
+                        <div id="order-products">
+
+                            <div class="table-responsive">
+                                <table id="example4" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Товар</th>
+                                        <th>Количество</th>
+                                        <th>Цена</th>
+                                        <th>Общая сумма</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($order->products as $orderProduct)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route("admin-products-show", ['id' => $orderProduct->id]) }}">
+                                                    {{ $orderProduct->product->name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ $orderProduct->quantity }}
+                                            </td>
+                                            <td>
+                                                {{ $orderProduct->product_price }}
+                                            </td>
+                                            <td>
+                                                {{ $orderProduct->sum }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <p>Товаров нет</p>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
+            <br>
             <button class="btn btn-danger push-to-telegram" type="submit" data-id="{{ $order->id }}" data-link="{{ $url }}" data-token="{{ csrf_token() }}">Push to Telegram</button>
 
         </div>
