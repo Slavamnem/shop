@@ -32,15 +32,29 @@
                                         <label for="inputText3" class="col-form-label">Название категории</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $category->name }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Slug (имя на английском в строке браузера)</label>
                                         <input id="inputText3" name="slug" type="text" class="form-control" value="{{ $category->slug }}">
                                     </div>
+                                    @if($errors->has("slug"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('slug') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Сортировка</label>
                                         <input id="inputText3" name="ordering" type="number" class="form-control" value="{{ $category->ordering }}">
                                     </div>
-
+                                    @if($errors->has("ordering"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('ordering') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
