@@ -36,21 +36,48 @@
                                 <!--<h5 class="card-header"></h5>-->
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название товара</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="">
+                                        <label for="name" class="col-form-label">Название товара</label>
+                                        <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Slug (имя на английском в строке браузера)</label>
-                                        <input id="inputText3" name="slug" type="text" class="form-control" value="">
+                                        <label for="slug" class="col-form-label">Slug (имя на английском в строке браузера)</label>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <input id="slug" name="slug" type="text" class="form-control" value="{{ old('slug') }}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary generate-slug" type="button">Сгенерировать slug</button>
+                                            </div>
+                                        </div>
                                     </div>
+                                    @if($errors->has("slug"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('slug') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Цена</label>
-                                        <input id="inputText3" name="base_price" type="number" class="form-control" value="">
+                                        <input id="inputText3" name="base_price" type="number" class="form-control" value="{{ old('base_price') }}">
                                     </div>
+                                    @if($errors->has("base_price"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('base_price') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Количество</label>
-                                        <input id="inputText3" name="quantity" type="number" class="form-control" value="">
+                                        <input id="inputText3" name="quantity" type="number" class="form-control" value="{{ old('quantity') }}">
                                     </div>
+                                    @if($errors->has("quantity"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('quantity') }}</strong>
+                                        </span>
+                                    @endif
                                     <h4>Категория</h4>
                                     <div class="form-group">
                                         <select name="category_id" class="form-control">
@@ -60,6 +87,11 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    @if($errors->has("category_id"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('category_id') }}</strong>
+                                        </span>
+                                    @endif
                                     <h4>Группа</h4>
                                     <div class="form-group">
                                         <select name="group_id" class="form-control">
@@ -69,6 +101,11 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    @if($errors->has("group_id"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('group_id') }}</strong>
+                                        </span>
+                                    @endif
                                     <h4>Статус</h4>
                                     <div class="form-group">
                                         <select name="status_id" class="form-control">
@@ -78,6 +115,11 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    @if($errors->has("status_id"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('status_id') }}</strong>
+                                        </span>
+                                    @endif
                                     <h4>Цвет</h4>
                                     <div class="form-group">
                                         <select name="color_id" class="form-control">
@@ -87,6 +129,11 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    @if($errors->has("color_id"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('color_id') }}</strong>
+                                        </span>
+                                    @endif
                                     <h4>Размер</h4>
                                     <div class="form-group">
                                         <select name="size_id" class="form-control">
@@ -96,6 +143,11 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    @if($errors->has("size_id"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('size_id') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -106,6 +158,11 @@
                                     <label for="exampleFormControlTextarea1">Описание товара</label>
                                     <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                 </div>
+                                @if($errors->has("description"))
+                                    <span class="help-block" style="color:red">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                                @endif
                             </form>
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
@@ -114,11 +171,21 @@
                                 <input type="file" name="image" class="custom-file-input" id="customFile">
                                 <label class="custom-file-label" for="customFile">Загрузить</label>
                             </div>
+                            @if($errors->has("image"))
+                                <span class="help-block" style="color:red">
+                                     <strong>{{ $errors->first('image') }}</strong>
+                                </span>
+                            @endif
                             <h4>Маленькое изображение</h4>
                             <div class="custom-file mb-3">
                                 <input type="file" name="small_image" class="custom-file-input" id="customFile">
                                 <label class="custom-file-label" for="customFile">Загрузить</label>
                             </div>
+                            @if($errors->has("small_image"))
+                                <span class="help-block" style="color:red">
+                                    <strong>{{ $errors->first('small_image') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -128,4 +195,8 @@
         </div>
 
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/products/main.js") }}"></script>
 @endsection

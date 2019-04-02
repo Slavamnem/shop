@@ -84,9 +84,25 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
     });
 
+    Route::group(['prefix' => 'shares'], function(){
+        Route::get('', "ShareController@index")->name("admin-shares");
+        Route::get("edit/{id}", "ShareController@edit")->name("admin-shares-edit");
+//        Route::post("update/{id}", "OrderController@update")->name("admin-orders-update");
+        Route::any("delete/{id}", "ShareController@destroy")->name("admin-shares-delete");
+        Route::get("create", "ShareController@create")->name("admin-shares-create");
+//        Route::post("store", "OrderpController@store")->name("admin-orders-store");
+        Route::get("show/{id}", "SharesController@show")->name("admin-shares-show");
+//        Route::any("email", "OrderController@email")->name("admin-orders-email");
+//        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
+    });
+
     Route::group(['prefix' => "email"], function() {
         Route::any("new", "EmailController@newEmail")->name("admin-new-email");
         Route::post("send-email", "EmailController@sendEmail")->name("admin-send-email");
+    });
+
+    Route::group(['prefix' => 'ajax'], function(){
+        Route::post('translate', "AjaxController@getTranslation");
     });
 
 });

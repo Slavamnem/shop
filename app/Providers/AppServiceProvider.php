@@ -10,6 +10,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,14 +42,6 @@ class AppServiceProvider extends ServiceProvider
             Log::info("after");
         });
 
-        $this->app->bind('ProductService', function ($app) {
-            return new ProductService();
-        });
-
-        $this->app->bind('OrderService', function ($app) {
-            return new OrderService();
-        });
-
     }
 
     /**
@@ -58,6 +51,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(ProductServiceInterface::class, ProductService::class);
+
+        $this->app->bind('OrderService', function ($app) {
+            return new OrderService();
+        });
+
     }
 }

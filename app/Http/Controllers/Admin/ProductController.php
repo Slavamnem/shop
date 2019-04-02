@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\NewOrderEvent;
+use App\Http\Requests\Admin\CreateProductRequest;
+use App\Http\Requests\Admin\EditProductRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,9 +32,9 @@ class ProductController extends Controller
 
     /**
      * ProductController constructor.
-     * @param ProductService $service
+     * @param ProductServiceInterface $service
      */
-    public function __construct(ProductService $service)
+    public function __construct(ProductServiceInterface $service)
     {
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
@@ -64,10 +67,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $product = new Product();
 
@@ -107,11 +110,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditProductRequest $request, $id)
     {
         $product = Product::find($id);
 
