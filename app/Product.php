@@ -51,6 +51,12 @@ class Product extends Model
         return $this->hasOne(Size::class, "id", "size_id");
     }
 
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class, "product_properties","product_id", "property_id")
+            ->withPivot(['value', 'ordering']);
+    }
+
     public static function getImagesAttributesKeys()
     {
         return ["image", "small_image"];

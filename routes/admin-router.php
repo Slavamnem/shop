@@ -1,6 +1,6 @@
 <?php
 
-Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['auth']], function(){
+Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['auth', 'admin-auth']], function(){
    Route::get("index", "AdminController@index"); // TODO remove
 
    Route::group(['prefix' => "products"], function(){
@@ -87,11 +87,11 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
     Route::group(['prefix' => 'shares'], function(){
         Route::get('', "ShareController@index")->name("admin-shares");
         Route::get("edit/{id}", "ShareController@edit")->name("admin-shares-edit");
-//        Route::post("update/{id}", "OrderController@update")->name("admin-orders-update");
+        Route::post("update/{id}", "ShareController@update")->name("admin-shares-update");
         Route::any("delete/{id}", "ShareController@destroy")->name("admin-shares-delete");
         Route::get("create", "ShareController@create")->name("admin-shares-create");
-//        Route::post("store", "OrderpController@store")->name("admin-orders-store");
-        Route::get("show/{id}", "SharesController@show")->name("admin-shares-show");
+        Route::post("store", "ShareController@store")->name("admin-shares-store");
+        Route::get("show/{id}", "ShareController@show")->name("admin-shares-show");
 //        Route::any("email", "OrderController@email")->name("admin-orders-email");
 //        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
     });

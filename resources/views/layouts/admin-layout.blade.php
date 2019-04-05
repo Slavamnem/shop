@@ -15,6 +15,7 @@
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css") }}">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/charts/c3charts/c3.css") }}">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/fonts/flag-icon-css/flag-icon.min.css") }}">
+    <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/multi-select/css/multi-select.css") }}">
     <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
 </head>
 

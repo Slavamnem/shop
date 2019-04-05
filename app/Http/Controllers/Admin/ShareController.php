@@ -44,7 +44,7 @@ class ShareController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.shares.create");
     }
 
     /**

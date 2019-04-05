@@ -44,6 +44,11 @@
                 <div class="form-group">
                     <input class="form-control form-control-lg" name="login" id="username" type="text" placeholder="Логин" autocomplete="off">
                 </div>
+                @if($errors->has('login'))
+                    <span>
+                        <strong>{{ $errors->first('login') }}</strong>
+                    </span>
+                @endif
                 <div class="form-group">
                     <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Пароль">
                 </div>
@@ -59,7 +64,7 @@
             <div class="card-footer-item card-footer-item-bordered">
                 <a href="#" class="footer-link">Регистрация</a></div>
             <div class="card-footer-item card-footer-item-bordered">
-                <a href="#" class="footer-link">Забыл пароль?</a>
+                <a href="{{ route('password.request') }}" class="footer-link">Забыл пароль?</a>
             </div>
         </div>
     </div>

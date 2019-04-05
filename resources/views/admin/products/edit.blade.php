@@ -28,6 +28,12 @@
                         <li class="nav-item">
                             <a class="nav-link" id="tab-outline-three" data-toggle="tab" href="#outline-three" role="tab" aria-controls="contact" aria-selected="false">Картинки</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab-outline-four" data-toggle="tab" href="#outline-four" role="tab" aria-controls="profile" aria-selected="false">Доп. Свойства</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab-outline-five" data-toggle="tab" href="#outline-five" role="tab" aria-controls="contact" aria-selected="false">Демо</a>
+                        </li>
                     </ul>
 
                     <div class="tab-content" id="myTabContent2">
@@ -172,6 +178,19 @@
                                     <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid">
                                 </div>
                             @endif
+                        </div>
+                        <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
+                            @forelse($product->properties as $property)
+                                <div class="form-group">
+                                    <label for="inputText3" class="col-form-label">{{ $property->name }}</label>
+                                    <input id="inputText3" name="name" type="text" class="form-control" value="{{ $property->pivot->value }}" readonly="readonly">
+                                </div>
+                            @empty
+                                <h3></h3>
+                            @endforelse
+                        </div>
+                        <div class="tab-pane fade" id="outline-five" role="tabpanel" aria-labelledby="tab-outline-five">
+                            2
                         </div>
                     </div>
                 </div>
