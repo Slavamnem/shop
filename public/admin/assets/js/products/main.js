@@ -3,8 +3,6 @@ $( document ).ready(function() {
 
         var name = $('#name').val();
 
-        //alert(name);
-
         $.ajax({
             url: "/admin/ajax/translate",
             method: 'POST',
@@ -14,9 +12,26 @@ $( document ).ready(function() {
                 $('#slug').val(res);
             },
             error: function(){
-                //alert("error");
+                alert("error");
             }
         });
+    });
 
+
+    $('.add-new-property').on("click", function(){
+        $.ajax({
+            url: "/admin/products/add-new-property",
+            method: 'POST',
+            success: function(res) {
+                $('#new-properties').append(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-property', function(){
+        $(this).parents(".product-property").html("");
     });
 });

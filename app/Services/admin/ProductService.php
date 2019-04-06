@@ -4,10 +4,12 @@ namespace App\Services\Admin;
 
 use App\Category;
 use App\Color;
+use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Enums\ProductStatusEnum;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
+use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\TranslatorService;
 use App\Size;
@@ -44,7 +46,8 @@ class ProductService implements ProductServiceInterface
             "groups"     => ModelGroup::all(),
             "statuses"   => ProductStatus::all(),
             "colors"     => Color::all(),
-            "sizes"      => Size::all()
+            "sizes"      => Size::all(),
+            "properties" => Property::all(),
         ];
     }
 
@@ -70,6 +73,26 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
+     * @param Product $product
+     * @return mixed|void
+     */
+    public function saveProperties(Product $product)
+    {
+        $properties = collect();
+        foreach ((array)$this->request->input('properties') as $number => $propertyId) {
+            $value = $this->request->input('properties_values')[$number];
+            $ordering = $this->request->input('properties_ordering')[$number];
+            if ($value) {
+                $properties->put($propertyId, [
+                    "value" => $value,
+                    "ordering" => $ordering
+                ]);
+            }
+        }
+        $product->properties()->sync($properties->toArray());
+    }
+
+    /**
      * Store chose product modifications for new group
      *
      * @param  ModelGroup $group
@@ -87,6 +110,16 @@ class ProductService implements ProductServiceInterface
         }
 
         DB::table("products")->insert($newProducts->toArray());
+    }
+
+    /**
+     * @param SaveDataToFileInterface $saver
+     * @param $data
+     * @return mixed
+     */
+    public function saveToFile(SaveDataToFileInterface $saver, $data)
+    {
+        return response()->download($saver->saveToFile($data[0], "products.xml"));
     }
 
     /**

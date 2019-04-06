@@ -137,7 +137,7 @@
                             @endforelse
                         </div>
                         <div class="tab-pane fade" id="outline-five" role="tabpanel" aria-labelledby="tab-outline-five">
-                            2
+                            В разработке
                         </div>
                     </div>
                 </div>

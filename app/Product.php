@@ -54,7 +54,7 @@ class Product extends Model
     public function properties()
     {
         return $this->belongsToMany(Property::class, "product_properties","product_id", "property_id")
-            ->withPivot(['value', 'ordering']);
+            ->withPivot(['value', 'ordering'])->orderBy("ordering");
     }
 
     public static function getImagesAttributesKeys()

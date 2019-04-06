@@ -180,17 +180,51 @@
                             @endif
                         </div>
                         <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h3>Название</h3>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3>Значение</h3>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h3>Сортировка</h3>
+                                    </div>
+                                </div>
+                            </div>
                             @forelse($product->properties as $property)
-                                <div class="form-group">
-                                    <label for="inputText3" class="col-form-label">{{ $property->name }}</label>
-                                    <input id="inputText3" name="name" type="text" class="form-control" value="{{ $property->pivot->value }}" readonly="readonly">
+                                <div class="form-group product-property">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <select name="properties[]" class="form-control">
+                                                @forelse($properties as $propertyItem)
+                                                    <option <?php if($property->id == $propertyItem->id) echo "selected"; ?> value="{{$propertyItem->id}}">{{$propertyItem->name}}</option>
+                                                @empty
+                                                @endforelse
+                                            </select>
+                                        </div>
+                                        <h2>=</h2>
+                                        <div class="col-md-4">
+                                            <input id="inputText3" name="properties_values[]" type="text" class="form-control" value="{{ $property->pivot->value }}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="inputText4" name="properties_ordering[]" type="number" class="form-control" value="{{ $property->pivot->ordering }}">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-danger delete-property" type="button">Удалить</button>
+                                        </div>
+                                    </div>
+                                    <hr>
                                 </div>
                             @empty
                                 <h3></h3>
                             @endforelse
+                            <div id="new-properties"></div>
+                            <button class="btn btn-danger add-new-property" type="button" data-token="{{ csrf_token() }}">Добавить свойство</button>
                         </div>
                         <div class="tab-pane fade" id="outline-five" role="tabpanel" aria-labelledby="tab-outline-five">
-                            2
+                            В разработке
                         </div>
                     </div>
                 </div>

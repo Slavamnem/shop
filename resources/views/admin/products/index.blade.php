@@ -115,10 +115,18 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('save-products-as-xml') }}">
+                    <button class="btn btn-danger save-products-as-xml" type="submit" data-token="{{ csrf_token() }}">Сохранить в Xml</button>
+                </a>
             </div>
+
             <!-- ============================================================== -->
             <!-- end fixed header  -->
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/products/main.js") }}"></script>
 @endsection

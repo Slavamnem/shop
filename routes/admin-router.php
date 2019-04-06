@@ -11,6 +11,8 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::get("create", "ProductController@create")->name("admin-products-create");
        Route::post("store", "ProductController@store")->name("admin-products-store");
        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
+       Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
+       Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
 
        #Route::any("test", "ProductController@storageLearn");
        #Route::any("lang", "ProductController@lang");

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Components\Xml;
 use App\Events\NewOrderEvent;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
@@ -9,6 +10,7 @@ use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
 use Carbon\Carbon;
@@ -120,6 +122,7 @@ class ProductController extends Controller
 
         $product->fill($request->only($product->getFillable()));
         $this->service->saveImages($product);
+        $this->service->saveProperties($product);
 
         $product->save();
 
@@ -140,4 +143,19 @@ class ProductController extends Controller
         return redirect()->route("admin-products");
     }
 
+    /**
+     * @return mixed
+     */
+    public function saveAsXml()
+    {
+        $data = Product::all();
+
+        return $this->service->saveToFile(new Xml(), $data->toArray());
+    }
+
+    public function addNewProperty()
+    {
+        $properties = Property::all();
+        return view("admin.properties.new-property", compact('properties'))->render();
+    }
 }
