@@ -221,7 +221,7 @@
                                 <h3></h3>
                             @endforelse
                             <div id="new-properties"></div>
-                            <button class="btn btn-danger add-new-property" type="button" data-token="{{ csrf_token() }}">Добавить свойство</button>
+                            <button class="btn btn-success add-new-property" type="button" data-token="{{ csrf_token() }}">Добавить свойство</button>
                         </div>
                         <div class="tab-pane fade" id="outline-five" role="tabpanel" aria-labelledby="tab-outline-five">
                             В разработке

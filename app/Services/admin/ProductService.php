@@ -84,7 +84,7 @@ class ProductService implements ProductServiceInterface
             $ordering = $this->request->input('properties_ordering')[$number];
             if ($value) {
                 $properties->put($propertyId, [
-                    "value" => $value,
+                    "value"    => $value,
                     "ordering" => $ordering
                 ]);
             }
