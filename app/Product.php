@@ -57,6 +57,11 @@ class Product extends Model
             ->withPivot(['value', 'ordering'])->orderBy("ordering");
     }
 
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, "product_id", 'id');
+    }
+
     public static function getImagesAttributesKeys()
     {
         return ["image", "small_image"];

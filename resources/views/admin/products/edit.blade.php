@@ -165,7 +165,7 @@
                             </div>
                             @if($product->image)
                                 <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid">
+                                    <img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid product-image">
                                 </div>
                             @endif
                             <h4>Маленькое изображение</h4>
@@ -175,9 +175,43 @@
                             </div>
                             @if($product->small_image)
                                 <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid">
+                                    <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid product-image">
                                 </div>
                             @endif
+
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h3>Фото</h3>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h3>Сортировка</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                @forelse($product->images as $image)
+                                    <div class="form-group product-property">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">
+                                                <input type="file" name="images[]" class="custom-file-input" id="customFile2">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input id="inputText4" name="images_ordering[]" type="number" class="form-control" value="{{ $image->ordering }}">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-danger delete-image" type="button">Удалить</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                @empty
+                                    <h3></h3>
+                                @endforelse
+                                <div id="new-images"></div>
+                                <button class="btn btn-success add-new-image" type="button" data-token="{{ csrf_token() }}">Добавить изображение</button>
+
                         </div>
                         <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
                             <div class="form-group">
@@ -238,4 +272,8 @@
 
 @section("custom-js")
     <script src="{{ asset("public/admin/assets/js/products/main.js") }}"></script>
+@endsection
+
+@section("custom-css")
+    <link rel="stylesheet" href=" {{ asset("public/admin/assets/css/main.css") }}">
 @endsection

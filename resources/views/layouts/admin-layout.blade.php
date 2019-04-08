@@ -541,6 +541,7 @@
     <script src="{{ asset("public/admin/assets/libs/js/dashboard-ecommerce.js") }}"></script>
 
     @yield("custom-js")
+    @yield("custom-css")
 </body>
 
 </html>
