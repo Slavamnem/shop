@@ -158,44 +158,65 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
-                            <h4>Основное изображение</h4>
-                            <div class="custom-file mb-3">
-                                <input type="file" name="image" class="custom-file-input" id="customFile">
-                                <label class="custom-file-label" for="customFile">Загрузить</label>
-                            </div>
-                            @if($product->image)
-                                <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid product-image">
-                                </div>
-                            @endif
-                            <h4>Маленькое изображение</h4>
-                            <div class="custom-file mb-3">
-                                <input type="file" name="small_image" class="custom-file-input" id="customFile">
-                                <label class="custom-file-label" for="customFile">Загрузить</label>
-                            </div>
-                            @if($product->small_image)
-                                <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid product-image">
-                                </div>
-                            @endif
+                            {{--<h4>Основное изображение</h4>--}}
+                            {{--<div class="custom-file mb-3">--}}
+                                {{--<input type="file" name="image" class="custom-file-input" id="customFile">--}}
+                                {{--<label class="custom-file-label" for="customFile">Загрузить</label>--}}
+                            {{--</div>--}}
+                            {{--@if($product->image)--}}
+                                {{--<div class="card-body text-center">--}}
+                                    {{--<img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid product-image">--}}
+                                {{--</div>--}}
+                            {{--@endif--}}
+                            {{--<h4>Маленькое изображение</h4>--}}
+                            {{--<div class="custom-file mb-3">--}}
+                                {{--<input type="file" name="small_image" class="custom-file-input" id="customFile">--}}
+                                {{--<label class="custom-file-label" for="customFile">Загрузить</label>--}}
+                            {{--</div>--}}
+                            {{--@if($product->small_image)--}}
+                                {{--<div class="card-body text-center">--}}
+                                    {{--<img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid product-image">--}}
+                                {{--</div>--}}
+                            {{--@endif--}}
 
-
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h3>Фото</h3>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <h3>Сортировка</h3>
+                            <table>
+                                <tr>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <h3>Фото</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Основное</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Превью</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Сортировка</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </tr>
                                 @forelse($product->images as $image)
-                                    <div class="form-group product-property">
+                                <tr>
+                                    <div class="form-group product-image">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">
-                                                <input type="file" name="images[]" class="custom-file-input" id="customFile2">
+                                                <input type="file" name="images[]" class="custom-file-input" id="customFile" style="opacity:1!important;">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="checkbox" name="images_main" value="{{$image->url}}" class="generator" id="switch19" @if($image->main) {{ "checked" }} @endif>
+                                                <span>
+                                                     <label for="switch19"></label>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="checkbox" name="images_preview" class="generator" id="switch19" @if($image->preview) {{ "checked" }} @endif>
+                                                <span>
+                                                     <label for="switch19"></label>
+                                                </span>
                                             </div>
                                             <div class="col-md-2">
                                                 <input id="inputText4" name="images_ordering[]" type="number" class="form-control" value="{{ $image->ordering }}">
@@ -206,11 +227,13 @@
                                         </div>
                                         <hr>
                                     </div>
+                                </tr>
                                 @empty
                                     <h3></h3>
                                 @endforelse
                                 <div id="new-images"></div>
-                                <button class="btn btn-success add-new-image" type="button" data-token="{{ csrf_token() }}">Добавить изображение</button>
+                            </table>
+                            <button class="btn btn-success add-new-image" type="button" data-token="{{ csrf_token() }}">Добавить изображение</button>
 
                         </div>
                         <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">

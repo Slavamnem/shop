@@ -74,20 +74,21 @@ class ProductService implements ProductServiceInterface
      */
     public function saveImages2(Product $product)
     {
-        $images = Product::getImagesAttributesKeys();
-
-        foreach ($images as $img) {
-            if ($this->request->hasFile($img)) {
+        //$images = Product::getImagesAttributesKeys();
+        //dd($this->request->images);
+        foreach ($this->request->images as $img) {
+            //if ($this->request->hasFile($img)) {
                 $imageName = $this->generateProductImageName($product, $img);
                 $product->$img = "products/{$imageName}";
-
-                Storage::putFileAs(
-                    "products",
-                    $this->request->file($img),
-                    $imageName
-                );
-            }
+                dump($product->$img);
+//                Storage::putFileAs(
+//                    "products",
+//                    $this->request->file($img),
+//                    $imageName
+//                );
+            //}
         }
+        dd("end");
     }
 
     /**

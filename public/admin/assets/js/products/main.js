@@ -31,6 +31,23 @@ $( document ).ready(function() {
         });
     });
 
+    $('.add-new-image').on("click", function(){
+        $.ajax({
+            url: "/admin/products/add-new-image",
+            method: 'POST',
+            success: function(res) {
+                $('#new-images').append(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-image', function(){
+        $(this).parents(".product-image").html("");
+    });
+
     $(document).on('click', '.delete-property', function(){
         $(this).parents(".product-property").html("");
     });

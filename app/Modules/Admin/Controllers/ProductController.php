@@ -2,6 +2,7 @@
 
 namespace App\Modules\Admin\Controllers;
 
+use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Events\NewOrderEvent;
 use App\Http\Requests\Admin\CreateProductRequest;

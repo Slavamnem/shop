@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "339f45166ae486e5372d199b82770c74",
+    "content-hash": "f974dcbf37de422d1c30e4bc74c9d0e6",
     "packages": [
         {
             "name": "binsoul/net-mqtt",

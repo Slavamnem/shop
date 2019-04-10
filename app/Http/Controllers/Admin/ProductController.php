@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Events\NewOrderEvent;
 use App\Http\Requests\Admin\CreateProductRequest;
@@ -49,6 +50,19 @@ class ProductController extends Controller
      */
     public function index()
     {
+//        $novaPoshta = new NovaPoshta();
+//
+//        dd($novaPoshta->getCities([
+//            "Language" => "ru",
+//            "Page" => 1,
+//            "Warehouse" => true
+//        ])->data);
+//
+//        dd($novaPoshta->getWarehouses([
+//            "CityName" => "Черкаси",
+//            "Language" => "ru"
+//        ])->data);
+
         $products = Product::with(['color', 'size', 'category'])->paginate(10);
 
         return view("admin.products.index", compact('products'));
@@ -118,10 +132,11 @@ class ProductController extends Controller
      */
     public function update(EditProductRequest $request, $id)
     {
+        dump($request->all());
         $product = Product::find($id);
 
         $product->fill($request->only($product->getFillable()));
-        $this->service->saveImages($product);
+        $this->service->saveImages2($product);
         $this->service->saveProperties($product);
 
         $product->save();
@@ -157,5 +172,10 @@ class ProductController extends Controller
     {
         $properties = Property::all();
         return view("admin.properties.new-property", compact('properties'))->render();
+    }
+
+    public function addNewImage()
+    {
+        return view("admin.images.new-image")->render();
     }
 }
