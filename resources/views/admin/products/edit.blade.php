@@ -198,28 +198,30 @@
                                         </div>
                                     </div>
                                 </tr>
+                                <hr>
                                 @forelse($product->images as $image)
                                 <tr>
                                     <div class="form-group product-image">
                                         <div class="row">
+                                            <input type="hidden" name="oldImages[]" value="{{ $image->id }}">
                                             <div class="col-md-4">
                                                 <img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">
-                                                <input type="file" name="images[]" class="custom-file-input" id="customFile" style="opacity:1!important;">
+                                                {{--<input type="file" name="images[]" class="custom-file-input" id="customFile" style="opacity:1!important;">--}}
                                             </div>
                                             <div class="col-md-2">
-                                                <input type="checkbox" name="images_main" value="{{$image->url}}" class="generator" id="switch19" @if($image->main) {{ "checked" }} @endif>
+                                                <input type="checkbox" name="oldImagesMain[{{$image->id}}]" value="1" class="generator" id="switch19" @if($image->main) {{ "checked" }} @endif>
                                                 <span>
                                                      <label for="switch19"></label>
                                                 </span>
                                             </div>
                                             <div class="col-md-2">
-                                                <input type="checkbox" name="images_preview" class="generator" id="switch19" @if($image->preview) {{ "checked" }} @endif>
+                                                <input type="checkbox" name="oldImagesPreview[{{$image->id}}]" value="1" class="generator" id="switch19" @if($image->preview) {{ "checked" }} @endif>
                                                 <span>
                                                      <label for="switch19"></label>
                                                 </span>
                                             </div>
                                             <div class="col-md-2">
-                                                <input id="inputText4" name="images_ordering[]" type="number" class="form-control" value="{{ $image->ordering }}">
+                                                <input id="inputText4" name="oldImagesOrdering[{{$image->id}}]" type="number" class="form-control" value="{{ $image->ordering }}">
                                             </div>
                                             <div class="col-md-1">
                                                 <button class="btn btn-danger delete-image" type="button">Удалить</button>

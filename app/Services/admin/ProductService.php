@@ -8,6 +8,7 @@ use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Enums\ProductStatusEnum;
 use App\ModelGroup;
 use App\Product;
+use App\ProductImage;
 use App\ProductStatus;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
@@ -16,6 +17,7 @@ use App\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService implements ProductServiceInterface
@@ -51,44 +53,33 @@ class ProductService implements ProductServiceInterface
         ];
     }
 
-    public function saveImages(Product $product)
-    {
-        dd($this->request->all());
-        $images = Product::getImagesAttributesKeys();
-
-        foreach ($images as $img) {
-            if ($this->request->hasFile($img)) {
-                $imageName = $this->generateProductImageName($product, $img);
-                $product->$img = "products/{$imageName}";
-
-                Storage::putFileAs(
-                    "products",
-                    $this->request->file($img),
-                    $imageName
-                );
-            }
-        }
-    }
-    /**
-     * @param Product $product
-     */
-    public function saveImages2(Product $product)
-    {
-        //$images = Product::getImagesAttributesKeys();
-        //dd($this->request->images);
-        foreach ($this->request->images as $img) {
-            //if ($this->request->hasFile($img)) {
-                $imageName = $this->generateProductImageName($product, $img);
-                $product->$img = "products/{$imageName}";
-                dump($product->$img);
+//    public function saveImagesOld(Product $product)
+//    {
+//        dd($this->request->all());
+//        $images = Product::getImagesAttributesKeys();
+//
+//        foreach ($images as $img) {
+//            if ($this->request->hasFile($img)) {
+//                $imageName = $this->generateProductImageName($product, $img);
+//                $product->$img = "products/{$imageName}";
+//
 //                Storage::putFileAs(
 //                    "products",
 //                    $this->request->file($img),
 //                    $imageName
 //                );
-            //}
-        }
-        dd("end");
+//            }
+//        }
+//    }
+
+    /**
+     * @param Product $product
+     * @throws \Exception
+     */
+    public function saveImages(Product $product)
+    {
+        $this->updateOldImages();
+        $this->saveNewImages($product);
     }
 
     /**
@@ -167,13 +158,13 @@ class ProductService implements ProductServiceInterface
 
     /**
      * @param Product $product
-     * @param string $imageField
+     * @param $img
      * @return string
      */
-    private function generateProductImageName(Product $product, string $imageField)
+    private function generateProductImageName(Product $product, $img)
     {
         $productId = $product->id ?? DB::table("products")->max("id") + 1;
-        return "product_" . $productId . "_{$imageField}." . $this->request->file($imageField)->extension();
+        return "product_" . $productId . "_" . $img->getClientOriginalName();
     }
 
     /**
@@ -203,5 +194,40 @@ class ProductService implements ProductServiceInterface
         . TranslatorService::translate(Color::find($colorId)->name)
         . "_"
         . TranslatorService::translate(Size::find($sizeId)->name);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function updateOldImages(): void
+    {
+        ProductImage::whereNotIn("id", (array)@$this->request->oldImages)->delete();
+
+        foreach ((array)@$this->request->oldImages as $imgId) {
+            ProductImage::where("id", $imgId)->update([
+                "main"     => $this->request->oldImagesMain[$imgId] ?? 0,
+                "preview"  => $this->request->oldImagesPreview[$imgId] ?? 0,
+                "ordering" => $this->request->oldImagesOrdering[$imgId] ?? 100
+            ]);
+        }
+    }
+
+    /**
+     * @param Product $product
+     */
+    private function saveNewImages(Product $product): void
+    {
+        foreach ((array)@$this->request->newImages as $imgId => $img) {
+            $imageName = $this->generateProductImageName($product, $img);
+            Storage::putFileAs("products", $img, $imageName);
+
+            $product->images()->create([
+                'url'        => "products/{$imageName}",
+                'product_id' => $product->id,
+                'main'       => @$this->request->newImagesMain[$imgId] ?? 0,
+                'preview'    => @$this->request->newImagesPreview[$imgId] ?? 0,
+                'ordering'    => @$this->request->newImagesOrdering[$imgId] ?? 100,
+            ]);
+        }
     }
 }

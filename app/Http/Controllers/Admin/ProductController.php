@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
@@ -132,11 +133,11 @@ class ProductController extends Controller
      */
     public function update(EditProductRequest $request, $id)
     {
-        dump($request->all());
+//        dump($request->all());
         $product = Product::find($id);
 
         $product->fill($request->only($product->getFillable()));
-        $this->service->saveImages2($product);
+        $this->service->saveImages($product);
         $this->service->saveProperties($product);
 
         $product->save();
@@ -176,6 +177,9 @@ class ProductController extends Controller
 
     public function addNewImage()
     {
-        return view("admin.images.new-image")->render();
+        Session::put("newImageId", Session::get("newImageId") +1 ?? 1);
+        $imageId = Session::get("newImageId");
+
+        return view("admin.images.new-image", compact('imageId'))->render();
     }
 }
