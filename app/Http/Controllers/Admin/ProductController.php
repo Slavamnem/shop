@@ -182,4 +182,9 @@ class ProductController extends Controller
 
         return view("admin.images.new-image", compact('imageId'))->render();
     }
+
+    public function addNewCondition()
+    {
+
+    }
 }

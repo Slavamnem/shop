@@ -268,4 +268,86 @@ class LearnController extends Controller
         return "user-login: " . Auth::user()->login;
         //return 77;
     }
+
+    public function getPdo()
+    {
+        $host = "localhost";
+        $login = "root";
+        $password = "";
+        $dbName = "shop";
+        $charset = "utf8";
+
+        $dsn = "mysql:host=$host;dbname=$dbName;charset=$charset";
+        $opt = [
+            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        return new \PDO($dsn, $login, $password, $opt);
+    }
+
+    public function selectSql()
+    {
+        $pdo = $this->getPdo();
+
+        $sql = "SELECT DISTINCT url, main, preview, ordering, created_at FROM product_images";
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id 
+            FROM products 
+            ORDER BY base_price, quantity";
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id 
+            FROM products 
+            WHERE quantity >= 1
+            ORDER BY base_price, quantity";
+            //GROUP BY base_price";
+
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id, created_at
+            FROM products 
+            WHERE quantity >= 1
+            ORDER BY MONTH(created_at)";
+
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id 
+            FROM products 
+            WHERE quantity >= 1
+            AND base_price BETWEEN 150 AND 300";
+
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id 
+            FROM products 
+            WHERE quantity >= 1
+            AND base_price IN(150, 160, 270)";
+
+        $sql = "SELECT name, slug, base_price, quantity, category_id, status_id 
+            FROM products 
+            WHERE quantity >= 1
+            AND status_id IN (SELECT id FROM product_statuses WHERE product_statuses.name LIKE '%В наличии%')";
+
+        $sql = "SELECT name as ИМЯ, slug
+            FROM products";
+
+        $sql = "SELECT name, slug
+            FROM products
+            WHERE name LIKE '%X_L'";
+
+        $sql = "SELECT name, slug
+            FROM products
+            WHERE small_image IS NOT NULL";
+
+        $sql = "SELECT SUM(base_price) AS total_price, AVG(base_price) AS avarage_price
+            FROM products";
+
+        $sql = "SELECT status_id, SUM(base_price), SUM(quantity)
+            FROM products
+            GROUP BY status_id, base_price WITH ROLLUP
+            HAVING SUM(quantity) > 25";
+
+
+        $smtp = $pdo->prepare($sql);
+        $smtp->execute();
+
+        echo("<pre>");
+        print_r($smtp->fetchAll());
+        echo("</pre>");
+
+        //dump($smtp->fetchAll());
+    }
+
 }

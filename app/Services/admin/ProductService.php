@@ -226,7 +226,7 @@ class ProductService implements ProductServiceInterface
                 'product_id' => $product->id,
                 'main'       => @$this->request->newImagesMain[$imgId] ?? 0,
                 'preview'    => @$this->request->newImagesPreview[$imgId] ?? 0,
-                'ordering'    => @$this->request->newImagesOrdering[$imgId] ?? 100,
+                'ordering'   => @$this->request->newImagesOrdering[$imgId] ?? 100,
             ]);
         }
     }

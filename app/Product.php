@@ -18,12 +18,24 @@ class Product extends Model
         'quantity',
         'category_id',
         'description',
-        //'image',
-        //'small_image',
         'group_id',
         'status_id',
         'color_id',
         'size_id'
+    ];
+
+    private $fieldsTranslations = [
+        'id' => 'Id',
+        'name' => 'Имя',
+        'slug' => 'Слаг',
+        'base_price' => 'Цена',
+        'quantity' => 'Количество',
+        'category_id' => 'Категория',
+        'description' => 'Описание',
+        'group_id' => 'Группа',
+        'status_id' => 'Статус',
+        'color_id' => 'Цвет',
+        'size_id' => 'Размер',
     ];
 
     public function category()
@@ -73,5 +85,10 @@ class Product extends Model
             "colors" => Color::class,
             "sizes" => Size::class
         ];
+    }
+
+    public function getTranslatedFields()
+    {
+        return $this->fieldsTranslations;
     }
 }

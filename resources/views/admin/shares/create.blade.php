@@ -56,14 +56,25 @@
                                         <input id="inputText3" name="discount" type="number" class="form-control" value="{{ old('discount') }}">
                                     </div>
 
-                                    <select id="demo" multiple="multiple">
-                                        <option value="Javascript">Javascript</option>
-                                        <option value="Python">Python</option>
-                                        <option value="LISP">LISP</option>
-                                        <option value="C++">C++</option>
-                                        <option value="jQuery">jQuery</option>
-                                        <option value="Ruby">Ruby</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Условия</label>
+
+                                        <div id="new-conditions"></div>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button class="btn btn-success add-new-condition" type="button" data-type="and" data-token="{{ csrf_token() }}">Добавить условие 'И'</button>
+                                            <button class="btn btn-primary add-new-condition" type="button" data-type="or" data-token="{{ csrf_token() }}">Добавить условие 'ИЛИ'</button>
+                                        </div>
+                                        {{--<button class="btn btn-success add-new-condition" type="button" data-token="{{ csrf_token() }}">Добавить условие</button>--}}
+                                    </div>
+
+                                    {{--<select id="demo" multiple="multiple">--}}
+                                        {{--<option value="Javascript">Javascript</option>--}}
+                                        {{--<option value="Python">Python</option>--}}
+                                        {{--<option value="LISP">LISP</option>--}}
+                                        {{--<option value="C++">C++</option>--}}
+                                        {{--<option value="jQuery">jQuery</option>--}}
+                                        {{--<option value="Ruby">Ruby</option>--}}
+                                    {{--</select>--}}
 
                                 </div>
                             </div>
@@ -82,18 +93,5 @@
 @endsection
 
 @section("custom-js")
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css">
-    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#demo').multiselect();
-        });
-
-    </script>
-
-
-    <script src="{{ asset("public/admin/assets/js/products/main.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/js/shares/main.js") }}"></script>
 @endsection

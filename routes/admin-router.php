@@ -95,6 +95,10 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "ShareController@create")->name("admin-shares-create");
         Route::post("store", "ShareController@store")->name("admin-shares-store");
         Route::get("show/{id}", "ShareController@show")->name("admin-shares-show");
+
+
+        Route::any("addNewCondition", "ShareController@addNewCondition")->name("admin-shares-add-new-condition");
+        Route::any("addNewConditionValues", "ShareController@addNewConditionValues")->name("admin-shares-add-new-condition-values");
 //        Route::any("email", "OrderController@email")->name("admin-orders-email");
 //        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
     });
@@ -130,4 +134,6 @@ Route::group(['prefix' => "learn"], function(){
     Route::any("api3", "LearnController@api3");
     Route::any("f1", "LearnController@testF1");
     Route::any("f2", "LearnController@testF2");
+
+    Route::any("sql1", "LearnController@selectSql");
 });
