@@ -132,6 +132,21 @@ class ProductService implements ProductServiceInterface
         return response()->download($saver->saveToFile($data[0], "products.xml"));
     }
 
+    public function getConditionsFields()
+    {
+        $result = [];
+        foreach ((new Product())->getFieldsTranslations() as $field => $translation) {
+            $result["product-{$field}"] = $translation;
+        }
+
+        foreach (Property::all() as $property) {
+            $result["property-{$property->id}"] = $property->name;
+        }
+
+        return $result;
+        //return $this->fieldsTranslations;
+    }
+
     /**
      * @param Collection $newProducts
      * @param $group

@@ -56,7 +56,7 @@
                                         <input id="inputText3" name="discount" type="number" class="form-control" value="{{ old('discount') }}">
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group" style="border:2px solid grey; border-radius:10px; padding: 20px;">
                                         <label for="inputText3" class="col-form-label">Условия</label>
 
                                         <div id="new-conditions"></div>
@@ -67,14 +67,6 @@
                                         {{--<button class="btn btn-success add-new-condition" type="button" data-token="{{ csrf_token() }}">Добавить условие</button>--}}
                                     </div>
 
-                                    {{--<select id="demo" multiple="multiple">--}}
-                                        {{--<option value="Javascript">Javascript</option>--}}
-                                        {{--<option value="Python">Python</option>--}}
-                                        {{--<option value="LISP">LISP</option>--}}
-                                        {{--<option value="C++">C++</option>--}}
-                                        {{--<option value="jQuery">jQuery</option>--}}
-                                        {{--<option value="Ruby">Ruby</option>--}}
-                                    {{--</select>--}}
 
                                 </div>
                             </div>

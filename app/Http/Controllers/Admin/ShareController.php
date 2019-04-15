@@ -7,6 +7,7 @@ use App\Color;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Share;
 use App\Size;
 use Illuminate\Http\Request;
@@ -116,23 +117,24 @@ class ShareController extends Controller
         //
     }
 
-    public function addNewCondition()
+    public function addNewCondition(ProductServiceInterface $productService)
     {
-        $conditions = (new Product())->getTranslatedFields();
         $operations = ["=", "!=", "<", "<=", ">", ">=", "LIKE"];
+        $conditions = $productService->getConditionsFields();
         $type = $this->request->type;
+        $conditionId = $this->request->conditionId;
 
-        return view("admin.shares.new-condition", compact('conditions', 'operations', 'type'))->render();
+        return view("admin.shares.new-condition", compact('conditions', 'operations', 'type', 'conditionId'))->render();
     }
 
     public function addNewConditionValues()
     {
         $valuesHub = [
-            "category_id" => Category::all()->map(function($category){ return $category->name; }),
-            "group_id"    => ModelGroup::all()->map(function($group){ return $group->name; }),
-            "status_id"   => ProductStatus::all()->map(function($status){ return $status->name; }),
-            "color_id"    => Color::all()->map(function($color){ return $color->name; }),
-            "size_id"     => Size::all()->map(function($size){ return $size->name; }),
+            "product-category_id" => Category::all()->map(function($category){ return $category->name; }),
+            "product-group_id"    => ModelGroup::all()->map(function($group){ return $group->name; }),
+            "product-status_id"   => ProductStatus::all()->map(function($status){ return $status->name; }),
+            "product-color_id"    => Color::all()->map(function($color){ return $color->name; }),
+            "product-size_id"     => Size::all()->map(function($size){ return $size->name; }),
         ];
 
         $values = @$valuesHub[$this->request->field];

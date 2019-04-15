@@ -1,9 +1,11 @@
 <div class="form-group share-condition">
-    <button class="btn btn-warning" type="button">{{ $type }}</button>
-    <br><br>
+    @if($conditionId)
+        <button class="btn btn-warning delimiter new-condition-delimiter-{{$conditionId}}" type="button">{{ $type }}</button>
+        <br><br>
+    @endif
     <div class="row">
         <div class="col-md-4">
-            <select name="conditions[]" class="form-control condition">
+            <select name="conditions[]" class="form-control condition new-condition-{{$conditionId}}" data-id="{{$conditionId}}">
                 @forelse($conditions as $condition => $name)
                     <option value="{{ $condition }}">{{ $name }}</option>
                 @empty
@@ -11,14 +13,14 @@
             </select>
         </div>
         <div class="col-md-2">
-            <select name="operations[]" class="form-control">
+            <select name="operations[]" class="form-control new-operations-section-{{$conditionId}}">
                 @forelse($operations as $operation)
                     <option value="{{ $operation }}">{{ $operation }}</option>
                 @empty
                 @endforelse
             </select>
         </div>
-        <div class="col-md-4 values-section">
+        <div class="col-md-4 new-values-section-{{$conditionId}}">
             <input id="inputText3" name="conditions_values[]" type="text" class="form-control" value="">
         </div>
         <div class="col-md-1">

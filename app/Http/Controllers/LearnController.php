@@ -339,6 +339,34 @@ class LearnController extends Controller
             GROUP BY status_id, base_price WITH ROLLUP
             HAVING SUM(quantity) > 25";
 
+        $sql = "SELECT * FROM products 
+            WHERE created_at IS NOT NULL
+            ORDER BY created_at";
+
+        $sql = "SELECT MAX(base_price) FROM 
+            (
+            SELECT status_id, SUM(base_price) AS base_price, SUM(quantity)
+            FROM products
+            GROUP BY status_id
+            ) X";
+
+        $sql = "SELECT p.name, p.base_price, p.quantity, c.name as CAT_NAME
+        FROM products AS p, categories as c
+        WHERE p.category_id = c.id";
+
+        $sql = "SELECT client_id, SUM(sum) as Sum
+        FROM orders
+        GROUP BY client_id
+        HAVING SUM(sum) >= ALL(SELECT SUM(sum) as Sum
+        FROM orders
+        GROUP BY client_id)";
+
+        $sql = "SELECT 
+              CONCAT(clients.name, ' ', clients.last_name) AS CLIENT, 
+              orders.sum, 
+              (SELECT order_statuses.name FROM order_statuses WHERE order_statuses.id = orders.status_id) AS status
+          FROM clients RIGHT JOIN orders on clients.id = orders.client_id ORDER BY orders.sum DESC";
+
 
         $smtp = $pdo->prepare($sql);
         $smtp->execute();

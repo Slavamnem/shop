@@ -18,15 +18,19 @@ $( document ).ready(function() {
         });
     });
 
+    var conditionId = 0;
+
     $('.add-new-condition').on("click", function(){
         var type = $(this).data('type');
 
+        //alert(conditionId);
         $.ajax({
             url: "/admin/shares/addNewCondition",
             method: 'POST',
-            data: {type: type},
+            data: {type: type, conditionId: conditionId},
             success: function(res) {
                 $('#new-conditions').append(res);
+                conditionId++;
             },
             error: function(){
                 alert("error");
@@ -34,9 +38,18 @@ $( document ).ready(function() {
         });
     });
 
+    $(document).on('click', '.delimiter', function(){
+        if ($(this).html() == "or") {
+            $(this).html("and");
+        } else {
+            $(this).html("or");
+        }
+    });
+
     $(document).on('change', '.condition', function(){
         var field = $(this).val();
-        //alert(field);
+        var condition_id = $(this).data("id");
+        //alert(condition_id);
 
         $.ajax({
             url: "/admin/shares/addNewConditionValues",
@@ -48,7 +61,7 @@ $( document ).ready(function() {
                 // console.log(container.children());
                 // container.children(".values-section").html(res);
                 if (res) {
-                    $('.values-section').html(res);
+                    $('.new-values-section-' + condition_id).html(res);
                 }
             },
             error: function(){

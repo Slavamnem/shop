@@ -48,4 +48,9 @@ interface ProductServiceInterface
      * @return mixed
      */
     public function saveToFile(SaveDataToFileInterface $saver, $data);
+
+    /**
+     * @return mixed
+     */
+    public function getConditionsFields();
 }
