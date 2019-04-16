@@ -1,11 +1,13 @@
 <div class="form-group share-condition">
     @if($conditionId)
+        <input type="hidden" name="conditions_delimiters[]" value="{{ $type }}">
         <button class="btn btn-warning delimiter new-condition-delimiter-{{$conditionId}}" type="button">{{ $type }}</button>
         <br><br>
     @endif
     <div class="row">
         <div class="col-md-4">
             <select name="conditions[]" class="form-control condition new-condition-{{$conditionId}}" data-id="{{$conditionId}}">
+                <option value="">{{ "Выберите условие" }}</option>
                 @forelse($conditions as $condition => $name)
                     <option value="{{ $condition }}">{{ $name }}</option>
                 @empty

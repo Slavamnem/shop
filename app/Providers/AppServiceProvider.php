@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
+use App\Services\Admin\ShareService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -52,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
+        $this->app->bind(ShareServiceInterface::class, ShareService::class);
 
         $this->app->bind('OrderService', function ($app) {
             return new OrderService();

@@ -60,9 +60,9 @@ $( document ).ready(function() {
                 // var container = $(this).parents(".share-condition");
                 // console.log(container.children());
                 // container.children(".values-section").html(res);
-                if (res) {
+                //if (res) {
                     $('.new-values-section-' + condition_id).html(res);
-                }
+                //}
             },
             error: function(){
                 alert("error");

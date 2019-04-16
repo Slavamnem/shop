@@ -8,6 +8,7 @@ use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Share;
 use App\Size;
 use Illuminate\Http\Request;
@@ -29,14 +30,14 @@ class ShareController extends Controller
     private $request;
 
     /**
+     * ShareController constructor.
      * @param Request $request
-     * ProductController constructor.
-     * param ProductServiceInterface $service
+     * @param ShareServiceInterface $service
      */
-    public function __construct(Request $request)//ProductServiceInterface $service)
+    public function __construct(Request $request, ShareServiceInterface $service)
     {
-        //$this->service = $service;
         $this->request = $request;
+        $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
     /**
@@ -69,7 +70,15 @@ class ShareController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $share = new Share();
+
+        $this->service->saveConditions();
+        dd($request->all());
+
+        $share->fill($request->only($share->getFillable()));
+        $share->save();
+
+        return redirect()->route("admin-shares-edit", ['id' => $share->id]);
     }
 
     /**
@@ -130,6 +139,7 @@ class ShareController extends Controller
     public function addNewConditionValues()
     {
         $valuesHub = [
+            "product-id"          => Product::all()->map(function($product){ return $product->name . " (id: {$product->id})"; }),
             "product-category_id" => Category::all()->map(function($category){ return $category->name; }),
             "product-group_id"    => ModelGroup::all()->map(function($group){ return $group->name; }),
             "product-status_id"   => ProductStatus::all()->map(function($status){ return $status->name; }),
@@ -137,9 +147,11 @@ class ShareController extends Controller
             "product-size_id"     => Size::all()->map(function($size){ return $size->name; }),
         ];
 
-        $values = @$valuesHub[$this->request->field];
-        //$values = Category::all()->map(function($category){ return $category->name; });
+        $values = [];
+        if (isset($valuesHub[$this->request->field])) {
+            $values = $valuesHub[$this->request->field];
+        }
 
-        return $values ? view("admin.shares.new-condition-values", compact('values'))->render() : "";
+        return view("admin.shares.new-condition-values", compact('values'))->render();
     }
 }
