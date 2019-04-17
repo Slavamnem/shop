@@ -23,6 +23,13 @@ $( document ).ready(function() {
     $('.add-new-condition').on("click", function(){
         var type = $(this).data('type');
 
+        if (type == "or") {
+            $('.delimiter').html("ИЛИ");
+            $('.delimiter').val("or");
+        } else {
+            $('.delimiter').html("И");
+            $('.delimiter').val("and");
+        }
         //alert(conditionId);
         $.ajax({
             url: "/admin/shares/addNewCondition",
@@ -39,10 +46,14 @@ $( document ).ready(function() {
     });
 
     $(document).on('click', '.delimiter', function(){
-        if ($(this).html() == "or") {
-            $(this).html("and");
+        if ($(this).val() == "or") {
+            $('.delimiter-button').html("И");
+            $('.delimiter-button').val("and");
+            $('.delimiter').val("and");
         } else {
-            $(this).html("or");
+            $('.delimiter-button').html("ИЛИ");
+            $('.delimiter-button').val("and");
+            $('.delimiter').val("or");
         }
     });
 

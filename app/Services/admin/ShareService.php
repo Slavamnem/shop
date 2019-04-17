@@ -28,11 +28,11 @@ class ShareService implements ShareServiceInterface
         $conditionsData = [];
 
         foreach ($this->request->conditions as $num => $condition) {
-            $whereType = $num > 0 ? $this->request->conditions_delimiters[$num - 1] : "and";
+            $whereType = $this->request->conditions_delimiter;
             $conditionsData[][$whereType] = [
-                $condition,
-                $this->request->operations[$num],
-                $this->request->conditions_values[$num]
+                "field"     => $condition,
+                "operation" => $this->request->operations[$num],
+                "value"     => $this->request->conditions_values[$num]
             ];
         }
 
@@ -49,15 +49,42 @@ class ShareService implements ShareServiceInterface
 
         foreach ($conditionsData as $conditionsDataItem) {
             foreach ($conditionsDataItem as $key => $item) {
-                // TODO отчленить имена полей и свойств, для свойств отдельные подзапросы
-                if ($key == "and") {
-                    $query = $query->where($item[0], $item[1], $item[2]);
+                if ($this->isPropertyCondition($item)) {
+                    if ($item["operation"] == "!=") {
+                        $query = $query->whereDoesntHave("properties", function($q) use($item){
+                            $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
+                                    ->where("product_properties.value", $item["value"]);
+                        });
+                    } else {
+                        $query = $query->whereHas("properties", function($q) use($item){
+                            $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
+                                ->where("product_properties.value", $item["operation"], $item["value"]);
+                        });
+                    }
                 } else {
-                    $query = $query->orWhere($item[0], $item[1], $item[2]);
+                    if ($key == "and") {
+                        $query = $query->where($item["field"], $item["operation"], $item["value"]);
+                    } else {
+                        $query = $query->orWhere($item["field"], $item["operation"], $item["value"]);
+                    }
                 }
+
+                //whereHas("properties", function())
             }
         }
 
         dump($query->toSql());
+
+        dump($query->get()->pluck("name"));
+    }
+
+    private function isPropertyCondition($item)
+    {
+        return strpos($item["field"], "property-") !== false;
+    }
+
+    private function getPropertyConditionId($item)
+    {
+        return explode("-", $item["field"])[1];
     }
 }

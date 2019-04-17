@@ -136,7 +136,7 @@ class ProductService implements ProductServiceInterface
     {
         $result = [];
         foreach ((new Product())->getFieldsTranslations() as $field => $translation) {
-            $result["product-{$field}"] = $translation;
+            $result[$field] = $translation;
         }
 
         foreach (Property::all() as $property) {

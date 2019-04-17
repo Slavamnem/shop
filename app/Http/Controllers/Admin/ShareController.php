@@ -131,26 +131,40 @@ class ShareController extends Controller
         $operations = ["=", "!=", "<", "<=", ">", ">=", "LIKE"];
         $conditions = $productService->getConditionsFields();
         $type = $this->request->type;
+        $typeTranslation = $type == "or" ? "ИЛИ" : "И";
         $conditionId = $this->request->conditionId;
 
-        return view("admin.shares.new-condition", compact('conditions', 'operations', 'type', 'conditionId'))->render();
+        return view("admin.shares.new-condition", compact('conditions', 'operations', 'type', 'typeTranslation', 'conditionId'))->render();
     }
 
     public function addNewConditionValues()
     {
         $valuesHub = [
-            "product-id"          => Product::all()->map(function($product){ return $product->name . " (id: {$product->id})"; }),
-            "product-category_id" => Category::all()->map(function($category){ return $category->name; }),
-            "product-group_id"    => ModelGroup::all()->map(function($group){ return $group->name; }),
-            "product-status_id"   => ProductStatus::all()->map(function($status){ return $status->name; }),
-            "product-color_id"    => Color::all()->map(function($color){ return $color->name; }),
-            "product-size_id"     => Size::all()->map(function($size){ return $size->name; }),
+            "id"          => Product::all()->mapWithKeys(function($product){
+                return [$product->id => $product->name . " (id: {$product->id})"];
+            }),
+            "category_id" => Category::all()->mapWithKeys(function($category){
+                return [$category->id => $category->name];
+            }),
+            "group_id"    => ModelGroup::all()->mapWithKeys(function($group){
+                return [$group->id => $group->name];
+            }),
+            "status_id"   => ProductStatus::all()->mapWithKeys(function($status){
+                return [$status->id => $status->name];
+            }),
+            "color_id"    => Color::all()->mapWithKeys(function($color){
+                return [$color->id => $color->name];
+            }),
+            "size_id"     => Size::all()->mapWithKeys(function($size){
+                return [$size->id => $size->name];
+            }),
         ];
 
         $values = [];
         if (isset($valuesHub[$this->request->field])) {
             $values = $valuesHub[$this->request->field];
         }
+
 
         return view("admin.shares.new-condition-values", compact('values'))->render();
     }

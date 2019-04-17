@@ -1,7 +1,7 @@
 <div class="form-group share-condition">
     @if($conditionId)
-        <input type="hidden" name="conditions_delimiters[]" value="{{ $type }}">
-        <button class="btn btn-warning delimiter new-condition-delimiter-{{$conditionId}}" type="button">{{ $type }}</button>
+        <input type="hidden" class="delimiter" name="conditions_delimiter" value="{{ $type }}">
+        <button class="btn btn-warning delimiter-button new-condition-delimiter-{{$conditionId}}" type="button">{{ $typeTranslation }}</button>
         <br><br>
     @endif
     <div class="row">

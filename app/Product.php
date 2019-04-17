@@ -87,21 +87,6 @@ class Product extends Model
         ];
     }
 
-    public function getConditionsFields()
-    {
-        $result = [];
-        foreach ($this->fieldsTranslations as $field => $translation) {
-            $result["product-{$field}"] = $translation;
-        }
-
-        foreach (Property::all() as $property) {
-            $result["property-{$property->id}"] = $property->name;
-        }
-
-        return $result;
-        //return $this->fieldsTranslations;
-    }
-
     public function getFieldsTranslations()
     {
         return $this->fieldsTranslations;
