@@ -64,9 +64,17 @@
                                             <button class="btn btn-success add-new-condition" type="button" data-type="and" data-token="{{ csrf_token() }}">Добавить условие 'И'</button>
                                             <button class="btn btn-primary add-new-condition" type="button" data-type="or" data-token="{{ csrf_token() }}">Добавить условие 'ИЛИ'</button>
                                         </div>
-                                        {{--<button class="btn btn-success add-new-condition" type="button" data-token="{{ csrf_token() }}">Добавить условие</button>--}}
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Активна с:</label>
+                                        <input class="date form-control datepicker" name="active_from" type="text">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Активна до:</label>
+                                        <input class="date form-control datepicker" name="active_to" type="text">
+                                    </div>
 
                                 </div>
                             </div>
@@ -85,5 +93,17 @@
 @endsection
 
 @section("custom-js")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
     <script src="{{ asset("public/admin/assets/js/shares/main.js") }}"></script>
+    <script>
+        $(".datepicker").datepicker({
+            format: "yyyy-mm-dd",
+            weekStart: 0,
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true,
+            //rtl: true,
+            orientation: "auto"
+        });
+    </script>
 @endsection

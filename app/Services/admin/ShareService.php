@@ -4,6 +4,8 @@ namespace App\Services\Admin;
 
 use App\Product;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
+use App\Share;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ShareService implements ShareServiceInterface
@@ -19,11 +21,12 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
-     * @return mixed
+     * @param Share $share
+     * @return mixed|void
      */
-    public function saveConditions()
+    public function saveConditions(Share $share)
     {
-        dump("start");
+        //dump("start");
 
         $conditionsData = [];
 
@@ -36,11 +39,14 @@ class ShareService implements ShareServiceInterface
             ];
         }
 
-        dump($conditionsData);
+        $share->conditions = $conditionsData;
+        //$share->active_from = Carbon::now();
+        //$share->active_to = Carbon::now();
+        //dump($conditionsData);
 
-        $this->getAccordingProducts($conditionsData);
+        //$this->getAccordingProducts($conditionsData);
 
-        dump("end");
+        //dump("end");
     }
 
     private function getAccordingProducts($conditionsData)
@@ -69,7 +75,6 @@ class ShareService implements ShareServiceInterface
                     }
                 }
 
-                //whereHas("properties", function())
             }
         }
 

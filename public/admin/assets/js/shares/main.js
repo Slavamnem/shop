@@ -45,8 +45,8 @@ $( document ).ready(function() {
         });
     });
 
-    $(document).on('click', '.delimiter', function(){
-        if ($(this).val() == "or") {
+    $(document).on('click', '.delimiter-button', function(){
+        if ($(this).html() == "ИЛИ") {
             $('.delimiter-button').html("И");
             $('.delimiter-button').val("and");
             $('.delimiter').val("and");

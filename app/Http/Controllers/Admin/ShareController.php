@@ -72,10 +72,9 @@ class ShareController extends Controller
     {
         $share = new Share();
 
-        $this->service->saveConditions();
-        dd($request->all());
-
         $share->fill($request->only($share->getFillable()));
+        $this->service->saveConditions($share);
+        //dd($request->all());
         $share->save();
 
         return redirect()->route("admin-shares-edit", ['id' => $share->id]);
