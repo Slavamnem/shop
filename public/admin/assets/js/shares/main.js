@@ -18,8 +18,8 @@ $( document ).ready(function() {
         });
     });
 
-    var conditionId = 0;
-    var conditionsAmount = 0;
+    var conditionId= $("#conditions").data("amount");
+    var conditionsAmount = $("#conditions").data("amount");
 
     $('.add-new-condition').on("click", function(){
         var delimiterType = $(this).data('type');

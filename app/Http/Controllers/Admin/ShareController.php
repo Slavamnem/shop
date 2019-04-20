@@ -100,8 +100,7 @@ class ShareController extends Controller
     public function edit(ProductServiceInterface $productService, $id)
     {
         $share = Share::find($id);
-        //$data = $this->service->getNewConditionData();
-        //dump($share->conditions);
+
         $conditionsData = [];
         foreach ($share->conditions as $num => $condition) {
             array_push($conditionsData, [
@@ -116,7 +115,6 @@ class ShareController extends Controller
                 "currentValues"      => $this->service->getConditionValues($condition[array_keys($condition)[0]]["field"]),
                 "currentValue"       => $condition[array_keys($condition)[0]]["value"],
             ]);
-
         }
 
         return view("admin.shares.edit", compact("share", "conditionsData"));
@@ -125,13 +123,19 @@ class ShareController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        //dd($this->request->all());
+        $share = Share::find($id);
+
+        $share->fill($this->request->only($share->getFillable()));
+        $this->service->setConditions($share);
+        $share->save();
+
+        return redirect()->route("admin-shares-edit", ['id' => $share->id]);
     }
 
     /**

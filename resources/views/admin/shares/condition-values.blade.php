@@ -1,7 +1,7 @@
 @if($values)
     <select name="conditions_values[]" class="form-control condition">
         @forelse($values as $key => $value)
-            <option @if($currentValue == $key) {{ "selected" }} @endif value="{{ $key }}">{{ $value }}</option>
+            <option @if(isset($currentValue) and $currentValue == $key) {{ "selected" }} @endif value="{{ $key }}">{{ $value }}</option>
         @empty
         @endforelse
     </select>

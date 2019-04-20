@@ -61,7 +61,7 @@
                                     <div class="form-group" style="border:2px solid grey; border-radius:10px; padding: 20px;">
                                         <label for="inputText3" class="col-form-label">Условия</label>
 
-                                        <div id="conditions">
+                                        <div id="conditions" data-amount="{{ count($share->conditions) }}">
                                             @foreach($share->conditions as $num => $condition)
                                                 @include("admin/shares/condition", $conditionsData[$num])
                                             @endforeach
@@ -71,6 +71,16 @@
                                             <button class="btn btn-success add-new-condition" type="button" data-type="and" data-token="{{ csrf_token() }}">Добавить условие 'И'</button>
                                             <button class="btn btn-primary add-new-condition" type="button" data-type="or" data-token="{{ csrf_token() }}">Добавить условие 'ИЛИ'</button>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Активна с:</label>
+                                        <input class="date form-control datepicker" name="active_from" type="text" value="{{ $share->active_from }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Активна до:</label>
+                                        <input class="date form-control datepicker" name="active_to" type="text" value="{{ $share->active_to }}">
                                     </div>
 
                                 </div>
