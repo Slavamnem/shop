@@ -52,14 +52,14 @@
                                         <input id="inputText3" name="fix_price" type="number" class="form-control" value="{{ old('fix_price') }}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Скидка</label>
+                                        <label for="inputText3" class="col-form-label">Скидка %</label>
                                         <input id="inputText3" name="discount" type="number" class="form-control" value="{{ old('discount') }}">
                                     </div>
 
                                     <div class="form-group" style="border:2px solid grey; border-radius:10px; padding: 20px;">
                                         <label for="inputText3" class="col-form-label">Условия</label>
 
-                                        <div id="new-conditions"></div>
+                                        <div id="conditions"></div>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <button class="btn btn-success add-new-condition" type="button" data-type="and" data-token="{{ csrf_token() }}">Добавить условие 'И'</button>
                                             <button class="btn btn-primary add-new-condition" type="button" data-type="or" data-token="{{ csrf_token() }}">Добавить условие 'ИЛИ'</button>

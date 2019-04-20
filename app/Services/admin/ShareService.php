@@ -2,9 +2,15 @@
 
 namespace App\Services\Admin;
 
+use App\Category;
+use App\Color;
+use App\ModelGroup;
 use App\Product;
+use App\ProductStatus;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Share;
+use App\Size;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -14,23 +20,89 @@ class ShareService implements ShareServiceInterface
      * @var
      */
     private $request;
+    /**
+     * @var
+     */
+    private $productService;
+    /**
+     * @var array
+     */
+    private $conditionsOperations = ["=", "!=", "<", "<=", ">", ">=", "LIKE"];
 
-    public function __construct(Request $request)
+    /**
+     * ShareService constructor.
+     * @param Request $request
+     * @param ProductServiceInterface $productService
+     */
+    public function __construct(Request $request, ProductServiceInterface $productService)
     {
         $this->request = $request;
+        $this->productService = $productService;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConditionsOperations()
+    {
+        return $this->conditionsOperations;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNewConditionData()
+    {
+        return [
+            "conditions"         => $this->productService->getConditionsFields(),
+            "operations"         => $this->conditionsOperations,
+            "delimiterType"      => $this->request->delimiterType,
+            "delimiterTypeTrans" => $this->request->delimiterType == "or" ? "ИЛИ" : "И",
+            "conditionId"        => $this->request->conditionId,
+            "conditionsAmount"   => $this->request->conditionsAmount
+        ];
+    }
+
+    /**
+     * @param string $conditionKey
+     * @return array
+     */
+    public function getConditionValues($conditionKey)
+    {
+        $valuesHub = [
+            "id" => Product::all()->mapWithKeys(function($product){
+                return [$product->id => $product->name . " (id: {$product->id})"];
+            }),
+            "category_id" => Category::all()->mapWithKeys(function($category){
+                return [$category->id => $category->name];
+            }),
+            "group_id" => ModelGroup::all()->mapWithKeys(function($group){
+                return [$group->id => $group->name];
+            }),
+            "status_id" => ProductStatus::all()->mapWithKeys(function($status){
+                return [$status->id => $status->name];
+            }),
+            "color_id" => Color::all()->mapWithKeys(function($color){
+                return [$color->id => $color->name];
+            }),
+            "size_id" => Size::all()->mapWithKeys(function($size){
+                return [$size->id => $size->name];
+            }),
+        ];
+
+        $response = array_key_exists($conditionKey, $valuesHub) ? $valuesHub[$conditionKey] : [];
+        return $response;
     }
 
     /**
      * @param Share $share
      * @return mixed|void
      */
-    public function saveConditions(Share $share)
+    public function setConditions(Share $share)
     {
-        //dump("start");
-
         $conditionsData = [];
 
-        foreach ($this->request->conditions as $num => $condition) {
+        foreach ($this->conditionsGenerator() as $num => $condition) {
             $whereType = $this->request->conditions_delimiter;
             $conditionsData[][$whereType] = [
                 "field"     => $condition,
@@ -40,16 +112,35 @@ class ShareService implements ShareServiceInterface
         }
 
         $share->conditions = $conditionsData;
-        //$share->active_from = Carbon::now();
-        //$share->active_to = Carbon::now();
         //dump($conditionsData);
-
         //$this->getAccordingProducts($conditionsData);
-
-        //dump("end");
     }
 
-    private function getAccordingProducts($conditionsData)
+    /**
+     * @return \Generator
+     */
+    private function conditionsGenerator()
+    {
+        if (!empty($this->request->conditions)) {
+            foreach ($this->request->conditions as $num => $condition) {
+                if ($this->isRealConditions($condition, $num)) yield $num => $condition;
+            }
+        }
+    }
+
+    /**
+     * @param $condition
+     * @param $num
+     * @return bool
+     */
+    private function isRealConditions($condition, $num)
+    {
+        return (!empty($condition) and !empty($this->request->conditions_values[$num]));
+    }
+
+
+    // test
+    private function getAccordingProducts($conditionsData) //test function
     {
         $query = Product::query();
 

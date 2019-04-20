@@ -98,7 +98,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
 
         Route::any("addNewCondition", "ShareController@addNewCondition")->name("admin-shares-add-new-condition");
-        Route::any("addNewConditionValues", "ShareController@addNewConditionValues")->name("admin-shares-add-new-condition-values");
+        Route::any("loadConditionValues", "ShareController@loadConditionValues")->name("admin-shares-add-new-condition-values");
 //        Route::any("email", "OrderController@email")->name("admin-orders-email");
 //        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
     });

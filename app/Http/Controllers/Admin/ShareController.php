@@ -73,8 +73,7 @@ class ShareController extends Controller
         $share = new Share();
 
         $share->fill($request->only($share->getFillable()));
-        $this->service->saveConditions($share);
-        //dd($request->all());
+        $this->service->setConditions($share); //dd($request->all());
         $share->save();
 
         return redirect()->route("admin-shares-edit", ['id' => $share->id]);
@@ -95,11 +94,32 @@ class ShareController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @param  ProductServiceInterface $productService
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ProductServiceInterface $productService, $id)
     {
-        //
+        $share = Share::find($id);
+        //$data = $this->service->getNewConditionData();
+        //dump($share->conditions);
+        $conditionsData = [];
+        foreach ($share->conditions as $num => $condition) {
+            array_push($conditionsData, [
+                "conditions"         => $productService->getConditionsFields(),
+                "operations"         => $this->service->getConditionsOperations(),
+                "delimiterType"      => array_keys($condition)[0],
+                "delimiterTypeTrans" => array_keys($condition)[0] == "or" ? "ИЛИ" : "И",
+                "conditionId"        => $num,
+                "conditionsAmount"   => $num,
+                "currentCondition"   => $condition[array_keys($condition)[0]]["field"],
+                "currentOperation"   => $condition[array_keys($condition)[0]]["operation"],
+                "currentValues"      => $this->service->getConditionValues($condition[array_keys($condition)[0]]["field"]),
+                "currentValue"       => $condition[array_keys($condition)[0]]["value"],
+            ]);
+
+        }
+
+        return view("admin.shares.edit", compact("share", "conditionsData"));
     }
 
     /**
@@ -115,56 +135,29 @@ class ShareController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+        $share = Share::find($id);
+        $share->delete();
+
+        return redirect()->route("admin-shares");
     }
 
-    public function addNewCondition(ProductServiceInterface $productService)
+    public function addNewCondition()
     {
-        $operations = ["=", "!=", "<", "<=", ">", ">=", "LIKE"];
-        $conditions = $productService->getConditionsFields();
-        $type = $this->request->type;
-        $typeTranslation = $type == "or" ? "ИЛИ" : "И";
-        $conditionId = $this->request->conditionId;
+        $data = $this->service->getNewConditionData();
 
-        return view("admin.shares.new-condition", compact('conditions', 'operations', 'type', 'typeTranslation', 'conditionId'))->render();
+        return view("admin.shares.condition", $data)->render();
     }
 
-    public function addNewConditionValues()
+    public function loadConditionValues()
     {
-        $valuesHub = [
-            "id"          => Product::all()->mapWithKeys(function($product){
-                return [$product->id => $product->name . " (id: {$product->id})"];
-            }),
-            "category_id" => Category::all()->mapWithKeys(function($category){
-                return [$category->id => $category->name];
-            }),
-            "group_id"    => ModelGroup::all()->mapWithKeys(function($group){
-                return [$group->id => $group->name];
-            }),
-            "status_id"   => ProductStatus::all()->mapWithKeys(function($status){
-                return [$status->id => $status->name];
-            }),
-            "color_id"    => Color::all()->mapWithKeys(function($color){
-                return [$color->id => $color->name];
-            }),
-            "size_id"     => Size::all()->mapWithKeys(function($size){
-                return [$size->id => $size->name];
-            }),
-        ];
+        $values = $this->service->getConditionValues($this->request->field);
 
-        $values = [];
-        if (isset($valuesHub[$this->request->field])) {
-            $values = $valuesHub[$this->request->field];
-        }
-
-
-        return view("admin.shares.new-condition-values", compact('values'))->render();
+        return view("admin.shares.condition-values", compact('values'))->render();
     }
 }
