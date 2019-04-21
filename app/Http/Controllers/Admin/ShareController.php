@@ -87,35 +87,22 @@ class ShareController extends Controller
      */
     public function show($id)
     {
-        //
+        $share = Share::find($id);
+        $conditionsData = $this->service->getOldConditionsData($share);
+
+        return view("admin.shares.show", compact("share", "conditionsData"));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @param  ProductServiceInterface $productService
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductServiceInterface $productService, $id)
+    public function edit($id)
     {
         $share = Share::find($id);
-
-        $conditionsData = [];
-        foreach ($share->conditions as $num => $condition) {
-            array_push($conditionsData, [
-                "conditions"         => $productService->getConditionsFields(),
-                "operations"         => $this->service->getConditionsOperations(),
-                "delimiterType"      => array_keys($condition)[0],
-                "delimiterTypeTrans" => array_keys($condition)[0] == "or" ? "ИЛИ" : "И",
-                "conditionId"        => $num,
-                "conditionsAmount"   => $num,
-                "currentCondition"   => $condition[array_keys($condition)[0]]["field"],
-                "currentOperation"   => $condition[array_keys($condition)[0]]["operation"],
-                "currentValues"      => $this->service->getConditionValues($condition[array_keys($condition)[0]]["field"]),
-                "currentValue"       => $condition[array_keys($condition)[0]]["value"],
-            ]);
-        }
+        $conditionsData = $this->service->getOldConditionsData($share);
 
         return view("admin.shares.edit", compact("share", "conditionsData"));
     }
@@ -128,7 +115,6 @@ class ShareController extends Controller
      */
     public function update($id)
     {
-        //dd($this->request->all());
         $share = Share::find($id);
 
         $share->fill($this->request->only($share->getFillable()));

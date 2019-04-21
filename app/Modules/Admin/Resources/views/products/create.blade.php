@@ -27,12 +27,6 @@
                         <li class="nav-item">
                             <a class="nav-link" id="tab-outline-three" data-toggle="tab" href="#outline-three" role="tab" aria-controls="contact" aria-selected="false">Картинки</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-outline-four" data-toggle="tab" href="#outline-four" role="tab" aria-controls="profile" aria-selected="false">Доп. Свойства</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-outline-five" data-toggle="tab" href="#outline-five" role="tab" aria-controls="contact" aria-selected="false">Демо</a>
-                        </li>
                     </ul>
 
                     <div class="tab-content" id="myTabContent2">
@@ -172,52 +166,27 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
-                            <table>
-                                <tr>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <h3>Фото</h3>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <h3>Основное</h3>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <h3>Превью</h3>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <h3>Сортировка</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </tr>
-                                <div id="new-images"></div>
-                            </table>
-                            <button class="btn btn-success add-new-image" type="button" data-token="{{ csrf_token() }}">Добавить изображение</button>
-
-                        </div>
-
-                        <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h3>Название</h3>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h3>Значение</h3>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <h3>Сортировка</h3>
-                                    </div>
-                                </div>
+                            <h4>Основное изображение</h4>
+                            <div class="custom-file mb-3">
+                                <input type="file" name="image" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Загрузить</label>
                             </div>
-                            <div id="new-properties"></div>
-                            <button class="btn btn-success add-new-property" type="button" data-token="{{ csrf_token() }}">Добавить свойство</button>
+                            @if($errors->has("image"))
+                                <span class="help-block" style="color:red">
+                                     <strong>{{ $errors->first('image') }}</strong>
+                                </span>
+                            @endif
+                            <h4>Маленькое изображение</h4>
+                            <div class="custom-file mb-3">
+                                <input type="file" name="small_image" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Загрузить</label>
+                            </div>
+                            @if($errors->has("small_image"))
+                                <span class="help-block" style="color:red">
+                                    <strong>{{ $errors->first('small_image') }}</strong>
+                                </span>
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="outline-five" role="tabpanel" aria-labelledby="tab-outline-five">
-                            В разработке
-                        </div>
-
                     </div>
                 </div>
 

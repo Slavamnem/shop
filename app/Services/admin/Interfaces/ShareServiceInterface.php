@@ -12,6 +12,12 @@ interface ShareServiceInterface
     public function getConditionsOperations();
 
     /**
+     * @param $share
+     * @return array
+     */
+    public function getOldConditionsData($share);
+
+    /**
      * @return array
      */
     public function getNewConditionData();

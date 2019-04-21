@@ -147,6 +147,7 @@
                                         </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="tab-pane fade" id="outline-two" role="tabpanel" aria-labelledby="tab-outline-two">
                             <form>
@@ -157,6 +158,26 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
+                            {{--<h4>Основное изображение</h4>--}}
+                            {{--<div class="custom-file mb-3">--}}
+                                {{--<input type="file" name="image" class="custom-file-input" id="customFile">--}}
+                                {{--<label class="custom-file-label" for="customFile">Загрузить</label>--}}
+                            {{--</div>--}}
+                            {{--@if($product->image)--}}
+                                {{--<div class="card-body text-center">--}}
+                                    {{--<img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid product-image">--}}
+                                {{--</div>--}}
+                            {{--@endif--}}
+                            {{--<h4>Маленькое изображение</h4>--}}
+                            {{--<div class="custom-file mb-3">--}}
+                                {{--<input type="file" name="small_image" class="custom-file-input" id="customFile">--}}
+                                {{--<label class="custom-file-label" for="customFile">Загрузить</label>--}}
+                            {{--</div>--}}
+                            {{--@if($product->small_image)--}}
+                                {{--<div class="card-body text-center">--}}
+                                    {{--<img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid product-image">--}}
+                                {{--</div>--}}
+                            {{--@endif--}}
 
                             <table>
                                 <tr>

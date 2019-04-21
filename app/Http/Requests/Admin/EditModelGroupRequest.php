@@ -24,7 +24,8 @@ class EditModelGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'        => 'required',
+            'category_id' => 'required|exists:categories,id',
         ];
     }
 }

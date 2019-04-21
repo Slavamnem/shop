@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Color;
+use App\Http\Requests\Admin\CreateModelGroupRequest;
+use App\Http\Requests\Admin\EditModelGroupRequest;
 use App\ModelGroup;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
@@ -50,11 +52,11 @@ class ModelGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateModelGroupRequest $request
      * @param  ProductService $productService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, ProductService $productService)
+    public function store(CreateModelGroupRequest $request, ProductService $productService)
     {
         $group = new ModelGroup();
 
@@ -74,7 +76,7 @@ class ModelGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) // TODO
+    public function show($id)
     {
         $group = ModelGroup::find($id);
         $categories = Category::all();
@@ -88,7 +90,7 @@ class ModelGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) // TODO
+    public function edit($id)
     {
         $group = ModelGroup::find($id);
         $categories = Category::all();
@@ -99,11 +101,11 @@ class ModelGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditModelGroupRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditModelGroupRequest $request, $id)
     {
         $group = ModelGroup::find($id);
 
@@ -115,10 +117,9 @@ class ModelGroupController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {

@@ -14,7 +14,6 @@ class ModulesServiceProvider extends ServiceProvider
     public function boot()
     {
 
-
         //получаем список модулей, которые надо подгрузить
         $modules = config("module.modules");
         if ($modules) {
@@ -23,10 +22,10 @@ class ModulesServiceProvider extends ServiceProvider
                 if (file_exists('./app/Modules/'.$module.'/Routes/routes.php')) {
                     $this->loadRoutesFrom('./app/Modules/'.$module.'/Routes/routes.php');
                 }
-//                //Загружаем View//view('Test::admin')
-//                if (is_dir(__DIR__.'/'.$module.'/Views')) {
-//                    $this->loadViewsFrom(__DIR__.'/'.$module.'/Views', $module);
-//                }
+                //Загружаем View//view('Test::admin')
+                if (is_dir('./app/Modules/'.$module.'/Resources')) {
+                    $this->loadViewsFrom('./app/Modules/'.$module.'/Resources', $module);
+                }
 //                //Подгружаем миграции
 //                if (is_dir(__DIR__.'/'.$module.'/Migration')) {
 //                    $this->loadMigrationsFrom(__DIR__.'/'.$module.'/Migration');

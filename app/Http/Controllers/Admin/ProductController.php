@@ -82,18 +82,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CreateProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateProductRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(CreateProductRequest $request)
     {
         $product = new Product();
 
         $product->fill($request->only($product->getFillable()));
-        $this->service->saveImages($product);
         $product->save();
+        $this->service->saveImages($product);
 
         return redirect()->route("admin-products-edit", ['id' => $product->id]);
     }
@@ -125,15 +124,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  EditProductRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param EditProductRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function update(EditProductRequest $request, $id)
     {
-//        dump($request->all());
         $product = Product::find($id);
 
         $product->fill($request->only($product->getFillable()));
@@ -146,10 +143,9 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {

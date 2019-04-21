@@ -49,6 +49,31 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
+     * @param $share
+     * @return array
+     */
+    public function getOldConditionsData($share)
+    {
+        $conditionsData = [];
+        foreach ((array)$share->conditions as $num => $condition) {
+            array_push($conditionsData, [
+                "conditions"         => $this->productService->getConditionsFields(),
+                "operations"         => $this->getConditionsOperations(),
+                "delimiterType"      => array_keys($condition)[0],
+                "delimiterTypeTrans" => array_keys($condition)[0] == "or" ? "ИЛИ" : "И",
+                "conditionId"        => $num,
+                "conditionsAmount"   => $num,
+                "currentCondition"   => $condition[array_keys($condition)[0]]["field"],
+                "currentOperation"   => $condition[array_keys($condition)[0]]["operation"],
+                "currentValues"      => $this->getConditionValues($condition[array_keys($condition)[0]]["field"]),
+                "currentValue"       => $condition[array_keys($condition)[0]]["value"],
+            ]);
+        }
+
+        return $conditionsData;
+    }
+
+    /**
      * @return array
      */
     public function getNewConditionData()
