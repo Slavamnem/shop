@@ -41,10 +41,20 @@
                                         <label for="inputText3" class="col-form-label">Сумма заказа</label>
                                         <input id="inputText3" name="sum" type="text" class="form-control" value="{{ $order->sum }}">
                                     </div>
+                                    @if($errors->has("sum"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('sum') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Телефон клиента</label>
                                         <input id="inputText3" name="phone" type="text" class="form-control" value="{{ $order->phone }}">
                                     </div>
+                                    @if($errors->has("phone"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('phone') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта клиента</label>
                                         <input id="inputText3" name="email" type="text" class="form-control" value="{{ $order->email }}">

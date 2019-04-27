@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('public/admin/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link href="{{ asset('public/admin/assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/libs/css/style.css") }} ">
+    <link rel="stylesheet" href=" {{ asset("public/admin/assets/css/main.css") }} ">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/fonts/fontawesome/css/fontawesome-all.css") }}">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/charts/chartist-bundle/chartist.css") }}">
     <link rel="stylesheet" href=" {{ asset("public/admin/assets/vendor/charts/morris-bundle/morris.css") }}">
@@ -245,6 +246,10 @@
 
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "orders"){ {{ "active" }} } @endif" href="{{ route("admin-orders") }}"><i class="fas fa-fw fa-table"></i>Заказы</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Склад</a>
                             </li>
 
                             <li class="nav-divider">

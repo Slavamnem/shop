@@ -4,3 +4,21 @@
     /*border: 15px solid grey;*/
     /*border-radius: 30px;*/
 }
+
+.stock-image{
+    max-width:400px!important;
+    max-height:400px!important;
+    border: 15px solid grey;
+    border-radius: 30px;
+}
+.stock-cat-delimiter{
+    border:5px solid black;
+}
+
+.stock-main-block{
+    background-color: #eacf7d;
+}
+
+.stock-quantity{
+    max-width: 50px;
+}

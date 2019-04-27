@@ -51,18 +51,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        $novaPoshta = new NovaPoshta();
-//
-//        dd($novaPoshta->getCities([
-//            "Language" => "ru",
-//            "Page" => 1,
-//            "Warehouse" => true
-//        ])->data);
-//
-//        dd($novaPoshta->getWarehouses([
-//            "CityName" => "Черкаси",
-//            "Language" => "ru"
-//        ])->data);
+        /*$novaPoshta = new NovaPoshta();
+
+        dd($novaPoshta->getCities([
+            "Language" => "ru",
+            "Page" => 1,
+            "Warehouse" => true
+        ])->data);
+
+        dd($novaPoshta->getWarehouses([
+            "CityName" => "Черкаси",
+            "Language" => "ru"
+        ])->data);*/
 
         $products = Product::with(['color', 'size', 'category'])->paginate(10);
 

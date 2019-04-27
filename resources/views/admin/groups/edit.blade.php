@@ -32,6 +32,11 @@
                                         <label for="inputText3" class="col-form-label">Название группы товаров</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $group->name }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
 
                                     <h4>Категория</h4>
                                     <div class="form-group">

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateModelGroupRequest extends FormRequest
+class EditShareRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,9 @@ class CreateModelGroupRequest extends FormRequest
     {
         return [
             'name'        => 'required',
-            'category_id' => 'required|exists:categories,id',
+            'slug'        => 'required',
+            'active_from' => 'date|required',
+            'active_to'   => 'date|required'
         ];
     }
 }

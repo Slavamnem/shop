@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DeliveryType;
+use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
@@ -101,11 +102,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditOrderRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditOrderRequest $request, $id)
     {
         $order = Order::find($id);
 

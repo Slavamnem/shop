@@ -162,8 +162,6 @@ class ProductService implements ProductServiceInterface
             'quantity'    => 0,
             'category_id' => $group->category_id,
             'description' => '',
-            'image'       => '',
-            'small_image' => '',
             'group_id'    => $group->id,
             'status_id'   => ProductStatusEnum::SOON_AVAILABLE,
             'color_id'    => $colorId,

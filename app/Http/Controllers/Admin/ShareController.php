@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Color;
+use App\Http\Requests\Admin\CreateShareRequest;
+use App\Http\Requests\Admin\EditShareRequest;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
@@ -65,10 +67,10 @@ class ShareController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateShareRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateShareRequest $request)
     {
         $share = new Share();
 
@@ -110,14 +112,15 @@ class ShareController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param EditShareRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(EditShareRequest $request, $id)
     {
         $share = Share::find($id);
 
-        $share->fill($this->request->only($share->getFillable()));
+        $share->fill($request->only($share->getFillable()));
         $this->service->setConditions($share);
         $share->save();
 

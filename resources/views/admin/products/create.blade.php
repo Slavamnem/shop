@@ -162,7 +162,7 @@
                             <form>
                                 <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Описание товара</label>
-                                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ old('description') }}</textarea>
                                 </div>
                                 @if($errors->has("description"))
                                     <span class="help-block" style="color:red">

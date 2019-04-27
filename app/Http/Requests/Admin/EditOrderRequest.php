@@ -13,7 +13,7 @@ class EditOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class EditOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'sum'   => 'required|numeric',
+            'phone' => 'required',
+            'email' => 'email'
         ];
     }
 }

@@ -103,6 +103,19 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 //        Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
     });
 
+    Route::group(['prefix' => "stock"], function(){
+        Route::get("", "StockController@index")->name("admin-stock");
+//        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
+//        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
+//        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");
+//        Route::get("create", "ProductController@create")->name("admin-products-create");
+//        Route::post("store", "ProductController@store")->name("admin-products-store");
+//        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
+//        Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
+//        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
+//        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
+    });
+
     Route::group(['prefix' => "email"], function() {
         Route::any("new", "EmailController@newEmail")->name("admin-new-email");
         Route::post("send-email", "EmailController@sendEmail")->name("admin-send-email");

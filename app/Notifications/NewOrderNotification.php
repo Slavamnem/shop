@@ -44,14 +44,13 @@ class NewOrderNotification extends Notification
         //$file = Storage::get("products/product_2_image.jpeg");
         //dump($file);
         //$content .= $file;
-
         return TelegramMessage::create()
             ->to(273791920)  //OrderBot (only me)
             //->to(-1001455732336) //Заказы MilanShop
             //->to(-217503824) //Бизнес конференция
             ->content($content)
             //->file(storage_path("app/products/product_2_image.jpeg"), 'photo')
-            ->button('Download PDF', $this->link);
+            ->button('Открыть заказ', $this->link);
     }
 
     /**

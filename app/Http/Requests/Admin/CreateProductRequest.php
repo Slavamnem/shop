@@ -32,8 +32,6 @@ class CreateProductRequest extends FormRequest
             'group_id'    => 'required|exists:model_groups,id',
             'color_id'    => 'required|exists:colors,id',
             'size_id'     => 'required|exists:sizes,id',
-            //'image'       => 'required|image',
-            //'small_image' => 'image'
         ]; //TODO ordering
     }
 }
