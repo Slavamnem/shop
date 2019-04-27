@@ -119,22 +119,46 @@
             new Chartist.Line('.ct-chart-scatter', data, options, responsiveOptions);
         }
 
+        // custom orders stats
+        var profit = null;
+        var labels = null;
+
+        $.ajax({
+            url: "/admin/stats/orders_stats",
+            method: 'POST',
+            async: false,
+            success: function(res) {
+                console.log(res);
+                //res = jQuery.parseJSON(res);
+                //labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];//res;
+                profit = res['profit'];
+                labels = res['labels'];
+                //alert(typeof labels);
+                //alert(res);
+                //alert(res[0]);
+                //$('#new-properties').append(res);
+            },
+            error: function(){
+                alert("error");
+            },
+        });
+
 
         if ($('.ct-chart-area').length) {
             new Chartist.Line('.ct-chart-area', {
-                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    labels: labels,
                     series: [
-                        [5, 9, 7, 8, 5, 3, 5, 4, 10, 4]
+                        profit
                     ]
                 },
-
 
                 {
                     low: 0,
                     showArea: true,
-                    
+
                 });
         }
+        //
 
 
         if ($('.ct-chart-polar').length) {

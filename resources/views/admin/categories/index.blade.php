@@ -64,11 +64,11 @@
                                         <td>{{ $category->slug }}</td>
                                         <td>{{ $category->ordering }}</td>
                                         <td>
-                                            <a href="{{ route("admin-categories-edit", ['id' => $category->id]) }}">
-                                                <img src="{{ asset("public/admin/assets/images/pencil.png") }}" alt="" style="max-width:20px; max-height:20px">
+                                            <a href="{{ route("admin-categories-edit", ['id' => $category->id]) }}" class="btn btn-sm btn-outline-light">
+                                                Edit
                                             </a>
-                                            <a href="{{ route("admin-categories-delete", ['id' => $category->id]) }}">
-                                                <img src="{{ asset("public/admin/assets/images/trash.jpg") }}" alt="" style="max-width:20px; max-height:20px">
+                                            <a href="{{ route("admin-categories-delete", ['id' => $category->id]) }}" class="btn btn-sm btn-outline-light">
+                                                <i class="far fa-trash-alt"></i>
                                             </a>
                                         </td>
                                     </tr>

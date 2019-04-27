@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
-class StockController extends Controller
+class StatisticController extends Controller
 {
-    const MENU_ITEM_NAME = "stock";
+    const MENU_ITEM_NAME = "stats";
 
     /**
      * @var Request
@@ -44,20 +44,33 @@ class StockController extends Controller
      */
     public function index()
     {
+//        $orders = Order::all();
+//        foreach ($orders as $order){
+//            dump($order->created_at->month);
+//        }
         $categories = Category::all();
 
-        return view("admin.stock.index", compact('categories'));
+        return view("admin.stats.index", compact('categories'));
     }
 
-    /**
-     *
-     */
-    public function changeQuantity()
+    public function getOrdersStats()
     {
-        if ($this->request->has("productId") and $this->request->has("quantity")) {
-            Product::query()
-                ->where("id", $this->request->input("productId"))
-                ->update(['quantity' => $this->request->input("quantity")]);
+        $orders = Order::all();
+
+        $profit = range(1, 12);
+        foreach ($orders as $order) {
+            $profit[$order->created_at->month - 1] += $order->sum;
         }
+
+        $data = [
+            "profit" => $profit,
+            'labels' => [
+                "Январь", "Февраль", "Март", "Апрель",
+                "Май", "Июнь", "Июль", "Август",
+                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+            ]
+        ];
+
+        return response()->json($data);
     }
 }

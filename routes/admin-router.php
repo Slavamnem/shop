@@ -105,6 +105,21 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
     Route::group(['prefix' => "stock"], function(){
         Route::get("", "StockController@index")->name("admin-stock");
+        Route::post("change_quantity", "StockController@changeQuantity")->name("admin-stock-change-quantity");
+//        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
+//        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
+//        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");
+//        Route::get("create", "ProductController@create")->name("admin-products-create");
+//        Route::post("store", "ProductController@store")->name("admin-products-store");
+//        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
+//        Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
+//        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
+//        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
+    });
+
+    Route::group(['prefix' => "stats"], function(){
+        Route::get("", "StatisticController@index")->name("admin-stats");
+        Route::post("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
 //        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
 //        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
 //        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");

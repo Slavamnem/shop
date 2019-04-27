@@ -206,6 +206,10 @@
                             </li>
 
                             <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stats"){ {{ "active" }} } @endif" href="{{ route("admin-stats") }}"><i class="fas fa-fw fa-table"></i>Статистика</a>
+                            </li>
+
+                            <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "categories"){ {{ "active" }} } @endif" href="{{ route("admin-categories") }}"><i class="fas fa-fw fa-table"></i>Категории</a>
                             </li>
 
