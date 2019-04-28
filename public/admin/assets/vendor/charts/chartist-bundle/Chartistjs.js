@@ -130,13 +130,9 @@
             success: function(res) {
                 console.log(res);
                 //res = jQuery.parseJSON(res);
-                //labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];//res;
                 profit = res['profit'];
                 labels = res['labels'];
-                //alert(typeof labels);
                 //alert(res);
-                //alert(res[0]);
-                //$('#new-properties').append(res);
             },
             error: function(){
                 alert("error");
@@ -151,14 +147,58 @@
                         profit
                     ]
                 },
-
                 {
                     low: 0,
                     showArea: true,
-
+                    axisY: {
+                        offset: 80,
+                        labelInterpolationFnc: function(value) {
+                            return value + ' грн'
+                        },
+                        scaleMinSpace: 10
+                    }
                 });
         }
-        //
+
+        var values = null;
+        //var labels = null;
+
+        $.ajax({
+            url: "/admin/stats/orders_payment_types_stats",
+            method: 'POST',
+            async: false,
+            success: function(res) {
+                console.log(res);
+                //res = jQuery.parseJSON(res);
+                values = res['values'];
+                labels = res['labels'];
+                //console.log(values);
+            },
+            error: function(){
+                alert("error");
+            },
+        });
+
+        if ($('.ct-chart-multilines').length) {
+            new Chartist.Bar('.ct-chart-multilines', {
+                labels: labels,
+                series: values
+            }, {
+                seriesBarDistance: 10,
+                axisX: {
+                    offset: 60
+                },
+                axisY: {
+                    offset: 80,
+                    labelInterpolationFnc: function(value) {
+                        return value + ' грн'
+                    },
+                    scaleMinSpace: 15
+                }
+            });
+        }
+
+        // end custom section
 
 
         if ($('.ct-chart-polar').length) {
@@ -207,28 +247,6 @@
             });
         }
 
-        if ($('.ct-chart-multilines').length) {
-            new Chartist.Bar('.ct-chart-multilines', {
-                labels: ['First quarter of the year', 'Second quarter of the year', 'Third quarter of the year', 'Fourth quarter of the year'],
-                series: [
-                    [60000, 40000, 80000, 70000],
-                    [40000, 30000, 70000, 65000],
-                    [8000, 3000, 10000, 6000]
-                ]
-            }, {
-                seriesBarDistance: 10,
-                axisX: {
-                    offset: 60
-                },
-                axisY: {
-                    offset: 80,
-                    labelInterpolationFnc: function(value) {
-                        return value + ' CHF'
-                    },
-                    scaleMinSpace: 15
-                }
-            });
-        }
 
         if ($('.ct-chart-bipolar').length) {
             var data = {

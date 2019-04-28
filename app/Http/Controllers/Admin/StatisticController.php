@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\DeliveryType;
+use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
@@ -44,26 +45,74 @@ class StatisticController extends Controller
      */
     public function index()
     {
-//        $orders = Order::all();
-//        foreach ($orders as $order){
-//            dump($order->created_at->month);
-//        }
+        $orders = Order::all();
+
+        $profit[0] = $profit[1] = range(1, 12);
+
+        foreach ($orders as $order) {
+            if ($order->payment_type_id == PaymentTypesEnum::CARD_ONLINE) {
+                $profit[0][$order->created_at->month - 1] += $order->sum;
+            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
+                $profit[1][$order->created_at->month - 1] += $order->sum;
+            }
+        }
+
+        $data = [
+            "values" => $profit,
+            'labels' => [
+                "Январь", "Февраль", "Март", "Апрель",
+                "Май", "Июнь", "Июль", "Август",
+                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+            ]
+        ];
+
+        dump($data);
+
         $categories = Category::all();
+
+        //dump(date("m"));
 
         return view("admin.stats.index", compact('categories'));
     }
 
-    public function getOrdersStats()
+    public function getOrdersStats() // TODO move to stats service
     {
         $orders = Order::all();
 
-        $profit = range(1, 12);
+        $profit = range(1, 12); // TODO change, fill wrong data at start
         foreach ($orders as $order) {
             $profit[$order->created_at->month - 1] += $order->sum;
         }
 
         $data = [
             "profit" => $profit,
+            'labels' => [
+                "Январь", "Февраль", "Март", "Апрель",
+                "Май", "Июнь", "Июль", "Август",
+                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+            ]
+        ];
+
+        return response()->json($data);
+    }
+
+    public function getOrdersPaymentTypesStats()
+    {
+        $orders = Order::all();
+
+        $profit[0] = range(1, 12);
+        $profit[1] = range(1, 12);
+
+        foreach ($orders as $order) {
+            if ($order->payment_type_id == PaymentTypesEnum::CARD_ONLINE) {
+                $profit[0][$order->created_at->month - 1] += $order->sum;
+            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
+                $profit[1][$order->created_at->month - 1] += $order->sum;
+            }
+        }
+
+        $data = [
+            "values" => $profit,
             'labels' => [
                 "Январь", "Февраль", "Март", "Апрель",
                 "Май", "Июнь", "Июль", "Август",
