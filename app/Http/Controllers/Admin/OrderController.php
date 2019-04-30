@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Components\Basket;
+use App\Components\BasketProduct;
 use App\DeliveryType;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
@@ -9,11 +11,13 @@ use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
+use App\Product;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
@@ -24,13 +28,19 @@ class OrderController extends Controller
      * @var OrderService
      */
     private $service;
+    /**
+     * @var
+     */
+    private $request;
 
     /**
      * OrderController constructor.
+     * @param Request $request
      * @param OrderService $service
      */
-    public function __construct(OrderService $service)
+    public function __construct(Request $request, OrderService $service)
     {
+        $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
@@ -54,7 +64,8 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view("admin.orders.create");
+        $products = Product::all();
+        return view("admin.orders.create", compact('products'));
     }
 
     /**
@@ -141,4 +152,21 @@ class OrderController extends Controller
         $order->notify(new NewOrderNotification($request->input("link")));
     }
 
+    public function addBasketProduct()
+    {
+        if (Session::has("basket")) {
+            $basket = Session::get("basket");
+        } else {
+            $basket = new Basket();
+        }
+
+        $basket->addProduct(Product::find($this->request->newProductId));
+        Session::put("basket", $basket);
+
+
+        $basketProducts = $basket->getProducts();
+        $sum = $basket->getSum();
+
+        return view("admin.orders.basket", compact("basketProducts", "sum"))->render();
+    }
 }

@@ -85,6 +85,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
 
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
+        Route::any("add_product_to_basket", "OrderController@addBasketProduct")->name("admin-orders-add-product-to-basket");
     });
 
     Route::group(['prefix' => 'shares'], function(){

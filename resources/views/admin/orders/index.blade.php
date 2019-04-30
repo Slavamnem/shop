@@ -34,11 +34,11 @@
                             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
                                 <h5 class="mb-0">Список всех заказов</h5>
                             </div>
-                        <!--<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                 <a href="{{ route("admin-orders-create") }}">
-                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ГРУППУ</button>
+                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ЗАКАЗ</button>
                                 </a>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
