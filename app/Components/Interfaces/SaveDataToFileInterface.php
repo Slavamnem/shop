@@ -5,9 +5,10 @@ namespace App\Components\Interfaces;
 interface SaveDataToFileInterface
 {
     /**
-     * @param array $data
-     * @param string $fileName
-     * @return string
+     * @param $data
+     * @param $fileName
+     * @param $nestedItemName
+     * @return mixed
      */
-    public function saveToFile(array $data, $fileName);
+    public function saveToFile($data, $fileName, $nestedItemName);
 }

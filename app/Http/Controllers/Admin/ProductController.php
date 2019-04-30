@@ -51,6 +51,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+//        $data = Product::all();
+//        dump($data);
+//        $this->service->saveToFile(new Xml(), $data);
         /*$novaPoshta = new NovaPoshta();
 
         dd($novaPoshta->getCities([

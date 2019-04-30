@@ -9,16 +9,21 @@ use Spatie\ArrayToXml\ArrayToXml;
 class Xml implements SaveDataToFileInterface
 {
     /**
-     * @param array $data
-     * @param string $fileName
-     * @return string
+     * @param $data
+     * @param $fileName
+     * @param $nestedItemName
+     * @return mixed|string
      */
-    public function saveToFile(array $data, $fileName)
+    public function saveToFile($data, $fileName, $nestedItemName = null)
     {
-       // dump($data);
-        $data = ArrayToXml::convert($data);
-        //dd($data);
-        Storage::put($fileName, $data);
+        //$res = ArrayToXml::convert($data);
+
+        $xmlDoc = new XmlDocument();
+        foreach ($data as $key => $item) {
+            $nestedItemName ? $xmlDoc->addNestedItem($nestedItemName, $item) : $xmlDoc->addItem($key, $item);
+        }
+
+        Storage::put($fileName, $xmlDoc);
 
         return storage_path("app/{$fileName}");
     }

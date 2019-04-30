@@ -129,7 +129,7 @@ class ProductService implements ProductServiceInterface
      */
     public function saveToFile(SaveDataToFileInterface $saver, $data)
     {
-        return response()->download($saver->saveToFile($data[0], "products.xml"));
+        return response()->download($saver->saveToFile($data, "products.xml", "product"));
     }
 
     public function getConditionsFields()
@@ -144,7 +144,6 @@ class ProductService implements ProductServiceInterface
         }
 
         return $result;
-        //return $this->fieldsTranslations;
     }
 
     /**
