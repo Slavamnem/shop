@@ -79,13 +79,15 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::post("update/{id}", "OrderController@update")->name("admin-orders-update");
         Route::any("delete/{id}", "OrderpController@destroy")->name("admin-orders-delete");
         Route::get("create", "OrderController@create")->name("admin-orders-create");
-        Route::post("store", "OrderpController@store")->name("admin-orders-store");
+        Route::post("store", "OrderController@store")->name("admin-orders-store");
         Route::get("show/{id}", "OrderController@show")->name("admin-orders-show");
         Route::any("email", "OrderController@email")->name("admin-orders-email");
         Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
 
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
         Route::any("add_product_to_basket", "OrderController@addBasketProduct")->name("admin-orders-add-product-to-basket");
+        Route::any("selectCity", "OrderController@selectCity")->name("admin-orders-select-city");
+        Route::any("selectDeliveryType", "OrderController@selectDeliveryType")->name("admin-orders-select-delivery-type");
     });
 
     Route::group(['prefix' => 'shares'], function(){

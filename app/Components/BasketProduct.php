@@ -34,8 +34,9 @@ class BasketProduct
     /**
      * @return mixed
      */
-    public function getPrice()
+    public function getPrice() // TODO get price checking shares prices
     {
+        // возможно передавать массив с ключами базовой цены и акционной
         return $this->product->base_price;
     }
 
@@ -61,5 +62,10 @@ class BasketProduct
     public function getTotalPrice()
     {
         return $this->getPrice() * $this->getQuantity();
+    }
+
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

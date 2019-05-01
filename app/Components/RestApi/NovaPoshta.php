@@ -51,7 +51,7 @@ class NovaPoshta implements NovaPoshtaInterface
 
         $response = $this->request($requestData);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents())->data;
     }
 
     /**
@@ -59,6 +59,27 @@ class NovaPoshta implements NovaPoshtaInterface
      * @return mixed
      */
     public function getCities($extraFields = null)
+    {
+        $requestData = [
+            'contentType' => 'application/json',
+            'json' => [
+                "modelName"        => "Address",
+                "calledMethod"     => "getCities",
+                "methodProperties" => $extraFields,
+                "apiKey"           => $this->apiKey
+            ]
+        ];
+
+        $response = $this->request($requestData);
+
+        return json_decode($response->getBody()->getContents())->data;
+    }
+
+    /**
+     * @param null $extraFields
+     * @return mixed
+     */
+    public function getSettlements($extraFields = null)
     {
         $requestData = [
             'contentType' => 'application/json',

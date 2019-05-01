@@ -50,7 +50,78 @@
 
                                     <div class="tab-pane fade show" id="outline-two" role="tabpanel" aria-labelledby="tab-outline-one">
 
-                                        <p>!!!!</p>
+                                        <div class="block">
+                                            <h3>Контактные данные</h3>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Ваше имя:</label>
+                                                <input id="inputText3" name="name" type="text" class="form-control" value="{{ old("name") }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Фамилия:</label>
+                                                <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ old("last_name") }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Телефон:</label>
+                                                <input id="inputText3" name="phone" type="text" class="form-control" value="{{ old("phone") }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Адрес электронной почты:</label>
+                                                <input id="inputText3" name="email" type="text" class="form-control" value="{{ old("email") }}">
+                                            </div>
+                                        </div>
+
+                                        <br><hr><br>
+
+                                        <div class="block">
+
+                                            <h3>Доставка и оплата</h3>
+                                            <hr>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Город:</label>
+                                                <select name="city" class="form-control" id="order-city">
+                                                    <option value="0">Выберите город</option>
+                                                    @forelse($cities as $city)
+                                                        <option value="{{$city->Ref}}">{{$city->DescriptionRu}}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Тип доставки:</label>
+                                                <select name="delivery_type" class="form-control" id="order-delivery-type">
+                                                    <option value="0">Выберите тип доставки</option>
+                                                    @forelse($deliveryTypes as $key => $type)
+                                                        <option value="{{$key}}">{{$type}}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group warehouses"></div>
+
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Тип оплаты:</label>
+                                                <select name="payment_type" class="form-control" id="new-product">
+                                                    <option value="0">Выберите тип оплаты</option>
+                                                    @forelse($paymentTypes as $key => $type)
+                                                        <option value="{{$key}}">{{$type}}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="name" class="col-form-label">Комментарий:</label><br>
+                                            <textarea name="description" id="description" cols="40" rows="10">{{ old("description") }}</textarea>
+                                        </div>
 
                                     </div>
                                 </div>

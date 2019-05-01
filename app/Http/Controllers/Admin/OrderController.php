@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Client;
 use App\Components\Basket;
 use App\Components\BasketProduct;
+use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
+use App\Enums\DeliveryTypesEnum;
+use App\Enums\OrderStatusEnum;
+use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
+use App\OrderProduct;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -64,8 +72,56 @@ class OrderController extends Controller
      */
     public function create()
     {
+        Session::forget("basket");
         $products = Product::all();
-        return view("admin.orders.create", compact('products'));
+        $deliveryTypes = DeliveryTypesEnum::getValues();
+        $paymentTypes = PaymentTypesEnum::getValues();
+
+        $novaPoshta = new NovaPoshta();
+        $cities = $novaPoshta->getCities([
+            "Language" => "ru"
+        ]);
+        //dump($cities);
+
+        return view("admin.orders.create", compact('products', 'deliveryTypes', 'paymentTypes', 'cities'));
+    }
+
+    public function selectCity()
+    {
+        if (Session::has("basket")) {
+            $basket = Session::get("basket");
+        } else {
+            $basket = new Basket();
+        }
+
+        $basket->setCity($this->request->input("cityRef"));
+        Session::put("basket", $basket);
+
+        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
+            return $this->getWareHouses();
+        }
+    }
+
+
+    public function selectDeliveryType()
+    {
+        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
+            return $this->getWareHouses();
+        }
+    }
+
+    public function getWareHouses()
+    {
+        $basket = Session::get("basket");
+
+        $novaPoshta = new NovaPoshta();
+        $warehouses = $novaPoshta->getWarehouses([
+            "Language" => "ru",
+            "CityRef" => $basket->getCity()->getRef()
+        ]);
+
+        return view("admin.orders.warehouses", compact("warehouses"))->render();
+        //return implode("<br>", (collect($warehouses)->pluck("DescriptionRu"))->toArray());
     }
 
     /**
@@ -76,10 +132,43 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = new Order();
+        $basket = Session::get("basket");
 
-        $order->fill($request->only($order->getFillable()));
-        $order->save();
+        // Client
+        $client = Client::firstOrNew(["phone" => $request->input("phone")]);
+        $client->fill($request->only($client->getFillable()));
+        $client->save();
+        //
+
+        // Order
+        $order = new Order([
+            "status_id"        => OrderStatusEnum::PAID,
+            "sum"              => $basket->getSum(),
+            "client_id"        => $client->id,
+            "description"      => $request->input("description"),
+            "phone"            => $client->phone,
+            "email"            => $client->email,
+            "payment_type_id"  => $request->input("payment_type"),
+            "delivery_type_id" => $request->input("delivery_type"),
+        ]);
+
+        $order->save(); //$order->fill($request->only($order->getFillable()));
+        //
+
+        // OrderProducts
+        $orderProducts = [];
+        foreach ($basket->getProducts() as $basketProduct) {
+            $orderProduct = new OrderProduct();
+            $orderProduct->order_id = $order->id;
+            $orderProduct->product_id = $basketProduct->getProduct()->id;
+            $orderProduct->quantity = $basketProduct->getQuantity();
+            $orderProduct->product_price = $basketProduct->getPrice();
+            $orderProduct->sum = $basketProduct->getTotalPrice();
+
+            $orderProducts[] = $orderProduct;
+        }
+        $order->products()->saveMany($orderProducts);
+        /////////////////////////////////////////////////////////////////
 
         return redirect()->route("admin-orders-edit", ['id' => $order->id]);
     }

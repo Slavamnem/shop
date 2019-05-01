@@ -3,10 +3,11 @@
 namespace App\Components;
 
 use App\Components\Interfaces\SaveDataToFileInterface;
+use App\Components\Interfaces\XmlDocumentInterface;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ArrayToXml\ArrayToXml;
 
-class XmlDocument
+class XmlDocument implements XmlDocumentInterface
 {
     /**
      * @var
@@ -16,10 +17,6 @@ class XmlDocument
      * @var
      */
     private $rows;
-    /**
-     * @var
-     */
-    private $data;
 
     /**
      * XmlDocument constructor.
@@ -30,13 +27,13 @@ class XmlDocument
     }
 
     /**
-     *
+     * @return mixed
      */
     public function render()
     {
         $content = implode("\n" , $this->rows);
 
-        $this->data = str_replace("CONTENT", $content, $this->template);
+        return str_replace("CONTENT", $content, $this->template);
     }
 
     /**
@@ -44,8 +41,7 @@ class XmlDocument
      */
     public function __toString()
     {
-        $this->render();
-        return $this->data;
+        return $this->render();
     }
 
     /**

@@ -35,4 +35,41 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $("#order-city").on("change", function () {
+        var cityRef = $(this).val();
+        var deliveryType = $("#order-delivery-type").val();
+
+        $.ajax({
+            url: "/admin/orders/selectCity",
+            data: {"cityRef": cityRef, "deliveryType": deliveryType},
+            method: 'POST',
+            success: function(res){
+                if (res) {
+                    $(".warehouses").html(res);
+                }
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
+
+    $("#order-delivery-type").on("change", function () {
+        var deliveryType = $(this).val();
+        //alert(deliveryType); exit();
+
+        $.ajax({
+            url: "/admin/orders/selectDeliveryType",
+            data: {"deliveryType": deliveryType},
+            method: 'POST',
+            success: function(res){
+                //alert(res);
+                $(".warehouses").html(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
 });

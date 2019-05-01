@@ -9,7 +9,11 @@ class Basket
     /**
      * @var
      */
-    public $basketProducts;
+    private $basketProducts;
+    /**
+     * @var
+     */
+    private $city;
 
     /**
      * Basket constructor.
@@ -29,6 +33,24 @@ class Basket
         } else {
             $this->basketProducts[$product->id] = new BasketProduct($product);
         }
+    }
+
+    /**
+     * @param $cityRef
+     */
+    public function setCity($cityRef)
+    {
+        $city = new City();
+        $city->setRef($cityRef);
+        $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 
     /**
