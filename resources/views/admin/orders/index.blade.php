@@ -72,11 +72,11 @@
                                             {{ $order->sum }}
                                         </td>
                                         <td>
-                                            {{ $order->phone }}
+                                            {{ $order->client->phone }}
                                         </td>
                                         <td>
-                                            <a href="{{ route("admin-new-email", ['email' => $order->email]) }}">
-                                                {{ $order->email }}
+                                            <a href="{{ route("admin-new-email", ['email' => $order->client->email]) }}">
+                                                {{ $order->client->email }}
                                             </a>
                                         </td>
                                         <td>

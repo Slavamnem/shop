@@ -26,7 +26,8 @@ class EditOrderRequest extends FormRequest
         return [
             'sum'   => 'required|numeric',
             'phone' => 'required',
-            'email' => 'email'
+            'email' => 'email',
+            'city'  => 'required'
         ];
     }
 }

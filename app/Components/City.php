@@ -40,7 +40,6 @@ class City // TODO make table for cities from NovaPoshta
         $this->name = $name;
     }
 
-
     /**
      * @return mixed
      */

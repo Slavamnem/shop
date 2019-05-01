@@ -18,6 +18,7 @@ use App\OrderProduct;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Services\Admin\BasketService;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,6 +38,10 @@ class OrderController extends Controller
      */
     private $service;
     /**
+     * @var BasketService
+     */
+    private $basketService;
+    /**
      * @var
      */
     private $request;
@@ -45,11 +50,13 @@ class OrderController extends Controller
      * OrderController constructor.
      * @param Request $request
      * @param OrderService $service
+     * @param BasketService $basketService
      */
-    public function __construct(Request $request, OrderService $service)
+    public function __construct(Request $request, OrderService $service, BasketService $basketService)
     {
         $this->request = $request;
         $this->service = $service;
+        $this->basketService = $basketService;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -70,7 +77,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() // TODO refactor
     {
         Session::forget("basket");
         $products = Product::all();
@@ -86,7 +93,7 @@ class OrderController extends Controller
         return view("admin.orders.create", compact('products', 'deliveryTypes', 'paymentTypes', 'cities'));
     }
 
-    public function selectCity()
+    public function selectCity() // TODO refactor
     {
         if (Session::has("basket")) {
             $basket = Session::get("basket");
@@ -103,14 +110,14 @@ class OrderController extends Controller
     }
 
 
-    public function selectDeliveryType()
+    public function selectDeliveryType() // TODO refactor
     {
         if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
             return $this->getWareHouses();
         }
     }
 
-    public function getWareHouses()
+    public function getWareHouses() // TODO refactor
     {
         $basket = Session::get("basket");
 
@@ -130,7 +137,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) // TODO refactor
     {
         $basket = Session::get("basket");
 
@@ -146,10 +153,10 @@ class OrderController extends Controller
             "sum"              => $basket->getSum(),
             "client_id"        => $client->id,
             "description"      => $request->input("description"),
-            "phone"            => $client->phone,
-            "email"            => $client->email,
             "payment_type_id"  => $request->input("payment_type"),
             "delivery_type_id" => $request->input("delivery_type"),
+            "city"             => $basket->getCity()->getName(),
+            "warehouse"        => $request->input("warehouse"),
         ]);
 
         $order->save(); //$order->fill($request->only($order->getFillable()));
@@ -218,10 +225,9 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
@@ -241,21 +247,15 @@ class OrderController extends Controller
         $order->notify(new NewOrderNotification($request->input("link")));
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function addBasketProduct()
     {
-        if (Session::has("basket")) {
-            $basket = Session::get("basket");
-        } else {
-            $basket = new Basket();
-        }
+        $this->basketService->addBasketProduct($this->request->input("newProductId"));
+        $data = $this->basketService->getBasketData();
 
-        $basket->addProduct(Product::find($this->request->newProductId));
-        Session::put("basket", $basket);
-
-
-        $basketProducts = $basket->getProducts();
-        $sum = $basket->getSum();
-
-        return view("admin.orders.basket", compact("basketProducts", "sum"))->render();
+        return view("admin.orders.basket", $data)->render();
     }
 }

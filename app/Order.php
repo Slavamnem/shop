@@ -14,13 +14,12 @@ class Order extends Model
     protected $fillable = [
         "status_id",
         "sum",
-        "user_id",
         "client_id",
         "description",
-        "phone",
-        "email",
         "payment_type_id",
-        "delivery_type_id"
+        "delivery_type_id",
+        "city",
+        "warehouse"
     ];
 
     public function status()
@@ -41,5 +40,10 @@ class Order extends Model
     public function products()
     {
         return $this->hasMany(OrderProduct::class, "order_id", "id");
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class, "client_id", "id");
     }
 }

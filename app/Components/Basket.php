@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Components\RestApi\NovaPoshta;
 use App\Product;
 
 class Basket
@@ -41,7 +42,17 @@ class Basket
     public function setCity($cityRef)
     {
         $city = new City();
-        $city->setRef($cityRef);
+
+        $novaPoshta = new NovaPoshta();
+        $cities = $novaPoshta->getCities([
+            "Language" => "ru",
+            "Ref" => $cityRef
+        ]);
+
+        $city->setName($cities[0]->DescriptionRu);
+        $city->setRef($cities[0]->Ref);
+        $city->setCityId($cities[0]->CityID);
+        $city->setArea($cities[0]->Area);
         $this->city = $city;
     }
 

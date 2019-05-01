@@ -2,7 +2,7 @@
 <select name="warehouse" class="form-control" id="warehouse">
     <option value="0">Выберите отделение</option>
     @forelse($warehouses as $warehouse)
-        <option value="{{$warehouse->Number}}">{{$warehouse->DescriptionRu}}</option>
+        <option value="{{$warehouse->DescriptionRu}}">{{$warehouse->DescriptionRu}}</option>
     @empty
     @endforelse
 </select>

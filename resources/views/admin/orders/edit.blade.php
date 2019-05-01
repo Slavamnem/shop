@@ -41,6 +41,11 @@
                                         <label for="inputText3" class="col-form-label">Сумма заказа</label>
                                         <input id="inputText3" name="sum" type="text" class="form-control" value="{{ $order->sum }}">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Клиент:</label>
+                                        <input id="inputText3" name="client_id" type="hidden" class="form-control" value="{{ $order->client_id }}">
+                                        <a href="/123" style="color:blue">{{ $order->client->name . " " . $order->client->last_name }}</a>
+                                    </div>
                                     @if($errors->has("sum"))
                                         <span class="help-block" style="color:red">
                                             <strong>{{ $errors->first('sum') }}</strong>
@@ -48,7 +53,7 @@
                                     @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Телефон клиента</label>
-                                        <input id="inputText3" name="phone" type="text" class="form-control" value="{{ $order->phone }}">
+                                        <input id="inputText3" name="phone" type="text" class="form-control" value="{{ $order->client->phone }}">
                                     </div>
                                     @if($errors->has("phone"))
                                         <span class="help-block" style="color:red">
@@ -57,7 +62,7 @@
                                     @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта клиента</label>
-                                        <input id="inputText3" name="email" type="text" class="form-control" value="{{ $order->email }}">
+                                        <input id="inputText3" name="email" type="text" class="form-control" value="{{ $order->client->email }}">
                                     </div>
                                     <h4>Способ оплаты</h4>
                                     <div class="form-group">
@@ -76,6 +81,19 @@
                                             @empty
                                             @endforelse
                                         </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Город доставки</label>
+                                        <input id="inputText3" name="city" type="text" class="form-control" value="{{ $order->city }}">
+                                    </div>
+                                    @if($errors->has("city"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('city') }}</strong>
+                                        </span>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Отделение Новой Почты</label>
+                                        <input id="inputText3" name="warehouse" type="text" class="form-control" value="{{ $order->warehouse }}">
                                     </div>
                                 </div>
                             </div>
