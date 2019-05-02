@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Components\Basket;
 use App\DeliveryType;
+use App\Enums\DeliveryTypesEnum;
 use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
@@ -28,15 +29,25 @@ class BasketService
     }
 
     /**
-     * @param $productId
+     * @return Basket $basket
      */
-    public function addBasketProduct($productId)
+    public function getBasket()
     {
         if (Session::has("basket")) {
             $basket = Session::get("basket");
         } else {
             $basket = new Basket();
         }
+
+        return $basket;
+    }
+
+    /**
+     * @param $productId
+     */
+    public function addBasketProduct($productId)
+    {
+        $basket = $this->getBasket();
 
         $basket->addProduct(Product::find($productId));
         Session::put("basket", $basket);
@@ -53,5 +64,25 @@ class BasketService
             "basketProducts" => $basket->getProducts(),
             "sum"            => $basket->getSum()
         ];
+    }
+
+    /**
+     *
+     */
+    public function clearBasket()
+    {
+        Session::forget("basket");
+    }
+
+    public function selectCity() // TODO refactor
+    {
+        $basket = $this->getBasket();
+
+        $basket->setCity($this->request->input("cityRef"));
+        Session::put("basket", $basket);
+
+        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
+            return $this->getWareHouses();
+        }
     }
 }

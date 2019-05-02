@@ -41,14 +41,9 @@ class Basket
      */
     public function setCity($cityRef)
     {
+        $cities = resolve(NovaPoshta::class)->getCities(["Ref" => $cityRef]);
+
         $city = new City();
-
-        $novaPoshta = new NovaPoshta();
-        $cities = $novaPoshta->getCities([
-            "Language" => "ru",
-            "Ref" => $cityRef
-        ]);
-
         $city->setName($cities[0]->DescriptionRu);
         $city->setRef($cities[0]->Ref);
         $city->setCityId($cities[0]->CityID);

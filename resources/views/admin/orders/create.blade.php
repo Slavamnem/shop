@@ -96,8 +96,8 @@
                                                 <label for="name" class="col-form-label">Тип доставки:</label>
                                                 <select name="delivery_type" class="form-control" id="order-delivery-type">
                                                     <option value="0">Выберите тип доставки</option>
-                                                    @forelse($deliveryTypes as $key => $type)
-                                                        <option value="{{$key}}">{{$type}}</option>
+                                                    @forelse($delivery_types as $type)
+                                                        <option value="{{$type->id}}">{{$type->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -109,8 +109,8 @@
                                                 <label for="name" class="col-form-label">Тип оплаты:</label>
                                                 <select name="payment_type" class="form-control" id="new-product">
                                                     <option value="0">Выберите тип оплаты</option>
-                                                    @forelse($paymentTypes as $key => $type)
-                                                        <option value="{{$key}}">{{$type}}</option>
+                                                    @forelse($payment_types as $type)
+                                                        <option value="{{$type->id}}">{{$type->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
