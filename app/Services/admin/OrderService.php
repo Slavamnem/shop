@@ -20,14 +20,20 @@ class OrderService implements OrderServiceInterface
      * @var Request
      */
     private $request;
+    /**
+     * @var
+     */
+    private $basketService;
 
     /**
-     * ProductServiceInterface constructor.
+     * OrderService constructor.
      * @param Request $request
+     * @param BasketService $basketService
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, BasketService $basketService)
     {
         $this->request = $request;
+        $this->basketService = $basketService;
     }
 
     /**
@@ -48,42 +54,40 @@ class OrderService implements OrderServiceInterface
     /**
      * @return Order
      */
-    public function createOrder() // refactor
+    public function createOrder()
     {
-        $basket = resolve(BasketService::class)->getBasket();
+        $this->saveOrderClient();
 
-        $client = $this->saveOrderClient();
+        $order = $this->saveOrder();
 
-        $order = $this->saveOrder($basket, $client);
-
-        $this->saveOrderProducts($basket, $order);
+        $this->saveOrderProducts($order);
 
         return $order;
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     *
      */
-    public function saveOrderClient(): \Illuminate\Database\Eloquent\Model
+    public function saveOrderClient()
     {
         $client = Client::firstOrNew(["phone" => $this->request->input("phone")]);
         $client->fill($this->request->only($client->getFillable()));
         $client->save();
 
-        return $client;
+        $this->basketService->getBasket()->setClient($client);
     }
 
     /**
-     * @param $basket
-     * @param $client
      * @return Order
      */
-    public function saveOrder($basket, $client): Order
+    public function saveOrder(): Order
     {
+        $basket = $this->basketService->getBasket();
+
         $order = new Order([
             "status_id"        => OrderStatusEnum::PAID,
             "sum"              => $basket->getSum(),
-            "client_id"        => $client->id,
+            "client_id"        => $basket->getClient(),
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),
             "delivery_type_id" => $this->request->input("delivery_type"),
@@ -96,12 +100,13 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param $basket
      * @param $order
      */
-    public function saveOrderProducts($basket, $order): void
+    public function saveOrderProducts($order): void
     {
+        $basket = $this->basketService->getBasket();
         $orderProducts = [];
+
         foreach ($basket->getProducts() as $basketProduct) {
             $orderProduct = new OrderProduct();
             $orderProduct->order_id = $order->id;

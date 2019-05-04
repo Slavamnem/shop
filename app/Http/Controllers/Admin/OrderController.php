@@ -11,7 +11,6 @@ use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Admin\EditOrderRequest;
-use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\OrderProduct;
@@ -20,12 +19,11 @@ use App\PaymentType;
 use App\Product;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\OrderService;
+use App\Services\NovaPoshtaService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
@@ -191,7 +189,7 @@ class OrderController extends Controller
         $this->basketService->selectCity();
 
         if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-            return $this->getCityWareHouses();
+            return $this->getCityWareHousesBlock();
         }
     }
 
@@ -202,7 +200,7 @@ class OrderController extends Controller
     public function selectDeliveryType()
     {
         if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-            return $this->getCityWareHouses();
+            return $this->getCityWareHousesBlock();
         }
     }
 
@@ -210,13 +208,10 @@ class OrderController extends Controller
      * @return string
      * @throws \Throwable
      */
-    private function getCityWareHouses() // TODO refactor
+    private function getCityWareHousesBlock()
     {
-        $basket = $this->basketService->getBasket();
-
-        $warehouses = resolve(NovaPoshta::class)->getWarehouses([
-            "CityRef" => $basket->getCity()->getRef()
-        ]);
+        $novaPoshtaService = new NovaPoshtaService();
+        $warehouses = $novaPoshtaService->getCityWareHouses($this->basketService->getBasket()->getCity());
 
         return view("admin.orders.warehouses", compact("warehouses"))->render();
     }

@@ -142,6 +142,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
     Route::group(['prefix' => 'ajax'], function(){
         Route::post('translate', "AjaxController@getTranslation");
+        Route::post('filer_table', "AjaxController@getFilteredData");
     });
 
 });

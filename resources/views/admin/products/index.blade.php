@@ -48,7 +48,6 @@
                                 <thead>
                                 <tr>
                                     <th>Название</th>
-                                    {{--<th>Slug</th>--}}
                                     <th>Цена</th>
                                     <th>Количество</th>
                                     <th>Категория</th>
@@ -58,8 +57,18 @@
                                     <th>Размер</th>
                                     <th>Действия</th>
                                 </tr>
+                                <tr>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="name"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="base_price"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="quantity"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="category_id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="group_id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="status_id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="color_id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="size_id"></th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($products as $product)
                                     <tr>
                                         <td>

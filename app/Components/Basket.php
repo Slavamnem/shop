@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Client;
 use App\Components\RestApi\NovaPoshta;
 use App\Product;
 
@@ -15,6 +16,10 @@ class Basket
      * @var
      */
     private $city;
+    /**
+     * @var Client
+     */
+    private $client;
 
     /**
      * Basket constructor.
@@ -78,5 +83,21 @@ class Basket
         }
 
         return $sum;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }

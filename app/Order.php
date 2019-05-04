@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -45,5 +46,19 @@ class Order extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, "client_id", "id");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function statusClass()
+    {
+        $statuses = [
+            OrderStatusEnum::WAIT_FOR_PAYMENT => "alert-warning",
+            OrderStatusEnum::PAID             => "alert-success",
+            OrderStatusEnum::CANCELED         => "alert-danger",
+        ];
+
+        return $statuses[$this->attributes["status_id"]];
     }
 }

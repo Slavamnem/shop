@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\EditCategoryRequest;
 use App\Services\Admin\CategoryService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class CategoryController extends Controller

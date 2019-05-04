@@ -48,3 +48,7 @@
     border-radius: 10px;
     padding: 10px;
 }
+
+.admin-filter-input{
+    max-width: 75px;
+}

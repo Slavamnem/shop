@@ -11,8 +11,10 @@ use App\Services\Admin\ShareService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 
@@ -45,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
             // $event->job->payload()
             Log::info("after");
         });
-
     }
 
     /**
@@ -58,10 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(ShareServiceInterface::class, ShareService::class);
 
-        $this->app->bind('OrderService', function ($app) {
-            return new OrderService();
-        });
-
+        $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);
         $this->app->bind(BasketService::class);
     }

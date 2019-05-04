@@ -43,7 +43,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example4" class="table table-striped table-bordered" style="width:100%">
+                            <table id="example4" class="table table-bordered" style="width:100%">
+                                {{-- table-striped--}}
                                 <thead>
                                 <tr>
                                     <th>Id</th>
@@ -59,7 +60,7 @@
                                 </thead>
                                 <tbody>
                                 @forelse($orders as $order)
-                                    <tr>
+                                    <tr class="{{ $order->statusClass() }}">
                                         <td>
                                             <a href="{{ route("admin-orders-show", ['id' => $order->id]) }}">
                                                 {{ $order->id }}

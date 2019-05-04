@@ -177,7 +177,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         NotificationChannels\Telegram\TelegramServiceProvider::class,
-        \App\Providers\ModulesServiceProvider::class
+        \App\Providers\ModulesServiceProvider::class,
+        \App\Providers\AdminShareDataProvider::class
 
     ],
 
