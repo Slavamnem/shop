@@ -11,10 +11,11 @@ use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
 use App\Services\Admin\Interfaces\OrderServiceInterface;
+use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class OrderService implements OrderServiceInterface
+class OrderService implements OrderServiceInterface, TableFilterDataInterface
 {
     /**
      * @var Request
@@ -34,6 +35,31 @@ class OrderService implements OrderServiceInterface
     {
         $this->request = $request;
         $this->basketService = $basketService;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getFilteredData()
+    {
+        $specialFields = [
+            "payment_type_id"  => "payment_type",
+            "delivery_type_id" => "delivery_type",
+        ];
+
+        $query = Order::query();
+
+        if (array_key_exists($this->request->input("field"), $specialFields)) {
+            $query = $query->whereHas($specialFields[$this->request->input("field")], function($q){
+                $q->where("name", "like", "%" . $this->request->input("value") . "%");
+            });
+        } else {
+            $query = $query->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%");
+        }
+
+        $orders = $query->paginate(10);
+
+        return view("admin.orders.filtered_table", compact('orders'));
     }
 
     /**

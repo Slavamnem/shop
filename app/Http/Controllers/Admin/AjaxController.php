@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Product;
+use App\Services\Admin\OrderService;
+use App\Services\Admin\ProductService;
 use App\Services\TranslatorService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,18 +30,16 @@ class AjaxController extends Controller
         return TranslatorService::translate($this->request->get('value'));
     }
 
+    /**
+     * @return mixed
+     */
     public function getFilteredData()
     {
-        $tablesModelClasses = [
-            "products" => Product::class
+        $tablesServices = [
+            "products" => ProductService::class,
+            "orders"   => OrderService::class
         ];
 
-        $modelClass = $tablesModelClasses[$this->request->input("table")];
-        $products = $modelClass::query()
-            ->with(['color', 'size', 'category'])
-            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
-            ->paginate(10);
-
-        return view("admin.products.filtered_table", compact('products'));
+        return resolve($tablesServices[$this->request->input("table")])->getFilteredData();
     }
 }

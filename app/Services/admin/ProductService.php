@@ -12,6 +12,7 @@ use App\ProductImage;
 use App\ProductStatus;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use App\Services\TranslatorService;
 use App\Size;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class ProductService implements ProductServiceInterface
+class ProductService implements ProductServiceInterface, TableFilterDataInterface
 {
     /**
      * @var Request
@@ -34,6 +35,34 @@ class ProductService implements ProductServiceInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getFilteredData()
+    {
+        $specialFields = [
+            "category_id" => "category",
+            "group_id"    => "group",
+            "status_id"   => "status",
+            "color_id"    => "color",
+            "size_id"     => "size"
+        ];
+
+        $query = Product::query()->with(['color', 'size', 'category']);
+
+        if (array_key_exists($this->request->input("field"), $specialFields)) {
+            $query = $query->whereHas($specialFields[$this->request->input("field")], function($q){
+                $q->where("name", "like", "%" . $this->request->input("value") . "%");
+            });
+        } else {
+            $query = $query->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%");
+        }
+
+        $products = $query->paginate(10);
+
+        return view("admin.products.filtered_table", compact('products'));
     }
 
     /**

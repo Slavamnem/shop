@@ -57,8 +57,21 @@
                                     <th>Время создания</th>
                                     <th>Действия</th>
                                 </tr>
+                                <tr>
+                                    <th><input type="text" class="admin-filter-input" data-table="orders" data-name="id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="orders" data-name="status-id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="orders" data-name="sum"></th>
+                                    <th>
+                                        {{--<input type="text" class="admin-filter-input" data-table="orders" data-name="phone">--}}
+                                    </th>
+                                    <th>
+                                        {{--<input type="text" class="admin-filter-input" data-table="orders" data-name="email">--}}
+                                    </th>
+                                    <th><input type="text" class="admin-filter-input" data-table="orders" data-name="payment_type_id"></th>
+                                    <th><input type="text" class="admin-filter-input" data-table="orders" data-name="delivery_type_id"></th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($orders as $order)
                                     <tr class="{{ $order->statusClass() }}">
                                         <td>
@@ -128,4 +141,8 @@
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/orders/main.js") }}"></script>
 @endsection

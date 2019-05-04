@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+
     $('.admin-filter-input').on("input", function(){
         var field = $(this).data("name");
         var table = $(this).data("table");

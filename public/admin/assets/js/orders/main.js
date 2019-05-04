@@ -1,5 +1,23 @@
 $( document ).ready(function() {
 
+    $('.admin-filter-input').on("input", function(){
+        var field = $(this).data("name");
+        var table = $(this).data("table");
+        var value = $(this).val();
+
+        $.ajax({
+            url: "/admin/ajax/filer_table",
+            method: 'POST',
+            data: {table: table, field: field, value: value},
+            success: function(res) {
+                $('.tbody').html(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
+
     $('.add-product-to-basket').click(function(){
 
         var newProductId = $('#new-product').val();
