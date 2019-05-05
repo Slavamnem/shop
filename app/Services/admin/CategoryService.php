@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryService
 {
+    /**
+     * @var
+     */
+    private $request;
+
+    /**
+     * CategoryService constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     public static function getDataForCategoryPage($id = null)
     {
         $data = [
@@ -27,5 +41,17 @@ class CategoryService
         }
 
         return $data;
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getFilteredCategories()
+    {
+        $categories = Category::query()
+            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
+            ->paginate(10);
+
+        return $categories;
     }
 }

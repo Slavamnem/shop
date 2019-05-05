@@ -140,6 +140,16 @@ class ShareController extends Controller
         return redirect()->route("admin-shares");
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
+    {
+        $shares = $this->service->getFilteredShares();
+
+        return view("admin.shares.filtered_table", compact('shares'));
+    }
+
     public function addNewCondition()
     {
         $data = $this->service->getNewConditionData();

@@ -41,7 +41,7 @@
                                             <div class="card card-figure">
                                                 <figure class="figure">
                                                     <h4 align="center">{{ $product->name }}</h4>
-                                                    <img src="{{ asset("storage/app/{$product->mainImage->url}") }}" alt="User Avatar" class=" img-fluid stock-image">
+                                                    <img src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="User Avatar" class=" img-fluid stock-image">
                                                     <figcaption class="figure-caption">
                                                         <h4 align="center">Количество: <input type="number" data-product="{{ $product->id }}" class="stock-quantity" value="{{ $product->quantity }}"></h4>
                                                     </figcaption>

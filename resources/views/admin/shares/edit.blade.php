@@ -31,7 +31,7 @@
 
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Название акции</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $share->name }}">
+                                        <input id="name" name="name" type="text" class="form-control" value="{{ $share->name }}">
                                     </div>
 
                                     <div class="form-group">

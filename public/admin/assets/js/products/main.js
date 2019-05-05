@@ -2,13 +2,12 @@ $( document ).ready(function() {
 
     $('.admin-filter-input').on("input", function(){
         var field = $(this).data("name");
-        var table = $(this).data("table");
         var value = $(this).val();
 
         $.ajax({
-            url: "/admin/ajax/filer_table",
+            url: "/admin/products/filter",
             method: 'POST',
-            data: {table: table, field: field, value: value},
+            data: {field: field, value: value},
             success: function(res) {
                 $('.tbody').html(res);
             },

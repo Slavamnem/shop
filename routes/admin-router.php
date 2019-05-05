@@ -14,6 +14,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
+       Route::post('filter', "ProductController@filter");
 
        #Route::any("test", "ProductController@storageLearn");
        #Route::any("lang", "ProductController@lang");
@@ -28,6 +29,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "CategoryController@create")->name("admin-categories-create");
         Route::post("store", "CategoryController@store")->name("admin-categories-store");
         Route::get("show/{id}", "CategoryController@show")->name("admin-categories-show");
+        Route::post('filter', "CategoryController@filter");
     });
 
     Route::group(['prefix' => "groups"], function() {
@@ -38,6 +40,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
         Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
         Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
+        Route::post('filter', "ModelGroupController@filter");
 
         Route::any("modifications", "ModelGroupController@getModificationsBlock")->name("admin-groups-get-modifications");
     });
@@ -83,6 +86,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "OrderController@show")->name("admin-orders-show");
         Route::any("email", "OrderController@email")->name("admin-orders-email");
         Route::post("send-email", "OrderController@sendEmail")->name("admin-orders-send-email");
+        Route::post('filter', "OrderController@filter");
 
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
         Route::any("add_product_to_basket", "OrderController@addBasketProduct")->name("admin-orders-add-product-to-basket");
@@ -98,6 +102,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("create", "ShareController@create")->name("admin-shares-create");
         Route::post("store", "ShareController@store")->name("admin-shares-store");
         Route::get("show/{id}", "ShareController@show")->name("admin-shares-show");
+        Route::post('filter', "ShareController@filter");
 
 
         Route::any("addNewCondition", "ShareController@addNewCondition")->name("admin-shares-add-new-condition");
@@ -135,6 +140,19 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 //        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
     });
 
+    Route::group(['prefix' => "ceo"], function() {
+        Route::get("", "CeoController@index")->name("admin-ceo");
+//        Route::get("edit/{id}", "CeoController@edit")->name("admin-ceo-edit");
+//        Route::post("update/{id}", "CeoController@update")->name("admin-ceo-update");
+//        Route::any("delete/{id}", "CeoController@destroy")->name("admin-ceo-delete");
+//        Route::get("create", "CeoController@create")->name("admin-ceo-create");
+//        Route::post("store", "CeoController@store")->name("admin-ceo-store");
+//        Route::get("show/{id}", "CeoController@show")->name("admin-ceo-show");
+//        Route::post('filter', "CeoController@filter");
+
+        Route::any("modifications", "ModelGroupController@getModificationsBlock")->name("admin-groups-get-modifications");
+    });
+
     Route::group(['prefix' => "email"], function() {
         Route::any("new", "EmailController@newEmail")->name("admin-new-email");
         Route::post("send-email", "EmailController@sendEmail")->name("admin-send-email");
@@ -142,7 +160,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
     Route::group(['prefix' => 'ajax'], function(){
         Route::post('translate', "AjaxController@getTranslation");
-        Route::post('filer_table', "AjaxController@getFilteredData");
+//        Route::post('filer_table', "AjaxController@getFilteredData");
     });
 
 });

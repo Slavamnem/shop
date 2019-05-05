@@ -249,6 +249,10 @@
                                 <a class="nav-link @if(@$activeMenuItem == "shares"){ {{ "active" }} } @endif" href="{{ route("admin-shares") }}"><i class="fas fa-fw fa-table"></i>Акции</a>
                             </li>
 
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "ceo"){ {{ "active" }} } @endif" href="{{ route("admin-ceo") }}"><i class="fas fa-fw fa-table"></i>CEO</a>
+                            </li>
+
                             <li class="nav-divider">
                                 _________________________
                             </li>

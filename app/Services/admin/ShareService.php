@@ -142,6 +142,18 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getFilteredShares()
+    {
+        $shares = Share::query()
+            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
+            ->paginate(10);
+
+        return $shares;
+    }
+
+    /**
      * @return \Generator
      */
     private function conditionsGenerator()
@@ -163,49 +175,53 @@ class ShareService implements ShareServiceInterface
         return (!empty($condition) and !empty($this->request->conditions_values[$num]));
     }
 
-
-    // test
-    private function getAccordingProducts($conditionsData) //test function
-    {
-        $query = Product::query();
-
-        foreach ($conditionsData as $conditionsDataItem) {
-            foreach ($conditionsDataItem as $key => $item) {
-                if ($this->isPropertyCondition($item)) {
-                    if ($item["operation"] == "!=") {
-                        $query = $query->whereDoesntHave("properties", function($q) use($item){
-                            $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
-                                    ->where("product_properties.value", $item["value"]);
-                        });
-                    } else {
-                        $query = $query->whereHas("properties", function($q) use($item){
-                            $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
-                                ->where("product_properties.value", $item["operation"], $item["value"]);
-                        });
-                    }
-                } else {
-                    if ($key == "and") {
-                        $query = $query->where($item["field"], $item["operation"], $item["value"]);
-                    } else {
-                        $query = $query->orWhere($item["field"], $item["operation"], $item["value"]);
-                    }
-                }
-
-            }
-        }
-
-        dump($query->toSql());
-
-        dump($query->get()->pluck("name"));
-    }
-
-    private function isPropertyCondition($item)
-    {
-        return strpos($item["field"], "property-") !== false;
-    }
-
-    private function getPropertyConditionId($item)
-    {
-        return explode("-", $item["field"])[1];
-    }
 }
+
+
+
+/*
+// test
+
+private function isPropertyCondition($item)
+{
+    return strpos($item["field"], "property-") !== false;
+}
+
+private function getPropertyConditionId($item)
+{
+    return explode("-", $item["field"])[1];
+}
+
+private function getAccordingProducts($conditionsData) //test function
+{
+    $query = Product::query();
+
+    foreach ($conditionsData as $conditionsDataItem) {
+        foreach ($conditionsDataItem as $key => $item) {
+            if ($this->isPropertyCondition($item)) {
+                if ($item["operation"] == "!=") {
+                    $query = $query->whereDoesntHave("properties", function($q) use($item){
+                        $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
+                            ->where("product_properties.value", $item["value"]);
+                    });
+                } else {
+                    $query = $query->whereHas("properties", function($q) use($item){
+                        $q->where("product_properties.property_id", $this->getPropertyConditionId($item))
+                            ->where("product_properties.value", $item["operation"], $item["value"]);
+                    });
+                }
+            } else {
+                if ($key == "and") {
+                    $query = $query->where($item["field"], $item["operation"], $item["value"]);
+                } else {
+                    $query = $query->orWhere($item["field"], $item["operation"], $item["value"]);
+                }
+            }
+
+        }
+    }
+
+    dump($query->toSql());
+
+    dump($query->get()->pluck("name"));
+}*/

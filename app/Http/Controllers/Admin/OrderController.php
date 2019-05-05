@@ -66,7 +66,6 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-
         return view("admin.orders.index", compact('orders'));
     }
 
@@ -156,6 +155,16 @@ class OrderController extends Controller
         $group->delete();
 
         return redirect()->route("admin-orders");
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
+    {
+        $orders = $this->service->getFilteredOrders();
+
+        return view("admin.orders.filtered_table", compact('orders'));
     }
 
     /**

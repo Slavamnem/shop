@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\CreateModelGroupRequest;
 use App\Http\Requests\Admin\EditModelGroupRequest;
 use App\ModelGroup;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\ModelGroupService;
 use App\Services\Admin\ProductService;
 use App\Size;
 use Illuminate\Http\Request;
@@ -19,10 +20,24 @@ class ModelGroupController extends Controller
     const MENU_ITEM_NAME = "groups";
 
     /**
-     * ModelGroupController constructor.
+     * @var
      */
-    public function __construct()
+    private $service;
+
+    /**
+     * @var
+     */
+    private $request;
+
+    /**
+     * ModelGroupController constructor.
+     * @param Request $request
+     * @param ModelGroupService $service
+     */
+    public function __construct(Request $request, ModelGroupService $service)
     {
+        $this->request = $request;
+        $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -127,6 +142,16 @@ class ModelGroupController extends Controller
         $group->delete();
 
         return redirect()->route("admin-groups");
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
+    {
+        $groups = $this->service->getFilteredGroups();
+
+        return view("admin.groups.filtered_table", compact('groups'));
     }
 
     /**

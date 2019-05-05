@@ -30,16 +30,22 @@ class ProductController extends Controller
     const MENU_ITEM_NAME = "products";
 
     /**
+     * @var
+     */
+    private $request;
+    /**
      * @var ProductService
      */
     private $service;
 
     /**
      * ProductController constructor.
+     * @param Request $request
      * @param ProductServiceInterface $service
      */
-    public function __construct(ProductServiceInterface $service)
+    public function __construct(Request $request, ProductServiceInterface $service)
     {
+        $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
@@ -182,8 +188,15 @@ class ProductController extends Controller
         return view("admin.images.new-image", compact('imageId'))->render();
     }
 
-    public function addNewCondition()
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
     {
+        $products = $this->service->getFilteredProducts();
 
+        return view("admin.products.filtered_table", compact('products'));
     }
+
+    public function addNewCondition(){}
 }

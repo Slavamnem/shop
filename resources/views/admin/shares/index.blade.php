@@ -53,8 +53,15 @@
                                     <th>Активна по</th>
                                     <th>Действия</th>
                                 </tr>
+                                <tr>
+                                    <th><input type="text" class="admin-filter-input" data-name="name"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="fix_price"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="discount"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="active_From"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="active_to"></th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($shares as $share)
                                     <tr>
                                         <td>
@@ -107,4 +114,8 @@
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/shares/main.js") }}"></script>
 @endsection

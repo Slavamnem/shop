@@ -33,4 +33,9 @@ interface ShareServiceInterface
      * @return mixed
      */
     public function setConditions(Share $share);
+
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getFilteredShares();
 }

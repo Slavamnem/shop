@@ -16,10 +16,23 @@ class CategoryController extends Controller
     const MENU_ITEM_NAME = "categories";
 
     /**
-     * CategoryController constructor.
+     * @var Request
      */
-    public function __construct()
+    private $request;
+    /**
+     * @var
+     */
+    private $service;
+
+    /**
+     * CategoryController constructor.
+     * @param Request $request
+     * @param CategoryService $service
+     */
+    public function __construct(Request $request, CategoryService $service)
     {
+        $this->request = $request;
+        $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -112,5 +125,15 @@ class CategoryController extends Controller
         $product->delete();
 
         return redirect()->route("admin-categories");
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
+    {
+        $categories = $this->service->getFilteredCategories();
+
+        return view("admin.categories.filtered_table", compact('categories'));
     }
 }

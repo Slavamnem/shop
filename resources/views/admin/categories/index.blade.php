@@ -52,8 +52,13 @@
                                     <th>Сортировка</th>
                                     <th>Действия</th>
                                 </tr>
+                                <tr>
+                                    <th><input type="text" class="admin-filter-input" data-name="name"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="slug"></th>
+                                    <th><input type="text" class="admin-filter-input" data-name="ordering"></th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($categories as $category)
                                     <tr>
                                         <td>
@@ -94,4 +99,8 @@
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/categories/index.js") }}"></script>
 @endsection

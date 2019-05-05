@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class ProductService implements ProductServiceInterface, TableFilterDataInterface
+class ProductService implements ProductServiceInterface
 {
     /**
      * @var Request
@@ -38,9 +38,9 @@ class ProductService implements ProductServiceInterface, TableFilterDataInterfac
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getFilteredData()
+    public function getFilteredProducts()
     {
         $specialFields = [
             "category_id" => "category",
@@ -62,7 +62,7 @@ class ProductService implements ProductServiceInterface, TableFilterDataInterfac
 
         $products = $query->paginate(10);
 
-        return view("admin.products.filtered_table", compact('products'));
+        return $products;
     }
 
     /**
@@ -107,7 +107,7 @@ class ProductService implements ProductServiceInterface, TableFilterDataInterfac
      */
     public function saveImages(Product $product)
     {
-        $this->updateOldImages();
+        $this->updateOldImages($product);
         $this->saveNewImages($product);
     }
 
@@ -238,11 +238,14 @@ class ProductService implements ProductServiceInterface, TableFilterDataInterfac
     }
 
     /**
-     * @throws \Exception
+     * @param Product $product
      */
-    private function updateOldImages(): void
+    private function updateOldImages(Product $product): void
     {
-        ProductImage::whereNotIn("id", (array)@$this->request->oldImages)->delete();
+        ProductImage::query()
+            ->whereNotIn("id", (array)@$this->request->oldImages)
+            ->where("product_id", $product->id)
+            ->delete();
 
         foreach ((array)@$this->request->oldImages as $imgId) {
             ProductImage::where("id", $imgId)->update([

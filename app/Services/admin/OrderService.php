@@ -15,7 +15,7 @@ use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class OrderService implements OrderServiceInterface, TableFilterDataInterface
+class OrderService implements OrderServiceInterface
 {
     /**
      * @var Request
@@ -38,9 +38,9 @@ class OrderService implements OrderServiceInterface, TableFilterDataInterface
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getFilteredData()
+    public function getFilteredOrders()
     {
         $specialFields = [
             "payment_type_id"  => "payment_type",
@@ -59,7 +59,7 @@ class OrderService implements OrderServiceInterface, TableFilterDataInterface
 
         $orders = $query->paginate(10);
 
-        return view("admin.orders.filtered_table", compact('orders'));
+        return $orders;
     }
 
     /**

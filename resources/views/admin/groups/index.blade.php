@@ -49,8 +49,11 @@
                                     <th>Название</th>
                                     <th>Действия</th>
                                 </tr>
+                                <tr>
+                                    <th><input type="text" class="admin-filter-input" data-name="name"></th>
+                                </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($groups as $group)
                                     <tr>
                                         <td>
@@ -87,4 +90,8 @@
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/groups/main.js") }}"></script>
 @endsection
