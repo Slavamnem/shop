@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Client;
+use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\OrderStatusEnum;
 use App\Order;
@@ -88,6 +89,16 @@ class OrderService implements OrderServiceInterface
 
         $this->saveOrderProducts($order);
 
+        dd(resolve(NovaPoshta::class)->getOrderPrice([
+            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
+            "CityRecipient" => $this->basketService->getBasket()->getCity()->getRef(),
+            "Weight" => 20, // product weight property
+            "ServiceType" => "WarehouseWarehouse",
+            "Cost" => $this->basketService->getBasket()->getSum(),
+            "CargoType" => "Cargo",
+            "SeatsAmount" => 1
+        ]));
+
         return $order;
     }
 
@@ -113,7 +124,7 @@ class OrderService implements OrderServiceInterface
         $order = new Order([
             "status_id"        => OrderStatusEnum::PAID,
             "sum"              => $basket->getSum(),
-            "client_id"        => $basket->getClient(),
+            "client_id"        => $basket->getClient()->id,
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),
             "delivery_type_id" => $this->request->input("delivery_type"),

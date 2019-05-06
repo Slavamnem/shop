@@ -33,6 +33,23 @@ class NovaPoshta implements NovaPoshtaInterface
         $this->client = new \GuzzleHttp\Client();
     }
 
+    public function getOrderPrice($extraFields = null)
+    {
+        $requestData = [
+            'contentType' => 'application/json',
+            'json' => [
+                "modelName"        => "InternetDocument",
+                "calledMethod"     => "getDocumentPrice",
+                "methodProperties" => $extraFields,
+                "apiKey"           => $this->apiKey
+            ]
+        ];
+
+        $response = $this->request($requestData);
+
+        return json_decode($response->getBody()->getContents())->data;
+    }
+
     /**
      * @param null $extraFields
      * @return mixed

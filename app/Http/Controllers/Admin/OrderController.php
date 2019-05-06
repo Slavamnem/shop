@@ -65,6 +65,17 @@ class OrderController extends Controller
      */
     public function index()
     {
+        dump(resolve(NovaPoshta::class)->getOrderPrice([
+            "CitySender" => "8d5a980d-391c-11dd-90d9-001a92567626",
+            "CityRecipient" => "db5c88e0-391c-11dd-90d9-001a92567626",
+            "Weight" => 20,
+            "ServiceType" => "WarehouseWarehouse",
+            "Cost" => 3000,
+            "CargoType" => "Cargo",
+            "SeatsAmount" => 1
+        ]));
+
+
         $orders = Order::all();
         return view("admin.orders.index", compact('orders'));
     }

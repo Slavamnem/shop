@@ -81,8 +81,8 @@ class BasketService
         $basket->setCity($this->request->input("cityRef"));
         Session::put("basket", $basket);
 
-        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-            return $this->getWareHouses();
-        }
+//        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
+//            return $this->getWareHouses();
+//        }
     }
 }
