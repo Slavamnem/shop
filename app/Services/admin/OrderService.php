@@ -89,15 +89,16 @@ class OrderService implements OrderServiceInterface
 
         $this->saveOrderProducts($order);
 
-        dd(resolve(NovaPoshta::class)->getOrderPrice([
-            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
-            "CityRecipient" => $this->basketService->getBasket()->getCity()->getRef(),
-            "Weight" => 20, // product weight property
-            "ServiceType" => "WarehouseWarehouse",
-            "Cost" => $this->basketService->getBasket()->getSum(),
-            "CargoType" => "Cargo",
-            "SeatsAmount" => 1
-        ]));
+//        dump($this->basketService->getBasket()->getTotalWeight());
+////        dd(resolve(NovaPoshta::class)->getOrderPrice([
+////            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
+////            "CityRecipient" => $this->basketService->getBasket()->getCity()->getRef(),
+////            "Weight" => $this->basketService->getBasket()->getTotalWeight(),
+////            "ServiceType" => "WarehouseWarehouse",
+////            "Cost" => $this->basketService->getBasket()->getSum(),
+////            "CargoType" => "Cargo",
+////            "SeatsAmount" => 1
+////        ]));
 
         return $order;
     }

@@ -225,6 +225,15 @@ class OrderController extends Controller
     }
 
     /**
+     * @return false|null|string
+     */
+    public function getClientData()
+    {
+        $client = Client::where($this->request->input("field"), $this->request->input("value"))->first();
+        return json_encode($client) ?? null;
+    }
+
+    /**
      * @return string
      * @throws \Throwable
      */
@@ -235,4 +244,5 @@ class OrderController extends Controller
 
         return view("admin.orders.warehouses", compact("warehouses"))->render();
     }
+
 }

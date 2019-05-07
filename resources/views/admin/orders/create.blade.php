@@ -55,22 +55,22 @@
                                             <hr>
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Ваше имя:</label>
-                                                <input id="inputText3" name="name" type="text" class="form-control" value="{{ old("name") }}">
+                                                <input id="order_client_name" name="name" type="text" class="form-control" value="{{ old("name") }}">
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Фамилия:</label>
-                                                <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ old("last_name") }}">
+                                                <input id="order_client_last_name" name="last_name" type="text" class="form-control" value="{{ old("last_name") }}">
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Телефон:</label>
-                                                <input id="inputText3" name="phone" type="text" class="form-control" value="{{ old("phone") }}">
+                                                <input id="order_client_phone" name="phone" type="text" class="form-control" value="{{ old("phone") }}">
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Адрес электронной почты:</label>
-                                                <input id="inputText3" name="email" type="text" class="form-control" value="{{ old("email") }}">
+                                                <input id="order_client_email" name="email" type="text" class="form-control" value="{{ old("email") }}">
                                             </div>
                                         </div>
 

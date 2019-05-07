@@ -1,5 +1,45 @@
 $( document ).ready(function() {
 
+    $('#order_client_phone').on("input", function(){
+        var phone = $(this).val();
+
+        $.ajax({
+            url: "/admin/orders/get_client_data",
+            method: 'POST',
+            data: {field: "phone", value: phone},
+            success: function(res) {
+                if (res = JSON.parse(res)) {
+                    $("#order_client_name").val(res.name);
+                    $("#order_client_last_name").val(res.last_name);
+                    $("#order_client_email").val(res.email);
+                }
+            },
+            error: function(){
+                //alert("error");
+            }
+        });
+    });
+
+    $('#order_client_email').on("input", function(){
+        var email = $(this).val();
+
+        $.ajax({
+            url: "/admin/orders/get_client_data",
+            method: 'POST',
+            data: {field: "email", value: email},
+            success: function(res) {
+                if (res = JSON.parse(res)) {
+                    $("#order_client_name").val(res.name);
+                    $("#order_client_last_name").val(res.last_name);
+                    $("#order_client_phone").val(res.phone);
+                }
+            },
+            error: function(){
+                //alert("error");
+            }
+        });
+    });
+
     $('.admin-filter-input').on("input", function(){
         var field = $(this).data("name");
         var value = $(this).val();

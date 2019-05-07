@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Components\Basket;
+use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
 use App\Order;
@@ -84,5 +85,22 @@ class BasketService
 //        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
 //            return $this->getWareHouses();
 //        }
+    }
+
+    /**
+     * @param $sum
+     * @return mixed
+     */
+    public function getNovaPoshtaDeliveryCost($sum)
+    {
+        return resolve(NovaPoshta::class)->getOrderPrice([
+            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
+            "CityRecipient" => $this->getBasket()->getCity()->getRef(),
+            "Weight" => $this->getBasket()->getTotalWeight(),
+            "ServiceType" => "WarehouseWarehouse",
+            "Cost" => $sum,
+            "CargoType" => "Cargo",
+            "SeatsAmount" => 1
+        ]);
     }
 }
