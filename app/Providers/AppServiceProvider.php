@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Components\RestApi\NovaPoshta;
 use App\Services\Admin\BasketService;
+use App\Services\Admin\ClientService;
+use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
@@ -60,6 +62,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(ShareServiceInterface::class, ShareService::class);
+        $this->app->bind(ClientServiceInterface::class, ClientService::class);
 
         $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);

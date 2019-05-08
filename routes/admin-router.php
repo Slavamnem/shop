@@ -23,6 +23,17 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        #Route::any("email", "ProductController@email");
    });
 
+    Route::group(['prefix' => "clients"], function(){
+        Route::get("", "ClientController@index")->name("admin-clients");
+        Route::get("edit/{id}", "ClientController@edit")->name("admin-clients-edit");
+        Route::post("update/{id}", "ClientController@update")->name("admin-clients-update");
+        Route::any("delete/{id}", "ClientController@destroy")->name("admin-clients-delete");
+        Route::get("create", "ClientController@create")->name("admin-clients-create");
+        Route::post("store", "ClientController@store")->name("admin-clients-store");
+        Route::get("show/{id}", "ClientController@show")->name("admin-clients-show");
+        Route::post('filter', "ClientController@filter");
+    });
+
     Route::group(['prefix' => "categories"], function() {
         Route::get("", "CategoryController@index")->name("admin-categories");
         Route::get("edit/{id}", "CategoryController@edit")->name("admin-categories-edit");

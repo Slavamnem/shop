@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Клиент:</label>
                                         <input id="inputText3" name="client_id" type="hidden" class="form-control" value="{{ $order->client_id }}">
-                                        <a href="/123" style="color:blue">{{ $order->client->name . " " . $order->client->last_name }}</a>
+                                        <a href="{{ route("admin-clients-show", ["id" => $order->client->id]) }}" style="color:blue">{{ $order->client->name . " " . $order->client->last_name }}</a>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Телефон клиента</label>

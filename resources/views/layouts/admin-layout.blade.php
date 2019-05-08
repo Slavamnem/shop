@@ -262,6 +262,10 @@
                             </li>
 
                             <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "clients"){ {{ "active" }} } @endif" href="{{ route("admin-clients") }}"><i class="fas fa-fw fa-table"></i>Клиенты</a>
+                            </li>
+
+                            <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Склад</a>
                             </li>
 
