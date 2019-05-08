@@ -45,7 +45,7 @@ class Basket
     /**
      * @param $cityRef
      */
-    public function setCity($cityRef)
+    public function setCity($cityRef) // TODO replace to order
     {
         $cities = resolve(NovaPoshta::class)->getCities(["Ref" => $cityRef]);
 
@@ -60,7 +60,7 @@ class Basket
     /**
      * @return mixed
      */
-    public function getCity()
+    public function getCity()  // TODO replace to order
     {
         return $this->city;
     }
@@ -82,8 +82,6 @@ class Basket
         foreach ($this->basketProducts as $basketProduct) {
             $sum += $basketProduct->getTotalPrice();
         }
-
-        $sum += resolve(BasketService::class)->getNovaPoshtaDeliveryCost($sum)[0]->Cost;
 
         return $sum;
     }

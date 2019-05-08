@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
+use App\Enums\ProductStatusEnum;
 use App\Events\NewOrderEvent;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
@@ -199,4 +200,19 @@ class ProductController extends Controller
     }
 
     public function addNewCondition(){}
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getProducts()
+    {
+        $products = Product::query()
+            ->where("name", "LIKE", "%" . $this->request->input("name") . "%")
+            ->where("quantity", ">", 0)
+            ->where("status_id", ProductStatusEnum::AVAILABLE)
+            ->with(['color', 'size'])
+            ->paginate(10);
+
+        return view("admin.products.new_order_products", compact("products"));
+    }
 }

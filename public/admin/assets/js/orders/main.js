@@ -1,5 +1,23 @@
 $( document ).ready(function() {
 
+    $('#order-new-product').on("input", function(){
+        var name = $(this).val();
+
+        if (name) {
+            $.ajax({
+                url: "/admin/products/get_products",
+                method: 'POST',
+                data: {name: name},
+                success: function(res) {
+                    $("#order-new-products").html(res);
+                },
+                error: function(){
+                    alert("error");
+                }
+            });
+        }
+    });
+
     $('#order_client_phone').on("input", function(){
         var phone = $(this).val();
 
@@ -57,9 +75,9 @@ $( document ).ready(function() {
         });
     });
 
-    $('.add-product-to-basket').click(function(){
-
-        var newProductId = $('#new-product').val();
+    $(document).on("click", '.add-product-to-basket', function(){
+        // var newProductId = $('#new-product').val();
+        var newProductId = $(this).data('id');
 
         $.ajax({
             url: "/admin/orders/add_product_to_basket",

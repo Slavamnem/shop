@@ -15,6 +15,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
        Route::post('filter', "ProductController@filter");
+       Route::post('get_products', "ProductController@getProducts");
 
        #Route::any("test", "ProductController@storageLearn");
        #Route::any("lang", "ProductController@lang");

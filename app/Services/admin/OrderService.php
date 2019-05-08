@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 use App\Client;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
+use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
 use App\Order;
 use App\OrderProduct;
@@ -124,7 +125,7 @@ class OrderService implements OrderServiceInterface
 
         $order = new Order([
             "status_id"        => OrderStatusEnum::PAID,
-            "sum"              => $basket->getSum(),
+            "sum"              => $this->basketService->getTotalSum(),
             "client_id"        => $basket->getClient()->id,
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),

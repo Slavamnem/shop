@@ -88,19 +88,32 @@ class BasketService
     }
 
     /**
-     * @param $sum
      * @return mixed
      */
-    public function getNovaPoshtaDeliveryCost($sum)
+    public function getNovaPoshtaDeliveryCost()
     {
         return resolve(NovaPoshta::class)->getOrderPrice([
             "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
             "CityRecipient" => $this->getBasket()->getCity()->getRef(),
             "Weight" => $this->getBasket()->getTotalWeight(),
             "ServiceType" => "WarehouseWarehouse",
-            "Cost" => $sum,
+            "Cost" => $this->getBasket()->getSum(),
             "CargoType" => "Cargo",
             "SeatsAmount" => 1
-        ]);
+        ])[0]->Cost;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getTotalSum()
+    {
+        $totalSum = $this->getBasket()->getSum();
+
+        if ($this->request->input("delivery_type") == DeliveryTypesEnum::NOVA_POSHTA) {
+            $totalSum += $this->getNovaPoshtaDeliveryCost();
+        }
+
+        return $totalSum;
     }
 }
