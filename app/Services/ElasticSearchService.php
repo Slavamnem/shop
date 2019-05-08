@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\ProductStatusEnum;
 use App\Product;
+use App\ProductStatus;
 use Elasticsearch\ClientBuilder;
 
 class ElasticSearchService
@@ -43,8 +45,26 @@ class ElasticSearchService
             "type"  => "product",
             "body"  => [
                 "query" => [
-                    "match" => [
-                        "name" => $name
+                    "bool" => [
+                        "must" => [
+                            [
+                                "match" => [
+                                    "name" => $name
+                                ]
+                            ],
+//                            [
+//                                "term" => [
+//                                    "status" => ProductStatus::find(ProductStatusEnum::AVAILABLE)->name
+//                                ]
+//                            ],
+//                            [
+//                                "range" => [
+//                                    "quantity" => [
+//                                        "gt" => 0
+//                                    ]
+//                                ]
+//                            ]
+                        ]
                     ]
                 ]
             ]

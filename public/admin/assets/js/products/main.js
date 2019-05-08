@@ -1,5 +1,18 @@
 $( document ).ready(function() {
 
+    $('.index-products').on("click", function(){
+        $.ajax({
+            url: "/admin/products/index_products",
+            method: 'POST',
+            success: function(res) {
+                alert("Все товары успешно проиндексированы");
+            },
+            error: function(){
+                alert("Ошибка индексации");
+            }
+        });
+    });
+
     $('.admin-filter-input').on("input", function(){
         var field = $(this).data("name");
         var value = $(this).val();

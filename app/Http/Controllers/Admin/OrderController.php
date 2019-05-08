@@ -107,6 +107,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = $this->service->createOrder();
+        $order->notify(new NewOrderNotification($request->input("link")));
 
         return redirect()->route("admin-orders-edit", ['id' => $order->id]);
     }

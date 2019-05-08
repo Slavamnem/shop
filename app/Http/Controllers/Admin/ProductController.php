@@ -81,7 +81,7 @@ class ProductController extends Controller
             "Language" => "ru"
         ])->data);*/
 
-        dump($this->elasticService->searchByName("Футболка"));
+        //dump($this->elasticService->searchByName("Футболка"));
 
         $products = Product::with(['color', 'size', 'category'])->paginate(10);
 
@@ -216,13 +216,23 @@ class ProductController extends Controller
      */
     public function getProducts()
     {
-        $products = Product::query()
-            ->where("name", "LIKE", "%" . $this->request->input("name") . "%")
-            ->where("quantity", ">", 0)
-            ->where("status_id", ProductStatusEnum::AVAILABLE)
-            ->with(['color', 'size'])
-            ->paginate(10);
+        $products = $this->elasticService->searchByName($this->request->input("name"));
+//        $products = Product::query()
+//            ->where("name", "LIKE", "%" . $this->request->input("name") . "%")
+//            ->where("quantity", ">", 0)
+//            ->where("status_id", ProductStatusEnum::AVAILABLE)
+//            ->with(['color', 'size'])
+//            ->paginate(10);
 
-        return view("admin.products.new_order_products", compact("products"));
+        return view("admin.products.new_order_products", compact("products", "products2"));
+    }
+
+    public function indexProducts()
+    {
+        $products = Product::all();
+
+        foreach ($products as $product) {
+            $this->elasticService->indexProduct($product);
+        }
     }
 }

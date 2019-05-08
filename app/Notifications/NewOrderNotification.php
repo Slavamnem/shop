@@ -22,7 +22,7 @@ class NewOrderNotification extends Notification
      * @param string $link
      * @return void
      */
-    public function __construct($link)
+    public function __construct($link = null)
     {
         $this->link = $link;
     }
@@ -40,7 +40,7 @@ class NewOrderNotification extends Notification
 
     public function toTelegram(Order $order)
     {
-        $content = "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->phone} \nТип доставки: {$order->delivery_type->name} \nЗаказ был осуществлен: {$order->created_at}";
+        $content = "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->client->phone} \nТип доставки: {$order->delivery_type->name} \nЗаказ был осуществлен: {$order->created_at}";
         //$file = Storage::get("products/product_2_image.jpeg");
         //dump($file);
         //$content .= $file;
@@ -48,9 +48,9 @@ class NewOrderNotification extends Notification
             ->to(273791920)  //OrderBot (only me)
             //->to(-1001455732336) //Заказы MilanShop
             //->to(-217503824) //Бизнес конференция
-            ->content($content)
+            ->content($content);
             //->file(storage_path("app/products/product_2_image.jpeg"), 'photo')
-            ->button('Открыть заказ', $this->link);
+            //->button('Открыть заказ', $this->link);
     }
 
     /**
