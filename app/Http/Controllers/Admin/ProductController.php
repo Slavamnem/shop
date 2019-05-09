@@ -15,6 +15,7 @@ use App\Product;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
+use App\Services\ElasticSearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,16 +39,22 @@ class ProductController extends Controller
      * @var ProductService
      */
     private $service;
+    /**
+     * @var
+     */
+    private $elasticService;
 
     /**
      * ProductController constructor.
      * @param Request $request
      * @param ProductServiceInterface $service
+     * @param ElasticSearchService $elasticService
      */
-    public function __construct(Request $request, ProductServiceInterface $service)
+    public function __construct(Request $request, ProductServiceInterface $service, ElasticSearchService $elasticService)
     {
         $this->request = $request;
         $this->service = $service;
+        $this->elasticService = $elasticService;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -73,6 +80,8 @@ class ProductController extends Controller
             "CityName" => "Черкаси",
             "Language" => "ru"
         ])->data);*/
+
+        dump($this->elasticService->searchByName("Футболка"));
 
         $products = Product::with(['color', 'size', 'category'])->paginate(10);
 
@@ -148,6 +157,7 @@ class ProductController extends Controller
         $this->service->saveProperties($product);
 
         $product->save();
+        $this->elasticService->indexProduct($product);
 
         return redirect()->route("admin-products-edit", ['id' => $id]);
     }

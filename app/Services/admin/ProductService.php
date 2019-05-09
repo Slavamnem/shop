@@ -15,6 +15,7 @@ use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use App\Services\TranslatorService;
 use App\Size;
+use Elasticsearch\ClientBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
