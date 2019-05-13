@@ -117,5 +117,5 @@
 @endsection
 
 @section("custom-js")
-    <script src="{{ asset("public/admin/assets/js/products/main.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/js/clients/main.js") }}"></script>
 @endsection

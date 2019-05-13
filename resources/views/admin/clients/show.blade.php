@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Рейтинг</label>
-                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ 7 }}" readonly="readonly">
+                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $rating }}" readonly="readonly">
                                     </div>
                                 </div>
                             </div>

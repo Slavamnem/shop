@@ -1,34 +1,26 @@
-@forelse($products as $product)
+@forelse($clients as $client)
     <tr>
         <td>
-            <a href="{{ route("admin-products-show", ['id' => $product->id]) }}">
-                {{ $product->name }}
+            <a href="{{ route("admin-clients-show", ['id' => $client->id]) }}">
+                {{ $client->name }}
             </a>
         </td>
-        <td>{{ $product->base_price }}</td>
-        <td>{{ $product->quantity }}</td>
+        <td>{{ $client->last_name }}</td>
+        <td>{{ $client->phone }}</td>
         <td>
-            <a href="{{ route("admin-categories-show", ['id' => $product->category->id]) }}">
-                {{ $product->category->name }}
+            <a href="{{ route("admin-new-email", ['email' => $client->email]) }}">
+                {{ $client->email }}
             </a>
         </td>
         <td>
-            <a href="{{ route("admin-groups-show", ['id' => $product->group->id]) }}">
-                {{ $product->group->name }}
-            </a>
-        </td>
-        <td>{{ $product->status->name }}</td>
-        <td>{{ $product->color->name }}</td>
-        <td>{{ $product->size->name }}</td>
-        <td>
-            <a href="{{ route("admin-products-edit", ['id' => $product->id]) }}">
+            <a href="{{ route("admin-clients-edit", ['id' => $client->id]) }}">
                 <img src="{{ asset("public/admin/assets/images/pencil.png") }}" alt="" style="max-width:20px; max-height:20px">
             </a>
-            <a href="{{ route("admin-products-delete", ['id' => $product->id]) }}">
+            <a href="{{ route("admin-clients-delete", ['id' => $client->id]) }}">
                 <img src="{{ asset("public/admin/assets/images/trash.jpg") }}" alt="" style="max-width:20px; max-height:20px">
             </a>
         </td>
     </tr>
 @empty
-    <p>Товаров нет</p>
+    <p>Клиентов не найдено</p>
 @endforelse
