@@ -114,9 +114,10 @@ class NovaPoshta implements NovaPoshtaInterface
     }
 
     /**
-     * @param array $data
+     * @param $data
      * @param string $requestType
-     * @return mixed
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function request($data, $requestType = "POST")
     {

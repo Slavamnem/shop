@@ -201,4 +201,13 @@ Route::group(['prefix' => "learn"], function(){
     Route::any("f2", "LearnController@testF2");
 
     Route::any("sql1", "LearnController@selectSql");
+
+    Route::any("l1", "LearnController@l1");
+    Route::any("l2", "LearnController@l2");
+    Route::any("l3", "LearnController@l3");
+    Route::any("l4", "LearnController@l4");
+    Route::any("l5", "LearnController@l5");
+    Route::any("l6", "LearnController@l6");
+    Route::any("l7", "LearnController@l7");
+    Route::any("l8", "LearnController@l8");
 });

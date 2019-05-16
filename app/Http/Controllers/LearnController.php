@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Color;
+use App\Components\RestApi\NovaPoshta;
 use App\Events\NewOrderEvent;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\ChannelManager;
@@ -378,4 +380,200 @@ class LearnController extends Controller
         //dump($smtp->fetchAll());
     }
 
+    public function l1()
+    {
+        $cat = dir(".");
+
+        dump($cat->path);
+        dump($cat->read());
+        dump($cat->read());
+        dump($cat->read());
+        dump($cat->read());
+
+        $cat->rewind();
+
+        dump($cat->read());
+
+        $cat->close();
+    }
+
+    public function l2()
+    {
+        function generator()
+        {
+            foreach (range(1, 10) as $item) {
+                yield $item;
+            }
+        }
+
+        $data = generator();
+
+        while ($data->valid()) {
+            dump($data->current());
+            $data->next();
+        }
+    }
+
+    public function l3()
+    {
+        //Замыкания можно передать в класс, а внем привязать его к себе, в итоге внутри замыкания $this будет работать с объектом класса
+    }
+
+    public function l4()
+    {
+        //dump(\IntlChar::chr("a"));
+    }
+
+    public function l5()
+    {
+        //dump(date("Y-m-d", strtotime("last day")));
+
+        $date = new \DateTime();
+        //dump($date->format("Y-m-d"));
+
+        $date1 = new \DateTime(date("Y-m-d", strtotime("last month")));
+        $date2 = new \DateTime(date("Y-m-d", strtotime("last day")));
+
+        $diff = $date2->diff($date1);
+        dump($diff);
+        dump($diff->format("%Y-%m-%d"));
+
+        $now = new \DateTime();
+        $step = new \DateInterval('P1W');
+        $period = new \DatePeriod($now, $step, 5);
+        foreach($period as $datetime) {
+            echo $datetime->format("Y-m-d") . "<br />";
+        }
+    }
+
+    public function l6()
+    {
+        $car = new Car("bmw", 7644655, "black", 5);
+
+        foreach ($car as $key => $value) {
+            dump($value);
+        }
+    }
+
+    public function l7()
+    {
+        $num = $_COOKIE["num"] ?? 0;
+        setcookie("num", $num + 1, time() + 100);
+
+        //parse_str() превращает строку сериализованной формы в массив
+        // http_build_query() -reverse
+        //parse_url()
+
+        dump($num);
+        dump(headers_list());
+        dump(getallheaders());
+
+
+        return response("success")
+            ->header("Content-Type", 'application/json')
+            ->header("Accept", 'application/json');
+    }
+
+    public function getOrders(Request $request)
+    {
+        dump("get Orders");
+        //dump($request->headers);
+
+        $guzzleClient = new Client();
+
+        $clients = "999|";
+        $clients = $guzzleClient->request("GET", env("API_URL") . "/clients", [
+            'contentType' => 'application/json',
+            "headers" => [
+                "Api-Token" => "slava_token"
+            ],
+            'json' => []
+        ])->getBody()->getContents();
+
+
+        return $clients . 888;
+    }
+
+    public function getClients()
+    {
+        return "clients response|";
+    }
+
+    public function l8()
+    {
+        dump(gethostbynamel("klavogonki.ru"));
+
+        dump(gethostbyaddr("136.243.77.89"));
+    }
+
+}
+
+
+
+
+
+
+
+
+
+$f = function () {
+    dump($this->apiUrl);
+};
+$f->bindTo(new NovaPoshta(), NovaPoshta::class);
+//$f();
+
+class Car implements \IteratorAggregate
+{
+    private $name;
+    private $price;
+    private $color;
+    private $age;
+
+    public function __construct($name, $price, $color, $age)
+    {
+        $this->name = $name;
+        $this->price = $price;
+        $this->color = $color;
+        $this->age = $age;
+    }
+
+    public function getIterator()
+    {
+        return new CarIterator($this);
+    }
+}
+
+class CarIterator implements \Iterator
+{
+    private $obj;
+
+    public function __construct(Car $car)
+    {
+        $this->obj = $car;
+    }
+
+    public function valid()
+    {
+        return rand(0, 5);
+    }
+
+    public function key()
+    {
+
+    }
+
+    public function current()
+    {
+        return rand(10, 100);
+    }
+
+    public function next()
+    {
+        return 7;
+    }
+
+    public function rewind()
+    {
+
+    }
 }
