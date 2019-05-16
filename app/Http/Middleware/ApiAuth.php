@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\User;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiAuth
 {
@@ -23,12 +23,10 @@ class ApiAuth
 
     /**
      * ApiAuth constructor.
-     * @param Auth $auth
      * @param Request $request
      */
-    public function __construct(Auth $auth, Request $request)
+    public function __construct(Request $request)
     {
-        $this->auth = $auth;
         $this->request = $request;
     }
 
@@ -50,23 +48,19 @@ class ApiAuth
     }
 
     /**
-     * Determine if the user is logged in to any of the given guards.
-     *
-     * @param  array  $guards
-     * @return void
-     *
-     * @throws \Illuminate\Auth\AuthenticationException
+     * @param array $guards
+     * @throws AuthenticationException
      */
     protected function authenticate(array $guards)
     {
-        $token = $this->request->header("Api-Token");
-        $user = User::query()->where("api_token", $token)->first();
-
-        if ($token and $user) {
-            \Illuminate\Support\Facades\Auth::loginUsingId($user->id);
+        if ($token = $this->request->header("Api-Token")) {
+            if ($user = User::query()->where("api_token", $token)->first()) {
+                Auth::login($user);
+            } else {
+                throw new AuthenticationException('Unauthenticated.', $guards);
+            }
         } else {
             throw new AuthenticationException('Unauthenticated.', $guards);
         }
-
     }
 }
