@@ -151,13 +151,13 @@ class ProductController extends Controller
     public function update(EditProductRequest $request, $id)
     {
         $product = Product::find($id);
-
         $product->fill($request->only($product->getFillable()));
+        $product->active = array_get($request->all(), "active", 0);
         $this->service->saveImages($product);
         $this->service->saveProperties($product);
 
         $product->save();
-        $this->elasticService->indexProduct($product);
+        //$this->elasticService->indexProduct($product);
 
         return redirect()->route("admin-products-edit", ['id' => $id]);
     }

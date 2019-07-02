@@ -21,7 +21,8 @@ class Product extends Model
         'group_id',
         'status_id',
         'color_id',
-        'size_id'
+        'size_id',
+        'active'
     ];
 
     private $fieldsTranslations = [

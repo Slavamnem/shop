@@ -9,11 +9,24 @@
 
             <form method="POST" action="{{ route("admin-products-update", ['id' => $product->id]) }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
+                {{--<input type="hidden" name="active" value="0">--}}
                 <div class="section-block">
                     <h1 class="section-title">
                         {{ $product->name }}
                         <button class="btn btn-primary" type="submit">СОХРАНИТЬ ТОВАР</button>
                     </h1>
+                    <div class="form-group row">
+                        <label class="col-12 col-sm-2 col-md-2 col-lg-2 col-form-label text-md-left"><h4>Активный товар</h4></label>
+                        <div class="col-12 col-sm-8 col-lg-6 pt-1">
+                            <div class="switch-button switch-button-yesno">
+                                <input @if($product->active) {{ "checked" }} @endif type="checkbox" name="active" class="generator" id="switch19" value="1">
+                                <span>
+                                    <label for="switch19"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
 
@@ -76,6 +89,7 @@
                                                 <strong>{{ $errors->first('base_price') }}</strong>
                                             </span>
                                         @endif
+
                                         <div class="form-group">
                                             <label for="inputText3" class="col-form-label">Количество</label>
                                             <input id="inputText3" name="quantity" type="number" class="form-control" value="{{ $product->quantity }}">
