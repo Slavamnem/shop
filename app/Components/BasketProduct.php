@@ -2,6 +2,8 @@
 
 namespace App\Components;
 
+use App\Product;
+
 class BasketProduct
 {
     /**
@@ -15,9 +17,9 @@ class BasketProduct
 
     /**
      * BasketProduct constructor.
-     * @param $product
+     * @param Product $product
      */
-    public function __construct($product)
+    public function __construct(Product $product)
     {
         $this->product = $product;
         $this->quantity = 1;
@@ -64,6 +66,9 @@ class BasketProduct
         return $this->getPrice() * $this->getQuantity();
     }
 
+    /**
+     * @return Product
+     */
     public function getProduct()
     {
         return $this->product;

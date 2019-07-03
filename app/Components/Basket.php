@@ -27,7 +27,7 @@ class Basket
      */
     public function __construct()
     {
-        $this->basketProducts = [];
+        $this->basketProducts = collect();
     }
 
     /**
@@ -35,10 +35,10 @@ class Basket
      */
     public function addProduct(Product $product)
     {
-        if (array_key_exists($product->id, $this->basketProducts)) {
-            $this->basketProducts[$product->id]->add();
+        if ($this->basketProducts->has($product->id)) {
+            $this->basketProducts->get($product->id)->add();
         } else {
-            $this->basketProducts[$product->id] = new BasketProduct($product);
+            $this->basketProducts->put($product->id, new BasketProduct($product));
         }
     }
 
@@ -76,7 +76,7 @@ class Basket
     /**
      * @return int
      */
-    public function getSum()
+    public function getTotalPrice()
     {
         $sum = 0;
         foreach ($this->basketProducts as $basketProduct) {
@@ -89,13 +89,13 @@ class Basket
     /**
      * @return int
      */
-    public function getTotalWeight()
+    public function getBasketWeight()
     {
         $weight = 0;
 
         foreach ($this->getProducts() as $basketProduct) {
-            $weightProperty = $basketProduct->getProduct()->properties()->where("name", "Вес")->first();
-            if ($weightProperty) {
+            //TODO refactor
+            if ($weightProperty = $basketProduct->getProduct()->properties()->where("name", "Вес")->first()) {
                 $weight += (int)$weightProperty->pivot->value;
             }
         }
@@ -103,19 +103,19 @@ class Basket
         return $weight;
     }
 
-    /**
-     * @param Client $client
-     */
-    public function setClient(Client $client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @return Client
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
+//    /**
+//     * @param Client $client
+//     */
+//    public function setClient(Client $client)
+//    {
+//        $this->client = $client;
+//    }
+//
+//    /**
+//     * @return Client
+//     */
+//    public function getClient()
+//    {
+//        return $this->client;
+//    }
 }

@@ -33,16 +33,19 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="name" class="col-form-label">Название товара</label>
-                                                    <input id="order-new-product" name="name" type="text" class="form-control" value="">
-                                                    <div id="order-new-products"></div>
-                                                    {{--<select name="productId" class="form-control" id="new-product">--}}
-                                                        {{--@forelse($products as $product)--}}
-                                                            {{--<option value="{{$product->id}}">{{$product->name}}</option>--}}
-                                                        {{--@empty--}}
-                                                        {{--@endforelse--}}
-                                                    {{--</select>--}}
+
+                                                    {{--<input id="order-new-product" name="name" type="text" class="form-control" value="">--}}
+                                                    {{--<div id="order-new-products"></div>--}}
+
+                                                    <select name="productId" class="form-control" id="new-product">
+                                                        @forelse($products as $product)
+                                                            <option value="{{$product->id}}">{{$product->name}}</option>
+                                                        @empty
+                                                        @endforelse
+                                                    </select>
                                                     <br>
-                                                    {{--<button class="btn btn-primary add-product-to-basket" type="button">Добавить в корзину</button>--}}
+                                                    <button class="btn btn-primary add-product-to-basket" type="button">Добавить в корзину</button>
+
                                                 </div>
                                             </div>
                                         </div>

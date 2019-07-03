@@ -53,6 +53,7 @@ class NovaPoshta implements NovaPoshtaInterface
     /**
      * @param null $extraFields
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getWarehouses($extraFields = null)
     {
@@ -74,6 +75,7 @@ class NovaPoshta implements NovaPoshtaInterface
     /**
      * @param null $extraFields
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getCities($extraFields = null)
     {

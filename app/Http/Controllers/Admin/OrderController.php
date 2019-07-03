@@ -95,6 +95,8 @@ class OrderController extends Controller
             "products" => Product::all(),
         ]);
 
+        dump($novaPoshta->getCities());
+
         return view("admin.orders.create", $data);
     }
 

@@ -27,6 +27,14 @@ class OrderService implements OrderServiceInterface
      * @var
      */
     private $basketService;
+    /**
+     * @var
+     */
+    private $order;
+    /**
+     * @var
+     */
+    private $client;
 
     /**
      * OrderService constructor.
@@ -37,6 +45,22 @@ class OrderService implements OrderServiceInterface
     {
         $this->request = $request;
         $this->basketService = $basketService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
     }
 
     /**
@@ -79,29 +103,11 @@ class OrderService implements OrderServiceInterface
         ];
     }
 
-    /**
-     * @return Order
-     */
     public function createOrder()
     {
         $this->saveOrderClient();
-
-        $order = $this->saveOrder();
-
-        $this->saveOrderProducts($order);
-
-//        dump($this->basketService->getBasket()->getTotalWeight());
-////        dd(resolve(NovaPoshta::class)->getOrderPrice([
-////            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
-////            "CityRecipient" => $this->basketService->getBasket()->getCity()->getRef(),
-////            "Weight" => $this->basketService->getBasket()->getTotalWeight(),
-////            "ServiceType" => "WarehouseWarehouse",
-////            "Cost" => $this->basketService->getBasket()->getSum(),
-////            "CargoType" => "Cargo",
-////            "SeatsAmount" => 1
-////        ]));
-
-        return $order;
+        $this->saveOrder();
+        $this->saveOrderProducts();
     }
 
     /**
@@ -113,7 +119,7 @@ class OrderService implements OrderServiceInterface
         $client->fill($this->request->only($client->getFillable()));
         $client->save();
 
-        $this->basketService->getBasket()->setClient($client);
+        $this->client = $client;
     }
 
     /**
@@ -126,7 +132,7 @@ class OrderService implements OrderServiceInterface
         $order = new Order([
             "status_id"        => OrderStatusEnum::PAID,
             "sum"              => $this->basketService->getTotalSum(),
-            "client_id"        => $basket->getClient()->id,
+            "client_id"        => $this->client->id,
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),
             "delivery_type_id" => $this->request->input("delivery_type"),
@@ -135,28 +141,29 @@ class OrderService implements OrderServiceInterface
         ]);
         $order->save();
 
-        return $order;
+        $this->order = $order;
     }
 
     /**
-     * @param $order
+     *
      */
-    public function saveOrderProducts($order): void
+    public function saveOrderProducts(): void
     {
         $basket = $this->basketService->getBasket();
         $orderProducts = [];
 
         foreach ($basket->getProducts() as $basketProduct) {
             $orderProduct = new OrderProduct();
-            $orderProduct->order_id = $order->id;
-            $orderProduct->product_id = $basketProduct->getProduct()->id;
-            $orderProduct->quantity = $basketProduct->getQuantity();
+            $orderProduct->order_id      = $this->order->id;
+            $orderProduct->product_id    = $basketProduct->getProduct()->id;
+            $orderProduct->quantity      = $basketProduct->getQuantity();
             $orderProduct->product_price = $basketProduct->getPrice();
-            $orderProduct->sum = $basketProduct->getTotalPrice();
+            $orderProduct->sum           = $basketProduct->getTotalPrice();
 
             $orderProducts[] = $orderProduct;
         }
 
-        $order->products()->saveMany($orderProducts);
+        $this->order->products()->saveMany($orderProducts);
     }
+
 }

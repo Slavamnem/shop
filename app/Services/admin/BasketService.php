@@ -63,7 +63,7 @@ class BasketService
 
         return [
             "basketProducts" => $basket->getProducts(),
-            "sum"            => $basket->getSum()
+            "sum"            => $basket->getTotalPrice()
         ];
     }
 
@@ -93,11 +93,11 @@ class BasketService
     public function getNovaPoshtaDeliveryCost()
     {
         return resolve(NovaPoshta::class)->getOrderPrice([
-            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa
+            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa //TODO refactor
             "CityRecipient" => $this->getBasket()->getCity()->getRef(),
-            "Weight" => $this->getBasket()->getTotalWeight(),
+            "Weight" => $this->getBasket()->getBasketWeight(),
             "ServiceType" => "WarehouseWarehouse",
-            "Cost" => $this->getBasket()->getSum(),
+            "Cost" => $this->getBasket()->getTotalPrice(),
             "CargoType" => "Cargo",
             "SeatsAmount" => 1
         ])[0]->Cost;
@@ -108,7 +108,7 @@ class BasketService
      */
     public function getTotalSum()
     {
-        $totalSum = $this->getBasket()->getSum();
+        $totalSum = $this->getBasket()->getTotalPrice();
 
         if ($this->request->input("delivery_type") == DeliveryTypesEnum::NOVA_POSHTA) {
             $totalSum += $this->getNovaPoshtaDeliveryCost();

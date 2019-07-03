@@ -76,8 +76,8 @@ $( document ).ready(function() {
     });
 
     $(document).on("click", '.add-product-to-basket', function(){
-        // var newProductId = $('#new-product').val();
-        var newProductId = $(this).data('id');
+        var newProductId = $('#new-product').val(); //without elastic
+        //var newProductId = $(this).data('id'); //for elastic
 
         $.ajax({
             url: "/admin/orders/add_product_to_basket",
