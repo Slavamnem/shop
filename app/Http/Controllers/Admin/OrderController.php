@@ -81,10 +81,9 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @param NovaPoshta $novaPoshta
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(NovaPoshta $novaPoshta)
     {
@@ -95,7 +94,7 @@ class OrderController extends Controller
             "products" => Product::all(),
         ]);
 
-        dump($novaPoshta->getCities());
+        //dump($novaPoshta->getCities());
 
         return view("admin.orders.create", $data);
     }

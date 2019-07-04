@@ -40,66 +40,24 @@ class SyncNovaPoshtaCities extends Command
     public function handle()
     {
         $timeStart = time();
-
         $citiesFromNovaPoshta = resolve(NovaPoshta::class)->getCities();
-        //$citiesFromNovaPoshta = array_slice($citiesFromNovaPoshta, 0, 850);
-        $citiesToUpdate = City::whereIn("ref", collect($citiesFromNovaPoshta)->pluck("Ref"))->get();
 
-        if (count($citiesToUpdate)) {
-            $this->updateCities($citiesFromNovaPoshta, $citiesToUpdate);
+        $bar = $this->output->createProgressBar(count($citiesFromNovaPoshta));
+        foreach ($citiesFromNovaPoshta as $cityFromNovaPoshta) {
+            City::updateOrCreate(
+                ['ref' => $cityFromNovaPoshta->Ref],
+                [
+                    'name'    => $cityFromNovaPoshta->DescriptionRu,
+                    'city_id' => $cityFromNovaPoshta->CityID,
+                    'area'    => $cityFromNovaPoshta->Area,
+                ]
+            );
+            $bar->advance();
         }
-
-        $this->insertCities($citiesFromNovaPoshta, $citiesToUpdate);
+        $bar->finish();
 
         $timeEnd = time();
         $duration = $timeEnd - $timeStart;
-        $this->alert("\nTime: " . $duration);
-    }
-
-    /**
-     * @param $citiesFromNovaPoshta
-     * @param $citiesToUpdate
-     */
-    private function updateCities($citiesFromNovaPoshta, $citiesToUpdate)
-    {
-        $this->info("Update existing cities...");
-
-        $bar = $this->output->createProgressBar(count($citiesToUpdate));
-        foreach ($citiesToUpdate as $city) {
-            $cityFromNovaPoshta = collect($citiesFromNovaPoshta)->where("Ref", $city->ref)->first();
-
-            $city->name = $cityFromNovaPoshta->DescriptionRu;
-            $city->city_id = $cityFromNovaPoshta->CityID;
-            $city->area = $cityFromNovaPoshta->Area;
-            $city->save();
-
-            $bar->advance();
-        }
-
-        $bar->finish();
-        $this->info("\nUpdated " . count($citiesToUpdate) . " cities");
-    }
-
-    /**
-     * @param $citiesFromNovaPoshta
-     * @param $citiesToUpdate
-     */
-    private function insertCities($citiesFromNovaPoshta, $citiesToUpdate)
-    {
-        $citiesToInsert = collect($citiesFromNovaPoshta)->reject(function($city) use($citiesToUpdate){
-            return in_array($city->Ref, $citiesToUpdate->pluck("ref")->toArray());
-        });
-
-        $citiesToInsert = $citiesToInsert->map(function($city){
-            return [
-                'name'    => $city->DescriptionRu,
-                'ref'     => $city->Ref,
-                'city_id' => $city->CityID,
-                'area'    => $city->Area,
-            ];
-        });
-
-        City::insert($citiesToInsert->toArray());
-        $this->info("\nInserted " . count($citiesToInsert) . " cities");
+        $this->alert("Time: " . $duration);
     }
 }
