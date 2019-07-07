@@ -90,7 +90,7 @@
                                                 <select name="city" class="form-control" id="order-city">
                                                     <option value="0">Выберите город</option>
                                                     @forelse($cities as $city)
-                                                        <option value="{{$city->Ref}}">{{$city->DescriptionRu}}</option>
+                                                        <option value="{{$city->ref}}">{{$city->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
@@ -135,23 +135,9 @@
 
                         </div>
                         <div class="col-md-5">
-                            <h3>Корзина</h3>
+                            <h3>Корзина <button class="btn btn-danger remove-basket" type="button">Удалить</button></h3>
                             <table id="basket" class="table table-striped table-bordered" style="width:100%">
-                                <thead>
-                                <tr>
-                                    <th>Название товара</th>
-                                    <th>Цена</th>
-                                    <th>Количество</th>
-                                    <th>Сумма</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="4">
-                                            <p align="center">Корзина пуста</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                @include('admin.orders.basket')
                             </table>
                         </div>
                     </div>

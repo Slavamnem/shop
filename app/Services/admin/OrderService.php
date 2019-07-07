@@ -64,6 +64,14 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getFilteredOrders()
@@ -94,13 +102,13 @@ class OrderService implements OrderServiceInterface
      */
     public function getData($id = null)
     {
-        return [
+        return array_merge($this->basketService->getBasketData(), [
             "order"          => $id? Order::find($id) : null,
             "statuses"       => OrderStatus::all(),
             "payment_types"  => PaymentType::all(),
             "delivery_types" => DeliveryType::all(),
             "url"            => env("DOMAIN_NAME") . "/" . $this->request->path(),
-        ];
+        ]);
     }
 
     public function createOrder()
@@ -119,13 +127,12 @@ class OrderService implements OrderServiceInterface
         $client->fill($this->request->only($client->getFillable()));
         $client->save();
 
+        $basket = $this->basketService->getBasket();
+        $basket->setClient($client);
         $this->client = $client;
     }
 
-    /**
-     * @return Order
-     */
-    public function saveOrder(): Order
+    public function saveOrder()
     {
         $basket = $this->basketService->getBasket();
 
@@ -136,7 +143,7 @@ class OrderService implements OrderServiceInterface
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),
             "delivery_type_id" => $this->request->input("delivery_type"),
-            "city"             => $basket->getCity()->getName(),
+            "city"             => $basket->getCity()->name,
             "warehouse"        => $this->request->input("warehouse"),
         ]);
         $order->save();
@@ -155,7 +162,7 @@ class OrderService implements OrderServiceInterface
         foreach ($basket->getProducts() as $basketProduct) {
             $orderProduct = new OrderProduct();
             $orderProduct->order_id      = $this->order->id;
-            $orderProduct->product_id    = $basketProduct->getProduct()->id;
+            $orderProduct->product_id    = $basketProduct->product->id;
             $orderProduct->quantity      = $basketProduct->getQuantity();
             $orderProduct->product_price = $basketProduct->getPrice();
             $orderProduct->sum           = $basketProduct->getTotalPrice();

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Basket extends Model
 {
-    protected $table = "basket";
+    protected $table = "baskets";
 
     protected $fillable = ["client_id", "city_id", "weight", "status"];
 
@@ -23,5 +23,11 @@ class Basket extends Model
     public function products()
     {
         return $this->hasMany(BasketProduct::class, "basket_id", "id");
+    }
+
+    ////////////////////////////////
+    public function setCity($cityId)
+    {
+        $this->city_id = $cityId;
     }
 }

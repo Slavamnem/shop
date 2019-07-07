@@ -14,4 +14,43 @@ class BasketProduct extends Model
     {
         return $this->belongsTo(Basket::class, "basket_id", "id");
     }
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, "id", "product_id");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->product->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuantity()
+    {
+        return $this->attributes['quantity'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->attributes['price'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalPrice()
+    {
+        return $this->getPrice() * $this->getQuantity();
+    }
 }

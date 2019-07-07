@@ -97,4 +97,10 @@ class Product extends Model
     {
         return $this->fieldsTranslations;
     }
+
+    public function getPrice() // TODO shares
+    {
+        return $this->attributes['base_price'];
+    }
+
 }

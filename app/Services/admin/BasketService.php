@@ -2,7 +2,8 @@
 
 namespace App\Services\Admin;
 
-use App\Components\Basket;
+use App\Basket;
+use App\Components\BasketObject;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
@@ -10,6 +11,7 @@ use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Services\NovaPoshtaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -30,14 +32,17 @@ class BasketService
     }
 
     /**
-     * @return Basket $basket
+     * @return BasketObject
      */
     public function getBasket()
     {
-        if (Session::has("basket")) {
-            $basket = Session::get("basket");
+        if (Session::has("basketId")) {
+            $basket = new BasketObject(Basket::findOrFail(Session::get("basketId"))); // TODO если нет баскета в бд страница не откроется
         } else {
-            $basket = new Basket();
+            $basketDb = new Basket();
+            $basketDb->save();
+            Session::put("basketId", $basketDb->id);
+            $basket = new BasketObject($basketDb);
         }
 
         return $basket;
@@ -51,7 +56,6 @@ class BasketService
         $basket = $this->getBasket();
 
         $basket->addProduct(Product::find($productId));
-        Session::put("basket", $basket);
     }
 
     /**
@@ -59,11 +63,11 @@ class BasketService
      */
     public function getBasketData()
     {
-        $basket = Session::get("basket");
+        $basketObject = $this->getBasket();
 
         return [
-            "basketProducts" => $basket->getProducts(),
-            "sum"            => $basket->getTotalPrice()
+            "basketProducts" => $basketObject->getBasket()->products,
+            "sum"            => $basketObject->getTotalPrice()
         ];
     }
 
@@ -72,46 +76,24 @@ class BasketService
      */
     public function clearBasket()
     {
-        Session::forget("basket");
+        Session::forget("basketId");
     }
 
-    public function selectCity() // TODO refactor
+    public function selectCity()
     {
-        $basket = $this->getBasket();
-
-        $basket->setCity($this->request->input("cityRef"));
-        Session::put("basket", $basket);
-
-//        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-//            return $this->getWareHouses();
-//        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNovaPoshtaDeliveryCost()
-    {
-        return resolve(NovaPoshta::class)->getOrderPrice([
-            "CitySender" => "000655d8-4079-11de-b509-001d92f78698", //Odessa //TODO refactor
-            "CityRecipient" => $this->getBasket()->getCity()->getRef(),
-            "Weight" => $this->getBasket()->getBasketWeight(),
-            "ServiceType" => "WarehouseWarehouse",
-            "Cost" => $this->getBasket()->getTotalPrice(),
-            "CargoType" => "Cargo",
-            "SeatsAmount" => 1
-        ])[0]->Cost;
+        $this->getBasket()->setCity($this->request->input("cityRef"));
     }
 
     /**
      * @return int|mixed
      */
-    public function getTotalSum()
-    {
+    public function getTotalSum() //TODO сделать классы типов доставки и у каждого метод с наценкой на общую стоимость, итого = цена + наценка типа доставки
+    { // TODO обавить в таблицу заказов айди корзины
         $totalSum = $this->getBasket()->getTotalPrice();
 
         if ($this->request->input("delivery_type") == DeliveryTypesEnum::NOVA_POSHTA) {
-            $totalSum += $this->getNovaPoshtaDeliveryCost();
+            $novaPoshtaService = new NovaPoshtaService();
+            $totalSum += $novaPoshtaService->getDeliveryCost($this->getBasket());
         }
 
         return $totalSum;

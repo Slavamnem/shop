@@ -104,6 +104,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 
         Route::any("telegram/{id}", "OrderController@pushToTelegram")->name("admin-orders-push-to-telegram");
         Route::any("add_product_to_basket", "OrderController@addBasketProduct")->name("admin-orders-add-product-to-basket");
+        Route::any("remove_basket", "OrderController@removeBasket")->name("admin-orders-remove-basket");
         Route::any("selectCity", "OrderController@selectCity")->name("admin-orders-select-city");
         Route::any("selectDeliveryType", "OrderController@selectDeliveryType")->name("admin-orders-select-delivery-type");
     });

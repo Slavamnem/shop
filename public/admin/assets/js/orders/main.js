@@ -92,6 +92,19 @@ $( document ).ready(function() {
         });
     });
 
+    $(document).on("click", '.remove-basket', function(){
+        $.ajax({
+            url: "/admin/orders/remove_basket",
+            method: 'POST',
+            success: function(res){
+                $("#basket").html(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+    });
+
     $('.push-to-telegram').click(function(){
 
         var orderId = $(this).data('id');

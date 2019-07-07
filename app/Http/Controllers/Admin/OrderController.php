@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\City;
 use App\Client;
 use App\Components\Basket;
 use App\Components\BasketProduct;
@@ -83,14 +84,13 @@ class OrderController extends Controller
     /**
      * @param NovaPoshta $novaPoshta
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(NovaPoshta $novaPoshta)
     {
-        $this->basketService->clearBasket();
+        //$this->basketService->clearBasket();
 
         $data = array_merge($this->service->getData(), [
-            "cities"   => $novaPoshta->getCities(),
+            "cities"   => City::all(),
             "products" => Product::all(),
         ]);
 
@@ -107,10 +107,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = $this->service->createOrder();
-        $order->notify(new NewOrderNotification($request->input("link")));
+        $this->service->createOrder();
+        $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
 
-        return redirect()->route("admin-orders-edit", ['id' => $order->id]);
+        return redirect()->route("admin-orders-edit", ['id' => $this->service->getOrder()->id]);
     }
 
     /**
@@ -178,6 +178,12 @@ class OrderController extends Controller
         $orders = $this->service->getFilteredOrders();
 
         return view("admin.orders.filtered_table", compact('orders'));
+    }
+
+    public function removeBasket()
+    {
+        $this->basketService->clearBasket();
+        return view("admin.orders.basket", ['basketProducts' => []])->render();
     }
 
     /**
