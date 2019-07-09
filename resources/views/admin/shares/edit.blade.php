@@ -57,6 +57,10 @@
                                         <label for="inputText3" class="col-form-label">Скидка %</label>
                                         <input id="inputText3" name="discount" type="number" class="form-control" value="{{ $share->discount }}">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Приоритет</label>
+                                        <input id="inputText3" name="priority" type="number" class="form-control" value="{{ $share->priority }}">
+                                    </div>
 
                                     <div class="form-group" style="border:2px solid grey; border-radius:10px; padding: 20px;">
                                         <label for="inputText3" class="col-form-label">Условия</label>

@@ -20,7 +20,8 @@ class Order extends Model
         "payment_type_id",
         "delivery_type_id",
         "city",
-        "warehouse"
+        "warehouse",
+        "basket_id"
     ];
 
     public function status()

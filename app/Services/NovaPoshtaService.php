@@ -42,13 +42,13 @@ class NovaPoshtaService
     public function getDeliveryCost(BasketObject $basketObject)
     {
         return resolve(NovaPoshta::class)->getOrderPrice([
-            "CitySender" => env('NOVA_POSHTA_CITY_SENDER'), //Odessa
+            "CitySender"    => env('NOVA_POSHTA_CITY_SENDER'), //Odessa
             "CityRecipient" => $basketObject->getCity()->ref,
-            "Weight" => $basketObject->getBasketWeight(),
-            "ServiceType" => "WarehouseWarehouse",
-            "Cost" => $basketObject->getTotalPrice(),
-            "CargoType" => "Cargo",
-            "SeatsAmount" => 1
+            "Weight"        => $basketObject->getBasketWeight(),
+            "ServiceType"   => "WarehouseWarehouse",
+            "Cost"          => $basketObject->getTotalPrice(),
+            "CargoType"     => "Cargo",
+            "SeatsAmount"   => 1
         ])[0]->Cost;
     }
 }

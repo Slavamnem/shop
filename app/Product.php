@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\Admin\ShareService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -98,9 +99,19 @@ class Product extends Model
         return $this->fieldsTranslations;
     }
 
-    public function getPrice() // TODO shares
+    public function getPrice()
     {
-        return $this->attributes['base_price'];
+        $price = $this->attributes['base_price'];
+
+        if ($productShare = ShareService::getProductShare($this)) {
+            if ($productShare->fix_price) {
+                $price = $productShare->fix_price;
+            } elseif ($productShare->discount) {
+                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
+            }
+        }
+
+        return $price;
     }
 
 }

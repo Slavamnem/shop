@@ -49,6 +49,8 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
+     * Те условия что уже сохранены у акции
+     *
      * @param $share
      * @return array
      */
@@ -74,6 +76,8 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
+     * Список всех условий, которые можно добавлять у акции
+     *
      * @return array
      */
     public function getNewConditionData()
@@ -89,6 +93,8 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
+     * Все возможные значения конкретного условия
+     *
      * @param string $conditionKey
      * @return array
      */
@@ -142,18 +148,6 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function getFilteredShares()
-    {
-        $shares = Share::query()
-            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
-            ->paginate(10);
-
-        return $shares;
-    }
-
-    /**
      * @return \Generator
      */
     private function conditionsGenerator()
@@ -175,7 +169,93 @@ class ShareService implements ShareServiceInterface
         return (!empty($condition) and !empty($this->request->conditions_values[$num]));
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getFilteredShares()
+    {
+        $shares = Share::query()
+            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
+            ->paginate(10);
+
+        return $shares;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function getProductShare(Product $product)
+    {
+        $productShares = self::getProductShares($product);
+
+        return collect($productShares)->sortByDesc('priority')->first();
+    }
+
+    public static function getProductShares(Product $product)
+    {
+        $shares = Share::active()->get();
+        $productShares = [];
+
+        foreach ($shares as $share) {
+            if (self::hasShare($product, $share)){
+                $productShares[] = $share;
+            }
+        }
+
+        return $productShares;
+    }
+
+    public static function hasShare($product, $share)
+    {
+        $shareProducts = self::getShareProducts($share);
+
+        return (!empty($shareProducts->where("id", $product->id)->first()));
+    }
+
+    private static function getShareProducts($share)
+    {
+        $query = Product::query();
+
+        foreach ($share->conditions as $conditionsDataItem) {
+            foreach ($conditionsDataItem as $key => $item) {
+                if (self::isPropertyCondition($item)) {
+                    if ($item["operation"] == "!=") {
+                        $query = $query->whereDoesntHave("properties", function($q) use($item){
+                            $q->where("product_properties.property_id", self::getPropertyConditionId($item))
+                                ->where("product_properties.value", $item["value"]);
+                        });
+                    } else {
+                        $query = $query->whereHas("properties", function($q) use($item){
+                            $q->where("product_properties.property_id", self::getPropertyConditionId($item))
+                                ->where("product_properties.value", $item["operation"], $item["value"]);
+                        });
+                    }
+                } else {
+                    if ($key == "and") {
+                        $query = $query->where($item["field"], $item["operation"], $item["value"]);
+                    } else {
+                        $query = $query->orWhere($item["field"], $item["operation"], $item["value"]);
+                    }
+                }
+            }
+        }
+
+        return $query->get();
+    }
+
+    private static function isPropertyCondition($item)
+    {
+        return strpos($item["field"], "property-") !== false;
+    }
+
+    private static function getPropertyConditionId($item)
+    {
+        return explode("-", $item["field"])[1];
+    }
 }
+
 
 
 

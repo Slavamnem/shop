@@ -145,6 +145,7 @@ class OrderService implements OrderServiceInterface
             "delivery_type_id" => $this->request->input("delivery_type"),
             "city"             => $basket->getCity()->name,
             "warehouse"        => $this->request->input("warehouse"),
+            "basket_id"        => $basket->getBasket()->id
         ]);
         $order->save();
 

@@ -87,15 +87,10 @@ class BasketService
     /**
      * @return int|mixed
      */
-    public function getTotalSum() //TODO сделать классы типов доставки и у каждого метод с наценкой на общую стоимость, итого = цена + наценка типа доставки
-    { // TODO обавить в таблицу заказов айди корзины
-        $totalSum = $this->getBasket()->getTotalPrice();
+    public function getTotalSum() // TODO добавить в таблицу заказов айди корзины
+    {
+        $delivery = DeliveryTypesEnum::getDelivery($this->request->input("delivery_type"));
 
-        if ($this->request->input("delivery_type") == DeliveryTypesEnum::NOVA_POSHTA) {
-            $novaPoshtaService = new NovaPoshtaService();
-            $totalSum += $novaPoshtaService->getDeliveryCost($this->getBasket());
-        }
-
-        return $totalSum;
+        return $this->getBasket()->getTotalPrice() + $delivery->getExtraPrice($this->getBasket());
     }
 }

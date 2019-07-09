@@ -23,7 +23,7 @@
             </tr>
         @endforelse
     </tbody>
-    @if(isset($sum))
+    @if(!empty($sum))
         <tfoot>
         <tr>
             <th colspan="3">Сумма</th>

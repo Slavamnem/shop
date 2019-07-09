@@ -43,18 +43,18 @@ class BasketObject
      */
     public function addProduct(Product $product)
     {
-        //dump($this->getProducts());
         if ($this->hasProduct($product->id)) {
             BasketProduct::query()
                 ->where("basket_id", $this->basket->id)
                 ->where("product_id", $product->id)
                 ->increment("quantity");
         } else {
-            $this->basket->products()->save(new BasketProduct([
-                'product_id' => $product->id,
-                'quantity'   => 1,
-                'price'      => $product->getPrice()
-            ]));
+            $this->basket->products()
+                ->save(new BasketProduct([
+                    'product_id' => $product->id,
+                    'quantity'   => 1,
+                    'price'      => $product->getPrice()
+                ]));
         }
     }
 

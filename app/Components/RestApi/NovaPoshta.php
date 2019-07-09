@@ -97,6 +97,7 @@ class NovaPoshta implements NovaPoshtaInterface
     /**
      * @param null $extraFields
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getSettlements($extraFields = null)
     {
@@ -125,7 +126,7 @@ class NovaPoshta implements NovaPoshtaInterface
     {
         try {
             return $this->client->request("POST", $this->apiUrl, $data);
-        } catch(BadResponseException $exception) {
+        } catch (BadResponseException $exception) {
             Log::info("Nova Poshta request error");
         }
     }
