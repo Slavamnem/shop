@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Components\RestApi\NovaPoshta;
+use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
+use App\Services\Admin\OrderPriceCalcService;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
 use App\Services\Admin\ShareService;
@@ -51,6 +53,8 @@ class AppServiceProvider extends ServiceProvider
             // $event->job->payload()
             Log::info("after");
         });
+
+        View::share("notifications", Notification::all());
     }
 
     /**
@@ -67,5 +71,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);
         $this->app->bind(BasketService::class);
+        $this->app->bind(OrderPriceCalcService::class);
     }
 }

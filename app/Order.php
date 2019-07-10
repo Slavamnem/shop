@@ -62,4 +62,9 @@ class Order extends Model
 
         return $statuses[$this->attributes["status_id"]];
     }
+
+    public function __toString()
+    {
+        return $this->attributes[''];
+    }
 }

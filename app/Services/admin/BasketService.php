@@ -21,14 +21,19 @@ class BasketService
      * @var Request
      */
     private $request;
+    /**
+     * @var OrderPriceCalcService
+     */
+    private $priceCalcService;
 
     /**
      * ProductServiceInterface constructor.
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, OrderPriceCalcService $priceCalcService)
     {
         $this->request = $request;
+        $this->priceCalcService = $priceCalcService;
     }
 
     /**
@@ -37,15 +42,15 @@ class BasketService
     public function getBasket()
     {
         if (Session::has("basketId")) {
-            $basket = new BasketObject(Basket::findOrFail(Session::get("basketId"))); // TODO если нет баскета в бд страница не откроется
+            $basketObject = new BasketObject(Basket::findOrFail(Session::get("basketId"))); // TODO если нет баскета в бд страница не откроется
         } else {
             $basketDb = new Basket();
             $basketDb->save();
             Session::put("basketId", $basketDb->id);
-            $basket = new BasketObject($basketDb);
+            $basketObject = new BasketObject($basketDb);
         }
 
-        return $basket;
+        return $basketObject;
     }
 
     /**
@@ -53,9 +58,9 @@ class BasketService
      */
     public function addBasketProduct($productId)
     {
-        $basket = $this->getBasket();
+        $basketObject = $this->getBasket();
 
-        $basket->addProduct(Product::find($productId));
+        $basketObject->addProduct(Product::find($productId));
     }
 
     /**
@@ -71,9 +76,6 @@ class BasketService
         ];
     }
 
-    /**
-     *
-     */
     public function clearBasket()
     {
         Session::forget("basketId");
@@ -87,10 +89,10 @@ class BasketService
     /**
      * @return int|mixed
      */
-    public function getTotalSum() // TODO добавить в таблицу заказов айди корзины
+    public function getTotalOrderPrice()
     {
-        $delivery = DeliveryTypesEnum::getDelivery($this->request->input("delivery_type"));
-
-        return $this->getBasket()->getTotalPrice() + $delivery->getExtraPrice($this->getBasket());
+        $this->priceCalcService->setDelivery($this->request->input("delivery_type"));
+        $this->priceCalcService->setPayment($this->request->input("payment_type"));
+        return $this->priceCalcService->calcOrderPrice($this->getBasket());
     }
 }

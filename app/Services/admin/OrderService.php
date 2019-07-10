@@ -138,7 +138,7 @@ class OrderService implements OrderServiceInterface
 
         $order = new Order([
             "status_id"        => OrderStatusEnum::PAID,
-            "sum"              => $this->basketService->getTotalSum(),
+            "sum"              => $this->basketService->getTotalOrderPrice(),
             "client_id"        => $this->client->id,
             "description"      => $this->request->input("description"),
             "payment_type_id"  => $this->request->input("payment_type"),
@@ -152,9 +152,6 @@ class OrderService implements OrderServiceInterface
         $this->order = $order;
     }
 
-    /**
-     *
-     */
     public function saveOrderProducts(): void
     {
         $basket = $this->basketService->getBasket();

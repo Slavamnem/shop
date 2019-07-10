@@ -12,6 +12,7 @@ use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Admin\EditOrderRequest;
+use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\OrderProduct;
@@ -122,6 +123,8 @@ class OrderController extends Controller
     public function show($id)
     {
         $data = $this->service->getData($id);
+
+        $data['order']->notify(new DefaultNotification());
 
         return view("admin.orders.show", $data);
     }

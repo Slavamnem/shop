@@ -3,7 +3,9 @@
 namespace App\Enums;
 
 use App\Components\Enum;
+use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
+use App\Components\Order\Delivery\PickUpDelivery;
 
 class DeliveryTypesEnum extends Enum
 {
@@ -13,6 +15,8 @@ class DeliveryTypesEnum extends Enum
 
     public const DELIVERY_TYPES = [
         self::NOVA_POSHTA => NovaPoshtaDelivery::class,
+        self::JUSTIN      => JustinDelivery::class,
+        self::SELF        => PickUpDelivery::class
     ];
 
     public static function getValues()
