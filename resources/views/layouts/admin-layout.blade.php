@@ -49,51 +49,34 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown notification">
-                            <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
+                            <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-fw fa-bell"></i>
+                                @if(count($newNotifications))
+                                    <span class="indicator"></span>
+                                @endif
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
-                                    <div class="notification-title"> Notification</div>
+                                    <div class="notification-title" style="background-color: red"> Notification</div>
                                     <div class="notification-list">
                                         <div class="list-group">
-                                            @foreach($notifications as $notification)
-                                                <a href="#" class="list-group-item list-group-item-action active">
+                                            @foreach($newNotifications as $notification)
+                                                <a href="{{route('admin-notifications-show', ['id' => $notification->id])}}" class="list-group-item list-group-item-action active" style="background-color: gold">
                                                     <div class="notification-info">
                                                         <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">{{$notification->preview}}</span>
+                                                        <div class="notification-list-user-block">
+                                                            <span class="notification-list-user-name">{{$notification->preview}}</span>
+                                                            <span style="color:{{$notification->priority->color}}; font-size:12px; font-family:Circular Std Medium">({{$notification->priority->name}})</span>
                                                             <div class="notification-date">{{$notification->created_at}}</div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             @endforeach
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-3.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham </span>is now following you
-                                                        <div class="notification-date">2 days ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-4.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="assets/images/avatar-5.jpg" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="list-footer"> <a href="#">View all notifications</a></div>
+                                    <div class="list-footer"> <a href="{{route('admin-notifications')}}">View all notifications</a></div>
                                 </li>
                             </ul>
                         </li>
@@ -253,6 +236,10 @@
 
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "ceo"){ {{ "active" }} } @endif" href="{{ route("admin-ceo") }}"><i class="fas fa-fw fa-table"></i>CEO</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "notifications"){ {{ "active" }} } @endif" href="{{ route("admin-notifications") }}"><i class="fas fa-fw fa-table"></i>Уведомления</a>
                             </li>
 
                             <li class="nav-divider">

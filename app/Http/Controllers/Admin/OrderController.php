@@ -110,6 +110,7 @@ class OrderController extends Controller
     {
         $this->service->createOrder();
         $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
+        $this->service->getOrder()->notify(new DefaultNotification());
 
         return redirect()->route("admin-orders-edit", ['id' => $this->service->getOrder()->id]);
     }
@@ -123,8 +124,6 @@ class OrderController extends Controller
     public function show($id)
     {
         $data = $this->service->getData($id);
-
-        $data['order']->notify(new DefaultNotification());
 
         return view("admin.orders.show", $data);
     }

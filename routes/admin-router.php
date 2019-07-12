@@ -34,6 +34,17 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::post('filter', "ClientController@filter");
     });
 
+    Route::group(['prefix' => "notifications"], function(){
+        Route::get("", "NotificationController@index")->name("admin-notifications");
+        Route::get("edit/{id}", "NotificationController@edit")->name("admin-notifications-edit");
+        Route::post("update/{id}", "NotificationController@update")->name("admin-notifications-update");
+        Route::any("delete/{id}", "NotificationController@destroy")->name("admin-notifications-delete");
+        Route::get("create", "NotificationController@create")->name("admin-notifications-create");
+        Route::post("store", "NotificationController@store")->name("admin-notifications-store");
+        Route::get("show/{id}", "NotificationController@show")->name("admin-notifications-show");
+        Route::post('filter', "NotificationController@filter");
+    });
+
     Route::group(['prefix' => "categories"], function() {
         Route::get("", "CategoryController@index")->name("admin-categories");
         Route::get("edit/{id}", "CategoryController@edit")->name("admin-categories-edit");
