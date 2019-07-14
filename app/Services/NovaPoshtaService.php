@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use App\City;
-use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
+use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 
-class NovaPoshtaService
+class NovaPoshtaService implements NovaPoshtaServiceInterface
 {
     /**
      * @var mixed
@@ -36,10 +37,10 @@ class NovaPoshtaService
     }
 
     /**
-     * @param BasketObject $basketObject
+     * @param BasketObjectInterface $basketObject
      * @return mixed
      */
-    public function getDeliveryCost(BasketObject $basketObject)
+    public function getDeliveryCost(BasketObjectInterface $basketObject)
     {
         return resolve(NovaPoshta::class)->getOrderPrice([
             "CitySender"    => env('NOVA_POSHTA_CITY_SENDER'), //Odessa

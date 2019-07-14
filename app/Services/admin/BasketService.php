@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Basket;
 use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
@@ -27,8 +28,9 @@ class BasketService
     private $priceCalcService;
 
     /**
-     * ProductServiceInterface constructor.
+     * BasketService constructor.
      * @param Request $request
+     * @param OrderPriceCalcService $priceCalcService
      */
     public function __construct(Request $request, OrderPriceCalcService $priceCalcService)
     {
@@ -37,7 +39,7 @@ class BasketService
     }
 
     /**
-     * @return BasketObject
+     * @return BasketObjectInterface
      */
     public function getBasket()
     {

@@ -51,16 +51,16 @@
                         <li class="nav-item dropdown notification">
                             <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-fw fa-bell"></i>
-                                @if(count($newNotifications))
+                                @if(count($notifications))
                                     <span class="indicator"></span>
                                 @endif
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+                            <ul class="dropdown-menu dropdown-menu-right notification-dropdown" id="notifications">
                                 <li>
                                     <div class="notification-title" style="background-color: red"> Notification</div>
                                     <div class="notification-list">
                                         <div class="list-group">
-                                            @foreach($newNotifications as $notification)
+                                            @foreach($notifications as $notification)
                                                 <a href="{{route('admin-notifications-show', ['id' => $notification->id])}}" class="list-group-item list-group-item-action active" style="background-color: gold">
                                                     <div class="notification-info">
                                                         <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
@@ -530,6 +530,11 @@
     </div>
     <!-- ============================================================== -->
     <!-- end main wrapper  -->
+
+
+    <div class="dropdown-menu dropdown-menu-right modal" id="new_notifications"></div>
+
+
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
@@ -552,6 +557,8 @@
     <script src="{{ asset("public/admin/assets/vendor/charts/c3charts/d3-5.4.0.min.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/c3charts/C3chartjs.js") }}"></script>
     <script src="{{ asset("public/admin/assets/libs/js/dashboard-ecommerce.js") }}"></script>
+
+    <script src="{{ asset("public/admin/assets/js/main/main.js") }}"></script>
 
     @yield("custom-js")
     @yield("custom-css")

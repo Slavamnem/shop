@@ -54,8 +54,8 @@ class AppServiceProvider extends ServiceProvider
             Log::info("after");
         });
 
-        View::share("newNotifications", Notification::query()
-            ->where("status", 'active')
+        View::share("notifications", Notification::query()
+//            ->where("status", 'active')
             ->orderByDesc('created_at')
             ->take(10)
             ->get());

@@ -2,16 +2,16 @@
 
 namespace App\Components\Order\Payment;
 
-use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\PaymentTypeInterface;
 
 class CashPayment implements PaymentTypeInterface
 {
     /**
-     * @param BasketObject $basket
+     * @param BasketObjectInterface $basket
      * @return int|mixed
      */
-    public function getExtraPrice(BasketObject $basket)
+    public function getExtraPrice(BasketObjectInterface $basket)
     {
         return 0;
     }

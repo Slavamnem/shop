@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin\Interfaces;
 
-use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 
 interface OrderPriceCalcServiceInterface
 {
@@ -17,8 +17,8 @@ interface OrderPriceCalcServiceInterface
     public function setPayment($paymentType);
 
     /**
-     * @param BasketObject $basketObject
+     * @param BasketObjectInterface $basketObject
      * @return int|mixed
      */
-    public function calcOrderPrice(BasketObject $basketObject);
+    public function calcOrderPrice(BasketObjectInterface $basketObject);
 }

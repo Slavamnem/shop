@@ -44,6 +44,11 @@ class LoginController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
+
+        if ($this->notifyLogin()) {
+            return redirect()->back();
+        }
+
         $this->middleware('guest')->except('logout');
     }
 
@@ -52,15 +57,22 @@ class LoginController extends Controller
         return "login";
     }
 
-    public function __destruct()
+    private function notifyLogin()
     {
-        if (Auth::check()) {
-            Auth::user()->notify(new DefaultNotification());
-        } else {
-            (new User(
-                ['login' => $this->request->input('login'), 'password' => $this->request->input('password')]
-            ))->notify(new DefaultNotification());
-        }
+        if ($this->request->has('login') and $this->request->has('password')) {
+            Auth::attempt([
+                'login'    => $this->request->input('login'),
+                'password' => $this->request->input('password'),
+            ]);
 
+            if (Auth::check()) {
+                Auth::user()->notify(new DefaultNotification());
+                return true;
+            } else {
+                (new User(
+                    ['login' => $this->request->input('login'), 'password' => $this->request->input('password')]
+                ))->notify(new DefaultNotification());
+            }
+        }
     }
 }

@@ -2,13 +2,11 @@
 
 namespace App\Components\Interfaces;
 
-use App\Components\BasketObject;
-
 interface DeliveryTypeInterface
 {
     /**
-     * @param BasketObject $basket
+     * @param BasketObjectInterface $basket
      * @return mixed
      */
-    public function getExtraPrice(BasketObject $basket);
+    public function getExtraPrice(BasketObjectInterface $basket);
 }

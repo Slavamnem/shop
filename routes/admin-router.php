@@ -43,6 +43,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::post("store", "NotificationController@store")->name("admin-notifications-store");
         Route::get("show/{id}", "NotificationController@show")->name("admin-notifications-show");
         Route::post('filter', "NotificationController@filter");
+        Route::get('check_new', "NotificationController@checkNew");
     });
 
     Route::group(['prefix' => "categories"], function() {

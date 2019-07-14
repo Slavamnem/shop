@@ -44,9 +44,8 @@ class DefaultNotification extends Notification
         if (isset($user->name) or isset($user->last_name)) {
             $message = "Пользователь " . trim($user->name . " " . $user->last_name) . " вошел в админ-панель.";
         } else {
-            $message = "Попытка входа в админ-панель\nЛогин:{$user->login}\nПароль:{$user->password}";
+            $message = "Попытка входа в админ-панель\nЛогин: {$user->login}\nПароль: {$user->password}";
         }
-        //$message = json_encode($user);
 
         \App\Notification::create([
             'preview'     => 'Вход в админ-панель',

@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\DeliveryTypeInterface;
 use App\Components\Interfaces\PaymentTypeInterface;
 use App\Enums\DeliveryTypesEnum;
@@ -39,10 +39,10 @@ class OrderPriceCalcService implements OrderPriceCalcServiceInterface
     }
 
     /**
-     * @param BasketObject $basketObject
+     * @param BasketObjectInterface $basketObject
      * @return int|mixed
      */
-    public function calcOrderPrice(BasketObject $basketObject)
+    public function calcOrderPrice(BasketObjectInterface $basketObject)
     {
         return $basketObject->getTotalPrice() + $this->delivery->getExtraPrice($basketObject) + $this->payment->getExtraPrice($basketObject);
     }

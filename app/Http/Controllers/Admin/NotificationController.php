@@ -134,4 +134,25 @@ class NotificationController extends Controller
         //return view("admin.notifications.filtered_table", compact('notifications'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|int
+     */
+    public function checkNew()
+    {
+        $notifications = Notification::query()
+            ->where("status", 'active')
+            ->orderByDesc('created_at')
+            ->get();
+
+        Notification::query()
+            ->where('status', 'active')
+            ->update(['status' => 'close']);
+
+        if (count($notifications)) {
+            return view("admin.notifications.new-notifications", compact('notifications'));
+        } else {
+            return 0;
+        }
+    }
+
 }

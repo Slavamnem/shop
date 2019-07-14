@@ -52,3 +52,20 @@
 .admin-filter-input{
     max-width: 50px;
 }
+
+#new_notifications{
+    margin-left:auto;
+    margin-right:auto;
+    width:40%;
+    margin-top:50px;
+    height: fit-content;
+    padding-left: 14px;
+}
+
+#notifications{
+    height: fit-content;
+}
+
+.notification-list-group-item{
+    height:100px;
+}

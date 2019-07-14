@@ -6,11 +6,12 @@ use App\Basket;
 use App\BasketProduct;
 use App\City;
 use App\Client;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Product;
 use App\Services\Admin\BasketService;
 
-class BasketObject
+class BasketObject implements BasketObjectInterface
 {
     /**
      * @var Basket|null
@@ -106,8 +107,8 @@ class BasketObject
     }
 
     /**
-     * @return int
-     */
+ * @return int
+ */
     public function getBasketWeight()
     {
         $weight = 0;
