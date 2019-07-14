@@ -15,6 +15,7 @@ use App\Product;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
@@ -50,7 +51,7 @@ class StatisticController extends Controller
         $profit[0] = $profit[1] = range(1, 12);
 
         foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::CARD_ONLINE) {
+            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY) {
                 $profit[0][$order->created_at->month - 1] += $order->sum;
             } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
                 $profit[1][$order->created_at->month - 1] += $order->sum;
@@ -66,13 +67,30 @@ class StatisticController extends Controller
             ]
         ];
 
-        dump($data);
+        //dump($data);
 
         $categories = Category::all();
 
         //dump(date("m"));
 
         return view("admin.stats.index", compact('categories'));
+    }
+
+    public function getTopProducts()
+    {
+        $products = Product::query()->get();
+
+        $data = collect(DB::select(
+            "SELECT p.id, p.name, p.base_price, SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
+            FROM products AS p
+            LEFT JOIN order_products AS o
+            ON o.product_id = p.id
+            GROUP BY p.id, p.name, p.base_price"
+        ));
+
+        dump($data);
+
+        return view("admin.stats.top_products", compact('products', 'data'));
     }
 
     public function getOrdersStats() // TODO move to stats service
@@ -104,7 +122,7 @@ class StatisticController extends Controller
         $profit[1] = range(1, 12);
 
         foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::CARD_ONLINE) {
+            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY) {
                 $profit[0][$order->created_at->month - 1] += $order->sum;
             } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
                 $profit[1][$order->created_at->month - 1] += $order->sum;

@@ -30,8 +30,8 @@ class ClientService implements ClientServiceInterface
     public function getData($id)
     {
         return [
-            "client"  => Client::find($id),
-            "rating"  => $this->getClientRating($id),
+            "client" => Client::find($id),
+            "rating" => $this->getClientRating($id),
             "profit" => $this->getClientProfit($id)
         ];
     }
