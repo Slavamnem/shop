@@ -155,7 +155,11 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
     Route::group(['prefix' => "stats"], function(){
         Route::get("", "StatisticController@index")->name("admin-stats");
         Route::get("top_products", "StatisticController@getTopProducts")->name("admin-stats-top-products");
+        Route::get("products_list", "StatisticController@getProductsList")->name("admin-stats-products-list-products");
+        Route::get("top_clients", "StatisticController@getTopClients")->name("admin-stats-top-clients");
+
         Route::post("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
+        Route::post("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
         Route::post("orders_payment_types_stats", "StatisticController@getOrdersPaymentTypesStats")->name("admin-stats-orders-payment-types");
 //        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
 //        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");

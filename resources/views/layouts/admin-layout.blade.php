@@ -208,6 +208,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ route("admin-stats-top-products") }}">Топ товаров</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route("admin-stats-top-clients") }}">Топ клиентов</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

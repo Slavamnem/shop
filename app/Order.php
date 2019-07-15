@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\OrderStatusEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -47,6 +48,12 @@ class Order extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, "client_id", "id");
+    }
+
+    public function scopeThisMonth($query)
+    {
+        $now = Carbon::now();
+        return $query->whereYear("created_at", $now->year)->whereMonth("created_at", $now->month);
     }
 
     /**

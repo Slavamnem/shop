@@ -5,6 +5,7 @@ namespace App;
 use App\Services\Admin\ShareService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -81,6 +82,17 @@ class Product extends Model
         return $this->hasOne(ProductImage::class, "product_id", 'id')->where("main", true);
     }
 
+    public function sales()
+    {
+        return DB::select(
+            "SELECT SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
+            FROM products AS p
+            LEFT JOIN order_products AS o
+            ON o.product_id = p.id
+            WHERE p.id = {$this->attributes['id']}
+        ")[0];
+    }
+
     public static function getImagesAttributesKeys()
     {
         return ["image", "small_image"];
@@ -112,6 +124,11 @@ class Product extends Model
         }
 
         return $price;
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(OrderProduct::class, 'product_id', 'id');
     }
 
 }

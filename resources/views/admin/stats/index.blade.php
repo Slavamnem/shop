@@ -13,16 +13,25 @@
                     <!-- ============================================================== -->
                     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
                         <div class="card">
-                            <h3 class="card-header">Динамика продаж</h3>
+                            <h3 class="card-header">Динамика продаж за год</h3>
                             <div class="card-body">
                                 <div class="ct-chart-area ct-golden-section"></div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+                        <div class="card">
+                            <h3 class="card-header">Динамика продаж за месяц</h3>
+                            <div class="card-body">
+                                <div class="ct-chart-area-month ct-golden-section"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         <div class="card">
-                            <h5 class="card-header">Доход по типом оплаты (картой и наличкой)</h5>
+                            <h5 class="card-header">Доход по типам оплаты (картой и наличкой)</h5>
                             <div class="card-body">
                                 <div class="ct-chart-multilines ct-golden-section"></div>
                             </div>

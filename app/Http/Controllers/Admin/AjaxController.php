@@ -30,6 +30,7 @@ class AjaxController extends Controller
         return TranslatorService::translate($this->request->get('value'));
     }
 
+
 //    /**
 //     * @return mixed
 //     */

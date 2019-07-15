@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Client;
 use App\DeliveryType;
 use App\Enums\PaymentTypesEnum;
 use App\Http\Requests\Admin\EditOrderRequest;
@@ -12,6 +13,7 @@ use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,14 +30,20 @@ class StatisticController extends Controller
      * @var Request
      */
     private $request;
+    /**
+     * @var
+     */
+    private $service;
 
     /**
-     * StockController constructor.
+     * StatisticController constructor.
      * @param Request $request
+     * @param StatisticServiceInterface $service
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, StatisticServiceInterface $service)
     {
         $this->request = $request;
+        $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -76,23 +84,48 @@ class StatisticController extends Controller
         return view("admin.stats.index", compact('categories'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getTopProducts()
     {
-        $products = Product::query()->get();
+        $products = Product::query()->with('orders')->get();
 
-        $data = collect(DB::select(
-            "SELECT p.id, p.name, p.base_price, SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
-            FROM products AS p
-            LEFT JOIN order_products AS o
-            ON o.product_id = p.id
-            GROUP BY p.id, p.name, p.base_price"
-        ));
+        $this->service->getProductsSales($products);
 
-        dump($data);
+        $products = $products->sortByDesc('quantity');
 
-        return view("admin.stats.top_products", compact('products', 'data'));
+        return view("admin.stats.top_products", compact('products'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getProductsList()
+    {
+        $products = Product::query()->with('orders')->get();
+
+        $this->service->getProductsSales($products);
+
+        $sortField = ($this->request->input('checked') == "true") ? 'profit' : 'quantity';
+        $products = $products->sortByDesc($sortField);
+
+        return view("admin.stats.products_list", compact('products'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getTopClients()
+    {
+        $clients = Client::query()->with('orders')->get();
+
+        return view("admin.stats.top_clients", compact('clients'));
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getOrdersStats() // TODO move to stats service
     {
         $orders = Order::all();
@@ -114,6 +147,26 @@ class StatisticController extends Controller
         return response()->json($data);
     }
 
+    public function getOrdersStatsMonth()
+    {
+        $orders = Order::thisMonth()->get();
+
+        $profit = range(1, 30); // TODO change, fill wrong data at start
+        foreach ($orders as $order) {
+            $profit[$order->created_at->day - 1] += $order->sum;
+        }
+
+        $data = [
+            "profit" => $profit,
+            'labels' => range(1, 30)
+        ];
+
+        return response()->json($data);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getOrdersPaymentTypesStats()
     {
         $orders = Order::all();

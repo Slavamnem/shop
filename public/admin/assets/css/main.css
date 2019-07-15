@@ -60,6 +60,8 @@
     margin-top:50px;
     height: fit-content;
     padding-left: 14px;
+    overflow: scroll;
+    max-height: 400px;
 }
 
 #notifications{
