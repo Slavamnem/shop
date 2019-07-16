@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="page-header">
-                    <h2 class="pageheader-title">Группы товаров</h2>
+                    <h2 class="pageheader-title">Цвета товаров</h2>
                     <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
                     <div class="page-breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -32,11 +32,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                <h5 class="mb-0">Список всех групп</h5>
+                                <h5 class="mb-0">Список всех цветов</h5>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                <a href="{{ route("admin-groups-create") }}">
-                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ГРУППУ</button>
+                                <a href="{{ route("admin-colors-create") }}">
+                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ЦВЕТ</button>
                                 </a>
                             </div>
                         </div>
@@ -51,24 +51,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @forelse($groups as $group)
+                                @forelse($colors as $color)
                                     <tr>
                                         <td>
-                                            <a href="{{ route("admin-groups-show", ['id' => $group->id]) }}">
-                                                {{ $group->name }}
+                                            <a href="{{ route("admin-colors-show", ['id' => $color->id]) }}">
+                                                {{ $color->name }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route("admin-groups-edit", ['id' => $group->id]) }}">
+                                            <a href="{{ route("admin-colors-edit", ['id' => $color->id]) }}">
                                                 <img src="{{ asset("public/admin/assets/images/pencil.png") }}" alt="" style="max-width:20px; max-height:20px">
                                             </a>
-                                            <a href="{{ route("admin-groups-delete", ['id' => $group->id]) }}">
+                                            <a href="{{ route("admin-colors-delete", ['id' => $color->id]) }}">
                                                 <img src="{{ asset("public/admin/assets/images/trash.jpg") }}" alt="" style="max-width:20px; max-height:20px">
                                             </a>
                                         </td>
                                     </tr>
                                 @empty
-                                    <p>Категорий нет</p>
+                                    <p>Цветов нет</p>
                                 @endforelse
                                 </tbody>
                                 <tfoot>

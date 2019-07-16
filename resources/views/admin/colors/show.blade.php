@@ -9,7 +9,7 @@
 
                 <div class="section-block">
                     <h1 class="section-title">
-                        {{ $group->name }}
+                        {{ $color->name }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
@@ -27,8 +27,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название группы товаров</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $group->name }}" readonly="readonly">
+                                        <label for="inputText3" class="col-form-label">Название цвета</label>
+                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $color->name }}" readonly="readonly">
                                     </div>
                                 </div>
                             </div>

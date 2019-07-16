@@ -51,11 +51,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Рейтинг</label>
-                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $rating }}" readonly="readonly">
+                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $client->rating }}" readonly="readonly">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Общая прибыль</label>
-                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $profit }}" readonly="readonly">
+                                        <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $client->orders->sum('sum') }}" readonly="readonly">
                                     </div>
                                 </div>
                             </div>
@@ -63,19 +63,41 @@
                         </div>
 
                         <div class="tab-pane fade" id="outline-two" role="tabpanel" aria-labelledby="tab-outline-two">
-                            {{--<h4>Основное изображение</h4>--}}
-                            {{--@if($product->image)--}}
-                                {{--<div class="card-body text-center">--}}
-                                    {{--<img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid">--}}
-                                {{--</div>--}}
-                            {{--@endif--}}
-                            {{--<h4>Маленькое изображение</h4>--}}
-                            {{--@if($product->small_image)--}}
-                                {{--<div class="card-body text-center">--}}
-                                    {{--<img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid">--}}
-                                {{--</div>--}}
-                            {{--@endif--}}
-                            В разработке
+                            <div class="table-responsive">
+                                <table id="example4" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Номер заказа</th>
+                                        <th>Статус</th>
+                                        <th>Сумма</th>
+                                        <th>Время создания</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse($client->orders->sortByDesc('created_at')->sortByDesc('id') as $order)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route("admin-orders-show", ['id' => $order->id]) }}">
+                                                    {{ '#' . $order->id}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ $order->status->name }}
+                                            </td>
+                                            <td>
+                                                {{ $order->sum }}
+                                            </td>
+                                            <td>
+                                                {{ $order->created_at }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <p>Товаров нет</p>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
                             В разработке

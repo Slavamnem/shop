@@ -7,11 +7,11 @@
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
 
-            <form method="POST" action="{{ route("admin-groups-store") }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("admin-sizes-store") }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="section-block">
                     <h1 class="section-title">
-                        Новая группа товаров
+                        Новый размер
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
@@ -29,13 +29,13 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название группы товаров</label>
+                                        <label for="inputText3" class="col-form-label">Название размера</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="">
                                     </div>
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" type="submit">Добавить группу</button>
+                            <button class="btn btn-primary" type="submit">Добавить размер</button>
 
                         </div>
                     </div>

@@ -228,58 +228,23 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-2">
                                     <i class="fa fa-fw fa-rocket"></i>Свойства товаров
                                 </a>
-                                <div id="submenu-2" class="collapse submenu" style="">
+                                <div id="submenu-3" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route("admin-product-statuses") }}">Статусы</a>
+                                            <a class="nav-link @if(@$activeMenuItem == "product-statuses"){ {{ "active" }} } @endif" href="{{ route("admin-product-statuses") }}">Статусы</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route("admin-colors") }}">Цвета</a>
+                                            <a class="nav-link @if(@$activeMenuItem == "product-colors"){ {{ "active" }} } @endif" href="{{ route("admin-colors") }}">Цвета</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{ route("admin-sizes") }}">Размеры</a>
+                                            <a class="nav-link @if(@$activeMenuItem == "product-sizes"){ {{ "active" }} } @endif" href="{{ route("admin-sizes") }}">Размеры</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-
-
-                            <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "stat"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика <span class="badge badge-success">6</span></a>
-                                <div id="submenu-1" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">E-Commerce</a>
-                                            <div id="submenu-1-2" class="collapse submenu" style="">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="index.html">E Commerce Dashboard</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product.html">Product List</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product-single.html">Product Single</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product-checkout.html">Product Checkout</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard-finance.html">Finance</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="dashboard-sales.html">Sales</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
 
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Группы</a>
@@ -315,6 +280,26 @@
 
                             <li class="nav-divider">
                                 _________________________
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Входы в админ-панель</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Типы доставки</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Типы оплаты</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Пользователи</a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Роли</a>
                             </li>
 
                             <li class="nav-item">

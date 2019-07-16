@@ -2,11 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Size;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 
 class SizeController extends Controller
 {
+    const MENU_ITEM_NAME = "product-sizes";
+
+    /**
+     * ProductStatusController constructor.
+     */
+    public function __construct()
+    {
+        View::share("activeMenuItem", self::MENU_ITEM_NAME);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,9 @@ class SizeController extends Controller
      */
     public function index()
     {
-        //
+        $sizes = Size::all();
+
+        return view("admin.sizes.index", compact('sizes'));
     }
 
     /**
@@ -24,7 +38,7 @@ class SizeController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.sizes.create");
     }
 
     /**
@@ -35,7 +49,12 @@ class SizeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $size = new Size();
+
+        $size->fill($request->only($size->getFillable()));
+        $size->save();
+
+        return redirect()->route("admin-sizes-edit", ['id' => $size->id]);
     }
 
     /**
@@ -46,7 +65,9 @@ class SizeController extends Controller
      */
     public function show($id)
     {
-        //
+        $size = Size::find($id);
+
+        return view("admin.sizes.show", compact("size"));
     }
 
     /**
@@ -57,7 +78,9 @@ class SizeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $size = Size::find($id);
+
+        return view("admin.sizes.edit", compact("size"));
     }
 
     /**
@@ -69,7 +92,13 @@ class SizeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $size = Size::find($id);
+
+        $size->fill($request->only($size->getFillable()));
+
+        $size->save();
+
+        return redirect()->route("admin-sizes-edit", ['id' => $id]);
     }
 
     /**
@@ -80,6 +109,9 @@ class SizeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $size = Size::find($id);
+        $size->delete();
+
+        return redirect()->route("admin-sizes");
     }
 }

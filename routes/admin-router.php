@@ -81,24 +81,24 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "ProductStatusController@show")->name("admin-product-statuses-show");
     });
 
-    Route::group(['prefix' => "sizes"], function() { //TODO
+    Route::group(['prefix' => "sizes"], function() {
         Route::get("", "SizeController@index")->name("admin-sizes");
-//        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-groups-edit");
-//        Route::post("update/{id}", "ModelGroupController@update")->name("admin-groups-update");
-//        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-groups-delete");
-//        Route::get("create", "ModelGroupController@create")->name("admin-groups-create");
-//        Route::post("store", "ModelGroupController@store")->name("admin-groups-store");
-//        Route::get("show/{id}", "ModelGroupController@show")->name("admin-groups-show");
+        Route::get("edit/{id}", "SizeController@edit")->name("admin-sizes-edit");
+        Route::post("update/{id}", "SizeController@update")->name("admin-sizes-update");
+        Route::any("delete/{id}", "SizeController@destroy")->name("admin-sizes-delete");
+        Route::get("create", "SizeController@create")->name("admin-sizes-create");
+        Route::post("store", "SizeController@store")->name("admin-sizes-store");
+        Route::get("show/{id}", "SizeController@show")->name("admin-sizes-show");
     });
 
-    Route::group(['prefix' => "colors"], function() { //TODO
+    Route::group(['prefix' => "colors"], function() {
         Route::get("", "ColorController@index")->name("admin-colors");
-//        Route::get("edit/{id}", "ModelGroupController@edit")->name("admin-colors-edit");
-//        Route::post("update/{id}", "ModelGroupController@update")->name("admin-colors-update");
-//        Route::any("delete/{id}", "ModelGroupController@destroy")->name("admin-colors-delete");
-//        Route::get("create", "ModelGroupController@create")->name("admin-colors-create");
-//        Route::post("store", "ModelGroupController@store")->name("admin-colors-store");
-//        Route::get("show/{id}", "ModelGroupController@show")->name("admin-colors-show");
+        Route::get("edit/{id}", "ColorController@edit")->name("admin-colors-edit");
+        Route::post("update/{id}", "ColorController@update")->name("admin-colors-update");
+        Route::any("delete/{id}", "ColorController@destroy")->name("admin-colors-delete");
+        Route::get("create", "ColorController@create")->name("admin-colors-create");
+        Route::post("store", "ColorController@store")->name("admin-colors-store");
+        Route::get("show/{id}", "ColorController@show")->name("admin-colors-show");
     });
 
     Route::group(['prefix' => "orders"], function() {

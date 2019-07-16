@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
 
 
         DB::listen(function($query){
-           //dump($query->sql);
+            //dump($query->sql);
             self::$total++;
             //dump(self::$total);
         });

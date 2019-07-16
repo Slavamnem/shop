@@ -7,11 +7,11 @@
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
 
-            <form method="POST" action="{{ route("admin-groups-update", ['id' => $group->id]) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("admin-colors-update", ['id' => $color->id]) }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="section-block">
                     <h1 class="section-title">
-                        {{ $group->name }}
+                        {{ $color->name }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
@@ -29,13 +29,13 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название группы товаров</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $group->name }}">
+                                        <label for="inputText3" class="col-form-label">Название цвета</label>
+                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $color->name }}">
                                     </div>
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" type="submit">Сохранить группу</button>
+                            <button class="btn btn-primary" type="submit">Сохранить цвет</button>
 
                         </div>
                     </div>

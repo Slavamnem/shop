@@ -186,20 +186,32 @@ class ShareService implements ShareServiceInterface
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @param Product $product
+     * @return mixed
+     */
     public static function getProductShare(Product $product)
     {
-        $productShares = self::getProductShares($product);
+        $shares = Share::active()->orderByDesc('priority')->get();
 
-        return collect($productShares)->sortByDesc('priority')->first();
+        foreach ($shares as $share) {
+            if (self::productHasShare($product, $share)){
+                return $share;
+            }
+        }
     }
 
+    /**
+     * @param Product $product
+     * @return array
+     */
     public static function getProductShares(Product $product)
     {
         $shares = Share::active()->get();
         $productShares = [];
 
         foreach ($shares as $share) {
-            if (self::hasShare($product, $share)){
+            if (self::productHasShare($product, $share)){
                 $productShares[] = $share;
             }
         }
@@ -207,7 +219,7 @@ class ShareService implements ShareServiceInterface
         return $productShares;
     }
 
-    public static function hasShare($product, $share)
+    public static function productHasShare($product, $share)
     {
         $shareProducts = self::getShareProducts($share);
 

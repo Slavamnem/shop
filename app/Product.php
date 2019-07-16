@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Services\Admin\ShareService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -82,16 +83,16 @@ class Product extends Model
         return $this->hasOne(ProductImage::class, "product_id", 'id')->where("main", true);
     }
 
-    public function sales()
-    {
-        return DB::select(
-            "SELECT SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
-            FROM products AS p
-            LEFT JOIN order_products AS o
-            ON o.product_id = p.id
-            WHERE p.id = {$this->attributes['id']}
-        ")[0];
-    }
+//    public function sales() // unused
+//    {
+//        return DB::select(
+//            "SELECT SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
+//            FROM products AS p
+//            LEFT JOIN order_products AS o
+//            ON o.product_id = p.id
+//            WHERE p.id = {$this->attributes['id']}
+//        ")[0];
+//    }
 
     public static function getImagesAttributesKeys()
     {
@@ -114,6 +115,17 @@ class Product extends Model
     public function getPrice()
     {
         $price = $this->attributes['base_price'];
+
+        ///
+//        $products = Product::all();
+////
+////        $time1 = Carbon::now();
+////        foreach ($products as $product) {
+////            $productShare = ShareService::getProductShare($product);
+////        }
+////        $time2 = Carbon::now();
+////        dump($time2->diff($time1));
+        /////////////////
 
         if ($productShare = ShareService::getProductShare($this)) {
             if ($productShare->fix_price) {

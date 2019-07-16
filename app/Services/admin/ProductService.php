@@ -162,6 +162,9 @@ class ProductService implements ProductServiceInterface
         return response()->download($saver->saveToFile($data, "products.xml", "product"));
     }
 
+    /**
+     * @return array|mixed
+     */
     public function getConditionsFields()
     {
         $result = [];
@@ -221,7 +224,6 @@ class ProductService implements ProductServiceInterface
             . Color::find($colorId)->name
             . " "
             . Size::find($sizeId)->name;
-
     }
 
     /**

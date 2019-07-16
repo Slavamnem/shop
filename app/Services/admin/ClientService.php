@@ -29,43 +29,25 @@ class ClientService implements ClientServiceInterface
      */
     public function getData($id)
     {
-        return [
-            "client" => Client::find($id),
-            "rating" => $this->getClientRating($id),
-            "profit" => $this->getClientProfit($id)
-        ];
+        $client = Client::with('orders')->where('id', $id)->first();
+        $client->rating = $this->getClientRating($id);
+
+        return ["client" => $client];
     }
 
-    public function getClientProfit($id)
-    {
-        return $this->getClientsRatings()->where("id", $id)->first()->profit;
-    }
-
+    /**
+     * @param $id
+     * @return string
+     */
     public function getClientRating($id) // TODO вычисляем рейтинг по общей сумме купленных товаров в магазе, все у кого одинаково должны иметь равный рейтинг
     {
-        $clientsRatings = $this->getClientsRatings(); //dump($clientsRatings);
+        $clients = Client::with('orders')->get()->sortByDesc(function($client){
+            return $client->orders->sum('sum');
+        });
 
-        return $clientsRatings->where("id", $id)->keys()[0] + 1 . "/" . count($clientsRatings);
-//        $rating = 1;
-//        foreach ($clientsRatings as $clientRating) {
-//            if ($clientRating->id == $id){
-//                //return $clientRating->rating;
-//                return $rating . "/" . count($clientsRatings);
-//            } else {
-//                $rating++;
-//            }
-//        }
-    }
+        $clientPosition = $clients->where('id', $id)->keys()[0];
 
-    public function getClientsRatings()
-    {
-        return collect(DB::select(
-            "SELECT clients.id, clients.name, clients.last_name, SUM(orders.sum) as profit
-            FROM clients
-            LEFT JOIN orders on clients.id = orders.client_id 
-            GROUP BY clients.id, clients.name, clients.last_name
-            ORDER BY profit DESC"
-        ));
+        return ($clientPosition + 1)  . "/" . count($clients);
     }
 
     /**
@@ -79,4 +61,18 @@ class ClientService implements ClientServiceInterface
 
         return $clients;
     }
+
+//    /**
+////     * @return \Illuminate\Support\Collection
+////     */
+////    public function getClientsRatings()
+////    {
+////        return collect(DB::select(
+////            "SELECT clients.id, clients.name, clients.last_name, SUM(orders.sum) as profit
+////            FROM clients
+////            LEFT JOIN orders on clients.id = orders.client_id
+////            GROUP BY clients.id, clients.name, clients.last_name
+////            ORDER BY profit DESC"
+////        ));
+////    }
 }
