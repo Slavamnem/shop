@@ -283,19 +283,19 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Входы в админ-панель</a>
+                                <a class="nav-link @if(@$activeMenuItem == "admin-auth"){ {{ "active" }} } @endif" href="{{ route("admin-auth") }}"><i class="fas fa-fw fa-table"></i>Входы в админ-панель</a>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Типы доставки</a>
+                                <a class="nav-link @if(@$activeMenuItem == "delivery-type"){ {{ "active" }} } @endif" href="{{ route("admin-delivery-type") }}"><i class="fas fa-fw fa-table"></i>Типы доставки</a>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Типы оплаты</a>
+                                <a class="nav-link @if(@$activeMenuItem == "payment-type"){ {{ "active" }} } @endif" href="{{ route("admin-payment-type") }}"><i class="fas fa-fw fa-table"></i>Типы оплаты</a>
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Пользователи</a>
+                                <a class="nav-link @if(@$activeMenuItem == "users"){ {{ "active" }} } @endif" href="{{ route("admin-users") }}"><i class="fas fa-fw fa-table"></i>Пользователи</a>
                             </li>
 
                             <li class="nav-item ">

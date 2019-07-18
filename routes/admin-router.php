@@ -101,6 +101,46 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "ColorController@show")->name("admin-colors-show");
     });
 
+    Route::group(['prefix' => "users"], function() {
+        Route::get("", "UserController@index")->name("admin-users");
+        Route::get("edit/{id}", "UserController@edit")->name("admin-users-edit");
+        Route::post("update/{id}", "UserController@update")->name("admin-users-update");
+        Route::any("delete/{id}", "UserController@destroy")->name("admin-users-delete");
+        Route::get("create", "UserController@create")->name("admin-users-create");
+        Route::post("store", "UserController@store")->name("admin-users-store");
+        Route::get("show/{id}", "UserController@show")->name("admin-users-show");
+    });
+
+    Route::group(['prefix' => "auth"], function() {
+        Route::get("", "AdminAuthController@index")->name("admin-auth");
+        Route::get("edit/{id}", "AdminAuthController@edit")->name("admin-auth-edit");
+        Route::post("update/{id}", "AdminAuthController@update")->name("admin-auth-update");
+        Route::any("delete/{id}", "AdminAuthController@destroy")->name("admin-auth-delete");
+        Route::get("create", "AdminAuthController@create")->name("admin-auth-create");
+        Route::post("store", "AdminAuthController@store")->name("admin-auth-store");
+        Route::get("show/{id}", "AdminAuthController@show")->name("admin-auth-show");
+    });
+
+    Route::group(['prefix' => "delivery-type"], function() {
+        Route::get("", "DeliveryTypeController@index")->name("admin-delivery-type");
+        Route::get("edit/{id}", "DeliveryTypeController@edit")->name("admin-delivery-type-edit");
+        Route::post("update/{id}", "DeliveryTypeController@update")->name("admin-delivery-type-update");
+        Route::any("delete/{id}", "DeliveryTypeController@destroy")->name("admin-delivery-type-delete");
+        Route::get("create", "DeliveryTypeController@create")->name("admin-delivery-type-create");
+        Route::post("store", "DeliveryTypeController@store")->name("admin-delivery-type-store");
+        Route::get("show/{id}", "DeliveryTypeController@show")->name("admin-delivery-type-show");
+    });
+
+    Route::group(['prefix' => "payment-type"], function() {
+        Route::get("", "PaymentTypeController@index")->name("admin-payment-type");
+        Route::get("edit/{id}", "PaymentTypeController@edit")->name("admin-payment-type-edit");
+        Route::post("update/{id}", "PaymentTypeController@update")->name("admin-payment-type-update");
+        Route::any("delete/{id}", "PaymentTypeController@destroy")->name("admin-payment-type-delete");
+        Route::get("create", "PaymentTypeController@create")->name("admin-payment-type-create");
+        Route::post("store", "PaymentTypeController@store")->name("admin-payment-type-store");
+        Route::get("show/{id}", "PaymentTypeController@show")->name("admin-payment-type-show");
+    });
+
     Route::group(['prefix' => "orders"], function() {
         Route::get("", "OrderController@index")->name("admin-orders");
         Route::get("edit/{id}", "OrderController@edit")->name("admin-orders-edit");

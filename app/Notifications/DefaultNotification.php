@@ -2,9 +2,11 @@
 
 namespace App\Notifications;
 
+use App\AdminAuth;
 use App\Enums\PrioritiesEnum;
 use App\Order;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -43,6 +45,9 @@ class DefaultNotification extends Notification
     {
         if (isset($user->name) or isset($user->last_name)) {
             $message = "Пользователь " . trim($user->name . " " . $user->last_name) . " вошел в админ-панель.";
+
+            $user->last_enter = Carbon::now()->toDateTimeString();
+            $user->save();
         } else {
             $message = "Попытка входа в админ-панель\nЛогин: {$user->login}\nПароль: {$user->password}";
         }

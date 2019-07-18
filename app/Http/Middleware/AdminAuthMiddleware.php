@@ -18,11 +18,14 @@ class AdminAuthMiddleware
     public function handle($request, Closure $next)
     {
         //dump("auth middleware");
+        $response = $next($request);
+
         AdminAuth::create([
             'user_id'    => Auth::id(),
             'trace'      => debug_backtrace(),
             'ip_address' => $_SERVER['REMOTE_ADDR']
         ]);
-        return $next($request);
+
+        return $response;
     }
 }
