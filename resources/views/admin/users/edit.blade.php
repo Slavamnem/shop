@@ -32,46 +32,40 @@
                                         <label for="inputText3" class="col-form-label">Имя</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $user->name }}">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Фамилия</label>
                                         <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ $user->last_name }}">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Логин</label>
                                         <input id="inputText3" name="login" type="text" class="form-control" value="{{ $user->login }}">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Пароль</label>
                                         <input id="inputText3" name="password" type="text" class="form-control" value="{{ $user->password }}">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта</label>
                                         <input id="inputText3" name="email" type="text" class="form-control" value="{{ $user->email }}">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Api Token</label>
                                         <input id="inputText3" name="api_token" type="text" class="form-control" value="{{ $user->api_token }}">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3>Роли</h3><br>
+                                    @foreach($roles as $role)
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="roles[]"
+                                                   @if(in_array($role->id, $user->roles->pluck('id')->toArray())) {{ 'checked' }} @endif
+                                                   value="{{$role->id}}"
+                                                   class="custom-control-input">
+                                            <span class="custom-control-label">{{$role->name}}</span>
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
 

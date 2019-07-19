@@ -36,11 +36,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @param $roleName
+     * @param $roles
      * @return mixed
      */
-    public function hasRole($roleName)
+    public function hasRole($roles)
     {
-        return $this->roles->contains(function($role) use($roleName){ return $role->name == $roleName; });
+        return $this->roles->contains(function($role) use($roles){ return in_array($role->name, $roles); });
     }
 }

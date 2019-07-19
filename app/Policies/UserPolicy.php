@@ -6,7 +6,7 @@ use App\Order;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class OrderPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -22,12 +22,19 @@ class OrderPolicy
 
     /**
      * @param User $user
-     * @param Order $order
-     * @return bool
+     * @return mixed
      */
-    public function watch(User $user, Order $order)
+    public function create(User $user)
     {
-        return $user->hasRole(["superadmin", 'admin']);
+        return $user->hasRole(['superadmin', 'admin', 'developer']);
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function update(User $user)
+    {
+        return $user->hasRole(['superadmin', 'admin', 'developer']);
+    }
 }

@@ -9,11 +9,13 @@ use App\Services\Admin\ClientService;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
+use App\Services\Admin\Interfaces\UserServiceInterface;
 use App\Services\Admin\OrderPriceCalcService;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
 use App\Services\Admin\ShareService;
 use App\Services\Admin\StatisticService;
+use App\Services\Admin\UserService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -83,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ShareServiceInterface::class, ShareService::class);
         $this->app->bind(ClientServiceInterface::class, ClientService::class);
         $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
 
         $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);

@@ -30,53 +30,41 @@
                                         <label for="inputText3" class="col-form-label">Имя</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $user->name }}" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Фамилия</label>
                                         <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ $user->last_name }}" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Логин</label>
                                         <input id="inputText3" name="login" type="text" class="form-control" value="{{ $user->login }}" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Пароль</label>
                                         <input id="inputText3" name="password" type="text" class="form-control" value="{{ $user->password }}" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта</label>
                                         <input id="inputText3" name="email" type="text" class="form-control" value="{{ $user->email }}" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Api Token</label>
                                         <input id="inputText3" name="api_token" type="text" class="form-control" value="{{ $user->api_token }}" readonly="readonly">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Последний вход</label>
+                                        <input id="inputText3" name="api_token" type="text" class="form-control" value="{{ $user->last_enter }}" readonly="readonly">
                                     </div>
                                 </div>
                             </div>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Последний вход</label>
-                                        <input id="inputText3" name="api_token" type="text" class="form-control" value="{{ $user->last_enter }}" readonly="readonly">
+                                        <label for="inputText3" class="col-form-label">Роли</label>
+                                        @forelse($user->roles as $role)
+                                            <input type="text" class="form-control" value="{{ $role->name }}" readonly="readonly">
+                                        @empty
+                                            <p>-</p>
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>
