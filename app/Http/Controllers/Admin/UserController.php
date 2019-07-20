@@ -58,7 +58,7 @@ class UserController extends Controller
             $roles = Role::all();
             return view("admin.users.create", compact('roles'));
         } else {
-            return view('admin.info.403', ['message' => "В доступе оказано\nПользователей могут добавлять только администраторы"]);
+            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут добавлять только администраторы"]);
         }
     }
 
@@ -130,7 +130,7 @@ class UserController extends Controller
 
             return redirect()->route("admin-users-edit", ['id' => $id]);
         } else {
-            return view('admin.info.403', ['message' => "В доступе оказано\nПользователей могут редактировать только администраторы"]);
+            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут редактировать только администраторы"]);
         }
     }
 
@@ -142,9 +142,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        if ($this->request->user()->can("delete", User::class)) {
+            $user = User::find($id);
+            $user->delete();
 
-        return redirect()->route("admin-users");
+            return redirect()->route("admin-users");
+        } else {
+            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут удалять только администраторы"]);
+        }
     }
 }

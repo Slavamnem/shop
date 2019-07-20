@@ -42,11 +42,24 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">Previous</a></li>
+                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() - 1 }}</a></li>--}}
+                                <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
+                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() + 1}}</a></li>--}}
+                                <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example4" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Название</th>
                                     <th>Цена</th>
                                     <th>Количество</th>
@@ -71,6 +84,7 @@
                                 <tbody class="tbody">
                                 @forelse($products as $product)
                                     <tr>
+                                        <td>{{ $product->id }}</td>
                                         <td>
                                             <a href="{{ route("admin-products-show", ['id' => $product->id]) }}">
                                                 {{ $product->name }}
@@ -107,6 +121,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>#</th>
                                         <th>Название</th>
                                         {{--<th>Slug</th>--}}
                                         <th>Цена</th>
@@ -119,10 +134,24 @@
                                         <th>Действия</th>
                                     </tr>
                                 </tfoot>
-                                <div> {{ $products->links() }} </div>
+                                {{--<div>{{ $products->links() }}</div>--}}
+                                {{--<div>{{ $products->nextPageUrl() }}</div>--}}
                             </table>
                         </div>
                     </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">Previous</a></li>
+                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() - 1 }}</a></li>--}}
+                                <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
+                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() + 1}}</a></li>--}}
+                                <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
                 </div>
                 <a href="{{ route('save-products-as-xml') }}">
                     <button class="btn btn-danger save-products-as-xml" type="submit" data-token="{{ csrf_token() }}">Сохранить в Xml</button>

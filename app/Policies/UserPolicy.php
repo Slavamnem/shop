@@ -37,4 +37,13 @@ class UserPolicy
     {
         return $user->hasRole(['superadmin', 'admin', 'developer']);
     }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function delete(User $user)
+    {
+        return $user->hasRole(['superadmin', 'admin', 'developer']);
+    }
 }

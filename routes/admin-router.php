@@ -111,6 +111,16 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("show/{id}", "UserController@show")->name("admin-users-show");
     });
 
+    Route::group(['prefix' => "roles"], function() {
+        Route::get("", "RoleController@index")->name("admin-roles");
+        Route::get("edit/{id}", "RoleController@edit")->name("admin-roles-edit");
+        Route::post("update/{id}", "RoleController@update")->name("admin-roles-update");
+        Route::any("delete/{id}", "RoleController@destroy")->name("admin-roles-delete");
+        Route::get("create", "RoleController@create")->name("admin-roles-create");
+        Route::post("store", "RoleController@store")->name("admin-roles-store");
+        Route::get("show/{id}", "RoleController@show")->name("admin-roles-show");
+    });
+
     Route::group(['prefix' => "auth"], function() {
         Route::get("", "AdminAuthController@index")->name("admin-auth");
         Route::get("edit/{id}", "AdminAuthController@edit")->name("admin-auth-edit");
