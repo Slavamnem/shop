@@ -26,7 +26,7 @@ class ProductStatusController extends Controller
      */
     public function index()
     {
-        $statuses = ProductStatus::all();
+        $statuses = ProductStatus::query()->paginate(10);
 
         return view("admin.product-statuses.index", compact('statuses'));
     }

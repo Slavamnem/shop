@@ -26,7 +26,7 @@ class AdminAuthController extends Controller
      */
     public function index()
     {
-        $auths = AdminAuth::query()->orderByDesc('created_at')->get();
+        $auths = AdminAuth::query()->orderByDesc('created_at')->paginate(10);
 
         return view("admin.admin_auth.index", compact('auths'));
     }

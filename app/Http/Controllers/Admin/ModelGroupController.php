@@ -48,7 +48,7 @@ class ModelGroupController extends Controller
      */
     public function index()
     {
-        $groups = ModelGroup::all();
+        $groups = ModelGroup::query()->paginate(10);
 
         return view("admin.groups.index", compact('groups'));
     }

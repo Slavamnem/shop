@@ -43,17 +43,27 @@
                         </div>
                     </div>
                     <br>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">Previous</a></li>
-                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() - 1 }}</a></li>--}}
-                                <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
-                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() + 1}}</a></li>--}}
-                                <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    @if($products->total() > $products->perPage())
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    @if ($products->currentPage() != 1)
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url(1) }}">1</a></li>
+                                    @endif
+                                    @if ($products->currentPage() > 2)
+                                        <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">{{ $products->currentPage() - 1 }}</a></li>
+                                    @endif
+                                    <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
+                                    @if ($products->currentPage() < $products->lastPage())
+                                        <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">{{ $products->currentPage() + 1 }}</a></li>
+                                    @endif
+                                    @if ($products->currentPage() + 1 < $products->lastPage())
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a></li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
+                    @endif
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example4" class="table table-striped table-bordered" style="width:100%">
@@ -140,17 +150,27 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">Previous</a></li>
-                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() - 1 }}</a></li>--}}
-                                <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
-                                {{--<li class="page-item"><a class="page-link" href="#">{{ $products->currentPage() + 1}}</a></li>--}}
-                                <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    @if($products->total() > $products->perPage())
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    @if ($products->currentPage() != 1)
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url(1) }}">1</a></li>
+                                    @endif
+                                    @if ($products->currentPage() > 2)
+                                        <li class="page-item"><a class="page-link" href="{{ $products->previousPageUrl() }}">{{ $products->currentPage() - 1 }}</a></li>
+                                    @endif
+                                    <li class="page-item active"><a class="page-link " href="">{{ $products->currentPage() }}</a></li>
+                                    @if ($products->currentPage() < $products->lastPage())
+                                        <li class="page-item"><a class="page-link" href="{{ $products->nextPageUrl() }}">{{ $products->currentPage() + 1 }}</a></li>
+                                    @endif
+                                    @if ($products->currentPage() + 1 < $products->lastPage())
+                                        <li class="page-item"><a class="page-link" href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a></li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
+                    @endif
 
                 </div>
                 <a href="{{ route('save-products-as-xml') }}">

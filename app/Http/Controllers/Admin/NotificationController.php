@@ -38,7 +38,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::all();
+        $notifications = Notification::query()->paginate(10);
 
         return view("admin.notifications.index", compact('notifications'));
     }

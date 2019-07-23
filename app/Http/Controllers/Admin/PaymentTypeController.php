@@ -26,7 +26,7 @@ class PaymentTypeController extends Controller
      */
     public function index()
     {
-        $paymentTypes = PaymentType::all();
+        $paymentTypes = PaymentType::query()->paginate(10);
 
         return view("admin.payment_type.index", compact('paymentTypes'));
     }

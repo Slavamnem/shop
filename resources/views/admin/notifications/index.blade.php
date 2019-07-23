@@ -36,6 +36,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="{{ $notifications->previousPageUrl() }}">Previous</a></li>
+                                <li class="page-item active"><a class="page-link " href="">{{ $notifications->currentPage() }}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $notifications->nextPageUrl() }}">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example4" class="table table-striped table-bordered" style="width:100%">
@@ -88,6 +97,15 @@
                                 </tfoot>
                             </table>
                         </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="{{ $notifications->previousPageUrl() }}">Previous</a></li>
+                                <li class="page-item active"><a class="page-link " href="">{{ $notifications->currentPage() }}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $notifications->nextPageUrl() }}">Next</a></li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

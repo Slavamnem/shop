@@ -118,7 +118,8 @@ class StatisticController extends Controller
      */
     public function getTopClients()
     {
-        $clients = Client::query()->with('orders')->get();
+        //$clients = Client::query()->with('orders')->get();
+        $clients = Client::query()->get();
 
         return view("admin.stats.top_clients", compact('clients'));
     }

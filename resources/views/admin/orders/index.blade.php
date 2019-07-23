@@ -42,6 +42,28 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        @if($orders->total() > $orders->perPage())
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        @if ($orders->currentPage() != 1)
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->url(1) }}">1</a></li>
+                                        @endif
+                                        @if ($orders->currentPage() > 2)
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}">{{ $orders->currentPage() - 1 }}</a></li>
+                                        @endif
+                                        <li class="page-item active"><a class="page-link " href="">{{ $orders->currentPage() }}</a></li>
+                                        @if ($orders->currentPage() < $orders->lastPage())
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">{{ $orders->currentPage() + 1 }}</a></li>
+                                        @endif
+                                        @if ($orders->currentPage() + 1 < $orders->lastPage())
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->url($orders->lastPage()) }}">{{ $orders->lastPage() }}</a></li>
+                                        @endif
+                                    </ul>
+                                </nav>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="example4" class="table table-bordered" style="width:100%">
@@ -135,6 +157,27 @@
                                 </table>
                             </div>
                         </div>
+                        @if($orders->total() > $orders->perPage())
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        @if ($orders->currentPage() != 1)
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->url(1) }}">1</a></li>
+                                        @endif
+                                        @if ($orders->currentPage() > 2)
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}">{{ $orders->currentPage() - 1 }}</a></li>
+                                        @endif
+                                        <li class="page-item active"><a class="page-link " href="">{{ $orders->currentPage() }}</a></li>
+                                        @if ($orders->currentPage() < $orders->lastPage())
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">{{ $orders->currentPage() + 1 }}</a></li>
+                                        @endif
+                                        @if ($orders->currentPage() + 1 < $orders->lastPage())
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->url($orders->lastPage()) }}">{{ $orders->lastPage() }}</a></li>
+                                        @endif
+                                    </ul>
+                                </nav>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <!-- ============================================================== -->

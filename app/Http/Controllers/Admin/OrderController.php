@@ -78,7 +78,7 @@ class OrderController extends Controller
         ]));
 
 
-        $orders = Order::all();
+        $orders = Order::query()->orderByDesc('created_at')->paginate(10);
         return view("admin.orders.index", compact('orders'));
     }
 

@@ -26,7 +26,7 @@ class DeliveryTypeController extends Controller
      */
     public function index()
     {
-        $deliveryTypes = DeliveryType::all();
+        $deliveryTypes = DeliveryType::query()->paginate(10);
 
         return view("admin.delivery_type.index", compact('deliveryTypes'));
     }

@@ -49,7 +49,7 @@ class ShareController extends Controller
      */
     public function index()
     {
-        $shares = Share::all();
+        $shares = Share::query()->paginate(10);
 
         return view("admin.shares.index", compact('shares'));
     }

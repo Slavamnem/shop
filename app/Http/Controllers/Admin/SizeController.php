@@ -26,7 +26,7 @@ class SizeController extends Controller
      */
     public function index()
     {
-        $sizes = Size::all();
+        $sizes = Size::query()->paginate(10);
 
         return view("admin.sizes.index", compact('sizes'));
     }
