@@ -159,7 +159,7 @@ class ProductService implements ProductServiceInterface
      */
     public function saveToFile(SaveDataToFileInterface $saver, $data)
     {
-        return response()->download($saver->saveToFile($data, "products.xml", "product"));
+        return response()->download($saver->saveToFile($data, "products-new.xml", "product"));
     }
 
     /**

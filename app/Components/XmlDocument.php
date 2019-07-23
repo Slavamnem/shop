@@ -2,12 +2,13 @@
 
 namespace App\Components;
 
+use App\Components\Documents\Document;
 use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Components\Interfaces\XmlDocumentInterface;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ArrayToXml\ArrayToXml;
 
-class XmlDocument implements XmlDocumentInterface
+class XmlDocument extends Document implements XmlDocumentInterface
 {
     /**
      * @var
@@ -20,9 +21,11 @@ class XmlDocument implements XmlDocumentInterface
 
     /**
      * XmlDocument constructor.
+     * @param null $name
      */
-    public function __construct()
+    public function __construct($name = null)
     {
+        parent::__construct($name);
         $this->template = '<?xml version="1.0"?><root>CONTENT</root>';
     }
 
@@ -33,16 +36,17 @@ class XmlDocument implements XmlDocumentInterface
     {
         $content = implode("\n" , $this->rows);
 
-        return str_replace("CONTENT", $content, $this->template);
+        $this->setContent(str_replace("CONTENT", $content, $this->template));
+        //return str_replace("CONTENT", $content, $this->template);
     }
 
-    /**
-     * @return mixed
-     */
-    public function __toString()
-    {
-        return $this->render();
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function __toString()
+//    {
+//        return $this->render();
+//    }
 
     /**
      * @param $name

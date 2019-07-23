@@ -2,18 +2,8 @@
 
 namespace App\Components\Interfaces;
 
-interface XmlDocumentInterface
+interface XmlDocumentInterface extends DocumentInterface
 {
-    /**
-     * @return mixed
-     */
-    public function render();
-
-    /**
-     * @return mixed
-     */
-    public function __toString();
-
     /**
      * @param $name
      * @param $value
@@ -22,7 +12,7 @@ interface XmlDocumentInterface
 
     /**
      * @param $name
-     * @param $data
+     * @param $value
      */
-    public function addNestedItem($name, $data);
+    public function addNestedItem($name, $value);
 }

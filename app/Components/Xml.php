@@ -16,15 +16,14 @@ class Xml implements SaveDataToFileInterface
      */
     public function saveToFile($data, $fileName, $nestedItemName = null)
     {
-        //$res = ArrayToXml::convert($data);
+        $xmlDoc = new XmlDocument($fileName);
 
-        $xmlDoc = new XmlDocument();
         foreach ($data as $key => $item) {
             $nestedItemName ? $xmlDoc->addNestedItem($nestedItemName, $item) : $xmlDoc->addItem($key, $item);
         }
 
-        Storage::put($fileName, $xmlDoc);
-
-        return storage_path("app/{$fileName}");
+        $xmlDoc->render();
+        $xmlDoc->save();
+        return $xmlDoc->getPath();
     }
 }
