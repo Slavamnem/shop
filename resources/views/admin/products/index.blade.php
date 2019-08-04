@@ -176,6 +176,9 @@
                 <a href="{{ route('save-products-as-xml') }}">
                     <button class="btn btn-danger save-products-as-xml" type="submit" data-token="{{ csrf_token() }}">Сохранить в Xml</button>
                 </a>
+                <a href="{{ route('save-products-as-txt') }}">
+                    <button class="btn btn-warning save-products-as-xml" type="submit" data-token="{{ csrf_token() }}">Сохранить в Txt</button>
+                </a>
                 <button class="btn btn-success index-products" type="button" data-token="{{ csrf_token() }}">Индексировать все товары</button>
             </div>
 

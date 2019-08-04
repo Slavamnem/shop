@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Builders\DocumentBuilder;
+use App\Builders\TxtDocumentBuilder;
+use App\Builders\XmlDocumentBuilder;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Enums\ProductStatusEnum;
@@ -182,7 +185,17 @@ class ProductController extends Controller
     {
         $data = Product::all();
 
-        return $this->service->saveToFile(new Xml(), $data->toArray());
+        return $this->service->saveToFile(new XmlDocumentBuilder(), $data->toArray(), "products-new.xml");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function saveAsTxt()
+    {
+        $data = Product::all();
+
+        return $this->service->saveToFile(new TxtDocumentBuilder(), $data->toArray(), "products-new.txt");
     }
 
     public function addNewProperty()

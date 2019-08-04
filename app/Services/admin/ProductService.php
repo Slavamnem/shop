@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Category;
 use App\Color;
 use App\Components\Interfaces\SaveDataToFileInterface;
@@ -153,13 +154,22 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
-     * @param SaveDataToFileInterface $saver
+     * @param DocumentBuilderInterface $builder
      * @param $data
-     * @return mixed
+     * @param $fileName
+     * @return mixed|string
      */
-    public function saveToFile(SaveDataToFileInterface $saver, $data)
+    public function saveToFile(DocumentBuilderInterface $builder, $data, $fileName)
     {
-        return response()->download($saver->saveToFile($data, "products-new.xml", "product"));
+        $builder->createDocument($fileName);
+
+        foreach ($data as $key => $item) {
+            $builder->addRow($item, "product");
+        }
+
+        $builder->saveDocument();
+
+        return response()->download($builder->getDocument()->getPath());
     }
 
     /**

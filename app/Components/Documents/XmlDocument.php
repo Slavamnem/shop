@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components;
+namespace App\Components\Documents;
 
 use App\Components\Documents\Document;
 use App\Components\Interfaces\SaveDataToFileInterface;
@@ -14,10 +14,6 @@ class XmlDocument extends Document implements XmlDocumentInterface
      * @var
      */
     private $template;
-    /**
-     * @var
-     */
-    private $rows;
 
     /**
      * XmlDocument constructor.
@@ -34,7 +30,7 @@ class XmlDocument extends Document implements XmlDocumentInterface
      */
     public function render()
     {
-        $content = implode("\n" , $this->rows);
+        $content = implode("\n" , (array)$this->rows);
 
         $this->setContent(str_replace("CONTENT", $content, $this->template));
         //return str_replace("CONTENT", $content, $this->template);
@@ -54,7 +50,7 @@ class XmlDocument extends Document implements XmlDocumentInterface
      */
     public function addItem($name, $value)
     {
-        $this->rows[] = $this->getItemValue($name, $value);
+        $this->addRow($this->getItemValue($name, $value));
     }
 
     /**
@@ -68,7 +64,7 @@ class XmlDocument extends Document implements XmlDocumentInterface
             $innerData[] = $this->getItemValue($key, $value);
         }
 
-        $this->rows[] = "<$name>\n" . implode("\n", $innerData) . "\n</$name>";
+        $this->addRow("<$name>\n" . implode("\n", $innerData) . "\n</$name>");
     }
 
     /**

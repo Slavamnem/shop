@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin\Interfaces;
 
+use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Components\Interfaces\SaveDataToFileInterface;
 use App\ModelGroup;
 use App\Product;
@@ -43,11 +44,12 @@ interface ProductServiceInterface
     public function createModifications(ModelGroup $group);
 
     /**
-     * @param SaveDataToFileInterface $saver
+     * @param DocumentBuilderInterface $builder
      * @param $data
+     * @param $fileName
      * @return mixed
      */
-    public function saveToFile(SaveDataToFileInterface $saver, $data);
+    public function saveToFile(DocumentBuilderInterface $builder, $data, $fileName);
 
     /**
      * @return mixed

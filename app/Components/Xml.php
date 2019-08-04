@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Components\Documents\XmlDocument;
 use App\Components\Interfaces\SaveDataToFileInterface;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ArrayToXml\ArrayToXml;

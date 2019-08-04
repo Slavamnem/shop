@@ -10,11 +10,15 @@ class Document implements DocumentInterface
     /**
      * @var
      */
-    private $name;
+    protected $name;
     /**
      * @var
      */
-    private $content;
+    protected $content;
+    /**
+     * @var
+     */
+    protected $rows;
 
     /**
      * Document constructor.
@@ -57,6 +61,11 @@ class Document implements DocumentInterface
         return $this->content;
     }
 
+    public function addRow($value)
+    {
+        $this->rows[] = $value;
+    }
+
     /**
      * @return string
      */
@@ -71,6 +80,6 @@ class Document implements DocumentInterface
 
     public function save()
     {
-        Storage::put($this->getName(), $this->content);
+        Storage::put($this->getName(), $this->getContent());
     }
 }
