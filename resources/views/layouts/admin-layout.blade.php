@@ -196,6 +196,10 @@
                             </li>
 
                             <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "commands"){ {{ "active" }} } @endif" href="{{ route("admin-commands") }}"><i class="fas fa-fw fa-table"></i>Команды</a>
+                            </li>
+
+                            <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "stats"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2">
                                     <i class="fa fa-fw fa-user-circle"></i>Статистика
                                     <span class="badge badge-success">6</span>

@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GetPopularProducts;
 use App\Console\Commands\SyncNovaPoshtaCities;
 use App\Console\Commands\TestCommand;
+use App\Console\Commands\TestCommand2;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +18,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         TestCommand::class,
-        SyncNovaPoshtaCities::class
+        TestCommand2::class,
+        SyncNovaPoshtaCities::class,
+        GetPopularProducts::class
     ];
 
     /**
@@ -29,7 +33,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('test-command')->everyMinute();
+        $schedule->command('test-command1')->everyMinute();
 //        $schedule->command('test-command')
 //            ->everyMinute()
 //            ->fridays()

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Console\Commands\Executors\Executor;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -42,5 +43,18 @@ class User extends Authenticatable
     public function hasRole($roles)
     {
         return $this->roles->contains(function($role) use($roles){ return in_array($role->name, $roles); });
+    }
+
+    /**
+     * @return Executor
+     */
+    public function createExecutor()
+    {
+        return new Executor(
+            $this->hasRole(['developer']),
+            $this->hasRole(['admin']),
+            $this->hasRole(['moderator']),
+            $this->hasRole(['ceo'])
+        );
     }
 }

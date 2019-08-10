@@ -71,3 +71,12 @@
 .notification-list-group-item{
     height:100px;
 }
+
+.command_list_item{
+    color: #fff;
+    background-color: grey;
+}
+.command_list_item:hover{
+    background-color: #007bff;
+    cursor: pointer;
+}

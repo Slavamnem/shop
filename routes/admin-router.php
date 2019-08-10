@@ -3,6 +3,29 @@
 Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['auth', 'admin-auth']], function(){
    Route::get("index", "AdminController@index"); // TODO remove
 
+    Route::group(['prefix' => "commands"], function(){
+        Route::get("", "CommandController@index")->name("admin-commands");
+        Route::post("search", "CommandController@search")->name("admin-commands-search");
+        Route::post("execute", "CommandController@execute")->name("admin-commands-execute");
+//        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
+//        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
+//        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");
+//        Route::get("create", "ProductController@create")->name("admin-products-create");
+//        Route::post("store", "ProductController@store")->name("admin-products-store");
+//        Route::get("show/{id}", "ProductController@show")->name("admin-products-show");
+//        Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
+//        Route::any('save-products-as-txt', "ProductController@saveAsTxt")->name('save-products-as-txt');
+//        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
+//        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
+//        Route::post('filter', "ProductController@filter");
+//        Route::post('get_products', "ProductController@getProducts");
+//        Route::post('index_products', "ProductController@indexProducts");
+
+        #Route::any("test", "ProductController@storageLearn");
+        #Route::any("lang", "ProductController@lang");
+        #Route::any("email", "ProductController@email");
+    });
+
    Route::group(['prefix' => "products"], function(){
        Route::get("", "ProductController@index")->name("admin-products");
        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");

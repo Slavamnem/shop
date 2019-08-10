@@ -2,20 +2,19 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Executors\Executor;
 use App\Jobs\TestJob;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class TestCommand extends Command
+class TestCommand2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'test-command1';
+    protected $signature = 'test-command2';
 
     /**
      * The console command description.
@@ -45,13 +44,9 @@ class TestCommand extends Command
 
         Log::info("command done");
 
-        dump("ask");
+        dump("test command 2!");
 
-        //$name = $this->ask('What is your name?');
-
-        //dump($name);
-
-        $job->handle();
+        //$job->handle();
 
         //dispatch((new TestJob())->delay(Carbon::now()->addSeconds(5)));
 //        dispatch((new TestJob())
@@ -61,8 +56,5 @@ class TestCommand extends Command
 //        );
 
         //$job->dispatch();
-
-        $executor = Executor::createAdmin();
-        dump($executor);
     }
 }
