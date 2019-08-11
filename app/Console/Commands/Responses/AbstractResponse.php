@@ -35,4 +35,6 @@ abstract class AbstractResponse implements CommandResponseInterface
     {
         $this->data = $data;
     }
+
+    abstract function render();
 }

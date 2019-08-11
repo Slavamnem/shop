@@ -9,6 +9,7 @@ use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\StatisticService;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,7 +20,7 @@ class GetPopularProducts extends AbstractCommand
      *
      * @var string
      */
-    protected $signature = 'command:get-popular-products {--type=text}';
+    protected $signature = 'command:get-popular-products {--type=table} {--view=page}';
 
     /**
      * The console command description.
@@ -38,11 +39,7 @@ class GetPopularProducts extends AbstractCommand
         parent::__construct();
     }
 
-    public function init()
-    {
-        $this->commandType = CommandType::create($this->option('type'));
-        $this->response = $this->commandType->getCommandResponse();
-    }
+
 
     /**
      * Execute the console command.
@@ -51,17 +48,28 @@ class GetPopularProducts extends AbstractCommand
      */
     public function handle()
     {
-        $this->init();
+        parent::handle();
 
+        $this->response->setData($this->getProducts());
+        Session::put('commandResponse', $this->response->render());
+        Session::put('commandViewType', $this->option('view'));
+        //return $this->response->getData();
+    }
+
+    /**
+     * @return array
+     */
+    private function getProducts()
+    {
         $service = resolve(StatisticServiceInterface::class);
         $products = Product::query()->with('orders')->get();
         $service->getProductsSales($products);
         $products = $products->sortByDesc('quantity');
 
-        $this->response->setData(array_slice($products->toArray(), 0, 5));
-        //dump(array_slice($products->toArray(), 0, 5));
+        $products = $products->map(function($product){
+            return $product->only(['name', 'base_price', 'quantity', 'active', 'profit']);
+        });
 
-        dump($this->commandType);
-        dump($this->response);
+        return array_slice($products->toArray(), 0, 5);
     }
 }

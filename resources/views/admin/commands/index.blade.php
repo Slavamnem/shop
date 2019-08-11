@@ -86,6 +86,9 @@
             <!-- ============================================================== -->
             <!-- end fixed header  -->
             <!-- ============================================================== -->
+
+            <div class="dropdown-menu dropdown-menu-right modal" id="command-modal"></div>
+
         </div>
     </div>
 @endsection

@@ -4,7 +4,7 @@ namespace App\Console\Commands\Responses;
 
 use App\Console\Commands\Interfaces\CommandResponseInterface;
 
-class TextResponse extends AbstractResponse implements CommandResponseInterface
+class TableResponse extends AbstractResponse implements CommandResponseInterface
 {
     /**
      * TextResponse constructor.
@@ -15,8 +15,11 @@ class TextResponse extends AbstractResponse implements CommandResponseInterface
         parent::__construct($data);
     }
 
-    public function render(){
-        $this->setData(json_encode($this->getData(), JSON_UNESCAPED_UNICODE));
+    public function render()
+    {
+        $this->setData(
+            view("admin.commands.table_response", ['data' => $this->getData()])->render()
+        );
 
         return $this->getData();
     }

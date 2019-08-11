@@ -53,6 +53,18 @@
     max-width: 50px;
 }
 
+#command-modal{
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+    margin-top:100px;
+    height: fit-content;
+    padding: 30px;
+    overflow: scroll;
+    max-height: 500px;
+    text-align: center;
+}
+
 #new_notifications{
     margin-left:auto;
     margin-right:auto;

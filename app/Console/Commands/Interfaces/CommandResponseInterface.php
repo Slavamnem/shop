@@ -19,4 +19,6 @@ interface CommandResponseInterface
      * @param $data
      */
     public function setData($data);
+
+    public function render();
 }

@@ -6,6 +6,7 @@ use App\Command;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class CommandController extends Controller
@@ -61,8 +62,13 @@ class CommandController extends Controller
             $options[$matches[1][$id]] = $matches[2][$id];
         }
 
+        Session::forget('commandResponse');
         Artisan::call($commandSignature, $options);
 
-        return "---" . $this->request->input('commandCode');
+        return [
+            Session::get('commandResponse'),
+            Session::get('commandViewType'),
+        ];
+        //return "---" . $this->request->input('commandCode');
     }
 }

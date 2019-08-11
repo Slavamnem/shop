@@ -14,4 +14,8 @@ class FileResponse extends AbstractResponse implements CommandResponseInterface
     {
         parent::__construct($data);
     }
+
+    public function render(){
+
+    }
 }

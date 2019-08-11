@@ -4,6 +4,7 @@ namespace App\Console\Commands\CommandType;
 
 use App\Console\Commands\Interfaces\CommandResponseInterface;
 use App\Console\Commands\Responses\FileResponse;
+use App\Console\Commands\Responses\TableResponse;
 use App\Console\Commands\Responses\TextResponse;
 
 class CommandType
@@ -19,6 +20,7 @@ class CommandType
 
     private static $typesCreators = [
         'text'   => 'createTextType',
+        'table'  => 'createTableType',
         'window' => 'createWindowType',
         'file'   => 'createFileType',
     ];
@@ -73,6 +75,14 @@ class CommandType
     public static function createTextType()
     {
         return new self('text', new TextResponse());
+    }
+
+    /**
+     * @return CommandType
+     */
+    public static function createTableType()
+    {
+        return new self('table', new TableResponse());
     }
 
     /**

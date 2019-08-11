@@ -33,6 +33,17 @@ abstract class AbstractCommand extends Command
         $this->executor = Auth::user()->createExecutor();
     }
 
+    public function init()
+    {
+        $this->commandType = CommandType::create($this->option('type'));
+        $this->response = $this->commandType->getCommandResponse();
+    }
+
+    public function handle()
+    {
+        $this->init();
+    }
+
     /**
      * @return mixed
      */

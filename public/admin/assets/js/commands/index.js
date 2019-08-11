@@ -44,7 +44,14 @@ $( document ).ready(function() {
             method: 'POST',
             data: {commandCode: commandCode},
             success: function(res) {
-                $('.command-worksheet').html(res);
+                if(res[1] == 'window') {
+                    $('#command-modal').html(res[0]);
+                    $('#command-modal').modal();
+                } else {
+                    $('.command-worksheet').html(res[0]);
+                }
+
+                //alert(res);
                 $('#loader').hide();
             },
             error: function(){
