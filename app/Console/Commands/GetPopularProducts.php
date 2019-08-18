@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\CommandType\CommandType;
+use App\Console\Commands\Decorators\BaseDecorator;
 use App\Console\Commands\Responses\TextResponse;
 use App\Product;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
@@ -20,7 +21,7 @@ class GetPopularProducts extends AbstractCommand
      *
      * @var string
      */
-    protected $signature = 'command:get-popular-products {--type=table} {--view=page}';
+    protected $signature = 'command:get-popular-products {--type=table} {--view=page} {--decor=}';
 
     /**
      * The console command description.
@@ -51,7 +52,14 @@ class GetPopularProducts extends AbstractCommand
         parent::handle();
 
         $this->response->setData($this->getProducts());
-        Session::put('commandResponse', $this->response->render());
+        $this->response->render();
+
+        if ($decorType = $this->option('decor')) {
+            $this->response = BaseDecorator::getDecorator($decorType, $this->response);
+            $this->response->decorate();
+        }
+
+        Session::put('commandResponse', $this->response->getData());
         Session::put('commandViewType', $this->option('view'));
         //return $this->response->getData();
     }

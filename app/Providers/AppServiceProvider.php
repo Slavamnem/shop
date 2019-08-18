@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Builders\ConditionsBuilder;
+use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
+use App\Services\Admin\ConditionsService;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
@@ -86,10 +89,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClientServiceInterface::class, ClientService::class);
         $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
 
         $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);
         $this->app->bind(BasketService::class);
         $this->app->bind(OrderPriceCalcService::class);
+
+        $this->app->bind('conditions', ConditionsService::class);
     }
 }

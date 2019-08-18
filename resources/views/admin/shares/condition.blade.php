@@ -1,32 +1,32 @@
 <div class="form-group share-condition">
-    @if($conditionsAmount > 0)
-        <input type="hidden" class="delimiter" name="conditions_delimiter" value="{{ $delimiterType }}">
-        <button class="btn btn-warning delimiter-button condition-delimiter-{{$conditionId}}" type="button">{{ $delimiterTypeTrans }}</button>
+    @if($condition->getId() > 0)
+        <input type="hidden" class="delimiter" name="conditions_delimiter" value="{{ $delimiter }}">
+        <button class="btn btn-warning delimiter-button condition-delimiter-{{ $condition->getId() }}" type="button">{{ $delimiterTrans }}</button>
         <br><br>
     @endif
     <div class="row">
         <div class="col-md-4">
-            <select name="conditions[]" class="form-control condition condition-{{$conditionId}}" data-id="{{$conditionId}}">
+            <select name="conditions[]" class="form-control condition1 condition-{{ $condition->getId() }}" data-id="{{ $condition->getId() }}">
                 <option value="">{{ "Выберите условие" }}</option>
-                @forelse($conditions as $condition => $name)
-                    <option @if(isset($currentCondition) and $currentCondition == $condition) {{ "selected" }} @endif value="{{ $condition }}">{{ $name }}</option>
+                @forelse($conditionsList as $conditionCode => $name)
+                    <option @if(null !== $condition->getField() and $condition->getField() == $conditionCode) {{ "selected" }} @endif value="{{ $conditionCode }}">{{ $name }}</option>
                 @empty
                 @endforelse
             </select>
         </div>
         <div class="col-md-2">
-            <select name="operations[]" class="form-control operations-section-{{$conditionId}}">
-                @forelse($operations as $operation)
-                    <option @if(isset($currentOperation) and $currentOperation == $operation) {{ "selected" }} @endif value="{{ $operation }}">{{ $operation }}</option>
+            <select name="operations[]" class="form-control operations-section-{{ $condition->getId() }}">
+                @forelse($operationsList as $operation)
+                    <option @if(null !== $condition->getOperation() and $condition->getOperation() == $operation) {{ "selected" }} @endif value="{{ $operation }}">{{ $operation }}</option>
                 @empty
                 @endforelse
             </select>
         </div>
-        <div class="col-md-4 values-section-{{$conditionId}}">
-            @if(isset($currentValues))
-                @include("admin/shares/condition-values", ["values" => $currentValues, "currentValue" => $currentValue])
+        <div class="col-md-4 values-section-{{ $condition->getId() }}">
+            @if(null !== $condition->getValuesList())
+                @include("admin/shares/condition-values", ["values" => $condition->getValuesList(), "currentValue" => $condition->getCurrentValue()])
             @else
-                <input id="inputText3" name="conditions_values[]" type="text" class="form-control" value="{{ $currentValue or "" }}">
+                <input id="inputText3" name="conditions_values[]" type="text" class="form-control" value="{{ $condition->getCurrentValue or '' }}">
             @endif
         </div>
         <div class="col-md-1">

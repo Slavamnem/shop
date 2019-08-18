@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateModelGroupRequest extends FormRequest
+class CreateProductStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,14 @@ class CreateModelGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'        => 'required',
-            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|max:100'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Укажите имя модели!'
+            'name.required' => 'Укажите имя статуса!'
         ];
     }
 }

@@ -112,31 +112,31 @@ class Product extends Model
         return $this->fieldsTranslations;
     }
 
-    public function getPrice()
-    {
-        $price = $this->attributes['base_price'];
-
-        ///
-//        $products = Product::all();
-////
-////        $time1 = Carbon::now();
-////        foreach ($products as $product) {
-////            $productShare = ShareService::getProductShare($product);
-////        }
-////        $time2 = Carbon::now();
-////        dump($time2->diff($time1));
-        /////////////////
-
-        if ($productShare = ShareService::getProductShare($this)) {
-            if ($productShare->fix_price) {
-                $price = $productShare->fix_price;
-            } elseif ($productShare->discount) {
-                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
-            }
-        }
-
-        return $price;
-    }
+//    public function getPrice()
+//    {
+//        $price = $this->attributes['base_price'];
+//
+//        ///
+////        $products = Product::all();
+//////
+//////        $time1 = Carbon::now();
+//////        foreach ($products as $product) {
+//////            $productShare = ShareService::getProductShare($product);
+//////        }
+//////        $time2 = Carbon::now();
+//////        dump($time2->diff($time1));
+//        /////////////////
+//
+//        if ($productShare = ShareService::getProductShare($this)) {
+//            if ($productShare->fix_price) {
+//                $price = $productShare->fix_price;
+//            } elseif ($productShare->discount) {
+//                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
+//            }
+//        }
+//
+//        return $price;
+//    }
 
     public function orders()
     {

@@ -251,7 +251,7 @@
                             </li>
 
                             <li class="nav-item ">
-                                <a class="nav-link @if(@$activeMenuItem == "groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Группы</a>
+                                <a class="nav-link @if(@$activeMenuItem == "groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Модели</a>
                             </li>
 
                             <li class="nav-item ">

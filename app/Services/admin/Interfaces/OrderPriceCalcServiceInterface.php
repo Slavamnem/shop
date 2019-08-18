@@ -7,18 +7,14 @@ use App\Components\Interfaces\BasketObjectInterface;
 interface OrderPriceCalcServiceInterface
 {
     /**
-     * @param $deliveryType
-     */
-    public function setDelivery($deliveryType);
-
-    /**
-     * @param $paymentType
-     */
-    public function setPayment($paymentType);
-
-    /**
      * @param BasketObjectInterface $basketObject
+     */
+    public function setBasket(BasketObjectInterface $basketObject);
+
+    /**
+     * @param $deliveryType
+     * @param $paymentType
      * @return int|mixed
      */
-    public function calcOrderPrice(BasketObjectInterface $basketObject);
+    public function calcOrderPrice($deliveryType, $paymentType);
 }

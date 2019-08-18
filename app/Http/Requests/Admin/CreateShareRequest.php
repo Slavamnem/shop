@@ -30,4 +30,14 @@ class CreateShareRequest extends FormRequest
             'active_to'   => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Укажите название акции!',
+            'slug.required' => 'Укажите slug!',
+            'active_from.required' => 'Укажите начало действия акции!',
+            'active_to.required' => 'Укажите конец дйствия акции!'
+        ];
+    }
 }

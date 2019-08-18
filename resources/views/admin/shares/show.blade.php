@@ -54,8 +54,8 @@
 
                                         <div id="conditions" data-amount="{{ @count($share->conditions) }}">
                                             @if(is_array($share->conditions))
-                                                @foreach($share->conditions as $num => $condition)
-                                                    @include("admin/shares/condition", $conditionsData[$num])
+                                                @foreach($share->conditions as $id => $condition)
+                                                    @include("admin/shares/condition", ['condition' => $conditionsBox->getCondition($id)])
                                                 @endforeach
                                             @endif
                                         </div>

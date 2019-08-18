@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreateProductStatusRequest;
+use App\Http\Requests\Admin\UpdateProductStatusRequest;
 use App\ProductStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,10 +46,10 @@ class ProductStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateProductStatusRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductStatusRequest $request)
     {
         $status = new ProductStatus();
 
@@ -86,11 +88,11 @@ class ProductStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateProductStatusRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductStatusRequest $request, $id)
     {
         $status = ProductStatus::find($id);
 

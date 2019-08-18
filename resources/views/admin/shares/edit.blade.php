@@ -33,6 +33,11 @@
                                         <label for="inputText3" class="col-form-label">Название акции</label>
                                         <input id="name" name="name" type="text" class="form-control" value="{{ $share->name }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
 
                                     <div class="form-group">
                                         <label for="slug" class="col-form-label">Slug (имя на английском в строке браузера)</label>
@@ -45,6 +50,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if($errors->has("slug"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('slug') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Описание акции</label>
                                         <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ $share->description }}</textarea>
@@ -67,8 +77,14 @@
 
                                         <div id="conditions" data-amount="{{ @count($share->conditions) }}">
                                             @if(is_array($share->conditions))
-                                                @foreach($share->conditions as $num => $condition)
-                                                    @include("admin/shares/condition", $conditionsData[$num])
+                                                @foreach($share->conditions as $id => $condition)
+                                                    @include("admin/shares/condition", [
+                                                        'conditionsList' => $conditionsBox->getConditionsList(),
+                                                        'operationsList' => $conditionsBox->getOperationsList(),
+                                                        'delimiter'      => $conditionsBox->getDelimiter(),
+                                                        'delimiterTrans' => $conditionsBox->getDelimiterTrans(),
+                                                        'condition'      => $conditionsBox->getCondition($id)
+                                                    ])
                                                 @endforeach
                                             @endif
                                         </div>
@@ -83,11 +99,21 @@
                                         <label for="inputText3" class="col-form-label">Активна с:</label>
                                         <input class="date form-control datepicker" name="active_from" type="text" value="{{ $share->active_from }}">
                                     </div>
+                                    @if($errors->has("active_from"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('active_from') }}</strong>
+                                        </span>
+                                    @endif
 
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Активна до:</label>
                                         <input class="date form-control datepicker" name="active_to" type="text" value="{{ $share->active_to }}">
                                     </div>
+                                    @if($errors->has("active_to"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('active_to') }}</strong>
+                                        </span>
+                                    @endif
 
                                 </div>
                             </div>

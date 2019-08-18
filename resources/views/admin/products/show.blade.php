@@ -64,7 +64,7 @@
                                             @endforelse
                                         </select>
                                     </div>
-                                    <h4>Группа</h4>
+                                    <h4>Модель</h4>
                                     <div class="form-group">
                                         <select name="group_id" class="form-control" readonly="readonly">
                                             @forelse($groups as $group)

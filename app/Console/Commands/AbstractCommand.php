@@ -30,7 +30,9 @@ abstract class AbstractCommand extends Command
     {
         parent::__construct();
 
-        $this->executor = Auth::user()->createExecutor();
+        if (Auth::id()) {
+            $this->executor = Auth::user()->createExecutor();
+        }
     }
 
     public function init()

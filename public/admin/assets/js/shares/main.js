@@ -76,10 +76,9 @@ $( document ).ready(function() {
         }
     });
 
-    $(document).on('change', '.condition', function(){
+    $(document).on('change', '.condition1', function(){
         var field = $(this).val();
         var condition_id = $(this).data("id");
-        //alert(condition_id);
 
         $.ajax({
             url: "/admin/shares/loadConditionValues",

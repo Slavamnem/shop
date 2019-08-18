@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Color;
+use App\Http\Requests\Admin\CreateColorRequest;
+use App\Http\Requests\Admin\EditCategoryRequest;
+use App\Http\Requests\Admin\EditColorRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
@@ -44,10 +47,10 @@ class ColorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateColorRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateColorRequest $request)
     {
         $color = new Color();
 
@@ -86,11 +89,11 @@ class ColorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditColorRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditColorRequest $request, $id)
     {
         $color = Color::find($id);
 

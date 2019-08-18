@@ -68,6 +68,25 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
+     * @param $product
+     * @return float|int
+     */
+    public function getPrice($product)
+    {
+        $price = $product->base_price;
+
+        if ($productShare = ShareService::getProductShare($product)) {
+            if ($productShare->fix_price) {
+                $price = $productShare->fix_price;
+            } elseif ($productShare->discount) {
+                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
+            }
+        }
+
+        return $price;
+    }
+
+    /**
      * @param $id
      * @return array
      */
@@ -170,23 +189,6 @@ class ProductService implements ProductServiceInterface
         $builder->saveDocument();
 
         return response()->download($builder->getDocument()->getPath());
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function getConditionsFields()
-    {
-        $result = [];
-        foreach ((new Product())->getFieldsTranslations() as $field => $translation) {
-            $result[$field] = $translation;
-        }
-
-        foreach (Property::all() as $property) {
-            $result["property-{$property->id}"] = $property->name;
-        }
-
-        return $result;
     }
 
     /**

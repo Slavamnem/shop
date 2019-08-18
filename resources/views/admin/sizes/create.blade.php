@@ -32,6 +32,11 @@
                                         <label for="inputText3" class="col-form-label">Название размера</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Color;
+use App\Components\Facades\Conditions;
 use App\Http\Requests\Admin\CreateShareRequest;
 use App\Http\Requests\Admin\EditShareRequest;
 use App\ModelGroup;
@@ -90,9 +91,9 @@ class ShareController extends Controller
     public function show($id)
     {
         $share = Share::find($id);
-        $conditionsData = $this->service->getOldConditionsData($share);
+        $conditionsBox = Conditions::getExistingConditions($share);
 
-        return view("admin.shares.show", compact("share", "conditionsData"));
+        return view("admin.shares.show", compact("share", "conditionsBox"));
     }
 
     /**
@@ -104,9 +105,10 @@ class ShareController extends Controller
     public function edit($id)
     {
         $share = Share::find($id);
-        $conditionsData = $this->service->getOldConditionsData($share);
+        //$conditionsData = $this->service->getOldConditionsData($share);
+        $conditionsBox = Conditions::getExistingConditions($share);
 
-        return view("admin.shares.edit", compact("share", "conditionsData"));
+        return view("admin.shares.edit", compact("share", "conditionsBox"));
     }
 
     /**
@@ -150,16 +152,31 @@ class ShareController extends Controller
         return view("admin.shares.filtered_table", compact('shares'));
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function addNewCondition()
     {
-        $data = $this->service->getNewConditionData();
+        $conditionsBox = Conditions::getNewConditionBox($this->request);
+        $data = [
+            'conditionsList' => $conditionsBox->getConditionsList(),
+            'operationsList' => $conditionsBox->getOperationsList(),
+            'delimiter'      => $conditionsBox->getDelimiter(),
+            'delimiterTrans' => $conditionsBox->getDelimiterTrans(),
+            'condition'      => $conditionsBox->getCondition($this->request->conditionId)
+        ];
 
         return view("admin.shares.condition", $data)->render();
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function loadConditionValues()
     {
-        $values = $this->service->getConditionValues($this->request->field);
+        $values = Conditions::getValuesList($this->request->field);
 
         return view("admin.shares.condition-values", compact('values'))->render();
     }

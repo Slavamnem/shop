@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreateColorRequest;
+use App\Http\Requests\Admin\CreateSizeRequest;
+use App\Http\Requests\Admin\EditColorRequest;
+use App\Http\Requests\Admin\EditSizeRequest;
 use App\Size;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,10 +48,10 @@ class SizeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateSizeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSizeRequest $request)
     {
         $size = new Size();
 
@@ -86,11 +90,11 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EditSizeRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditSizeRequest $request, $id)
     {
         $size = Size::find($id);
 

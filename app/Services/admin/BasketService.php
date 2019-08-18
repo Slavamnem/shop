@@ -60,9 +60,7 @@ class BasketService
      */
     public function addBasketProduct($productId)
     {
-        $basketObject = $this->getBasket();
-
-        $basketObject->addProduct(Product::find($productId));
+        $this->getBasket()->addProduct(Product::find($productId));
     }
 
     /**
@@ -93,8 +91,11 @@ class BasketService
      */
     public function getTotalOrderPrice()
     {
-        $this->priceCalcService->setDelivery($this->request->input("delivery_type"));
-        $this->priceCalcService->setPayment($this->request->input("payment_type"));
-        return $this->priceCalcService->calcOrderPrice($this->getBasket());
+        $this->priceCalcService->setBasket($this->getBasket());
+
+        return $this->priceCalcService->calcOrderPrice(
+            $this->request->input("delivery_type"),
+            $this->request->input("payment_type")
+        );
     }
 }

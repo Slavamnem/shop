@@ -50,7 +50,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" type="submit">Сохранить группу</button>
+                            <button class="btn btn-primary" type="submit">Сохранить модель</button>
 
                         </div>
                     </div>

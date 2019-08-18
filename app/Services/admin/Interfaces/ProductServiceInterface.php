@@ -50,9 +50,4 @@ interface ProductServiceInterface
      * @return mixed
      */
     public function saveToFile(DocumentBuilderInterface $builder, $data, $fileName);
-
-    /**
-     * @return mixed
-     */
-    public function getConditionsFields();
 }

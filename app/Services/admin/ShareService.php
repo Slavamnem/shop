@@ -24,10 +24,6 @@ class ShareService implements ShareServiceInterface
      * @var
      */
     private $productService;
-    /**
-     * @var array
-     */
-    private $conditionsOperations = ["=", "!=", "<", "<=", ">", ">=", "LIKE"];
 
     /**
      * ShareService constructor.
@@ -38,91 +34,6 @@ class ShareService implements ShareServiceInterface
     {
         $this->request = $request;
         $this->productService = $productService;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConditionsOperations()
-    {
-        return $this->conditionsOperations;
-    }
-
-    /**
-     * Те условия что уже сохранены у акции
-     *
-     * @param $share
-     * @return array
-     */
-    public function getOldConditionsData($share)
-    {
-        $conditionsData = [];
-        foreach ((array)$share->conditions as $num => $condition) {
-            array_push($conditionsData, [
-                "conditions"         => $this->productService->getConditionsFields(),
-                "operations"         => $this->getConditionsOperations(),
-                "delimiterType"      => array_keys($condition)[0],
-                "delimiterTypeTrans" => array_keys($condition)[0] == "or" ? "ИЛИ" : "И",
-                "conditionId"        => $num,
-                "conditionsAmount"   => $num,
-                "currentCondition"   => $condition[array_keys($condition)[0]]["field"],
-                "currentOperation"   => $condition[array_keys($condition)[0]]["operation"],
-                "currentValues"      => $this->getConditionValues($condition[array_keys($condition)[0]]["field"]),
-                "currentValue"       => $condition[array_keys($condition)[0]]["value"],
-            ]);
-        }
-
-        return $conditionsData;
-    }
-
-    /**
-     * Список всех условий, которые можно добавлять у акции
-     *
-     * @return array
-     */
-    public function getNewConditionData()
-    {
-        return [
-            "conditions"         => $this->productService->getConditionsFields(),
-            "operations"         => $this->conditionsOperations,
-            "delimiterType"      => $this->request->delimiterType,
-            "delimiterTypeTrans" => $this->request->delimiterType == "or" ? "ИЛИ" : "И",
-            "conditionId"        => $this->request->conditionId,
-            "conditionsAmount"   => $this->request->conditionsAmount
-        ];
-    }
-
-    /**
-     * Все возможные значения конкретного условия
-     *
-     * @param string $conditionKey
-     * @return array
-     */
-    public function getConditionValues($conditionKey)
-    {
-        $valuesHub = [
-            "id" => Product::all()->mapWithKeys(function($product){
-                return [$product->id => $product->name . " (id: {$product->id})"];
-            }),
-            "category_id" => Category::all()->mapWithKeys(function($category){
-                return [$category->id => $category->name];
-            }),
-            "group_id" => ModelGroup::all()->mapWithKeys(function($group){
-                return [$group->id => $group->name];
-            }),
-            "status_id" => ProductStatus::all()->mapWithKeys(function($status){
-                return [$status->id => $status->name];
-            }),
-            "color_id" => Color::all()->mapWithKeys(function($color){
-                return [$color->id => $color->name];
-            }),
-            "size_id" => Size::all()->mapWithKeys(function($size){
-                return [$size->id => $size->name];
-            }),
-        ];
-
-        $response = array_key_exists($conditionKey, $valuesHub) ? $valuesHub[$conditionKey] : [];
-        return $response;
     }
 
     /**
@@ -143,8 +54,6 @@ class ShareService implements ShareServiceInterface
         }
 
         $share->conditions = $conditionsData;
-        //dump($conditionsData);
-        //$this->getAccordingProducts($conditionsData);
     }
 
     /**
@@ -208,11 +117,11 @@ class ShareService implements ShareServiceInterface
     public static function getProductShares(Product $product)
     {
         $shares = Share::active()->get();
-        $productShares = [];
+        $productShares = collect();
 
         foreach ($shares as $share) {
             if (self::productHasShare($product, $share)){
-                $productShares[] = $share;
+                $productShares->push($share);
             }
         }
 

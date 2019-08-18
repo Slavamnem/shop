@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="page-header">
-                    <h2 class="pageheader-title">Группы товаров</h2>
+                    <h2 class="pageheader-title">Модели товаров</h2>
                     <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
                     <div class="page-breadcrumb">
                         <nav aria-label="breadcrumb">
@@ -32,11 +32,11 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                <h5 class="mb-0">Список всех групп</h5>
+                                <h5 class="mb-0">Список всех моделей</h5>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                 <a href="{{ route("admin-groups-create") }}">
-                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ ГРУППУ</button>
+                                    <button class="btn btn-primary" type="submit">ДОБАВИТЬ МОДЕЛЬ</button>
                                 </a>
                             </div>
                         </div>

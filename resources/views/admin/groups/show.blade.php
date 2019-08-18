@@ -9,7 +9,7 @@
 
                 <div class="section-block">
                     <h1 class="section-title">
-                        Группа товаров: {{ $group->name }}
+                        Модель: {{ $group->name }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>

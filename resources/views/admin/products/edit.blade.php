@@ -113,7 +113,7 @@
                                                 <strong>{{ $errors->first('category_id') }}</strong>
                                             </span>
                                         @endif
-                                        <h4>Группа</h4>
+                                        <h4>Модель</h4>
                                         <div class="form-group">
                                             <select name="group_id" class="form-control">
                                                 @forelse($groups as $group)

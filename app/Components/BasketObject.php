@@ -10,6 +10,7 @@ use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Product;
 use App\Services\Admin\BasketService;
+use App\Services\Admin\Interfaces\ProductServiceInterface;
 
 class BasketObject implements BasketObjectInterface
 {
@@ -29,6 +30,10 @@ class BasketObject implements BasketObjectInterface
      * @var Client
      */
     private $client;
+    /**
+     * @var
+     */
+    private $productService;
 
     /**
      * BasketObject constructor.
@@ -37,6 +42,7 @@ class BasketObject implements BasketObjectInterface
     public function __construct(Basket $basket = null)
     {
         $this->basket = $basket;
+        $this->productService = resolve(ProductServiceInterface::class);
     }
 
     /**
@@ -54,7 +60,7 @@ class BasketObject implements BasketObjectInterface
                 ->save(new BasketProduct([
                     'product_id' => $product->id,
                     'quantity'   => 1,
-                    'price'      => $product->getPrice()
+                    'price'      => $this->productService->getPrice($product)
                 ]));
         }
     }

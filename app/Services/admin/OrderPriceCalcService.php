@@ -8,42 +8,47 @@ use App\Components\Interfaces\PaymentTypeInterface;
 use App\Enums\DeliveryTypesEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Services\Admin\Interfaces\OrderPriceCalcServiceInterface;
+use App\Strategies\DeliveryStrategy;
+use App\Strategies\Interfaces\StrategyInterface;
+use App\Strategies\PaymentStrategy;
 
 class OrderPriceCalcService implements OrderPriceCalcServiceInterface
 {
     /**
-     * @var DeliveryTypeInterface
+     * @var StrategyInterface
      */
-    private $delivery;
+    private $deliveryStrategy;
     /**
-     * @var PaymentTypeInterface
+     * @var StrategyInterface
      */
-    private $payment;
-
-    public function __construct(){}
-
+    private $paymentStrategy;
     /**
-     * @param $deliveryType
+     * @var BasketObjectInterface
      */
-    public function setDelivery($deliveryType)
-    {
-        $this->delivery = DeliveryTypesEnum::getDelivery($deliveryType);
-    }
+    private $basketObject;
 
-    /**
-     * @param $paymentType
-     */
-    public function setPayment($paymentType)
-    {
-        $this->payment = PaymentTypesEnum::getPayment($paymentType);
+    public function __construct(){
+        $this->deliveryStrategy = new DeliveryStrategy();
+        $this->paymentStrategy = new PaymentStrategy();
     }
 
     /**
      * @param BasketObjectInterface $basketObject
+     */
+    public function setBasket(BasketObjectInterface $basketObject)
+    {
+        $this->basketObject = $basketObject;
+    }
+
+    /**
+     * @param $deliveryType
+     * @param $paymentType
      * @return int|mixed
      */
-    public function calcOrderPrice(BasketObjectInterface $basketObject)
+    public function calcOrderPrice($deliveryType, $paymentType)
     {
-        return $basketObject->getTotalPrice() + $this->delivery->getExtraPrice($basketObject) + $this->payment->getExtraPrice($basketObject);
+        return $this->basketObject->getTotalPrice() +
+            $this->deliveryStrategy->getStrategy($deliveryType)->getExtraPrice($this->basketObject) +
+            $this->paymentStrategy->getStrategy($paymentType)->getExtraPrice($this->basketObject);
     }
 }
