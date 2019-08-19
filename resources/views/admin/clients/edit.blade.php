@@ -40,6 +40,11 @@
                                         <label for="inputText3" class="col-form-label">Имя</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $client->name }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Фамилия</label>
                                         <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ $client->last_name }}">
@@ -48,10 +53,20 @@
                                         <label for="inputText3" class="col-form-label">Телефон</label>
                                         <input id="inputText3" name="phone" type="text" class="form-control" value="{{ $client->phone }}">
                                     </div>
+                                    @if($errors->has("phone"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('phone') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта</label>
                                         <input id="inputText3" name="email" type="text" class="form-control" value="{{ $client->email }}">
                                     </div>
+                                    @if($errors->has("email"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Рейтинг</label>
                                         <input id="inputText3" name="rating" type="text" class="form-control" value="{{ $client->rating }}" readonly="readonly">

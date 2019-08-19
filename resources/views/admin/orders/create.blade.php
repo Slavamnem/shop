@@ -71,6 +71,11 @@
                                                 <label for="name" class="col-form-label">Телефон:</label>
                                                 <input id="order_client_phone" name="phone" type="text" class="form-control" value="{{ old("phone") }}">
                                             </div>
+                                            @if($errors->has("phone"))
+                                                <span class="help-block" style="color:red">
+                                                    <strong>{{ $errors->first('phone') }}</strong>
+                                                </span>
+                                            @endif
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Адрес электронной почты:</label>
@@ -88,37 +93,52 @@
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Город:</label>
                                                 <select name="city" class="form-control" id="order-city">
-                                                    <option value="0">Выберите город</option>
+                                                    <option value="">Выберите город</option>
                                                     @forelse($cities as $city)
                                                         <option value="{{$city->ref}}">{{$city->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
                                             </div>
+                                            @if($errors->has("city"))
+                                                <span class="help-block" style="color:red">
+                                                    <strong>{{ $errors->first('city') }}</strong>
+                                                </span>
+                                            @endif
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Тип доставки:</label>
                                                 <select name="delivery_type" class="form-control" id="order-delivery-type">
-                                                    <option value="0">Выберите тип доставки</option>
+                                                    <option value="">Выберите тип доставки</option>
                                                     @forelse($delivery_types as $type)
                                                         <option value="{{$type->id}}">{{$type->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
                                             </div>
+                                            @if($errors->has("delivery_type"))
+                                                <span class="help-block" style="color:red">
+                                                    <strong>{{ $errors->first('delivery_type') }}</strong>
+                                                </span>
+                                            @endif
 
                                             <div class="form-group warehouses"></div>
 
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Тип оплаты:</label>
                                                 <select name="payment_type" class="form-control" id="new-product">
-                                                    <option value="0">Выберите тип оплаты</option>
+                                                    <option value="">Выберите тип оплаты</option>
                                                     @forelse($payment_types as $type)
                                                         <option value="{{$type->id}}">{{$type->name}}</option>
                                                     @empty
                                                     @endforelse
                                                 </select>
                                             </div>
+                                            @if($errors->has("payment_type"))
+                                                <span class="help-block" style="color:red">
+                                                    <strong>{{ $errors->first('payment_type') }}</strong>
+                                                </span>
+                                            @endif
                                         </div>
 
                                         <br>

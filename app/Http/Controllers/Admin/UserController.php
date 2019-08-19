@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreateUserRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Role;
 use App\Services\Admin\Interfaces\UserServiceInterface;
 use App\User;
@@ -65,10 +67,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateUserRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
         $user = new User();
 
@@ -110,11 +112,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateUserRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         if ($this->request->user()->can("update", User::class)) {
             $user = User::find($id);

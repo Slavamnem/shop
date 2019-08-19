@@ -11,6 +11,7 @@ use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentTypesEnum;
+use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
@@ -103,10 +104,10 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateOrderRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateOrderRequest $request)
     {
         $this->service->createOrder();
         $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreateRoleRequest;
+use App\Http\Requests\Admin\UpdateRoleRequest;
 use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,10 +46,10 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRoleRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRoleRequest $request)
     {
         $role = new Role();
 
@@ -86,11 +88,11 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateRoleRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, $id)
     {
         $role = Role::find($id);
 

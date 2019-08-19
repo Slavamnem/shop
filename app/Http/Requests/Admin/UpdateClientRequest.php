@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EditOrderRequest extends FormRequest
+class UpdateClientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +24,19 @@ class EditOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'sum'   => 'required|numeric',
+            'name'  => 'required',
             'phone' => 'required',
-            'email' => 'email',
-            'city'  => 'required'
+            'email' => 'required|email',
         ];
     }
 
     public function messages()
     {
         return [
+            'name.required'  => 'Поле имя обязательно!',
             'phone.required' => 'Поле телефон обязательно!',
-            'sum.required'   => 'Поле сумма обязательно!',
-            'city.required'  => 'Поле город обязательно!',
-            'email.email'    => 'Введите валидный email!',
+            'email.required' => 'Поле email обязательно!',
+            'email.email'    => 'Введите корректный email!',
         ];
     }
 }

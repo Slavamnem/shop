@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DeliveryType;
+use App\Http\Requests\Admin\CreateDeliveryTypeRequest;
+use App\Http\Requests\Admin\UpdateDeliveryTypeRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
@@ -44,10 +46,10 @@ class DeliveryTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateDeliveryTypeRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateDeliveryTypeRequest $request)
     {
         $deliveryType = new DeliveryType();
 
@@ -86,11 +88,11 @@ class DeliveryTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateDeliveryTypeRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDeliveryTypeRequest $request, $id)
     {
         $deliveryType = DeliveryType::find($id);
 

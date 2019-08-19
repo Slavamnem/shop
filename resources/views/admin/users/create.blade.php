@@ -30,24 +30,49 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Имя</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="">
+                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ old('name') }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Фамилия</label>
-                                        <input id="inputText3" name="last_name" type="text" class="form-control" value="">
+                                        <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ old('last_name') }}">
                                     </div>
+                                    @if($errors->has("last_name"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('last_name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта</label>
-                                        <input id="inputText3" name="email" type="text" class="form-control" value="">
+                                        <input id="inputText3" name="email" type="text" class="form-control" value="{{ old('email') }}">
                                     </div>
+                                    @if($errors->has("email"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Логин</label>
-                                        <input id="inputText3" name="login" type="text" class="form-control" value="">
+                                        <input id="inputText3" name="login" type="text" class="form-control" value="{{ old('login') }}">
                                     </div>
+                                    @if($errors->has("login"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('login') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Пароль</label>
-                                        <input id="inputText3" name="password" type="text" class="form-control" value="">
+                                        <input id="inputText3" name="password" type="password" class="form-control" value="{{ old('password') }}">
                                     </div>
+                                    @if($errors->has("password"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card">

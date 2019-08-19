@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\CreatePaymentTypeRequest;
+use App\Http\Requests\Admin\UpdatePaymentTypeRequest;
 use App\PaymentType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,10 +46,10 @@ class PaymentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreatePaymentTypeRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePaymentTypeRequest $request)
     {
         $paymentType = new PaymentType();
 
@@ -86,11 +88,11 @@ class PaymentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdatePaymentTypeRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePaymentTypeRequest $request, $id)
     {
         $paymentType = PaymentType::find($id);
 

@@ -32,22 +32,47 @@
                                         <label for="inputText3" class="col-form-label">Имя</label>
                                         <input id="inputText3" name="name" type="text" class="form-control" value="{{ $user->name }}">
                                     </div>
+                                    @if($errors->has("name"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Фамилия</label>
                                         <input id="inputText3" name="last_name" type="text" class="form-control" value="{{ $user->last_name }}">
                                     </div>
+                                    @if($errors->has("last_name"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('last_name') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Логин</label>
                                         <input id="inputText3" name="login" type="text" class="form-control" value="{{ $user->login }}">
                                     </div>
+                                    @if($errors->has("login"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('login') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Пароль</label>
                                         <input id="inputText3" name="password" type="text" class="form-control" value="{{ $user->password }}">
                                     </div>
+                                    @if($errors->has("password"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Почта</label>
                                         <input id="inputText3" name="email" type="text" class="form-control" value="{{ $user->email }}">
                                     </div>
+                                    @if($errors->has("email"))
+                                        <span class="help-block" style="color:red">
+                                             <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Api Token</label>
                                         <input id="inputText3" name="api_token" type="text" class="form-control" value="{{ $user->api_token }}">

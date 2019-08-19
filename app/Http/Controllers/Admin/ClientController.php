@@ -7,8 +7,10 @@ use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Enums\ProductStatusEnum;
 use App\Events\NewOrderEvent;
+use App\Http\Requests\Admin\CreateClientRequest;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
+use App\Http\Requests\Admin\UpdateClientRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
@@ -79,11 +81,11 @@ class ClientController extends Controller
     }
 
     /**
-     * @param CreateProductRequest $request
+     * @param CreateClientRequest $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(CreateProductRequest $request)
+    public function store(CreateClientRequest $request)
     {
         $client = new Client();
 
@@ -120,12 +122,12 @@ class ClientController extends Controller
     }
 
     /**
-     * @param EditProductRequest $request
+     * @param UpdateClientRequest $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function update(EditProductRequest $request, $id)
+    public function update(UpdateClientRequest $request, $id)
     {
         $client = Client::find($id);
 
