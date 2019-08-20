@@ -42,12 +42,23 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $categories->previousPageUrl() }}">Previous</a></li>
+                                @if ($categories->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->url(1) }}">1</a></li>
+                                @endif
+                                @if ($categories->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $categories->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $categories->nextPageUrl() }}">Next</a></li>
+                                @if ($categories->currentPage() < $categories->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($categories->currentPage() + 1 < $categories->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->url($categories->lastPage()) }}">{{ $categories->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>
@@ -105,9 +116,19 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $categories->previousPageUrl() }}">Previous</a></li>
+                                @if ($categories->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->url(1) }}">1</a></li>
+                                @endif
+                                @if ($categories->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $categories->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $categories->nextPageUrl() }}">Next</a></li>
+                                @if ($categories->currentPage() < $categories->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($categories->currentPage() + 1 < $categories->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $categories->url($categories->lastPage()) }}">{{ $categories->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>

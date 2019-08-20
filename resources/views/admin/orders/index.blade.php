@@ -51,11 +51,11 @@
                                             <li class="page-item"><a class="page-link" href="{{ $orders->url(1) }}">1</a></li>
                                         @endif
                                         @if ($orders->currentPage() > 2)
-                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}">{{ $orders->currentPage() - 1 }}</a></li>
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}"><<</a></li>
                                         @endif
                                         <li class="page-item active"><a class="page-link " href="">{{ $orders->currentPage() }}</a></li>
                                         @if ($orders->currentPage() < $orders->lastPage())
-                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">{{ $orders->currentPage() + 1 }}</a></li>
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">>></a></li>
                                         @endif
                                         @if ($orders->currentPage() + 1 < $orders->lastPage())
                                             <li class="page-item"><a class="page-link" href="{{ $orders->url($orders->lastPage()) }}">{{ $orders->lastPage() }}</a></li>
@@ -165,11 +165,11 @@
                                             <li class="page-item"><a class="page-link" href="{{ $orders->url(1) }}">1</a></li>
                                         @endif
                                         @if ($orders->currentPage() > 2)
-                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}">{{ $orders->currentPage() - 1 }}</a></li>
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->previousPageUrl() }}"><<</a></li>
                                         @endif
                                         <li class="page-item active"><a class="page-link " href="">{{ $orders->currentPage() }}</a></li>
                                         @if ($orders->currentPage() < $orders->lastPage())
-                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">{{ $orders->currentPage() + 1 }}</a></li>
+                                            <li class="page-item"><a class="page-link" href="{{ $orders->nextPageUrl() }}">>></a></li>
                                         @endif
                                         @if ($orders->currentPage() + 1 < $orders->lastPage())
                                             <li class="page-item"><a class="page-link" href="{{ $orders->url($orders->lastPage()) }}">{{ $orders->lastPage() }}</a></li>

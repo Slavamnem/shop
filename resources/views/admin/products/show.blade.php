@@ -113,18 +113,58 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
-                            <h4>Основное изображение</h4>
-                            @if($product->image)
-                                <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->image}") }}" alt="User Avatar" class=" img-fluid">
-                                </div>
-                            @endif
-                            <h4>Маленькое изображение</h4>
-                            @if($product->small_image)
-                                <div class="card-body text-center">
-                                    <img src="{{ asset("storage/app/{$product->small_image}") }}" alt="User Avatar" class=" img-fluid">
-                                </div>
-                            @endif
+                            <table>
+                                <tr>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <h3>Фото</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Основное</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Превью</h3>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h3>Сортировка</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                                <hr>
+                                @forelse($product->images as $image)
+                                    <tr>
+                                        <div class="form-group product-image">
+                                            <div class="row">
+                                                <input type="hidden" name="oldImages[]" value="{{ $image->id }}">
+                                                <div class="col-md-4">
+                                                    <img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">
+                                                    {{--<input type="file" name="images[]" class="custom-file-input" id="customFile" style="opacity:1!important;">--}}
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="checkbox" name="oldImagesMain[{{$image->id}}]" value="1" class="generator" id="switch19" @if($image->main) {{ "checked" }} @endif readonly>
+                                                    <span>
+                                                        <label for="switch19"></label>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="checkbox" name="oldImagesPreview[{{$image->id}}]" value="1" class="generator" id="switch19" @if($image->preview) {{ "checked" }} @endif readonly>
+                                                    <span>
+                                                        <label for="switch19"></label>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input id="inputText4" name="oldImagesOrdering[{{$image->id}}]" type="number" class="form-control" value="{{ $image->ordering }}" readonly>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </tr>
+                                @empty
+                                    <h3></h3>
+                                @endforelse
+                            </table>
                         </div>
                         <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
                             @forelse($product->properties as $property)

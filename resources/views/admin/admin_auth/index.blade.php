@@ -36,13 +36,23 @@
                             </div>
                         </div>
                     </div>
-
+                    <br>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $auths->previousPageUrl() }}">Previous</a></li>
+                                @if ($auths->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->url(1) }}">1</a></li>
+                                @endif
+                                @if ($auths->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $auths->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $auths->nextPageUrl() }}">Next</a></li>
+                                @if ($auths->currentPage() < $auths->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($auths->currentPage() + 1 < $auths->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->url($auths->lastPage()) }}">{{ $auths->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>
@@ -97,9 +107,19 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $auths->previousPageUrl() }}">Previous</a></li>
+                                @if ($auths->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->url(1) }}">1</a></li>
+                                @endif
+                                @if ($auths->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $auths->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $auths->nextPageUrl() }}">Next</a></li>
+                                @if ($auths->currentPage() < $auths->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($auths->currentPage() + 1 < $auths->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $auths->url($auths->lastPage()) }}">{{ $auths->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>

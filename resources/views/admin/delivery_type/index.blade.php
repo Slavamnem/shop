@@ -41,12 +41,23 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->previousPageUrl() }}">Previous</a></li>
+                                @if ($deliveryTypes->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->url(1) }}">1</a></li>
+                                @endif
+                                @if ($deliveryTypes->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $deliveryTypes->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->nextPageUrl() }}">Next</a></li>
+                                @if ($deliveryTypes->currentPage() < $deliveryTypes->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($deliveryTypes->currentPage() + 1 < $deliveryTypes->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->url($deliveryTypes->lastPage()) }}">{{ $deliveryTypes->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>
@@ -92,9 +103,19 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->previousPageUrl() }}">Previous</a></li>
+                                @if ($deliveryTypes->currentPage() != 1)
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->url(1) }}">1</a></li>
+                                @endif
+                                @if ($deliveryTypes->currentPage() > 2)
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->previousPageUrl() }}"><<</a></li>
+                                @endif
                                 <li class="page-item active"><a class="page-link " href="">{{ $deliveryTypes->currentPage() }}</a></li>
-                                <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->nextPageUrl() }}">Next</a></li>
+                                @if ($deliveryTypes->currentPage() < $deliveryTypes->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->nextPageUrl() }}">>></a></li>
+                                @endif
+                                @if ($deliveryTypes->currentPage() + 1 < $deliveryTypes->lastPage())
+                                    <li class="page-item"><a class="page-link" href="{{ $deliveryTypes->url($deliveryTypes->lastPage()) }}">{{ $deliveryTypes->lastPage() }}</a></li>
+                                @endif
                             </ul>
                         </nav>
                     </div>

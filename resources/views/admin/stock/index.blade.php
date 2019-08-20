@@ -35,21 +35,39 @@
                         <div class="table-responsive">
                             @foreach($categories as $category)
                                 <div class="stock-cat-block">
-                                    <hr><h1 align="center">{{$category->name}}</h1><hr>
-                                    @foreach($category->products as $product)
-                                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 stock-product-card">
-                                            <div class="card card-figure">
-                                                <figure class="figure">
-                                                    <h4 align="center">{{ $product->name }}</h4>
-                                                    <img src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="User Avatar" class=" img-fluid stock-image">
-                                                    <figcaption class="figure-caption">
-                                                        <h4 align="center">Количество: <input type="number" data-product="{{ $product->id }}" class="stock-quantity" value="{{ $product->quantity }}"></h4>
-                                                    </figcaption>
-                                                </figure>
+                                    <div class="cat_border">
+                                        <h1 align="center">{{$category->name}}</h1>
+                                    </div>
+                                    <div class="row">
+                                        @foreach($category->products as $product)
+                                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="card">
+                                                    @if(!empty($product->mainImage->url))
+                                                        <img class="card-img-top stock-img img-fluid" src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="Card image cap">
+                                                    @else
+                                                        <img class="card-img-top stock-img img-fluid" src="{{ @asset("storage/app/default-image.jpg") }}" alt="Card image cap">
+                                                    @endif
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">{{ $product->name }}</h3>
+                                                        <p class="card-text">Количество: {{ $product->quantity }}</p>
+                                                        <a href="{{ route('admin-products-show', ['id' => $product->id]) }}" class="btn btn-primary">Открыть товар</a>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                    <br><br><br>
+                                            {{--<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 stock-product-card">--}}
+                                                {{--<div class="card card-figure">--}}
+                                                    {{--<figure class="figure">--}}
+                                                        {{--<h4 align="center">{{ $product->name }}</h4>--}}
+                                                        {{--<img src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="User Avatar" class=" img-fluid stock-image">--}}
+                                                        {{--<figcaption class="figure-caption">--}}
+                                                            {{--<h4 align="center">Количество: <input type="number" data-product="{{ $product->id }}" class="stock-quantity" value="{{ $product->quantity }}"></h4>--}}
+                                                        {{--</figcaption>--}}
+                                                    {{--</figure>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        @endforeach
+                                    </div>
+                                    <br><br>
                                 </div>
                             @endforeach
                         </div>

@@ -16,7 +16,16 @@
 }
 
 .stock-main-block{
-    background-color: #acb7c0;
+    /*background-color: #acb7c0;*/
+}
+
+.cat_border{
+    border:3px solid black;
+    border-radius:20px;
+    padding-top:10px;
+    background-color: yellow;
+    text-transform: uppercase;
+    margin-bottom:40px;
 }
 
 .stock-quantity{
@@ -30,6 +39,10 @@
 
 .stock-cat-block{
     clear: both;
+}
+
+.stock-img {
+    height: 200px;
 }
 
 .card-figure{
