@@ -47,7 +47,7 @@ class NovaPoshtaService implements NovaPoshtaServiceInterface
             "CityRecipient" => $basketObject->getCity()->ref,
             "Weight"        => $basketObject->getBasketWeight(),
             "ServiceType"   => "WarehouseWarehouse",
-            "Cost"          => $basketObject->getTotalPrice(),
+            "Cost"          => $basketObject->getBasketPrice(),
             "CargoType"     => "Cargo",
             "SeatsAmount"   => 1
         ])[0]->Cost;

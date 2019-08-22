@@ -14,6 +14,7 @@ use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Size;
+use App\Strategies\Conditions\ConditionStrategy;
 use Illuminate\Support\Collection;
 
 class ConditionsService
@@ -34,6 +35,10 @@ class ConditionsService
      * @var
      */
     private $operations;
+    /**
+     * @var
+     */
+    private $conditionsStrategy;
 
     /**
      * ConditionsService constructor.
@@ -46,6 +51,7 @@ class ConditionsService
         $this->shareService = $shareService;
         $this->productService = $productService;
         $this->conditionsBoxBuilder = $builder;
+        $this->conditionsStrategy = new ConditionStrategy();
 
         $this->loadData();
     }
@@ -132,35 +138,12 @@ class ConditionsService
 
     /**
      * Все возможные значения конкретного условия
-     *
-     * @param string $conditionKey
-     * @return array
+     * @param $conditionKey
+     * @return mixed
      */
     public function getValuesList($conditionKey)
     {
-        $valuesHub = [
-            "id" => Product::all()->mapWithKeys(function($product){
-                return [$product->id => $product->name . " (id: {$product->id})"];
-            }),
-            "category_id" => Category::all()->mapWithKeys(function($category){
-                return [$category->id => $category->name];
-            }),
-            "group_id" => ModelGroup::all()->mapWithKeys(function($group){
-                return [$group->id => $group->name];
-            }),
-            "status_id" => ProductStatus::all()->mapWithKeys(function($status){
-                return [$status->id => $status->name];
-            }),
-            "color_id" => Color::all()->mapWithKeys(function($color){
-                return [$color->id => $color->name];
-            }),
-            "size_id" => Size::all()->mapWithKeys(function($size){
-                return [$size->id => $size->name];
-            }),
-        ];
-
-        $response = array_key_exists($conditionKey, $valuesHub) ? $valuesHub[$conditionKey] : [];
-        return $response;
+        return $this->conditionsStrategy->getStrategy($conditionKey)->getValues();
     }
 
     /**

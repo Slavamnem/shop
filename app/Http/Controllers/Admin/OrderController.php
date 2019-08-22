@@ -251,7 +251,7 @@ class OrderController extends Controller
     private function getCityWareHousesBlock()
     {
         $novaPoshtaService = new NovaPoshtaService();
-        $warehouses = $novaPoshtaService->getCityWareHouses($this->basketService->getBasket()->getCity());
+        $warehouses = $novaPoshtaService->getCityWareHouses($this->basketService->getBasketObject()->getCity());
 
         return view("admin.orders.warehouses", compact("warehouses"))->render();
     }

@@ -41,7 +41,7 @@ class BasketService
     /**
      * @return BasketObjectInterface
      */
-    public function getBasket()
+    public function getBasketObject()
     {
         if (Session::has("basketId")) {
             $basketObject = new BasketObject(Basket::findOrFail(Session::get("basketId"))); // TODO если нет баскета в бд страница не откроется
@@ -60,7 +60,7 @@ class BasketService
      */
     public function addBasketProduct($productId)
     {
-        $this->getBasket()->addProduct(Product::find($productId));
+        $this->getBasketObject()->addProduct(Product::find($productId));
     }
 
     /**
@@ -68,11 +68,9 @@ class BasketService
      */
     public function getBasketData()
     {
-        $basketObject = $this->getBasket();
-
         return [
-            "basketProducts" => $basketObject->getBasket()->products,
-            "sum"            => $basketObject->getTotalPrice()
+            "basketProducts" => $this->getBasketObject()->getBasket()->products,
+            "sum"            => $this->getBasketObject()->getBasketPrice()
         ];
     }
 
@@ -83,19 +81,19 @@ class BasketService
 
     public function selectCity()
     {
-        $this->getBasket()->setCity($this->request->input("cityRef"));
+        $this->getBasketObject()->setCity($this->request->input("cityRef"));
     }
 
     /**
      * @return int|mixed
      */
-    public function getTotalOrderPrice()
+    public function getTotalPrice()
     {
-        $this->priceCalcService->setBasket($this->getBasket());
-
-        return $this->priceCalcService->calcOrderPrice(
-            $this->request->input("delivery_type"),
-            $this->request->input("payment_type")
-        );
+        return $this->priceCalcService
+            ->setBasket($this->getBasketObject())
+            ->calcOrderPrice(
+                $this->request->input("delivery_type"),
+                $this->request->input("payment_type")
+            );
     }
 }

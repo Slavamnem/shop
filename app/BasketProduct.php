@@ -10,17 +10,33 @@ class BasketProduct extends Model
 
     protected $fillable = ['basket_id', 'product_id', 'quantity', 'price'];
 
+    /*******************/
+    /* Relations block */
+    /*******************/
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function basket()
     {
         return $this->belongsTo(Basket::class, "basket_id", "id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function product()
     {
         return $this->hasOne(Product::class, "id", "product_id");
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /***********************/
+    /* end relations block */
+    /***********************/
+
+    /*******************/
+    /* accessors block */
+    /*******************/
 
     /**
      * @return mixed
@@ -39,6 +55,16 @@ class BasketProduct extends Model
     }
 
     /**
+     * @param $value
+     * @return $this
+     */
+    public function setQuantity($value)
+    {
+        $this->quantity = $value;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getPrice()
@@ -47,10 +73,42 @@ class BasketProduct extends Model
     }
 
     /**
+     * @param $value
+     * @return $this
+     */
+    public function setPrice($value)
+    {
+        $this->price = $value;
+        return $this;
+    }
+
+    /**
+     * @param $productId
+     * @return $this
+     */
+    public function setProduct($productId)
+    {
+        $this->product_id = $productId;
+        return $this;
+    }
+
+    /***********************/
+    /* end accessors block */
+    /***********************/
+
+    /***********************/
+    /* extra methods block */
+    /***********************/
+
+    /**
      * @return mixed
      */
     public function getTotalPrice()
     {
         return $this->getPrice() * $this->getQuantity();
     }
+
+    /***************************/
+    /* end extra methods block */
+    /***************************/
 }

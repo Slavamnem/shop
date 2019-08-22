@@ -8,9 +8,11 @@ use App\City;
 use App\Client;
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
+use App\Enums\ProductPropertiesEnum;
 use App\Product;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
+use Illuminate\Support\Collection;
 
 class BasketObject implements BasketObjectInterface
 {
@@ -57,21 +59,31 @@ class BasketObject implements BasketObjectInterface
                 ->increment("quantity");
         } else {
             $this->basket->products()
-                ->save(new BasketProduct([
-                    'product_id' => $product->id,
-                    'quantity'   => 1,
-                    'price'      => $this->productService->getPrice($product)
-                ]));
+                ->save((new BasketProduct())
+                    ->setProduct($product->getId())
+                    ->setPrice($this->productService->getPrice($product))
+                    ->setQuantity(1)
+                );
         }
     }
 
     /**
      * @param Client $client
+     * @return $this
      */
     public function setClient(Client $client)
     {
-        $this->basket->client_id = $client->id;
-        $this->basket->save();
+        $this->basket->setClient($client->getId())->save();
+        $this->client = $client;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 
     /**
@@ -79,8 +91,7 @@ class BasketObject implements BasketObjectInterface
      */
     public function setCity($cityRef) // TODO replace to order
     {
-        $this->basket->setCity(City::where('ref', $cityRef)->first()->id);
-        $this->basket->save();
+        $this->basket->setCity(City::where('ref', $cityRef)->first()->id)->save();
     }
 
     /**
@@ -92,7 +103,7 @@ class BasketObject implements BasketObjectInterface
     }
 
     /**
-     * @return array
+     * @return Collection
      */
     public function getProducts()
     {
@@ -102,26 +113,26 @@ class BasketObject implements BasketObjectInterface
     /**
      * @return int
      */
-    public function getTotalPrice()
+    public function getBasketPrice()
     {
         $sum = 0;
         foreach ($this->getProducts() as $basketProduct) {
-            $sum += $basketProduct->price * $basketProduct->quantity;
+            $sum += $basketProduct->getTotalPrice();
         }
 
         return $sum;
     }
 
     /**
- * @return int
- */
+     * @return int
+     */
     public function getBasketWeight()
     {
         $weight = 0;
 
         foreach ($this->getProducts() as $basketProduct) {
             //TODO refactor
-            if ($weightProperty = $basketProduct->product->properties()->where("name", "Вес")->first()) {
+            if ($weightProperty = $basketProduct->product->properties()->where("name", ProductPropertiesEnum::NEW_WEIGHT()->getValue())->first()) {
                 $weight += (int)$weightProperty->pivot->value;
             }
         }

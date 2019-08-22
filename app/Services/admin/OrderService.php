@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Client;
+use App\Components\BasketObject;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
@@ -24,15 +25,19 @@ class OrderService implements OrderServiceInterface
      */
     private $request;
     /**
-     * @var
+     * @var BasketService
      */
     private $basketService;
     /**
-     * @var
+     * @var BasketObject
+     */
+    private $basketObject;
+    /**
+     * @var Order
      */
     private $order;
     /**
-     * @var
+     * @var Client
      */
     private $client;
 
@@ -118,57 +123,45 @@ class OrderService implements OrderServiceInterface
         $this->saveOrderProducts();
     }
 
-    /**
-     *
-     */
     public function saveOrderClient()
     {
-        $client = Client::firstOrNew(["phone" => $this->request->input("phone")]);
+        $client = Client::query()->firstOrNew(["phone" => $this->request->input("phone")]);
         $client->fill($this->request->only($client->getFillable()));
         $client->save();
 
-        $basket = $this->basketService->getBasket();
-        $basket->setClient($client);
-        $this->client = $client;
+        $this->basketObject = $this->basketService->getBasketObject()->setClient($client);
     }
 
     public function saveOrder()
     {
-        $basket = $this->basketService->getBasket();
+        $this->order = (new Order())
+            ->setStatus(OrderStatusEnum::PAID)
+            ->setSum($this->basketService->getTotalPrice())
+            ->setClient($this->basketObject->getClient()->id)
+            ->setDescription($this->request->input("description"))
+            ->setDeliveryType($this->request->input("delivery_type"))
+            ->setPaymentType($this->request->input("payment_type"))
+            ->setCity($this->basketObject->getCity()->name)
+            ->setWarehouse($this->request->input("warehouse"))
+            ->setBasket($this->basketObject->getBasket()->getId());
 
-        $order = new Order([
-            "status_id"        => OrderStatusEnum::PAID,
-            "sum"              => $this->basketService->getTotalOrderPrice(),
-            "client_id"        => $this->client->id,
-            "description"      => $this->request->input("description"),
-            "payment_type_id"  => $this->request->input("payment_type"),
-            "delivery_type_id" => $this->request->input("delivery_type"),
-            "city"             => $basket->getCity()->name,
-            "warehouse"        => $this->request->input("warehouse"),
-            "basket_id"        => $basket->getBasket()->id
-        ]);
-        $order->save();
-
-        $this->order = $order;
+        $this->order->save();
     }
 
     public function saveOrderProducts(): void
     {
-        $basket = $this->basketService->getBasket();
         $orderProducts = [];
 
-        foreach ($basket->getProducts() as $basketProduct) {
-            $orderProduct = new OrderProduct();
-            $orderProduct->order_id      = $this->order->id;
-            $orderProduct->product_id    = $basketProduct->product->id;
-            $orderProduct->quantity      = $basketProduct->getQuantity();
-            $orderProduct->product_price = $basketProduct->getPrice();
-            $orderProduct->sum           = $basketProduct->getTotalPrice();
-
-            $orderProducts[] = $orderProduct;
+        foreach ($this->basketObject->getProducts() as $basketProduct) {
+            array_push($orderProducts, ((new OrderProduct())
+                ->setOrder($this->order->getId())
+                ->setProduct($basketProduct->product->id)
+                ->setQuantity($basketProduct->getQuantity())
+                ->setPrice($basketProduct->getPrice())
+                ->setSum($basketProduct->getTotalPrice())
+            ));
         }
 
         $this->order->products()->saveMany($orderProducts);
     }
-
 }

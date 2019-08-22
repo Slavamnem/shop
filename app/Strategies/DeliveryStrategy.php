@@ -4,6 +4,7 @@ namespace App\Strategies;
 
 use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
+use App\Components\Order\Delivery\NullDelivery;
 use App\Components\Order\Delivery\PickUpDelivery;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
@@ -33,6 +34,10 @@ class DeliveryStrategy implements StrategyInterface
      * @return mixed
      */
     public function getStrategy($type){
+        if (!$this->strategies->has($type)) {
+            return new NullDelivery();
+        }
+
         return $this->strategies->get($type);
     }
 }

@@ -8,6 +8,7 @@ interface OrderPriceCalcServiceInterface
 {
     /**
      * @param BasketObjectInterface $basketObject
+     * @return $this
      */
     public function setBasket(BasketObjectInterface $basketObject);
 

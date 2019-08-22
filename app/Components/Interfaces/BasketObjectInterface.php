@@ -42,7 +42,7 @@ interface BasketObjectInterface
     /**
      * @return int
      */
-    public function getTotalPrice();
+    public function getBasketPrice();
 
     /**
      * @return int

@@ -48,8 +48,8 @@ class ShareService implements ShareServiceInterface
             $whereType = $this->request->conditions_delimiter;
             $conditionsData[][$whereType] = [
                 "field"     => $condition,
-                "operation" => $this->request->operations[$num],
-                "value"     => $this->request->conditions_values[$num]
+                "operation" => array_get($this->request->input('operations'), $num),
+                "value"     => array_get($this->request->input('conditions_values'), $num)
             ];
         }
 
@@ -128,6 +128,11 @@ class ShareService implements ShareServiceInterface
         return $productShares;
     }
 
+    /**
+     * @param $product
+     * @param $share
+     * @return bool
+     */
     public static function productHasShare($product, $share)
     {
         $shareProducts = self::getShareProducts($share);
@@ -135,7 +140,11 @@ class ShareService implements ShareServiceInterface
         return (!empty($shareProducts->where("id", $product->id)->first()));
     }
 
-    private static function getShareProducts($share)
+    /**
+     * @param $share
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    private static function getShareProducts($share) // TODO refactor
     {
         $query = Product::query();
 

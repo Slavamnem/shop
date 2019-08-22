@@ -86,7 +86,7 @@ class ProductController extends Controller
 
         //dump($this->elasticService->searchByName("Футболка"));
 
-        $products = Product::with(['color', 'size', 'category'])->paginate(10);
+        $products = Product::with(['color', 'size', 'category'])->orderByDesc('id')->paginate(10);
 
         return view("admin.products.index", compact('products'));
     }

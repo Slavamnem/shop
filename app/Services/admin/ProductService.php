@@ -8,6 +8,7 @@ use App\Color;
 use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Enums\ProductStatusEnum;
 use App\ModelGroup;
+use App\Objects\ModificationProductObject;
 use App\Product;
 use App\ProductImage;
 use App\ProductStatus;
@@ -103,25 +104,6 @@ class ProductService implements ProductServiceInterface
         ];
     }
 
-//    public function saveImagesOld(Product $product)
-//    {
-//        dd($this->request->all());
-//        $images = Product::getImagesAttributesKeys();
-//
-//        foreach ($images as $img) {
-//            if ($this->request->hasFile($img)) {
-//                $imageName = $this->generateProductImageName($product, $img);
-//                $product->$img = "products/{$imageName}";
-//
-//                Storage::putFileAs(
-//                    "products",
-//                    $this->request->file($img),
-//                    $imageName
-//                );
-//            }
-//        }
-//    }
-
     /**
      * @param Product $product
      * @throws \Exception
@@ -140,8 +122,8 @@ class ProductService implements ProductServiceInterface
     {
         $properties = collect();
         foreach ((array)$this->request->input('properties') as $number => $propertyId) {
-            $value = $this->request->input('properties_values')[$number];
-            $ordering = $this->request->input('properties_ordering')[$number];
+            $value = array_get($this->request->input('properties_values'), $number);
+            $ordering = array_get($this->request->input('properties_ordering'), $number);
             if ($value) {
                 $properties->put($propertyId, [
                     "value"    => $value,
@@ -155,9 +137,9 @@ class ProductService implements ProductServiceInterface
     /**
      * Store chose product modifications for new group
      *
-     * @param  ModelGroup $group
+     * @param  ModelGroup $model
      */
-    public function createModifications(ModelGroup $group)
+    public function createModifications(ModelGroup $model)
     {
         $newProducts = collect();
 
@@ -165,7 +147,13 @@ class ProductService implements ProductServiceInterface
         {
             foreach ($this->request->input("sizes") as $sizeId)
             {
-                $this->addNewProduct($newProducts, $group, $colorId, $sizeId);
+                $this->addNewProduct(
+                    (new ModificationProductObject())
+                        ->setNewProducts($newProducts)
+                        ->setModel($model)
+                        ->setColor((new Color())->setId($colorId))
+                        ->setSize((new Size())->setId($sizeId))
+                );
             }
         }
 
@@ -192,24 +180,21 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
-     * @param Collection $newProducts
-     * @param $group
-     * @param $colorId
-     * @param $sizeId
+     * @param ModificationProductObject $modificationProductObject
      */
-    private function addNewProduct(Collection $newProducts, $group, $colorId, $sizeId)
+    private function addNewProduct(ModificationProductObject $modificationProductObject)
     {
-        $newProducts->push([
-            'name'        => $this->generateProductName($colorId, $sizeId),
-            'slug'        => $this->generateProductSlug($colorId, $sizeId),
+        $modificationProductObject->getNewProducts()->push([
+            'name'        => $this->generateProductName($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
+            'slug'        => $this->generateProductSlug($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
             'base_price'  => 0,
             'quantity'    => 0,
-            'category_id' => $group->category_id,
+            'category_id' => $modificationProductObject->getModel()->category_id,
             'description' => '',
-            'group_id'    => $group->id,
+            'group_id'    => $modificationProductObject->getModel()->id,
             'status_id'   => ProductStatusEnum::SOON_AVAILABLE,
-            'color_id'    => $colorId,
-            'size_id'     => $sizeId,
+            'color_id'    => $modificationProductObject->getColor()->getId(),
+            'size_id'     => $modificationProductObject->getSize()->getId(),
         ]);
     }
 
@@ -231,7 +216,7 @@ class ProductService implements ProductServiceInterface
      */
     private function generateProductName($colorId, $sizeId)
     {
-        return $this->request->name
+        return $this->request->input('name')
             . " "
             . Color::find($colorId)->name
             . " "
@@ -283,9 +268,9 @@ class ProductService implements ProductServiceInterface
             $product->images()->create([
                 'url'        => "products/{$imageName}",
                 'product_id' => $product->id,
-                'main'       => @$this->request->newImagesMain[$imgId] ?? 0,
-                'preview'    => @$this->request->newImagesPreview[$imgId] ?? 0,
-                'ordering'   => @$this->request->newImagesOrdering[$imgId] ?? 100,
+                'main'       => @array_get($this->request->input('newImagesMain'), $imgId) ?? 0,
+                'preview'    => @array_get($this->request->input('newImagesPreview'), $imgId) ?? 0,
+                'ordering'   => @array_get($this->request->input('newImagesOrdering'), $imgId) ?? 100,
             ]);
         }
     }

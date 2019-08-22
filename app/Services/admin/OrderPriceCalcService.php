@@ -34,10 +34,12 @@ class OrderPriceCalcService implements OrderPriceCalcServiceInterface
 
     /**
      * @param BasketObjectInterface $basketObject
+     * @return $this
      */
     public function setBasket(BasketObjectInterface $basketObject)
     {
         $this->basketObject = $basketObject;
+        return $this;
     }
 
     /**
@@ -47,7 +49,7 @@ class OrderPriceCalcService implements OrderPriceCalcServiceInterface
      */
     public function calcOrderPrice($deliveryType, $paymentType)
     {
-        return $this->basketObject->getTotalPrice() +
+        return $this->basketObject->getBasketPrice() +
             $this->deliveryStrategy->getStrategy($deliveryType)->getExtraPrice($this->basketObject) +
             $this->paymentStrategy->getStrategy($paymentType)->getExtraPrice($this->basketObject);
     }

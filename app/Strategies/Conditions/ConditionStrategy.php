@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Strategies\Conditions;
 
 use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
+use App\Components\Order\Delivery\NullDelivery;
 use App\Components\Order\Delivery\PickUpDelivery;
-use App\Components\Order\Payment\CashOnDeliveryPayment;
-use App\Components\Order\Payment\CashPayment;
-use App\Components\Order\Payment\LickPayPayment;
-use App\Components\Order\Payment\NullPayment;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
-class PaymentStrategy implements StrategyInterface
+class ConditionStrategy implements StrategyInterface
 {
     /**
      * @var Collection
@@ -27,9 +24,12 @@ class PaymentStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put(1, new LickPayPayment());
-        $this->strategies->put(2, new CashPayment());
-        $this->strategies->put(3, new CashOnDeliveryPayment());
+        $this->strategies->put('id', new IdCondition());
+        $this->strategies->put('category_id', new CategoryCondition());
+        $this->strategies->put('group_id', new ModelCondition());
+        $this->strategies->put('status_id', new StatusCondition());
+        $this->strategies->put('color_id', new ColorCondition());
+        $this->strategies->put('size_id', new SizeCondition());
     }
 
     /**
@@ -38,7 +38,7 @@ class PaymentStrategy implements StrategyInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {
-            return new NullPayment();
+            return new NullCondition();
         }
 
         return $this->strategies->get($type);

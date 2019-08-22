@@ -42,63 +42,115 @@ class Product extends Model
         'size_id' => 'Размер',
     ];
 
+    /*******************/
+    /* Relations block */
+    /*******************/
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, "category_id", "id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function group()
     {
         return $this->belongsTo(ModelGroup::class, "group_id", "id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function status()
     {
         return $this->hasOne(ProductStatus::class, "id", "status_id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function color()
     {
         return $this->hasOne(Color::class, "id", "color_id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function size()
     {
         return $this->hasOne(Size::class, "id", "size_id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function properties()
     {
         return $this->belongsToMany(Property::class, "product_properties","product_id", "property_id")
             ->withPivot(['value', 'ordering'])->orderBy("ordering");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function images()
     {
         return $this->hasMany(ProductImage::class, "product_id", 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function mainImage()
     {
         return $this->hasOne(ProductImage::class, "product_id", 'id')->where("main", true);
     }
 
-//    public function sales() // unused
-//    {
-//        return DB::select(
-//            "SELECT SUM(o.quantity) AS quantity, SUM(o.sum) AS total_sum
-//            FROM products AS p
-//            LEFT JOIN order_products AS o
-//            ON o.product_id = p.id
-//            WHERE p.id = {$this->attributes['id']}
-//        ")[0];
-//    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(OrderProduct::class, 'product_id', 'id');
+    }
+
+    /***********************/
+    /* end relations block */
+    /***********************/
+
+    /*******************/
+    /* accessors block */
+    /*******************/
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /***********************/
+    /* end accessors block */
+    /***********************/
+
+    /***********************/
+    /* extra methods block */
+    /***********************/
 
     public static function getImagesAttributesKeys()
     {
         return ["image", "small_image"];
     }
 
+    /**
+     * @return array
+     */
     public static function getModificationsAttributes()
     {
         return [
@@ -107,40 +159,15 @@ class Product extends Model
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getFieldsTranslations()
     {
         return $this->fieldsTranslations;
     }
 
-//    public function getPrice()
-//    {
-//        $price = $this->attributes['base_price'];
-//
-//        ///
-////        $products = Product::all();
-//////
-//////        $time1 = Carbon::now();
-//////        foreach ($products as $product) {
-//////            $productShare = ShareService::getProductShare($product);
-//////        }
-//////        $time2 = Carbon::now();
-//////        dump($time2->diff($time1));
-//        /////////////////
-//
-//        if ($productShare = ShareService::getProductShare($this)) {
-//            if ($productShare->fix_price) {
-//                $price = $productShare->fix_price;
-//            } elseif ($productShare->discount) {
-//                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
-//            }
-//        }
-//
-//        return $price;
-//    }
-
-    public function orders()
-    {
-        return $this->hasMany(OrderProduct::class, 'product_id', 'id');
-    }
-
+    /***************************/
+    /* end extra methods block */
+    /***************************/
 }
