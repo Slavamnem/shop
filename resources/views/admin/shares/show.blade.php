@@ -52,10 +52,23 @@
                                     <div class="form-group" style="border:2px solid grey; border-radius:10px; padding: 20px;">
                                         <label for="inputText3" class="col-form-label">Условия</label>
 
+                                        {{--<div id="conditions" data-amount="{{ @count($share->conditions) }}">--}}
+                                            {{--@if(is_array($share->conditions))--}}
+                                                {{--@foreach($share->conditions as $id => $condition)--}}
+                                                    {{--@include("admin/shares/condition", ['condition' => $conditionsBox->getCondition($id)])--}}
+                                                {{--@endforeach--}}
+                                            {{--@endif--}}
+                                        {{--</div>--}}
                                         <div id="conditions" data-amount="{{ @count($share->conditions) }}">
                                             @if(is_array($share->conditions))
                                                 @foreach($share->conditions as $id => $condition)
-                                                    @include("admin/shares/condition", ['condition' => $conditionsBox->getCondition($id)])
+                                                    @include("admin/shares/condition", [
+                                                        'conditionsList' => $conditionsBox->getConditionsList(),
+                                                        'operationsList' => $conditionsBox->getOperationsList(),
+                                                        'delimiter'      => $conditionsBox->getDelimiter(),
+                                                        'delimiterTrans' => $conditionsBox->getDelimiterTrans(),
+                                                        'condition'      => $conditionsBox->getCondition($id)
+                                                    ])
                                                 @endforeach
                                             @endif
                                         </div>

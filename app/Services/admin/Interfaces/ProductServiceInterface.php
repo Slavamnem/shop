@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 
 interface ProductServiceInterface
 {
-
     /**
-     * ProductServiceInterface constructor.
+     * ProductService constructor.
      * @param Request $request
+     * @param ShareServiceInterface $shareService
      */
-    public function __construct(Request $request);
+    public function __construct(Request $request, ShareServiceInterface $shareService);
 
     /**
      * Get data for products views

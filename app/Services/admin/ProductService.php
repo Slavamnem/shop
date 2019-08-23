@@ -14,6 +14,7 @@ use App\ProductImage;
 use App\ProductStatus;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use App\Services\TranslatorService;
 use App\Size;
@@ -30,14 +31,20 @@ class ProductService implements ProductServiceInterface
      * @var Request
      */
     private $request;
+    /**
+     * @var ShareServiceInterface
+     */
+    private $shareService;
 
     /**
-     * ProductServiceInterface constructor.
+     * ProductService constructor.
      * @param Request $request
+     * @param ShareServiceInterface $shareService
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, ShareServiceInterface $shareService)
     {
         $this->request = $request;
+        $this->shareService = $shareService;
     }
 
     /**
@@ -76,7 +83,7 @@ class ProductService implements ProductServiceInterface
     {
         $price = $product->base_price;
 
-        if ($productShare = ShareService::getProductShare($product)) {
+        if ($productShare = $this->shareService->getProductShare($product)) {
             if ($productShare->fix_price) {
                 $price = $productShare->fix_price;
             } elseif ($productShare->discount) {

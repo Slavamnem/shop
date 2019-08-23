@@ -2,8 +2,12 @@
 
 namespace App\Services\Admin;
 
+use App\Adapters\ConditionAdapter;
+use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Category;
 use App\Color;
+use App\Components\Condition;
+use App\Enums\ConditionDelimiterTypesEnum;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
@@ -24,16 +28,20 @@ class ShareService implements ShareServiceInterface
      * @var
      */
     private $productService;
+    /**
+     * @var ShareProductsQueryBuilderInterface
+     */
+    private $shareProductsBuilder;
 
     /**
      * ShareService constructor.
      * @param Request $request
-     * @param ProductServiceInterface $productService
+     * @param ShareProductsQueryBuilderInterface $shareProductsBuilder
      */
-    public function __construct(Request $request, ProductServiceInterface $productService)
+    public function __construct(Request $request, ShareProductsQueryBuilderInterface $shareProductsBuilder)
     {
         $this->request = $request;
-        $this->productService = $productService;
+        $this->shareProductsBuilder = $shareProductsBuilder;
     }
 
     /**
@@ -99,12 +107,13 @@ class ShareService implements ShareServiceInterface
      * @param Product $product
      * @return mixed
      */
-    public static function getProductShare(Product $product)
+    public function getProductShare(Product $product)
     {
         $shares = Share::active()->orderByDesc('priority')->get();
 
         foreach ($shares as $share) {
-            if (self::productHasShare($product, $share)){
+            if ($this->productHasShare($product, $share)){
+                //dump($share);
                 return $share;
             }
         }
@@ -114,13 +123,13 @@ class ShareService implements ShareServiceInterface
      * @param Product $product
      * @return array
      */
-    public static function getProductShares(Product $product)
+    public function getProductShares(Product $product)
     {
         $shares = Share::active()->get();
         $productShares = collect();
 
         foreach ($shares as $share) {
-            if (self::productHasShare($product, $share)){
+            if ($this->productHasShare($product, $share)){
                 $productShares->push($share);
             }
         }
@@ -129,60 +138,44 @@ class ShareService implements ShareServiceInterface
     }
 
     /**
-     * @param $product
-     * @param $share
-     * @return bool
+     * @param Product $product
+     * @param Share $share
+     * @return bool|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|null|object
      */
-    public static function productHasShare($product, $share)
+    public function productHasShare(Product $product, Share $share)
     {
-        $shareProducts = self::getShareProducts($share);
-
-        return (!empty($shareProducts->where("id", $product->id)->first()));
+        return $this->getShareProductsQueryBuilder($share)
+            ->addProductCondition($product->getId())
+            ->getQueryBuilder()
+            ->first();
     }
 
     /**
      * @param $share
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return ShareProductsQueryBuilderInterface
      */
-    private static function getShareProducts($share) // TODO refactor
+    private function getShareProductsQueryBuilder($share) // TODO refactor
     {
-        $query = Product::query();
+        $this->shareProductsBuilder->init();
 
         foreach ($share->conditions as $conditionsDataItem) {
-            foreach ($conditionsDataItem as $key => $item) {
-                if (self::isPropertyCondition($item)) {
-                    if ($item["operation"] == "!=") {
-                        $query = $query->whereDoesntHave("properties", function($q) use($item){
-                            $q->where("product_properties.property_id", self::getPropertyConditionId($item))
-                                ->where("product_properties.value", $item["value"]);
-                        });
-                    } else {
-                        $query = $query->whereHas("properties", function($q) use($item){
-                            $q->where("product_properties.property_id", self::getPropertyConditionId($item))
-                                ->where("product_properties.value", $item["operation"], $item["value"]);
-                        });
-                    }
+            foreach ($conditionsDataItem as $delimiter => $condition) {
+                //$condition = ConditionAdapter::getFromShareConditionData($condition, $delimiter); // TODO имеет ли смысл?
+                $condition = (new Condition())
+                    ->setField(array_get($condition, 'field'))
+                    ->setOperation(array_get($condition, 'operation'))
+                    ->setCurrentValue(array_get($condition, 'value'))
+                    ->setDelimiter($delimiter);
+
+                if ($condition->isPropertyCondition()) {
+                    $this->shareProductsBuilder->addPropertyCondition($condition);
                 } else {
-                    if ($key == "and") {
-                        $query = $query->where($item["field"], $item["operation"], $item["value"]);
-                    } else {
-                        $query = $query->orWhere($item["field"], $item["operation"], $item["value"]);
-                    }
+                    $this->shareProductsBuilder->addAttributeCondition($condition);
                 }
             }
         }
 
-        return $query->get();
-    }
-
-    private static function isPropertyCondition($item)
-    {
-        return strpos($item["field"], "property-") !== false;
-    }
-
-    private static function getPropertyConditionId($item)
-    {
-        return explode("-", $item["field"])[1];
+        return $this->shareProductsBuilder;
     }
 }
 

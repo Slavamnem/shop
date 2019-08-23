@@ -23,6 +23,6 @@ class ConditionDelimiterTypesEnum extends Enum
      */
     public static function getTranslation($delimiterType)
     {
-        return self::ENUM_TRANSLATIONS[$delimiterType];
+        return @self::ENUM_TRANSLATIONS[$delimiterType];
     }
 }

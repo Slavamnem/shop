@@ -26,6 +26,10 @@ class Condition
      * @var
      */
     private $valuesList;
+    /**
+     * @var
+     */
+    private $delimiter;
 
     /**
      * Condition constructor.
@@ -138,5 +142,39 @@ class Condition
     public function getValuesList()
     {
         return $this->valuesList;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setDelimiter($value)
+    {
+        $this->delimiter = $value;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDelimiter()
+    {
+        return $this->delimiter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPropertyCondition()
+    {
+        return strpos($this->getField(), "property-") !== false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPropertyConditionId()
+    {
+        return array_get(explode("-", $this->getField()), 1);
     }
 }

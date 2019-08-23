@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Builders\ConditionsBuilder;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
+use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
+use App\Builders\ShareProductsQueryBuilder;
 use App\Components\RestApi\NovaPoshta;
 use App\Notification;
 use App\Services\Admin\BasketService;
@@ -90,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
+        $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
         $this->app->bind(OrderService::class);
         $this->app->bind(NovaPoshta::class);
