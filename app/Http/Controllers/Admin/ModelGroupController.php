@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Color;
+use App\Http\Middleware\SectionsAccess\ModelsAccessMiddleware;
 use App\Http\Requests\Admin\CreateModelGroupRequest;
 use App\Http\Requests\Admin\EditModelGroupRequest;
 use App\ModelGroup;
@@ -39,6 +40,7 @@ class ModelGroupController extends Controller
         $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([ModelsAccessMiddleware::class]);
     }
 
     /**

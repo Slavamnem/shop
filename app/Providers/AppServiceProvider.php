@@ -6,12 +6,14 @@ use App\Builders\ConditionsBuilder;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Builders\ShareProductsQueryBuilder;
+use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
 use App\Services\Admin\ConditionsService;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
+use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\Interfaces\UserServiceInterface;
@@ -21,6 +23,7 @@ use App\Services\Admin\ProductService;
 use App\Services\Admin\ShareService;
 use App\Services\Admin\StatisticService;
 use App\Services\Admin\UserService;
+use App\Services\NovaPoshtaService;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -94,8 +97,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
-        $this->app->bind(OrderService::class);
+        $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);
+        $this->app->bind(NovaPoshtaInterface::class, NovaPoshta::class);
         $this->app->bind(NovaPoshta::class);
+
+        $this->app->bind(OrderService::class);
         $this->app->bind(BasketService::class);
         $this->app->bind(OrderPriceCalcService::class);
 

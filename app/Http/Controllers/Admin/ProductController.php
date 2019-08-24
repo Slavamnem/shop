@@ -9,6 +9,7 @@ use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Enums\ProductStatusEnum;
 use App\Events\NewOrderEvent;
+use App\Http\Middleware\SectionsAccess\ProductsAccessMiddleware;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
 use App\Mail\MailSender;
@@ -59,6 +60,7 @@ class ProductController extends Controller
         $this->service = $service;
         $this->elasticService = $elasticService;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([ProductsAccessMiddleware::class]);
     }
 
     /**

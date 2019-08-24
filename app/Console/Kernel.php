@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\GetPopularProducts;
 use App\Console\Commands\SyncNovaPoshtaCities;
+use App\Console\Commands\SyncNovaPoshtaWarehouses;
 use App\Console\Commands\TestCommand;
 use App\Console\Commands\TestCommand2;
 use Illuminate\Console\Scheduling\Schedule;
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
         TestCommand::class,
         TestCommand2::class,
         SyncNovaPoshtaCities::class,
+        SyncNovaPoshtaWarehouses::class,
         GetPopularProducts::class
     ];
 

@@ -7,6 +7,7 @@ use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Enums\ProductStatusEnum;
 use App\Events\NewOrderEvent;
+use App\Http\Middleware\SectionsAccess\ClientsAccessMiddleware;
 use App\Http\Requests\Admin\CreateClientRequest;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
@@ -54,6 +55,7 @@ class ClientController extends Controller
         $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([ClientsAccessMiddleware::class]);
     }
 
     /**

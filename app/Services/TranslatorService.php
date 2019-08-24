@@ -4,6 +4,9 @@ namespace App\Services;
 
 class TranslatorService
 {
+    /**
+     * @var array
+     */
     private static $alias_transform = array("а"=>"a", "б"=>"b", "в"=>"v", "г"=>"g", "д"=>"d", "е"=>"e",
         "ё"=>"jo", "ж"=>"zh", "з"=>"z", "и"=>"i", "й"=>"jj", "к"=>"k", "л"=>"l",
         "м"=>"m", "н"=>"n", "о"=>"o", "п"=>"p", "р"=>"r", "ь"=>"", "с"=>"s", "т"=>"t", "у"=>"u",
@@ -15,6 +18,10 @@ class TranslatorService
         "Щ"=>"shh", "Ы"=>"y", "Э"=>"eh", "Ю"=>"yu", "Я"=>"ya", " "=>"-", "."=>"-",
         ","=>"-", "_"=>"-", "+"=>"-", ":"=>"-", ";"=>"-", "!"=>"-", "?"=>"-", "/"=>"-", "\\"=>"-", "&"=>"-", "\""=>"-", "'"=>"-");
 
+    /**
+     * @param $str
+     * @return string
+     */
     public static function translate($str)
     {
         return strtr($str, self::$alias_transform);

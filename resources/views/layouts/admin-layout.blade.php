@@ -146,6 +146,8 @@
                             <li class="nav-divider">
                                 Меню
                             </li>
+
+                            @if(Auth::user()->can('watchStat', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "stat"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Статистика (old)<span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" style="">
@@ -194,11 +196,15 @@
                                     </ul>
                                 </div>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchCommands', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "commands"){ {{ "active" }} } @endif" href="{{ route("admin-commands") }}"><i class="fas fa-fw fa-table"></i>Команды</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchStat', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "stats"){ {{ "active" }} } @endif" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2">
                                     <i class="fa fa-fw fa-user-circle"></i>Статистика
@@ -218,18 +224,23 @@
                                     </ul>
                                 </div>
                             </li>
+                            @endif
 
                             {{--<li class="nav-item ">--}}
                                 {{--<a class="nav-link @if(@$activeMenuItem == "stats"){ {{ "active" }} } @endif" href="{{ route("admin-stats") }}"><i class="fas fa-fw fa-table"></i>Статистика</a>--}}
                             {{--</li>--}}
 
+                            @if(Auth::user()->can('watchCategories', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "categories"){ {{ "active" }} } @endif" href="{{ route("admin-categories") }}"><i class="fas fa-fw fa-table"></i>Категории</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchProducts', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "products"){ {{ "active" }} } @endif" href="{{ route("admin-products") }}"><i class="fas fa-fw fa-table"></i>Товары</a>
                             </li>
+                            @endif
 
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-2">
@@ -250,61 +261,85 @@
                                 </div>
                             </li>
 
+                            @if(Auth::user()->can('watchModels', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "groups"){ {{ "active" }} } @endif" href="{{ route("admin-groups") }}"><i class="fas fa-fw fa-table"></i>Модели</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchShares', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "shares"){ {{ "active" }} } @endif" href="{{ route("admin-shares") }}"><i class="fas fa-fw fa-table"></i>Акции</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchSeo', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "ceo"){ {{ "active" }} } @endif" href="{{ route("admin-ceo") }}"><i class="fas fa-fw fa-table"></i>CEO</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchNotifications', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "notifications"){ {{ "active" }} } @endif" href="{{ route("admin-notifications") }}"><i class="fas fa-fw fa-table"></i>Уведомления</a>
                             </li>
+                            @endif
 
                             <li class="nav-divider">
                                 _________________________
                             </li>
 
+                            @if(Auth::user()->can('watchOrders', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "orders"){ {{ "active" }} } @endif" href="{{ route("admin-orders") }}"><i class="fas fa-fw fa-table"></i>Заказы</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchClients', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "clients"){ {{ "active" }} } @endif" href="{{ route("admin-clients") }}"><i class="fas fa-fw fa-table"></i>Клиенты</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchStock', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "stock"){ {{ "active" }} } @endif" href="{{ route("admin-stock") }}"><i class="fas fa-fw fa-table"></i>Склад</a>
                             </li>
+                            @endif
 
                             <li class="nav-divider">
                                 _________________________
                             </li>
 
+                            @if(Auth::user()->can('watchAuth', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "admin-auth"){ {{ "active" }} } @endif" href="{{ route("admin-auth") }}"><i class="fas fa-fw fa-table"></i>Входы в админ-панель</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchDeliveryTypes', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "delivery-type"){ {{ "active" }} } @endif" href="{{ route("admin-delivery-type") }}"><i class="fas fa-fw fa-table"></i>Типы доставки</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchPaymentTypes', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "payment-type"){ {{ "active" }} } @endif" href="{{ route("admin-payment-type") }}"><i class="fas fa-fw fa-table"></i>Типы оплаты</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchUsers', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "users"){ {{ "active" }} } @endif" href="{{ route("admin-users") }}"><i class="fas fa-fw fa-table"></i>Пользователи</a>
                             </li>
+                            @endif
 
+                            @if(Auth::user()->can('watchRoles', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "roles"){ {{ "active" }} } @endif" href="{{ route("admin-roles") }}"><i class="fas fa-fw fa-table"></i>Роли</a>
                             </li>
+                            @endif
 
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>UI Elements</a>

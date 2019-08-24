@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Command;
+use App\Http\Middleware\SectionsAccess\CommandsAccessMiddleware;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
@@ -33,6 +34,7 @@ class CommandController extends Controller
         $this->request = $request;
         //$this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([CommandsAccessMiddleware::class]);
     }
 
     public function index()

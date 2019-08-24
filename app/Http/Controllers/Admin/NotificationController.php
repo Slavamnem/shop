@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Middleware\SectionsAccess\NotificationsAccessMiddleware;
 use App\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
+use Mockery\Matcher\Not;
 
 class NotificationController extends Controller
 {
@@ -29,6 +31,7 @@ class NotificationController extends Controller
     {
         $this->request = $request;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([NotificationsAccessMiddleware::class]);
     }
 
     /**

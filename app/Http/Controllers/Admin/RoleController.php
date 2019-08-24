@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Middleware\SectionsAccess\RolesAccessMiddleware;
 use App\Http\Requests\Admin\CreateRoleRequest;
 use App\Http\Requests\Admin\UpdateRoleRequest;
 use App\Role;
@@ -19,6 +20,7 @@ class RoleController extends Controller
     public function __construct()
     {
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([RolesAccessMiddleware::class]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Color;
 use App\Components\Facades\Conditions;
+use App\Http\Middleware\SectionsAccess\SharesAccessMiddleware;
 use App\Http\Requests\Admin\CreateShareRequest;
 use App\Http\Requests\Admin\EditShareRequest;
 use App\ModelGroup;
@@ -42,6 +43,7 @@ class ShareController extends Controller
         $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([SharesAccessMiddleware::class]);
     }
     /**
      * Display a listing of the resource.

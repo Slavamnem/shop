@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Http\Middleware\SectionsAccess\CategoriesAccessMiddleware;
 use App\Http\Requests\Admin\CreateCategoryRequest;
 use App\Http\Requests\Admin\EditCategoryRequest;
 use App\Services\Admin\CategoryService;
@@ -34,6 +35,7 @@ class CategoryController extends Controller
         $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([CategoriesAccessMiddleware::class]);
     }
 
     /**

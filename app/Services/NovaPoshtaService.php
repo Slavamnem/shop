@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\City;
 use App\Components\Interfaces\BasketObjectInterface;
+use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 
@@ -16,20 +17,36 @@ class NovaPoshtaService implements NovaPoshtaServiceInterface
 
     /**
      * NovaPoshtaService constructor.
+     * @param NovaPoshtaInterface $novaPoshta
      */
-    public function __construct()
+    public function __construct(NovaPoshtaInterface $novaPoshta)
     {
-        $this->novaPoshta = resolve(NovaPoshta::class);
+        $this->novaPoshta = $novaPoshta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCities()
+    {
+        return $this->novaPoshta->getCities();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWareHouses()
+    {
+        return $this->novaPoshta->getWarehouses();
     }
 
     /**
      * @param City $city
-     * @return string
-     * @throws \Throwable
+     * @return mixed|string
      */
     public function getCityWareHouses(City $city)
     {
-        $warehouses = resolve(NovaPoshta::class)->getWarehouses([
+        $warehouses = $this->novaPoshta->getWarehouses([
             "CityRef" => $city->ref
         ]);
 
@@ -42,7 +59,7 @@ class NovaPoshtaService implements NovaPoshtaServiceInterface
      */
     public function getDeliveryCost(BasketObjectInterface $basketObject)
     {
-        return resolve(NovaPoshta::class)->getOrderPrice([
+        return $this->novaPoshta->getOrderPrice([
             "CitySender"    => env('NOVA_POSHTA_CITY_SENDER'), //Odessa
             "CityRecipient" => $basketObject->getCity()->ref,
             "Weight"        => $basketObject->getBasketWeight(),

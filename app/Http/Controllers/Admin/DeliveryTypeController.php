@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DeliveryType;
+use App\Http\Middleware\SectionsAccess\DeliveryTypesAccessMiddleware;
 use App\Http\Requests\Admin\CreateDeliveryTypeRequest;
 use App\Http\Requests\Admin\UpdateDeliveryTypeRequest;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class DeliveryTypeController extends Controller
     public function __construct()
     {
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([DeliveryTypesAccessMiddleware::class]);
     }
 
     /**

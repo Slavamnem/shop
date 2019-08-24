@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\DeliveryType;
+use App\Http\Middleware\SectionsAccess\StockAccessMiddleware;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
@@ -35,6 +36,7 @@ class StockController extends Controller
     {
         $this->request = $request;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([StockAccessMiddleware::class]);
     }
 
     /**

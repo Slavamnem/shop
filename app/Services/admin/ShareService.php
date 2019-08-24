@@ -112,8 +112,7 @@ class ShareService implements ShareServiceInterface
         $shares = Share::active()->orderByDesc('priority')->get();
 
         foreach ($shares as $share) {
-            if ($this->productHasShare($product, $share)){
-                //dump($share);
+            if ($this->productHasShare($product, $share)){ //dump($share);
                 return $share;
             }
         }
@@ -154,7 +153,7 @@ class ShareService implements ShareServiceInterface
      * @param $share
      * @return ShareProductsQueryBuilderInterface
      */
-    private function getShareProductsQueryBuilder($share) // TODO refactor
+    private function getShareProductsQueryBuilder($share)
     {
         $this->shareProductsBuilder->init();
 
@@ -167,7 +166,7 @@ class ShareService implements ShareServiceInterface
                     ->setCurrentValue(array_get($condition, 'value'))
                     ->setDelimiter($delimiter);
 
-                if ($condition->isPropertyCondition()) {
+                if ($condition->isPropertyCondition()) { //TODO подумать о стратегии в случае если добавится еще 1 тип условий
                     $this->shareProductsBuilder->addPropertyCondition($condition);
                 } else {
                     $this->shareProductsBuilder->addAttributeCondition($condition);

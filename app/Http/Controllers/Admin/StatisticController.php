@@ -6,6 +6,7 @@ use App\Category;
 use App\Client;
 use App\DeliveryType;
 use App\Enums\PaymentTypesEnum;
+use App\Http\Middleware\SectionsAccess\StatsAccessMiddleware;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
@@ -45,6 +46,7 @@ class StatisticController extends Controller
         $this->request = $request;
         $this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([StatsAccessMiddleware::class]);
     }
 
     /**

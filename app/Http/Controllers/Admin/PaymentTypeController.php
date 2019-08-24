@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Middleware\SectionsAccess\PaymentTypesAccessMiddleware;
 use App\Http\Requests\Admin\CreatePaymentTypeRequest;
 use App\Http\Requests\Admin\UpdatePaymentTypeRequest;
 use App\PaymentType;
@@ -19,6 +20,7 @@ class PaymentTypeController extends Controller
     public function __construct()
     {
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([PaymentTypesAccessMiddleware::class]);
     }
 
     /**

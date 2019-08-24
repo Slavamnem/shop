@@ -11,16 +11,19 @@ use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentTypesEnum;
+use App\Http\Middleware\SectionsAccess\OrdersAccessMiddleware;
 use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
+use App\NpWarehouses;
 use App\Order;
 use App\OrderProduct;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
 use App\Services\Admin\BasketService;
+use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
 use App\Services\NovaPoshtaService;
 use Illuminate\Http\Request;
@@ -46,19 +49,26 @@ class OrderController extends Controller
      * @var
      */
     private $request;
+    /**
+     * @var NovaPoshtaServiceInterface
+     */
+    private $novaPoshtaService;
 
     /**
      * OrderController constructor.
      * @param Request $request
      * @param OrderService $service
      * @param BasketService $basketService
+     * @param NovaPoshtaServiceInterface $novaPoshtaService
      */
-    public function __construct(Request $request, OrderService $service, BasketService $basketService)
+    public function __construct(Request $request, OrderService $service, BasketService $basketService, NovaPoshtaServiceInterface $novaPoshtaService)
     {
         $this->request = $request;
         $this->service = $service;
         $this->basketService = $basketService;
+        $this->novaPoshtaService = $novaPoshtaService;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([OrdersAccessMiddleware::class]);
     }
 
     /**
@@ -250,8 +260,10 @@ class OrderController extends Controller
      */
     private function getCityWareHousesBlock()
     {
-        $novaPoshtaService = new NovaPoshtaService();
-        $warehouses = $novaPoshtaService->getCityWareHouses($this->basketService->getBasketObject()->getCity());
+        //$warehouses = $this->novaPoshtaService->getCityWareHouses($this->basketService->getBasketObject()->getCity());
+        $warehouses = NpWarehouses::query()
+            ->where('city_ref', $this->basketService->getBasketObject()->getCity()->ref)
+            ->get();
 
         return view("admin.orders.warehouses", compact("warehouses"))->render();
     }

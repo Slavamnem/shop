@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Middleware\SectionsAccess\SeoAccessMiddleware;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class CeoController extends Controller
@@ -14,28 +17,31 @@ class CeoController extends Controller
      * @var
      */
     private $service;
-
     /**
      * @var
      */
     private $request;
 
     /**
-     * ModelGroupController constructor.
+     * CeoController constructor.
      * @param Request $request
-//     * @param ModelGroupService $service
      */
     public function __construct(Request $request)
     {
         $this->request = $request;
-        //$this->service = $service;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([SeoAccessMiddleware::class]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        return view("access_denied", ["message" => "Доступ только для Сео-специалистов!"]);
-        return view("admin.ceo.index");
+        if (Auth::user()->can('watchSeo', User::class)) {
+            return view("admin.ceo.index");
+        } else {
+            return view("access_denied", ["message" => "Доступ только для Сео-специалистов!"]);
+        }
     }
-
 }

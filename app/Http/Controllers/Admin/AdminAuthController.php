@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\AdminAuth;
+use App\Http\Middleware\SectionsAccess\AuthAccessMiddleware;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
@@ -17,6 +18,7 @@ class AdminAuthController extends Controller
     public function __construct()
     {
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->middleware([AuthAccessMiddleware::class]);
     }
 
     /**

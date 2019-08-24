@@ -8,6 +8,17 @@ use App\Components\Interfaces\BasketObjectInterface;
 interface NovaPoshtaServiceInterface
 {
     /**
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getCities();
+
+    /**
+     * @return mixed
+     */
+    public function getWareHouses();
+
+    /**
      * @param City $city
      * @return string
      * @throws \Throwable
