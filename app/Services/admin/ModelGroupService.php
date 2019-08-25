@@ -26,7 +26,10 @@ class ModelGroupService
     public function getFilteredGroups()
     {
         $groups = ModelGroup::query()
-            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
+            ->where(
+                $this->request->input("field"),
+                "like",
+                "%" . $this->request->input("value") . "%")
             ->paginate(10);
 
         return $groups;

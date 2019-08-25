@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Client;
+use App\Objects\ClientObject;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,25 +30,26 @@ class ClientService implements ClientServiceInterface
      */
     public function getData($id)
     {
-        $client = Client::with('orders')->where('id', $id)->first();
+        $client = Client::with('orders')->find($id);
         $client->rating = $this->getClientRating($id);
 
         return ["client" => $client];
     }
 
     /**
-     * @param $id
+     * @param $clientId
      * @return string
      */
-    public function getClientRating($id) // TODO вычисляем рейтинг по общей сумме купленных товаров в магазе, все у кого одинаково должны иметь равный рейтинг
+    public function getClientRating($clientId) // TODO вычисляем рейтинг по общей сумме купленных товаров в магазе, все у кого одинаково должны иметь равный рейтинг
     {
         $clients = Client::with('orders')->get()->sortByDesc(function($client){
             return $client->orders->sum('sum');
         });
 
-        $clientPosition = $clients->where('id', $id)->keys()[0];
-
-        return ($clientPosition + 1)  . "/" . count($clients);
+        return $this->getRatingColumn((new ClientObject())
+            ->setId($clientId)
+            ->setClients($clients)
+        );
     }
 
     /**
@@ -62,17 +64,21 @@ class ClientService implements ClientServiceInterface
         return $clients;
     }
 
-//    /**
-////     * @return \Illuminate\Support\Collection
-////     */
-////    public function getClientsRatings()
-////    {
-////        return collect(DB::select(
-////            "SELECT clients.id, clients.name, clients.last_name, SUM(orders.sum) as profit
-////            FROM clients
-////            LEFT JOIN orders on clients.id = orders.client_id
-////            GROUP BY clients.id, clients.name, clients.last_name
-////            ORDER BY profit DESC"
-////        ));
-////    }
+    /**
+     * @param ClientObject $clientObject
+     * @return mixed
+     */
+    private function getClientPosition(ClientObject $clientObject)
+    {
+        return array_get($clientObject->getClients()->where('id', $clientObject->getId())->keys(), 0);
+    }
+
+    /**
+     * @param ClientObject $clientObject
+     * @return string
+     */
+    private function getRatingColumn(ClientObject $clientObject)
+    {
+        return ($this->getClientPosition($clientObject) + 1)  . "/" . count($clientObject->getClients());
+    }
 }

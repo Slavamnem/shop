@@ -7,10 +7,8 @@ use App\BasketProduct;
 use App\City;
 use App\Client;
 use App\Components\Interfaces\BasketObjectInterface;
-use App\Components\RestApi\NovaPoshta;
 use App\Enums\ProductPropertiesEnum;
 use App\Product;
-use App\Services\Admin\BasketService;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use Illuminate\Support\Collection;
 
@@ -33,7 +31,7 @@ class BasketObject implements BasketObjectInterface
      */
     private $client;
     /**
-     * @var
+     * @var ProductServiceInterface
      */
     private $productService;
 

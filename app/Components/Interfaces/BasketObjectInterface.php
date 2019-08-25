@@ -25,6 +25,11 @@ interface BasketObjectInterface
     public function setClient(Client $client);
 
     /**
+     * @return mixed
+     */
+    public function getClient();
+
+    /**
      * @param $cityRef
      */
     public function setCity($cityRef);

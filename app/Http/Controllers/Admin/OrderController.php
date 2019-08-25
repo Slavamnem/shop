@@ -6,6 +6,7 @@ use App\City;
 use App\Client;
 use App\Components\Basket;
 use App\Components\BasketProduct;
+use App\Components\RestApi\Justin;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
@@ -22,7 +23,7 @@ use App\OrderProduct;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
-use App\Services\Admin\BasketService;
+use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
 use App\Services\NovaPoshtaService;
@@ -42,7 +43,7 @@ class OrderController extends Controller
      */
     private $service;
     /**
-     * @var BasketService
+     * @var BasketServiceInterface
      */
     private $basketService;
     /**
@@ -58,10 +59,10 @@ class OrderController extends Controller
      * OrderController constructor.
      * @param Request $request
      * @param OrderService $service
-     * @param BasketService $basketService
+     * @param BasketServiceInterface $basketService
      * @param NovaPoshtaServiceInterface $novaPoshtaService
      */
-    public function __construct(Request $request, OrderService $service, BasketService $basketService, NovaPoshtaServiceInterface $novaPoshtaService)
+    public function __construct(Request $request, OrderService $service, BasketServiceInterface $basketService, NovaPoshtaServiceInterface $novaPoshtaService)
     {
         $this->request = $request;
         $this->service = $service;
@@ -78,6 +79,8 @@ class OrderController extends Controller
      */
     public function index()
     {
+        //dd((new Justin())->getCities());
+
         dump(resolve(NovaPoshta::class)->getOrderPrice([
             "CitySender" => "8d5a980d-391c-11dd-90d9-001a92567626",
             "CityRecipient" => "db5c88e0-391c-11dd-90d9-001a92567626",

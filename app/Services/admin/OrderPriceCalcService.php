@@ -27,6 +27,9 @@ class OrderPriceCalcService implements OrderPriceCalcServiceInterface
      */
     private $basketObject;
 
+    /**
+     * OrderPriceCalcService constructor.
+     */
     public function __construct(){
         $this->deliveryStrategy = new DeliveryStrategy();
         $this->paymentStrategy = new PaymentStrategy();
@@ -43,8 +46,8 @@ class OrderPriceCalcService implements OrderPriceCalcServiceInterface
     }
 
     /**
-     * @param $deliveryType
-     * @param $paymentType
+     * @param int $deliveryType
+     * @param int $paymentType
      * @return int|mixed
      */
     public function calcOrderPrice($deliveryType, $paymentType)

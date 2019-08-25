@@ -27,20 +27,22 @@ class CategoryService
         $this->request = $request;
     }
 
+    /**
+     * @param null $id
+     * @return array
+     */
     public static function getDataForCategoryPage($id = null)
     {
-        $data = [
-            "groups" => ModelGroup::all(),
-            "statuses" => ProductStatus::all(),
-            "colors" => Color::all(),
-            "sizes" => Size::all()
-        ];
-
+        $data = collect();
+        $data->put("groups", ModelGroup::all());
+        $data->put("statuses", ProductStatus::all());
+        $data->put("colors", Color::all());
+        $data->put("sizes", Size::all());
         if ($id) {
-            $data["category"] = Category::find($id);
+            $data->put("category", Category::find($id));
         }
 
-        return $data;
+        return $data->toArray();
     }
 
     /**
@@ -49,7 +51,11 @@ class CategoryService
     public function getFilteredCategories()
     {
         $categories = Category::query()
-            ->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%")
+            ->where(
+                $this->request->input("field"),
+                "like",
+                "%" . $this->request->input("value") . "%"
+            )
             ->paginate(10);
 
         return $categories;

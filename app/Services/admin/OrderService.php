@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Client;
 use App\Components\BasketObject;
+use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
@@ -13,6 +14,7 @@ use App\OrderProduct;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\OrderServiceInterface;
 use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use Illuminate\Http\Request;
@@ -25,11 +27,11 @@ class OrderService implements OrderServiceInterface
      */
     private $request;
     /**
-     * @var BasketService
+     * @var BasketServiceInterface
      */
     private $basketService;
     /**
-     * @var BasketObject
+     * @var BasketObjectInterface
      */
     private $basketObject;
     /**
@@ -44,16 +46,16 @@ class OrderService implements OrderServiceInterface
     /**
      * OrderService constructor.
      * @param Request $request
-     * @param BasketService $basketService
+     * @param BasketServiceInterface $basketService
      */
-    public function __construct(Request $request, BasketService $basketService)
+    public function __construct(Request $request, BasketServiceInterface $basketService)
     {
         $this->request = $request;
         $this->basketService = $basketService;
     }
 
     /**
-     * @return mixed
+     * @return Client
      */
     public function getClient()
     {
@@ -79,7 +81,7 @@ class OrderService implements OrderServiceInterface
     /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getFilteredOrders()
+    public function getFilteredOrders() // TODO refactor
     {
         $specialFields = [
             "payment_type_id"  => "payment_type",

@@ -28,12 +28,11 @@ class ConditionsBuilder implements ConditionsBuilderInterface
     }
 
     /**
-     * @param $id
      * @param Condition $condition
      */
-    public function addCondition($id, $condition)
+    public function addCondition(Condition $condition)
     {
-        $this->conditionsBox->addCondition($id, $condition);
+        $this->conditionsBox->addCondition($condition);
     }
 
     /**

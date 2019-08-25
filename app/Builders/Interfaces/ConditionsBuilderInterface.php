@@ -14,10 +14,10 @@ interface ConditionsBuilderInterface
     public function setDelimiter($value);
 
     /**
-     * @param $id
      * @param Condition $condition
+     * @return mixed
      */
-    public function addCondition($id, $condition);
+    public function addCondition(Condition $condition);
 
     /**
      * @param $conditionsList

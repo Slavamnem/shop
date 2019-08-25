@@ -38,12 +38,11 @@ class ConditionsBox
     }
 
     /**
-     * @param $id
      * @param Condition $condition
      */
-    public function addCondition($id, Condition $condition)
+    public function addCondition(Condition $condition)
     {
-        $this->conditions->put($id, $condition);
+        $this->conditions->put($condition->getId(), $condition);
     }
 
     /**

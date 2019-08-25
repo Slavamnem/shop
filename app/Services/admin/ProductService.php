@@ -5,7 +5,6 @@ namespace App\Services\Admin;
 use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Category;
 use App\Color;
-use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Enums\ProductStatusEnum;
 use App\ModelGroup;
 use App\Objects\ModificationProductObject;
@@ -15,14 +14,11 @@ use App\ProductStatus;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
-use App\Services\Admin\Interfaces\TableFilterDataInterface;
 use App\Services\TranslatorService;
 use App\Size;
-use Elasticsearch\ClientBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService implements ProductServiceInterface
@@ -50,7 +46,7 @@ class ProductService implements ProductServiceInterface
     /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getFilteredProducts()
+    public function getFilteredProducts() // TODO refactor
     {
         $specialFields = [
             "category_id" => "category",
@@ -87,7 +83,7 @@ class ProductService implements ProductServiceInterface
             if ($productShare->fix_price) {
                 $price = $productShare->fix_price;
             } elseif ($productShare->discount) {
-                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100;
+                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100; //TODO helper
             }
         }
 

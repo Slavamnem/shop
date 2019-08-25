@@ -20,23 +20,23 @@ use Illuminate\Support\Collection;
 class ConditionsService
 {
     /**
-     * @var
+     * @var ShareServiceInterface
      */
     private $shareService;
     /**
-     * @var
+     * @var ProductServiceInterface
      */
     private $productService;
     /**
-     * @var
+     * @var ConditionsBuilderInterface
      */
     private $conditionsBoxBuilder;
     /**
-     * @var
+     * @var array
      */
     private $operations;
     /**
-     * @var
+     * @var ConditionStrategy
      */
     private $conditionsStrategy;
 
@@ -68,7 +68,7 @@ class ConditionsService
         $this->conditionsBoxBuilder->setOperationsList($this->getOperationsList());
 
         foreach ($share->conditions as $id => $conditionData) {
-            $this->conditionsBoxBuilder->addCondition($id, Condition::createFromShareData($id, $conditionData));
+            $this->conditionsBoxBuilder->addCondition(Condition::createFromShareData($id, $conditionData));
             $this->conditionsBoxBuilder->setValuesList($id, $this->getValuesList($conditionData[array_keys($conditionData)[0]]["field"]));
         }
 
@@ -86,7 +86,7 @@ class ConditionsService
         $this->conditionsBoxBuilder->setDelimiter($request->delimiterType);
         $this->conditionsBoxBuilder->setConditionsList($this->getConditionsList());
         $this->conditionsBoxBuilder->setOperationsList($this->getOperationsList());
-        $this->conditionsBoxBuilder->addCondition($request->conditionId, new Condition($request->conditionId));
+        $this->conditionsBoxBuilder->addCondition(new Condition($request->conditionId));
 
         return $this->conditionsBoxBuilder->getConditionsBox();
     }
@@ -152,6 +152,7 @@ class ConditionsService
      */
     private function getConditionsDelimiter($share)
     {
-        return ($share->conditions) ? array_get(array_keys($share->conditions[0]), 0) : null;
+        return ($share->conditions) ?
+            array_get(array_keys(array_get($share->conditions, 0)), 0) : null;
     }
 }

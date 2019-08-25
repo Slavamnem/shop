@@ -12,6 +12,7 @@ use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
 use App\Services\Admin\ConditionsService;
+use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
@@ -94,6 +95,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClientServiceInterface::class, ClientService::class);
         $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(BasketServiceInterface::class, BasketService::class);
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
@@ -102,7 +104,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NovaPoshta::class);
 
         $this->app->bind(OrderService::class);
-        $this->app->bind(BasketService::class);
         $this->app->bind(OrderPriceCalcService::class);
 
         $this->app->bind('conditions', ConditionsService::class);

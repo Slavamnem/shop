@@ -12,11 +12,12 @@ use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\NovaPoshtaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class BasketService
+class BasketService implements BasketServiceInterface
 {
     /**
      * @var Request
@@ -66,7 +67,7 @@ class BasketService
     /**
      * @return array
      */
-    public function getBasketData()
+    public function getBasketData() // TODO refactor
     {
         return [
             "basketProducts" => $this->getBasketObject()->getBasket()->products,
