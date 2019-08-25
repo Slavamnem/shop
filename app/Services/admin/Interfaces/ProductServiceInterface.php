@@ -4,6 +4,7 @@ namespace App\Services\Admin\Interfaces;
 
 use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Components\Interfaces\SaveDataToFileInterface;
+use App\Http\Requests\Admin\ProductRequest;
 use App\ModelGroup;
 use App\Product;
 use Illuminate\Http\Request;
@@ -27,14 +28,16 @@ interface ProductServiceInterface
 
     /**
      * @param Product $product
+     * @param ProductRequest $request
      */
-    public function saveImages(Product $product);
+    public function saveImages(Product $product, ProductRequest $request);
 
     /**
      * @param Product $product
+     * @param ProductRequest $request
      * @return mixed
      */
-    public function saveProperties(Product $product);
+    public function saveProperties(Product $product, ProductRequest $request);
 
     /**
      * Store chose product modifications for new group

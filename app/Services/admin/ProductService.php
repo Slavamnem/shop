@@ -5,7 +5,9 @@ namespace App\Services\Admin;
 use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Category;
 use App\Color;
+use App\Components\Helpers\ProductHelper;
 use App\Enums\ProductStatusEnum;
+use App\Http\Requests\Admin\ProductRequest;
 use App\ModelGroup;
 use App\Objects\ModificationProductObject;
 use App\Product;
@@ -83,7 +85,7 @@ class ProductService implements ProductServiceInterface
             if ($productShare->fix_price) {
                 $price = $productShare->fix_price;
             } elseif ($productShare->discount) {
-                $price -= $price * ($productShare->discount / 100); //$price *= (100 - $productShare->discount) / 100; //TODO helper
+                $price = ProductHelper::getDiscountPrice($price, $productShare->discount);
             }
         }
 
@@ -109,28 +111,27 @@ class ProductService implements ProductServiceInterface
 
     /**
      * @param Product $product
-     * @throws \Exception
+     * @param ProductRequest $request
      */
-    public function saveImages(Product $product)
+    public function saveImages(Product $product, ProductRequest $request)
     {
-        $this->updateOldImages($product);
-        $this->saveNewImages($product);
+        $this->updateOldImages($product, $request);
+        $this->saveNewImages($product, $request);
     }
 
     /**
      * @param Product $product
+     * @param ProductRequest $request
      * @return mixed|void
      */
-    public function saveProperties(Product $product)
+    public function saveProperties(Product $product, ProductRequest $request)
     {
         $properties = collect();
-        foreach ((array)$this->request->input('properties') as $number => $propertyId) {
-            $value = array_get($this->request->input('properties_values'), $number);
-            $ordering = array_get($this->request->input('properties_ordering'), $number);
-            if ($value) {
+        foreach ($request->getProperties() as $number => $propertyId) {
+            if ($propertyValue = $request->getPropertyValue($number)) {
                 $properties->put($propertyId, [
-                    "value"    => $value,
-                    "ordering" => $ordering
+                    "value"    => $propertyValue,
+                    "ordering" => $request->getPropertyOrdering($number)
                 ]);
             }
         }
@@ -190,7 +191,7 @@ class ProductService implements ProductServiceInterface
         $modificationProductObject->getNewProducts()->push([
             'name'        => $this->generateProductName($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
             'slug'        => $this->generateProductSlug($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
-            'base_price'  => 0,
+            'base_price'  => 0, //TODO сделать во время создания модификаций возможностб указать всем цену и количество
             'quantity'    => 0,
             'category_id' => $modificationProductObject->getModel()->category_id,
             'description' => '',
@@ -221,9 +222,9 @@ class ProductService implements ProductServiceInterface
     {
         return $this->request->input('name')
             . " "
-            . Color::find($colorId)->name
+            . Color::find($colorId)->getName()
             . " "
-            . Size::find($sizeId)->name;
+            . Size::find($sizeId)->getName();
     }
 
     /**
@@ -233,47 +234,49 @@ class ProductService implements ProductServiceInterface
      */
     private function generateProductSlug($colorId, $sizeId)
     {
-        return $this->request->name
+        return $this->request->input('name')
         . "_"
-        . TranslatorService::translate(Color::find($colorId)->name)
+        . TranslatorService::translate(Color::find($colorId)->getName())
         . "_"
-        . TranslatorService::translate(Size::find($sizeId)->name);
+        . TranslatorService::translate(Size::find($sizeId)->getName());
     }
 
     /**
      * @param Product $product
+     * @param ProductRequest $request
      */
-    private function updateOldImages(Product $product): void
+    private function updateOldImages(Product $product, ProductRequest $request): void
     {
         ProductImage::query()
-            ->whereNotIn("id", (array)@$this->request->oldImages)
-            ->where("product_id", $product->id)
+            ->whereNotIn("id", $request->getOldImages())
+            ->where("product_id", $product->getId())
             ->delete();
 
-        foreach ((array)@$this->request->oldImages as $imgId) {
+        foreach ($request->getOldImages() as $imgId) {
             ProductImage::where("id", $imgId)->update([
-                "main"     => $this->request->oldImagesMain[$imgId] ?? 0,
-                "preview"  => $this->request->oldImagesPreview[$imgId] ?? 0,
-                "ordering" => $this->request->oldImagesOrdering[$imgId] ?? 100
+                "main"     => $request->getOldImageIsMain($imgId),
+                "preview"  => $request->getOldImageIsPreview($imgId),
+                "ordering" => $request->getOldImageOrdering($imgId)
             ]);
         }
     }
 
     /**
      * @param Product $product
+     * @param ProductRequest $request
      */
-    private function saveNewImages(Product $product): void
+    private function saveNewImages(Product $product, ProductRequest $request): void
     {
-        foreach ((array)@$this->request->newImages as $imgId => $img) {
+        foreach ($request->getNewImages() as $imgId => $img) {
             $imageName = $this->generateProductImageName($product, $img);
             Storage::putFileAs("products", $img, $imageName);
 
             $product->images()->create([
                 'url'        => "products/{$imageName}",
-                'product_id' => $product->id,
-                'main'       => @array_get($this->request->input('newImagesMain'), $imgId) ?? 0,
-                'preview'    => @array_get($this->request->input('newImagesPreview'), $imgId) ?? 0,
-                'ordering'   => @array_get($this->request->input('newImagesOrdering'), $imgId) ?? 100,
+                'product_id' => $product->getId(),
+                'main'       => $request->getNewImageIsMain($imgId),
+                'preview'    => $request->getNewImageIsPreview($imgId),
+                'ordering'   => $request->getNewImageOrdering($imgId),
             ]);
         }
     }

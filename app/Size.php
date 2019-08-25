@@ -10,6 +10,10 @@ class Size extends Model
 
     protected $fillable = ['name'];
 
+    /*******************/
+    /* accessors block */
+    /*******************/
+
     /**
      * @return mixed
      */
@@ -45,4 +49,8 @@ class Size extends Model
         $this->name = $value;
         return $this;
     }
+
+    /***********************/
+    /* end accessors block */
+    /***********************/
 }

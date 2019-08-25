@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class UserService implements UserServiceInterface
 {
     /**
-     * @var
+     * @var Request
      */
     private $request;
 

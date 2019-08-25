@@ -12,6 +12,7 @@ use App\Events\NewOrderEvent;
 use App\Http\Middleware\SectionsAccess\ProductsAccessMiddleware;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Order;
@@ -116,7 +117,8 @@ class ProductController extends Controller
 
         $product->fill($request->only($product->getFillable()));
         $product->save();
-        $this->service->saveImages($product);
+        $this->service->saveImages($product, $request);
+        $this->service->saveProperties($product, $request);
 
         return redirect()->route("admin-products-edit", ['id' => $product->id]);
     }
@@ -148,18 +150,18 @@ class ProductController extends Controller
     }
 
     /**
-     * @param EditProductRequest $request
+     * @param UpdateProductRequest $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function update(EditProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $product = Product::find($id);
         $product->fill($request->only($product->getFillable()));
         $product->active = array_get($request->all(), "active", 0);
-        $this->service->saveImages($product);
-        $this->service->saveProperties($product);
+        $this->service->saveImages($product, $request);
+        $this->service->saveProperties($product, $request);
 
         $product->save();
         //$this->elasticService->indexProduct($product);
