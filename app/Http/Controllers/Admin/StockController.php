@@ -51,9 +51,6 @@ class StockController extends Controller
         return view("admin.stock.index", compact('categories'));
     }
 
-    /**
-     *
-     */
     public function changeQuantity()
     {
         if ($this->request->has("productId") and $this->request->has("quantity")) {

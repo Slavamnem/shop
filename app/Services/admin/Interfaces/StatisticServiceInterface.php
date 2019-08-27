@@ -2,13 +2,25 @@
 
 namespace App\Services\Admin\Interfaces;
 
-use Illuminate\Support\Collection;
-
 interface StatisticServiceInterface
 {
     /**
-     * @param Collection $products
-     * @return mixed
+     * @return array
      */
-    public function getProductsSales(Collection $products);
+    public function getOrdersStats();
+
+    /**
+     * @return array
+     */
+    public function getOrdersStatsMonth();
+
+    /**
+     * @return array
+     */
+    public function getOrdersPaymentTypesStats();
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getProductsList();
 }

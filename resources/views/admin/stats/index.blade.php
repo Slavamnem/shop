@@ -1,7 +1,6 @@
 @extends('layouts.admin-layout')
 @section('content')
     {{--<div class="container-fluid ">--}}
-
         {{--<div class="dashboard-wrapper">--}}
             <div class="container-fluid  dashboard-content">
                 <div class="alert alert-primary" role="alert">
@@ -43,28 +42,10 @@
 
             </div>
         {{--</div>--}}
-
     {{--</div>--}}
 @endsection
 
 @section("custom-js")
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/chartist.min.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/Chartistjs.js") }}"></script>
-    {{--<script>--}}
-        {{--if ($('.ct-chart-area').length) {--}}
-            {{--new Chartist.Line('.ct-chart-area', {--}}
-                    {{--labels: [1, 2, 3, 4, 5, 10, 7, 8, 9, 10],--}}
-                    {{--series: [--}}
-                        {{--[5, 9, 7, 8, 5, 3, 5, 4, 10, 4]--}}
-                    {{--]--}}
-                {{--},--}}
-
-
-                {{--{--}}
-                    {{--low: 0,--}}
-                    {{--showArea: true,--}}
-
-                {{--});--}}
-        {{--}--}}
-    {{--</script>--}}
 @endsection

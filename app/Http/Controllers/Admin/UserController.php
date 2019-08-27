@@ -62,7 +62,7 @@ class UserController extends Controller
             $roles = Role::all();
             return view("admin.users.create", compact('roles'));
         } else {
-            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут добавлять только администраторы"]);
+            return view('admin.info.403', ['message' => lang('access_messages.user-create-denied')]);
         }
     }
 
@@ -121,20 +121,11 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         if ($this->request->user()->can("update", User::class)) {
-            $user = User::find($id);
-
-            $oldPassword = $user->password;
-            $user->fill($request->only($user->getFillable()));
-            if ($user->password != $oldPassword) {
-                $user->password = Hash::make($user->password);
-            }
-
-            $this->service->saveRoles($user);
-            $user->save();
+            $this->service->update(User::find($id));
 
             return redirect()->route("admin-users-edit", ['id' => $id]);
         } else {
-            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут редактировать только администраторы"]);
+            return view('admin.info.403', ['message' => lang('access_messages.user-update-denied')]);
         }
     }
 
@@ -148,11 +139,12 @@ class UserController extends Controller
     {
         if ($this->request->user()->can("delete", User::class)) {
             $user = User::find($id);
+            $user->roles()->detach();
             $user->delete();
 
             return redirect()->route("admin-users");
         } else {
-            return view('admin.info.403', ['message' => "В доступе отказано\nПользователей могут удалять только администраторы"]);
+            return view('admin.info.403', ['message' => lang('access_messages.user-delete-denied')]); //TODO вынести в лэнги
         }
     }
 }

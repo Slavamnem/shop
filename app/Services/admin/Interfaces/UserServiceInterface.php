@@ -9,5 +9,10 @@ interface UserServiceInterface
     /**
      * @param User $user
      */
+    public function update(User $user);
+
+    /**
+     * @param User $user
+     */
     public function saveRoles(User $user);
 }

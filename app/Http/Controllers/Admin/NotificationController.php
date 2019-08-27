@@ -151,11 +151,6 @@ class NotificationController extends Controller
             ->where('status', 'active')
             ->update(['status' => 'close']);
 
-        if (count($notifications)) {
-            return view("admin.notifications.new-notifications", compact('notifications'));
-        } else {
-            return 0;
-        }
+        return count($notifications) ? view("admin.notifications.new-notifications", compact('notifications')) : 0;
     }
-
 }

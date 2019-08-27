@@ -29,18 +29,4 @@ class AjaxController extends Controller
     {
         return TranslatorService::translate($this->request->get('value'));
     }
-
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getFilteredData() // TODO подумать о том как это улучшить
-//    {
-//        $tablesServices = [
-//            "products" => ProductService::class,
-//            "orders"   => OrderService::class
-//        ];
-//
-//        return resolve($tablesServices[$this->request->input("table")])->getFilteredData();
-//    }
 }

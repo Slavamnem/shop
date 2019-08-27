@@ -42,7 +42,11 @@
                                         <tr>
                                             <td>{{ $number + 1 }}</td>
                                             <td>
-                                                <div class="m-r-10"><img src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="user" class="rounded" width="45"></div>
+                                                @if($product->mainImage)
+                                                    <div class="m-r-10"><img src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="user" class="rounded" width="45"></div>
+                                                @else
+                                                    <div class="m-r-10"><img src="{{ @asset("storage/app/default-image.jpg") }}" alt="user" class="rounded" width="45"></div>
+                                                @endif
                                             </td>
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->quantity }}</td>

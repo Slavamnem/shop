@@ -77,9 +77,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //$data = $this->service->getData();
-
-        return view("admin.clients.create");//, $data);
+        return view("admin.clients.create");
     }
 
     /**

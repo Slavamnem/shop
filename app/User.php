@@ -5,6 +5,7 @@ namespace App;
 use App\Console\Commands\Executors\Executor;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'last_name', 'login', 'email', 'password', 'api_token', 'last_enter'
+        'name', 'last_name', 'login', 'email', 'api_token', 'last_enter'
     ];
 
     /**
@@ -43,6 +44,24 @@ class User extends Authenticatable
     public function hasRole($roles)
     {
         return $this->roles->contains(function($role) use($roles){ return in_array($role->name, $roles); });
+    }
+
+    /**
+     * @param $newPassword
+     */
+    public function setPassword($newPassword)
+    {
+        if ($newPassword != $this->getPassword()) {
+            $this->password = Hash::make($newPassword);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getPassword()
+    {
+        return $this->password;
     }
 
     /**

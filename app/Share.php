@@ -25,6 +25,20 @@ class Share extends Model
         "conditions" => "array"
     ];
 
+    /**
+     * @param $conditions
+     * @return $this
+     */
+    public function setConditions($conditions)
+    {
+        $this->conditions = $conditions;
+        return $this;
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function scopeActive($query)
     {
         return $query->where('active_from', '<=', Carbon::now())->where('active_to', '>=', Carbon::now());

@@ -8,6 +8,7 @@ use App\Category;
 use App\Color;
 use App\Components\Condition;
 use App\Enums\ConditionDelimiterTypesEnum;
+use App\Http\Requests\Admin\ShareRequest;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
@@ -21,7 +22,7 @@ use Illuminate\Http\Request;
 class ShareService implements ShareServiceInterface
 {
     /**
-     * @var
+     * @var Request
      */
     private $request;
     /**
@@ -46,44 +47,35 @@ class ShareService implements ShareServiceInterface
 
     /**
      * @param Share $share
+     * @param ShareRequest $request
      * @return mixed|void
      */
-    public function setConditions(Share $share)
+    public function setConditions(Share $share, ShareRequest $request)
     {
         $conditionsData = [];
 
-        foreach ($this->conditionsGenerator() as $num => $condition) {
-            $whereType = $this->request->conditions_delimiter;
-            $conditionsData[][$whereType] = [
+        foreach ($this->conditionsGenerator($request) as $num => $condition) {
+            $conditionsData[][$request->getConditionsDelimiter()] = [
                 "field"     => $condition,
-                "operation" => array_get($this->request->input('operations'), $num),
-                "value"     => array_get($this->request->input('conditions_values'), $num)
+                "operation" => $request->getConditionOperation($num),
+                "value"     => $request->getConditionValue($num)
             ];
         }
 
-        $share->conditions = $conditionsData;
+        $share->setConditions($conditionsData);
     }
 
     /**
+     * @param ShareRequest $request
      * @return \Generator
      */
-    private function conditionsGenerator()
+    private function conditionsGenerator(ShareRequest $request)
     {
-        if (!empty($this->request->conditions)) {
-            foreach ($this->request->conditions as $num => $condition) {
-                if ($this->isRealConditions($condition, $num)) yield $num => $condition;
+        if ($request->hasConditions()) {
+            foreach ($request->getConditions() as $num => $condition) {
+                if ($request->isRealCondition($num)) yield $num => $condition;
             }
         }
-    }
-
-    /**
-     * @param $condition
-     * @param $num
-     * @return bool
-     */
-    private function isRealConditions($condition, $num)
-    {
-        return (!empty($condition) and !empty($this->request->conditions_values[$num]));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +92,6 @@ class ShareService implements ShareServiceInterface
         return $shares;
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -112,7 +103,7 @@ class ShareService implements ShareServiceInterface
         $shares = Share::active()->orderByDesc('priority')->get();
 
         foreach ($shares as $share) {
-            if ($this->productHasShare($product, $share)){ //dump($share);
+            if ($this->productHasShare($product, $share)){
                 return $share;
             }
         }

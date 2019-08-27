@@ -42,6 +42,9 @@ class CommandController extends Controller
         return view("admin.commands.index");
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function search()
     {
         $searchString = trim(explode("--", $this->request->input('value'))[0]);
@@ -54,23 +57,26 @@ class CommandController extends Controller
         return view("admin.commands.filtered_commands", compact('commands'));
     }
 
-    public function execute()
+    /**
+     * @return array
+     */
+    public function execute() // TODO вынести в сервис
     {
         $commandSignature = trim(explode("--", $this->request->input('commandCode'))[0]);
 
         preg_match_all("|(--[^=\s]*)=(\S*)|", $this->request->input('commandCode'), $matches);
-        $options = [];
+
+        $commandOptions = collect();
         foreach ($matches[0] as $id => $match) {
-            $options[$matches[1][$id]] = $matches[2][$id];
+            $commandOptions->put($matches[1][$id], $matches[2][$id]);
         }
 
         Session::forget('commandResponse');
-        Artisan::call($commandSignature, $options);
+        Artisan::call($commandSignature, $commandOptions->toArray());
 
         return [
             Session::get('commandResponse'),
             Session::get('commandViewType'),
         ];
-        //return "---" . $this->request->input('commandCode');
     }
 }

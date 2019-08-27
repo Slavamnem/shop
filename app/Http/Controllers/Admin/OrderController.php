@@ -81,7 +81,7 @@ class OrderController extends Controller
     {
         //dd((new Justin())->getCities());
 
-        dump(resolve(NovaPoshta::class)->getOrderPrice([
+        dump(resolve(NovaPoshta::class)->getOrderPrice([ //TODO remove
             "CitySender" => "8d5a980d-391c-11dd-90d9-001a92567626",
             "CityRecipient" => "db5c88e0-391c-11dd-90d9-001a92567626",
             "Weight" => 20,
@@ -97,19 +97,14 @@ class OrderController extends Controller
     }
 
     /**
-     * @param NovaPoshta $novaPoshta
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(NovaPoshta $novaPoshta)
+    public function create()
     {
-        //$this->basketService->clearBasket();
-
         $data = array_merge($this->service->getData(), [
             "cities"   => City::all(),
             "products" => Product::all(),
         ]);
-
-        //dump($novaPoshta->getCities());
 
         return view("admin.orders.create", $data);
     }

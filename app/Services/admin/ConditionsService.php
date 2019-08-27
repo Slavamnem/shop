@@ -6,6 +6,7 @@ use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Category;
 use App\Color;
 use App\Components\Condition;
+use App\Components\ConditionsBox;
 use App\ConditionOperation;
 use App\ModelGroup;
 use App\Product;
@@ -78,7 +79,7 @@ class ConditionsService
     /**
      * Список всех условий, которые можно добавлять у акции
      * @param $request
-     * @return Condition|array
+     * @return ConditionsBox
      */
     public function getNewConditionBox($request)
     {

@@ -57,11 +57,11 @@ class SyncNovaPoshtaCities extends Command
         $bar = $this->output->createProgressBar(count($citiesFromNovaPoshta));
         foreach ($citiesFromNovaPoshta as $cityFromNovaPoshta) {
             City::updateOrCreate(
-                ['city_id' => $cityFromNovaPoshta->CityID],
+                ['ref' => $cityFromNovaPoshta->Ref],
                 [
-                    'ref'  => $cityFromNovaPoshta->Ref,
-                    'name' => $cityFromNovaPoshta->DescriptionRu,
-                    'area' => $cityFromNovaPoshta->Area,
+                    'city_id' => $cityFromNovaPoshta->CityID,
+                    'name'    => $cityFromNovaPoshta->DescriptionRu,
+                    'area'    => $cityFromNovaPoshta->Area,
                 ]
             );
             $bar->advance();

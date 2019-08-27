@@ -32,7 +32,7 @@ class StatisticController extends Controller
      */
     private $request;
     /**
-     * @var
+     * @var StatisticServiceInterface
      */
     private $service;
 
@@ -56,34 +56,7 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-
-        $profit[0] = $profit[1] = range(1, 12);
-
-        foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY) {
-                $profit[0][$order->created_at->month - 1] += $order->sum;
-            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
-                $profit[1][$order->created_at->month - 1] += $order->sum;
-            }
-        }
-
-        $data = [
-            "values" => $profit,
-            'labels' => [
-                "Январь", "Февраль", "Март", "Апрель",
-                "Май", "Июнь", "Июль", "Август",
-                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-            ]
-        ];
-
-        //dump($data);
-
-        $categories = Category::all();
-
-        //dump(date("m"));
-
-        return view("admin.stats.index", compact('categories'));
+        return view("admin.stats.index");
     }
 
     /**
@@ -91,11 +64,7 @@ class StatisticController extends Controller
      */
     public function getTopProducts()
     {
-        $products = Product::query()->with('orders')->get();
-
-        $this->service->getProductsSales($products);
-
-        $products = $products->sortByDesc('quantity');
+        $products = $this->service->getProductsList();
 
         return view("admin.stats.top_products", compact('products'));
     }
@@ -105,12 +74,7 @@ class StatisticController extends Controller
      */
     public function getProductsList()
     {
-        $products = Product::query()->with('orders')->get();
-
-        $this->service->getProductsSales($products);
-
-        $sortField = ($this->request->input('checked') == "true") ? 'profit' : 'quantity';
-        $products = $products->sortByDesc($sortField);
+        $products = $this->service->getProductsList();
 
         return view("admin.stats.products_list", compact('products'));
     }
@@ -120,8 +84,7 @@ class StatisticController extends Controller
      */
     public function getTopClients()
     {
-        //$clients = Client::query()->with('orders')->get();
-        $clients = Client::query()->get();
+        $clients = Client::query()->with('orders')->get();
 
         return view("admin.stats.top_clients", compact('clients'));
     }
@@ -129,42 +92,17 @@ class StatisticController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getOrdersStats() // TODO move to stats service
+    public function getOrdersStats()
     {
-        $orders = Order::all();
-
-        $profit = range(1, 12); // TODO change, fill wrong data at start
-        foreach ($orders as $order) {
-            $profit[$order->created_at->month - 1] += $order->sum;
-        }
-
-        $data = [
-            "profit" => $profit,
-            'labels' => [
-                "Январь", "Февраль", "Март", "Апрель",
-                "Май", "Июнь", "Июль", "Август",
-                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-            ]
-        ];
-
-        return response()->json($data);
+        return response()->json($this->service->getOrdersStats());
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getOrdersStatsMonth()
     {
-        $orders = Order::thisMonth()->get();
-
-        $profit = range(1, 30); // TODO change, fill wrong data at start
-        foreach ($orders as $order) {
-            $profit[$order->created_at->day - 1] += $order->sum;
-        }
-
-        $data = [
-            "profit" => $profit,
-            'labels' => range(1, 30)
-        ];
-
-        return response()->json($data);
+        return response()->json($this->service->getOrdersStatsMonth());
     }
 
     /**
@@ -172,28 +110,6 @@ class StatisticController extends Controller
      */
     public function getOrdersPaymentTypesStats()
     {
-        $orders = Order::all();
-
-        $profit[0] = range(1, 12);
-        $profit[1] = range(1, 12);
-
-        foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY) {
-                $profit[0][$order->created_at->month - 1] += $order->sum;
-            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
-                $profit[1][$order->created_at->month - 1] += $order->sum;
-            }
-        }
-
-        $data = [
-            "values" => $profit,
-            'labels' => [
-                "Январь", "Февраль", "Март", "Апрель",
-                "Май", "Июнь", "Июль", "Август",
-                "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-            ]
-        ];
-
-        return response()->json($data);
+        return response()->json($this->service->getOrdersPaymentTypesStats());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin\Interfaces;
 
+use App\Http\Requests\Admin\ShareRequest;
 use App\Product;
 use App\Share;
 
@@ -9,9 +10,10 @@ interface ShareServiceInterface
 {
     /**
      * @param Share $share
-     * @return mixed
+     * @param ShareRequest $request
+     * @return mixed|void
      */
-    public function setConditions(Share $share);
+    public function setConditions(Share $share, ShareRequest $request);
 
     /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator

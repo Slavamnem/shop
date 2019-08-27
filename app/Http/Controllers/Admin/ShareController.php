@@ -7,7 +7,7 @@ use App\Color;
 use App\Components\Facades\Conditions;
 use App\Http\Middleware\SectionsAccess\SharesAccessMiddleware;
 use App\Http\Requests\Admin\CreateShareRequest;
-use App\Http\Requests\Admin\EditShareRequest;
+use App\Http\Requests\Admin\UpdateShareRequest;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
@@ -78,7 +78,7 @@ class ShareController extends Controller
         $share = new Share();
 
         $share->fill($request->only($share->getFillable()));
-        $this->service->setConditions($share); //dd($request->all());
+        $this->service->setConditions($share, $request); //dd($request->all());
         $share->save();
 
         return redirect()->route("admin-shares-edit", ['id' => $share->id]);
@@ -116,16 +116,16 @@ class ShareController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param EditShareRequest $request
+     * @param UpdateShareRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditShareRequest $request, $id)
+    public function update(UpdateShareRequest $request, $id)
     {
         $share = Share::find($id);
 
         $share->fill($request->only($share->getFillable()));
-        $this->service->setConditions($share);
+        $this->service->setConditions($share, $request);
         $share->save();
 
         return redirect()->route("admin-shares-edit", ['id' => $share->id]);

@@ -3,6 +3,7 @@
 namespace App\Builders\Interfaces;
 
 use App\Components\Condition;
+use App\Components\ConditionsBox;
 
 interface ConditionsBuilderInterface
 {
@@ -42,7 +43,7 @@ interface ConditionsBuilderInterface
     public function getCondition($id);
 
     /**
-     * @return mixed
+     * @return ConditionsBox
      */
     public function getConditionsBox();
 }
