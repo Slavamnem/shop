@@ -2,6 +2,7 @@
 
 namespace App\Strategies;
 
+use App\Components\Interfaces\PaymentTypeInterface;
 use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
 use App\Components\Order\Delivery\PickUpDelivery;
@@ -34,7 +35,7 @@ class PaymentStrategy implements StrategyInterface
 
     /**
      * @param $type
-     * @return mixed
+     * @return PaymentTypeInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {

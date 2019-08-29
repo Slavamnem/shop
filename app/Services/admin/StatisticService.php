@@ -65,7 +65,7 @@ class StatisticService implements StatisticServiceInterface
     /**
      * @return array
      */
-    public function getOrdersPaymentTypesStats()
+    public function getOrdersPaymentTypesStats() //TODO refactor
     {
         $orders = Order::all();
 
@@ -73,9 +73,9 @@ class StatisticService implements StatisticServiceInterface
         $profit[1] = array_init(0, 12);
 
         foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY) {
+            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY()->getValue()) {
                 $profit[0][$order->created_at->month - 1] += $order->sum;
-            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH) {
+            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH()->getValue()) {
                 $profit[1][$order->created_at->month - 1] += $order->sum;
             }
         }

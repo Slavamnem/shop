@@ -9,7 +9,7 @@
 
                 <div class="section-block">
                     <h1 class="section-title">
-                        Уведомление №{{$order->id }}
+                        Заказ №{{$order->id }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>

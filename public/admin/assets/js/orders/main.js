@@ -26,7 +26,7 @@ $( document ).ready(function() {
             method: 'POST',
             data: {field: "phone", value: phone},
             success: function(res) {
-                if (res = JSON.parse(res)) {
+                if (res) {
                     $("#order_client_name").val(res.name);
                     $("#order_client_last_name").val(res.last_name);
                     $("#order_client_email").val(res.email);

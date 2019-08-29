@@ -3,6 +3,7 @@
 namespace App\Components\Interfaces;
 
 use App\Basket;
+use App\City;
 use App\Client;
 use App\Product;
 
@@ -35,7 +36,7 @@ interface BasketObjectInterface
     public function setCity($cityRef);
 
     /**
-     * @return mixed
+     * @return City
      */
     public function getCity();
 

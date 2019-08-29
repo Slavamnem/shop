@@ -32,11 +32,11 @@ interface OrderServiceInterface
      */
     public function getData($id = null);
 
-    public function createOrder();
+    public function createOrder(): void;
 
-    public function saveOrderClient();
+    public function saveOrderClient(): void;
 
-    public function saveOrder();
+    public function saveOrder(): void;
 
     public function saveOrderProducts(): void;
 }

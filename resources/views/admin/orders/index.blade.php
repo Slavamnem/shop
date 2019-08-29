@@ -96,7 +96,7 @@
                                     </thead>
                                     <tbody class="tbody">
                                     @forelse($orders as $order)
-                                        <tr class="{{ $order->statusClass() }}">
+                                        <tr class="{{ $order->getStatusClass() }}">
                                             <td>
                                                 <a href="{{ route("admin-orders-show", ['id' => $order->id]) }}">
                                                     {{ $order->id }}

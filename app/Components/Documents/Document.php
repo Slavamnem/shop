@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Storage;
 class Document implements DocumentInterface
 {
     /**
-     * @var
+     * @var string
      */
     protected $name;
     /**
-     * @var
+     * @var string
      */
     protected $content;
     /**

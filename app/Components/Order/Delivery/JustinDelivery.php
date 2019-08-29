@@ -4,6 +4,7 @@ namespace App\Components\Order\Delivery;
 
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\DeliveryTypeInterface;
+use App\NpWarehouses;
 
 class JustinDelivery implements DeliveryTypeInterface
 {
@@ -14,5 +15,16 @@ class JustinDelivery implements DeliveryTypeInterface
     public function getExtraPrice(BasketObjectInterface $basket)
     {
         return 10;
+    }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function getCityWareHousesBlock()
+    {
+        $warehouses = collect([(new NpWarehouses(['name' => "Тестовое отделение Justin"]))]);
+
+        return view("admin.orders.warehouses", compact("warehouses"))->render();
     }
 }

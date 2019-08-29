@@ -15,4 +15,13 @@ class PickUpDelivery implements DeliveryTypeInterface
     {
         return 0;
     }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function getCityWareHousesBlock()
+    {
+        return view("admin.orders.warehouses", ['warehouses' => collect()])->render();
+    }
 }

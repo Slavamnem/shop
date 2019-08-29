@@ -1,4 +1,4 @@
-<label for="name" class="col-form-label">Отделение Новой Почты:</label>
+<label for="name" class="col-form-label">Отделение:</label>
 <select name="warehouse" class="form-control" id="warehouse">
     <option value="0">Выберите отделение</option>
     @forelse($warehouses as $warehouse)

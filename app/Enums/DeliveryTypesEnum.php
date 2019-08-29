@@ -7,7 +7,7 @@ use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
 use App\Components\Order\Delivery\PickUpDelivery;
 
-class DeliveryTypesEnum extends Enum
+class DeliveryTypesEnum extends AbstractEnum
 {
     public const NOVA_POSHTA = 1;
     public const JUSTIN = 2;

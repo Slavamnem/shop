@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Log;
 class Justin
 {
     /**
-     * @var
+     * @var string
      */
     private $apiUrl;
     /**
-     * @var
+     * @var string
      */
     private $apiLogin;
     /**
-     * @var
+     * @var string
      */
     private $apiPassword;
     /**

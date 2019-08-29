@@ -2,16 +2,12 @@
 
 namespace App\Components\Documents;
 
-use App\Components\Documents\Document;
-use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Components\Interfaces\XmlDocumentInterface;
-use Illuminate\Support\Facades\Storage;
-use Spatie\ArrayToXml\ArrayToXml;
 
 class XmlDocument extends Document implements XmlDocumentInterface
 {
     /**
-     * @var
+     * @var string
      */
     private $template;
 
@@ -33,7 +29,6 @@ class XmlDocument extends Document implements XmlDocumentInterface
         $content = implode("\n" , (array)$this->rows);
 
         $this->setContent(str_replace("CONTENT", $content, $this->template));
-        //return str_replace("CONTENT", $content, $this->template);
     }
 
 //    /**

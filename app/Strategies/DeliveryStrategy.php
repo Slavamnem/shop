@@ -2,6 +2,7 @@
 
 namespace App\Strategies;
 
+use App\Components\Interfaces\DeliveryTypeInterface;
 use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
 use App\Components\Order\Delivery\NullDelivery;
@@ -31,7 +32,7 @@ class DeliveryStrategy implements StrategyInterface
 
     /**
      * @param $type
-     * @return mixed
+     * @return DeliveryTypeInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {

@@ -7,7 +7,7 @@ use App\Components\Order\Payment\CashOnDeliveryPayment;
 use App\Components\Order\Payment\CashPayment;
 use App\Components\Order\Payment\LickPayPayment;
 
-class PaymentTypesEnum extends Enum
+class PaymentTypesEnum extends AbstractEnum
 {
     public const LIQ_PAY = 1;
     public const CASH = 2;
@@ -19,6 +19,9 @@ class PaymentTypesEnum extends Enum
         self::CASH_ON_DELIVERY => CashOnDeliveryPayment::class
     ];
 
+    /**
+     * @return array
+     */
     public static function getValues()
     {
         return [
@@ -36,5 +39,29 @@ class PaymentTypesEnum extends Enum
     {
         $paymentClassName = self::PAYMENT_TYPES[$paymentType];
         return new $paymentClassName();
+    }
+
+    /**
+     * @return PaymentTypesEnum
+     */
+    public static function LIQ_PAY()
+    {
+        return new self(self::LIQ_PAY);
+    }
+
+    /**
+     * @return PaymentTypesEnum
+     */
+    public static function CASH()
+    {
+        return new self(self::CASH);
+    }
+
+    /**
+     * @return PaymentTypesEnum
+     */
+    public static function CASH_ON_DELIVERY()
+    {
+        return new self(self::CASH_ON_DELIVERY);
     }
 }

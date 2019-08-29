@@ -9,6 +9,7 @@ use App\Components\RestApi\NovaPoshta;
 use App\DeliveryType;
 use App\Enums\DeliveryTypesEnum;
 use App\Enums\OrderStatusEnum;
+use App\NpWarehouses;
 use App\Order;
 use App\OrderProduct;
 use App\OrderStatus;
@@ -118,14 +119,14 @@ class OrderService implements OrderServiceInterface
         ]);
     }
 
-    public function createOrder()
+    public function createOrder() : void
     {
         $this->saveOrderClient();
         $this->saveOrder();
         $this->saveOrderProducts();
     }
 
-    public function saveOrderClient()
+    public function saveOrderClient() : void
     {
         $client = Client::query()->firstOrNew(["phone" => $this->request->input("phone")]);
         $client->fill($this->request->only($client->getFillable()));
@@ -134,10 +135,10 @@ class OrderService implements OrderServiceInterface
         $this->basketObject = $this->basketService->getBasketObject()->setClient($client);
     }
 
-    public function saveOrder()
+    public function saveOrder() : void
     {
         $this->order = (new Order())
-            ->setStatus(OrderStatusEnum::PAID)
+            ->setStatus(OrderStatusEnum::PAID()->getValue())
             ->setSum($this->basketService->getTotalPrice())
             ->setClient($this->basketObject->getClient()->id)
             ->setDescription($this->request->input("description"))

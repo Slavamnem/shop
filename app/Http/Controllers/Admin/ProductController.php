@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Builders\DocumentBuilder;
 use App\Builders\TxtDocumentBuilder;
 use App\Builders\XmlDocumentBuilder;
+use App\Components\ObjectToArray;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\Xml;
 use App\Enums\ProductStatusEnum;
@@ -89,7 +90,10 @@ class ProductController extends Controller
 
         //dump($this->elasticService->searchByName("Футболка"));
 
-        $products = Product::with(['color', 'size', 'category'])->orderByDesc('id')->paginate(10);
+        $products = Product::query()
+            ->with(['color', 'size', 'category'])
+            ->orderByDesc('id')
+            ->paginate(10);
 
         return view("admin.products.index", compact('products'));
     }
@@ -187,9 +191,7 @@ class ProductController extends Controller
      */
     public function saveAsXml()
     {
-        $data = Product::all();
-
-        return $this->service->saveToFile(new XmlDocumentBuilder(), $data->toArray(), "products-new.xml");
+        return $this->service->saveToFile(new XmlDocumentBuilder(), Product::all()->toArray(), "products-new.xml");
     }
 
     /**
@@ -197,20 +199,26 @@ class ProductController extends Controller
      */
     public function saveAsTxt()
     {
-        $data = Product::all();
-
-        return $this->service->saveToFile(new TxtDocumentBuilder(), $data->toArray(), "products-new.txt");
+        return $this->service->saveToFile(new TxtDocumentBuilder(), Product::all()->toArray(), "products-new.txt");
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function addNewProperty()
     {
         $properties = Property::all();
         return view("admin.properties.new-property", compact('properties'))->render();
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function addNewImage()
     {
-        Session::put("newImageId", Session::get("newImageId") +1 ?? 1);
+        Session::put("newImageId", Session::get("newImageId") + 1 ?? 1);
         $imageId = Session::get("newImageId");
 
         return view("admin.images.new-image", compact('imageId'))->render();
@@ -226,9 +234,13 @@ class ProductController extends Controller
         return view("admin.products.filtered_table", compact('products'));
     }
 
-    public function addNewCondition(){}
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
 
     /**
+     * deprecated
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getProducts()
@@ -244,6 +256,9 @@ class ProductController extends Controller
         return view("admin.products.new_order_products", compact("products", "products2"));
     }
 
+    /**
+     * deprecated
+     */
     public function indexProducts()
     {
         $products = Product::all();

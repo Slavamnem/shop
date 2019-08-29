@@ -2,8 +2,6 @@
 
 namespace App\Components;
 
-use App\Enums\ConditionDelimiterTypesEnum;
-
 class Condition
 {
     /**

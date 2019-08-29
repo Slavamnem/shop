@@ -29,7 +29,7 @@ class SyncNovaPoshtaCities extends Command
      */
     private $novaPoshtaService;
     /**
-     * @var
+     * @var int
      */
     private $commandStart;
 

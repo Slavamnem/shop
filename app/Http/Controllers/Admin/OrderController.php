@@ -27,6 +27,8 @@ use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
 use App\Services\NovaPoshtaService;
+use App\Strategies\DeliveryStrategy;
+use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +56,10 @@ class OrderController extends Controller
      * @var NovaPoshtaServiceInterface
      */
     private $novaPoshtaService;
+    /**
+     * @var StrategyInterface
+     */
+    private $deliveryStrategy;
 
     /**
      * OrderController constructor.
@@ -68,6 +74,7 @@ class OrderController extends Controller
         $this->service = $service;
         $this->basketService = $basketService;
         $this->novaPoshtaService = $novaPoshtaService;
+        $this->deliveryStrategy = new DeliveryStrategy();
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
         $this->middleware([OrdersAccessMiddleware::class]);
     }
@@ -132,9 +139,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $data = $this->service->getData($id);
-
-        return view("admin.orders.show", $data);
+        return view("admin.orders.show", $this->service->getData($id));
     }
 
     /**
@@ -145,9 +150,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $data = $this->service->getData($id);
-
-        return view("admin.orders.edit", $data);
+        return view("admin.orders.edit", $this->service->getData($id));
     }
 
     /**
@@ -191,6 +194,10 @@ class OrderController extends Controller
         return view("admin.orders.filtered_table", compact('orders'));
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function removeBasket()
     {
         $this->basketService->clearBasket();
@@ -203,8 +210,7 @@ class OrderController extends Controller
      */
     public function pushToTelegram(Request $request, $id)
     {
-        $order = Order::find($id);
-        $order->notify(new NewOrderNotification($request->input("link")));
+        Order::find($id)->notify(new NewOrderNotification($request->input("link")));
     }
 
     /**
@@ -214,9 +220,8 @@ class OrderController extends Controller
     public function addBasketProduct()
     {
         $this->basketService->addBasketProduct($this->request->input("newProductId"));
-        $data = $this->basketService->getBasketData();
 
-        return view("admin.orders.basket", $data)->render();
+        return view("admin.orders.basket", $this->basketService->getBasketData())->render();
     }
 
     /**
@@ -227,9 +232,7 @@ class OrderController extends Controller
     {
         $this->basketService->selectCity();
 
-        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-            return $this->getCityWareHousesBlock();
-        }
+        return $this->deliveryStrategy->getStrategy($this->request->input("deliveryType"))->getCityWareHousesBlock();
     }
 
     /**
@@ -238,32 +241,16 @@ class OrderController extends Controller
      */
     public function selectDeliveryType()
     {
-        if ($this->request->input("deliveryType") == DeliveryTypesEnum::NOVA_POSHTA) {
-            return $this->getCityWareHousesBlock();
-        }
+        return $this->deliveryStrategy->getStrategy($this->request->input("deliveryType"))->getCityWareHousesBlock();
     }
 
     /**
-     * @return false|null|string
+     * @return false|string
      */
     public function getClientData()
     {
-        $client = Client::where($this->request->input("field"), $this->request->input("value"))->first();
-        return json_encode($client) ?? null;
+        return json_encode(Client::query()
+            ->where($this->request->input("field"), $this->request->input("value"))
+            ->first());
     }
-
-    /**
-     * @return string
-     * @throws \Throwable
-     */
-    private function getCityWareHousesBlock()
-    {
-        //$warehouses = $this->novaPoshtaService->getCityWareHouses($this->basketService->getBasketObject()->getCity());
-        $warehouses = NpWarehouses::query()
-            ->where('city_ref', $this->basketService->getBasketObject()->getCity()->ref)
-            ->get();
-
-        return view("admin.orders.warehouses", compact("warehouses"))->render();
-    }
-
 }

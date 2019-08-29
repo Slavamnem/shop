@@ -37,7 +37,7 @@ class DefaultNotification extends Notification
             'preview'     => 'Новый заказ!',
             'message'     => "Новый заказ!\nСумма: {$order->sum} \nТелефон клиента: {$order->client->phone} \nТип доставки: {$order->delivery_type->name} \nЗаказ был осуществлен: {$order->created_at}",
             'status'      => 'active',
-            'priority_id' => PrioritiesEnum::HIGH
+            'priority_id' => PrioritiesEnum::HIGH()->getValue()
         ]);
     }
 
@@ -56,7 +56,7 @@ class DefaultNotification extends Notification
             'preview'     => 'Вход в админ-панель',
             'message'     => $message,
             'status'      => 'active',
-            'priority_id' => PrioritiesEnum::LOW
+            'priority_id' => PrioritiesEnum::LOW()->getValue()
         ]);
     }
 }

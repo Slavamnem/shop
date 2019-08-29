@@ -7,7 +7,7 @@ use App\Components\Order\Delivery\JustinDelivery;
 use App\Components\Order\Delivery\NovaPoshtaDelivery;
 use App\Components\Order\Delivery\PickUpDelivery;
 
-class ConditionDelimiterTypesEnum extends Enum
+class ConditionDelimiterTypesEnum extends AbstractEnum
 {
     public const OR = "or";
     public const AND = "and";

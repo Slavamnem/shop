@@ -10,12 +10,6 @@ class ObjectToArray
      */
     public static function make($obj)
     {
-        $resultArray = [];
-
-        foreach (get_object_vars($obj) as $attribute) {
-            $resultArray[$attribute] = $obj->$attribute;
-        }
-
-        return $resultArray;
+        return get_object_vars($obj);
     }
 }

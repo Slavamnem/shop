@@ -96,6 +96,14 @@ class Order extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getStatusId()
+    {
+        return $this->status_id;
+    }
+
+    /**
      * @param $value
      * @return $this
      */
@@ -196,15 +204,9 @@ class Order extends Model
     /**
      * @return mixed
      */
-    public function statusClass()
+    public function getStatusClass()
     {
-        $statuses = [
-            OrderStatusEnum::WAIT_FOR_PAYMENT => "alert-warning",
-            OrderStatusEnum::PAID             => "alert-success",
-            OrderStatusEnum::CANCELED         => "alert-danger",
-        ];
-
-        return $statuses[$this->attributes["status_id"]];
+        return (new OrderStatusEnum($this->getStatusId()))->getStatusClass();
     }
 
     public function __toString()

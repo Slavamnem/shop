@@ -23,7 +23,7 @@ class BasketObject implements BasketObjectInterface
      */
     //private $basketProducts;
     /**
-     * @var
+     * @var City
      */
     private $city;
     /**
@@ -50,10 +50,10 @@ class BasketObject implements BasketObjectInterface
      */
     public function addProduct(Product $product)
     {
-        if ($this->hasProduct($product->id)) {
+        if ($this->hasProduct($product->getId())) {
             BasketProduct::query()
                 ->where("basket_id", $this->basket->id)
-                ->where("product_id", $product->id)
+                ->where("product_id", $product->getId())
                 ->increment("quantity");
         } else {
             $this->basket->products()
@@ -89,7 +89,7 @@ class BasketObject implements BasketObjectInterface
      */
     public function setCity($cityRef) // TODO replace to order
     {
-        $this->basket->setCity(City::where('ref', $cityRef)->first()->id)->save();
+        $this->basket->setCity(City::where('ref', $cityRef)->first()->getId())->save();
     }
 
     /**

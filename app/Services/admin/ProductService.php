@@ -196,7 +196,7 @@ class ProductService implements ProductServiceInterface
             'category_id' => $modificationProductObject->getModel()->category_id,
             'description' => '',
             'group_id'    => $modificationProductObject->getModel()->id,
-            'status_id'   => ProductStatusEnum::SOON_AVAILABLE,
+            'status_id'   => ProductStatusEnum::SOON_AVAILABLE()->getValue(),
             'color_id'    => $modificationProductObject->getColor()->getId(),
             'size_id'     => $modificationProductObject->getSize()->getId(),
         ]);

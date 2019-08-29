@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Log;
 class NovaPoshta implements NovaPoshtaInterface
 {
     /**
-     * @var
+     * @var string
      */
     private $apiUrl;
     /**
-     * @var
+     * @var string
      */
     private $apiKey;
     /**
@@ -33,6 +33,11 @@ class NovaPoshta implements NovaPoshtaInterface
         $this->client = new \GuzzleHttp\Client();
     }
 
+    /**
+     * @param null $extraFields
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getOrderPrice($extraFields = null)
     {
         $requestData = [
@@ -125,7 +130,7 @@ class NovaPoshta implements NovaPoshtaInterface
     private function request($data, $requestType = "POST")
     {
         try {
-            return $this->client->request("POST", $this->apiUrl, $data);
+            return $this->client->request($requestType, $this->apiUrl, $data);
         } catch (BadResponseException $exception) {
             Log::info("Nova Poshta request error");
         }

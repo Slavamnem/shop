@@ -2,21 +2,12 @@
 
 namespace App\Services\Admin;
 
-use App\Adapters\ConditionAdapter;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
-use App\Category;
-use App\Color;
 use App\Components\Condition;
-use App\Enums\ConditionDelimiterTypesEnum;
 use App\Http\Requests\Admin\ShareRequest;
-use App\ModelGroup;
 use App\Product;
-use App\ProductStatus;
-use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Share;
-use App\Size;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ShareService implements ShareServiceInterface
