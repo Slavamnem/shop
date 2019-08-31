@@ -9,7 +9,7 @@
 
                 <div class="section-block">
                     <h1 class="section-title">
-                        {{ $category->name }}
+                        Элемент: {{ $siteElement->key }}
                     </h1>
                     <p>Takes the basic nav from above and adds the .nav-tabs class to generate a tabbed interface..</p>
                 </div>
@@ -27,24 +27,21 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Название категории</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ $category->name }}" readonly="readonly">
+                                        <label for="inputText3" class="col-form-label">Ключ элемента</label>
+                                        <input id="inputText3" name="key" type="text" class="form-control" value="{{ $siteElement->key }}" readonly>
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Slug (имя на английском в строке браузера)</label>
-                                        <input id="inputText3" name="slug" type="text" class="form-control" value="{{ $category->slug }}" readonly="readonly">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Родительская категория</label>
-                                        <select name="pid" class="form-control" readonly="readonly">
-                                            <option {{ 'selected' }} value="{{$category->pid}}">
-                                                {{ $category->pid ? $category->parent->name : '' }}
-                                            </option>
+                                        <label for="inputText3" class="col-form-label">Тип элемента</label>
+                                        <select id="inputText3" name="type" class="form-control" readonly>
+                                            <option value="text" @if($siteElement->type == "text") {{ 'selected' }}@endif>Текст</option>
+                                            <option value="image" @if($siteElement->type == "image") {{ 'selected' }}@endif>Изображение</option>
                                         </select>
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="inputText3" class="col-form-label">Сортировка</label>
-                                        <input id="inputText3" name="ordering" type="number" class="form-control" value="{{ $category->ordering }}" readonly="readonly">
+                                        <label for="inputText3" class="col-form-label">Значение элемента</label>
+                                        <input id="inputText3" name="value" type="text" class="form-control" value="{{ $siteElement->value }}" readonly>
                                     </div>
                                 </div>
                             </div>

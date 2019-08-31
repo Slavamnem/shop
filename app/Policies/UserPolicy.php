@@ -189,4 +189,13 @@ class UserPolicy
     {
         return $user->hasRole(['developer', 'superadmin', 'admin']);
     }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function watchSiteElements(User $user)
+    {
+        return $user->hasRole(['developer', 'superadmin', 'admin']);
+    }
 }

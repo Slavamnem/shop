@@ -18,3 +18,12 @@ if (!function_exists('array_init')) {
         return $resultArray;
     }
 }
+
+if (!function_exists('element')) {
+    function element($key)
+    {
+        if ($element = \App\SiteElement::where('key', $key)->first()) {
+            return $element->value;
+        }
+    }
+}

@@ -43,7 +43,7 @@
                             <a class="navbar-brand" href="{{ url('/') }}">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <img id="logo" src="{{ @asset("storage/app/logo.png") }}" alt="">
+                                        <img id="logo" src="{{ @asset("storage/app/" . element('logo')) }}" alt="">
                                     </div>
                                     <div class="col-md-7">
                                         <h3 id="title">
@@ -57,10 +57,10 @@
                         <div class="col-md-8">
                             <div id="full-title" align="center">
                                 <div class="row">
-                                    <h4 align="center" class="center">Test title here</h4>
+                                    <h4 align="center" class="center">{{ element('title') }}</h4>
                                 </div>
                                 <div class="row">
-                                    <h4 align="center">Long test title description</h4>
+                                    <h4 align="center">{{ element('long-title') }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -68,12 +68,10 @@
                             <a class="navbar-brand" href="{{ url('/') }}">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <img id="logo" src="{{ @asset("storage/app/logo.png") }}" alt="">
+                                        <img id="logo" src="{{ @asset("storage/app/" . element('logo')) }}" alt="">
                                     </div>
                                     <div class="col-md-7">
                                         <h3 id="title">
-                                            {{--{{ config('app.name', 'Laravel') }}--}}
-                                            {{--{{ 'Shop' }}--}}
                                         </h3>
                                     </div>
                                 </div>
@@ -184,12 +182,10 @@
                                     <a class="navbar-brand" href="{{ url('/') }}">
                                         <div class="row">
                                             <div class="col-md-5">
-                                                <img id="logo" src="{{ @asset("storage/app/logo.png") }}" alt="">
+                                                <img id="logo" src="{{ @asset("storage/app/" . element('logo')) }}" alt="">
                                             </div>
                                             <div class="col-md-7">
                                                 <h3 id="title">
-                                                    {{--{{ config('app.name', 'Laravel') }}--}}
-                                                    {{--{{ 'Shop' }}--}}
                                                 </h3>
                                             </div>
                                         </div>
@@ -209,12 +205,10 @@
                                     <a class="navbar-brand" href="{{ url('/') }}">
                                         <div class="row">
                                             <div class="col-md-5">
-                                                <img id="logo" src="{{ @asset("storage/app/logo.png") }}" alt="">
+                                                <img id="logo" src="{{ @asset("storage/app/" . element('logo')) }}" alt="">
                                             </div>
                                             <div class="col-md-7">
                                                 <h3 id="title">
-                                                    {{--{{ config('app.name', 'Laravel') }}--}}
-                                                    {{--{{ 'Shop' }}--}}
                                                 </h3>
                                             </div>
                                         </div>

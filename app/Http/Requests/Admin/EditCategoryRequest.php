@@ -26,6 +26,7 @@ class EditCategoryRequest extends FormRequest
         return [
             'name'     => 'required|string|max:100',
             'slug'     => 'required|string',
+            //'pid'      => 'exists:categories,id',
             'ordering' => 'int',
         ];
     }
@@ -40,6 +41,7 @@ class EditCategoryRequest extends FormRequest
             'name.max'        => "Слишком длинное название",
             'slug.required'   => "Укажите slug категории",
             'ordering.int'    => "Поле сортировка должно быть числом",
+            'pid.exists'      => "Выбрана несуществующая категория",
         ];
     }
 }

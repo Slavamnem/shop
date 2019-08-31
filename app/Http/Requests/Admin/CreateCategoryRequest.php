@@ -26,6 +26,7 @@ class CreateCategoryRequest extends FormRequest
         return [
             'name'     => 'required|string|max:100',
             'slug'     => 'required|string',
+            //'pid'      => 'exists:categories,id',
             'ordering' => 'int',
         ];
     }
@@ -38,7 +39,7 @@ class CreateCategoryRequest extends FormRequest
             'name.max'        => "Слишком длинное название",
             'slug.required'   => "Укажите slug категории",
             'ordering.int'    => "Поле сортировка должно быть числом",
-            //'ordering.required' => "Укажите имя категории",
+            'pid.exists'      => "Выбрана несуществующая категория",
         ];
     }
 }

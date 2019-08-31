@@ -30,7 +30,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Название категории</label>
-                                        <input id="inputText3" name="name" type="text" class="form-control" value="{{ old('name') }}">
+                                        <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}">
                                     </div>
                                     @if($errors->has("name"))
                                         <span class="help-block" style="color:red">
@@ -39,11 +39,33 @@
                                     @endif
                                     <div class="form-group">
                                         <label for="inputText3" class="col-form-label">Slug (имя на английском в строке браузера)</label>
-                                        <input id="inputText3" name="slug" type="text" class="form-control" value="{{ old('slug') }}">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <input id="slug" name="slug" type="text" class="form-control" value="{{ old('slug') }}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary generate-slug" type="button">Сгенерировать slug</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     @if($errors->has("slug"))
                                         <span class="help-block" style="color:red">
                                             <strong>{{ $errors->first('slug') }}</strong>
+                                        </span>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">Родительская категория</label>
+                                        <select name="pid" class="form-control">
+                                            <option value="">Выберите категорию</option>
+                                            @forelse($categories as $category)
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @empty
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                    @if($errors->has("pid"))
+                                        <span class="help-block" style="color:red">
+                                            <strong>{{ $errors->first('pid') }}</strong>
                                         </span>
                                     @endif
                                     <div class="form-group">
@@ -70,4 +92,8 @@
         </div>
 
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/categories/index.js") }}"></script>
 @endsection

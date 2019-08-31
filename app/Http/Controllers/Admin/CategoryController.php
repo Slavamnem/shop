@@ -57,7 +57,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view("admin.categories.create");
+        return view("admin.categories.create", $this->service->getData());
     }
 
     /**
@@ -82,7 +82,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = Category::with('parent')->find($id);
 
         return view("admin.categories.show", compact("category"));
     }
@@ -95,9 +95,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-
-        return view("admin.categories.edit", compact("category"));
+        return view("admin.categories.edit", $this->service->getData($id));
     }
 
     /**
@@ -110,7 +108,6 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         $category->fill($request->only($category->getFillable()));
-
         $category->save();
 
         return redirect()->route("admin-categories-edit", ['id' => $id]);

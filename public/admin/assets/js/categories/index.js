@@ -26,7 +26,6 @@ $( document ).ready(function() {
             method: 'POST',
             data: {value: name},
             success: function(res) {
-                //alert("success");
                 $('#slug').val(res);
             },
             error: function(){

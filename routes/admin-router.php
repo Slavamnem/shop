@@ -246,6 +246,17 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 //        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
     });
 
+    Route::group(['prefix' => "site-elements"], function() {
+        Route::get("", "SiteElementController@index")->name("admin-site-elements");
+        Route::get("edit/{id}", "SiteElementController@edit")->name("admin-site-elements-edit");
+        Route::post("update/{id}", "SiteElementController@update")->name("admin-site-elements-update");
+        Route::any("delete/{id}", "SiteElementController@destroy")->name("admin-site-elements-delete");
+        Route::get("create", "SiteElementController@create")->name("admin-site-elements-create");
+        Route::post("store", "SiteElementController@store")->name("admin-site-elements-store");
+        Route::get("show/{id}", "SiteElementController@show")->name("admin-site-elements-show");
+        Route::post("getValueBlock", "SiteElementController@getValueBlock")->name("admin-site-elements-get-value-block");
+    });
+
     Route::group(['prefix' => "ceo"], function() {
         Route::get("", "CeoController@index")->name("admin-ceo");
 //        Route::get("edit/{id}", "CeoController@edit")->name("admin-ceo-edit");

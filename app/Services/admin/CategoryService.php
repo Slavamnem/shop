@@ -31,6 +31,25 @@ class CategoryService
      * @param null $id
      * @return array
      */
+    public function getData($id = null)
+    {
+        if ($id) {
+            return [
+                'category'   => Category::find($id),
+                'categories' => Category::query()->where('id' , '!=', $id)->get()
+            ];
+        } else {
+            return [
+                'category'   => null,
+                'categories' => Category::all()
+            ];
+        }
+    }
+
+    /**
+     * @param null $id
+     * @return array
+     */
     public static function getDataForCategoryPage($id = null)
     {
         $data = collect();

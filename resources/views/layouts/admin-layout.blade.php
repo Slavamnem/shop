@@ -198,6 +198,12 @@
                             </li>
                             @endif
 
+                            @if(Auth::user()->can('watchSiteElements', \App\User::class))
+                                <li class="nav-item ">
+                                    <a class="nav-link @if(@$activeMenuItem == "site-elements"){ {{ "active" }} } @endif" href="{{ route("admin-site-elements") }}"><i class="fas fa-fw fa-table"></i>Управление сайтом</a>
+                                </li>
+                            @endif
+
                             @if(Auth::user()->can('watchCommands', \App\User::class))
                             <li class="nav-item ">
                                 <a class="nav-link @if(@$activeMenuItem == "commands"){ {{ "active" }} } @endif" href="{{ route("admin-commands") }}"><i class="fas fa-fw fa-table"></i>Команды</a>
