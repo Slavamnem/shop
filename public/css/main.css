@@ -1,0 +1,68 @@
+/* header */
+#logo{
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#title{
+    margin-top:30px;
+    margin-bottom:auto;
+    color:red;
+    font-weight: bold;
+}
+
+#full-title{
+    margin-top:15px;
+    color:red;
+    font-weight: bolder;
+}
+
+/* navbar */
+
+#korzina-img{
+    max-width: 45px;
+    max-height: 45px;
+}
+
+.navbar-items{
+    display: inline-block;
+    margin-top:10px;
+}
+
+.navbar-item{
+    width: 170px;
+    margin-right:35px;
+    display: inline-block;
+    border:3px solid black;
+    border-radius: 10px;
+    height:40px;
+    padding-top:5px;
+}
+
+.navbar-item:hover{
+    background-color: blue;
+}
+
+.navbar-header{
+    width:100%;
+}
+
+.navbar-static-top{
+    height: 140px;
+}
+
+.navbar-panel{
+    padding-top:20px;
+}
+
+/*footer*/
+
+#footer{
+    margin-top:100px;
+    height: 200px;
+    background-color: black;
+}
+
+#footer-contact-data{
+    padding-top:15px
+}

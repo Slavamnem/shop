@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MainPageController@index')->name('main');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::get('/test1', function () {
     dump("test1");
@@ -21,4 +22,4 @@ Route::get('/test1', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'MainPageController@index')->name('home');
