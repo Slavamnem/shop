@@ -138,22 +138,22 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     <ul class="navbar-items">
-                                        <a href="{{ url('/') }}">
+                                        <a href="{{ route('poster') }}">
                                             <li class="navbar-item">
                                                 <div align="center">Афиши</div>
                                             </li>
                                         </a>
-                                        <a href="{{ url('/') }}">
+                                        <a href="{{ route('tracks') }}">
                                             <li class="navbar-item">
                                                 <div align="center">Треки</div>
                                             </li>
                                         </a>
-                                        <a href="{{ url('/') }}">
+                                        <a href="{{ route('clips') }}">
                                             <li class="navbar-item">
                                                 <div align="center">Видеоклипы</div>
                                             </li>
                                         </a>
-                                        <a href="{{ url('/') }}">
+                                        <a href="{{ route('contacts') }}">
                                             <li class="navbar-item">
                                                 <div align="center">Соцсети</div>
                                             </li>
@@ -197,7 +197,7 @@
                                             <h4 align="center">Контактный телефон</h4>
                                         </div>
                                         <div class="row">
-                                            <h4 align="center">+380933447206</h4>
+                                            <h4 align="center">{{ element('contact-phone') }}</h4>
                                         </div>
                                     </div>
                                 </div>

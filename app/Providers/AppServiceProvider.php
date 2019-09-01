@@ -16,12 +16,14 @@ use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
+use App\Services\Admin\Interfaces\SiteElementsServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\Interfaces\UserServiceInterface;
 use App\Services\Admin\OrderPriceCalcService;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
 use App\Services\Admin\ShareService;
+use App\Services\Admin\SiteElementsService;
 use App\Services\Admin\StatisticService;
 use App\Services\Admin\UserService;
 use App\Services\NovaPoshtaService;
@@ -96,6 +98,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(BasketServiceInterface::class, BasketService::class);
+        $this->app->bind(SiteElementsServiceInterface::class, SiteElementsService::class);
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 

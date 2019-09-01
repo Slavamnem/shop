@@ -11,7 +11,14 @@
 |
 */
 
-Route::get('/', 'MainPageController@index')->name('main');
+Route::group(['namespace' => 'Site'], function(){
+    Route::get('/', 'MainPageController@index')->name('main');
+    Route::get('/poster', 'PosterController@index')->name('poster');
+    Route::get('/tracks', 'TrackController@index')->name('tracks');
+    Route::get('/clips', 'ClipController@index')->name('clips');
+    Route::get('/contacts', 'SocialMediaController@index')->name('contacts');
+});
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});

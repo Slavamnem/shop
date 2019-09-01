@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Site;
 
 use App\Category;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MainPageController extends Controller
@@ -24,7 +25,8 @@ class MainPageController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::query()->whereNull('pid')->get();
+        $categories = Category::query()->get();
         return view('index', compact('categories'));
     }
 }

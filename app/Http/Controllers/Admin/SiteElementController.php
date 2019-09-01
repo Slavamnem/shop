@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\CreateSiteElementRequest;
 use App\Http\Requests\Admin\EditCategoryRequest;
 use App\Http\Requests\Admin\EditColorRequest;
 use App\Http\Requests\Admin\UpdateSiteElementRequest;
+use App\Services\Admin\Interfaces\SiteElementsServiceInterface;
 use App\SiteElement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,11 +20,18 @@ class SiteElementController extends Controller
     const MENU_ITEM_NAME = "site-elements";
 
     /**
-     * ProductStatusController constructor.
+     * @var SiteElementsServiceInterface
      */
-    public function __construct()
+    private $service;
+
+    /**
+     * SiteElementController constructor.
+     * @param SiteElementsServiceInterface $service
+     */
+    public function __construct(SiteElementsServiceInterface $service)
     {
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
+        $this->service = $service;
     }
 
     /**
@@ -153,5 +161,15 @@ class SiteElementController extends Controller
         $type = $request->input('type');
         $siteElement = SiteElement::query()->where('key', $request->input('key'))->first();
         return view("admin.site_elements.value_block", compact('type', 'siteElement'))->render();
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filter()
+    {
+        $siteElements = $this->service->getFilteredElements();
+
+        return view("admin.site_elements.filtered_table", compact('siteElements'));
     }
 }

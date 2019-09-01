@@ -65,14 +65,19 @@
                         <div class="table-responsive">
                             <table id="example4" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
-                                <tr>
-                                    <th>Ключ</th>
-                                    <th>Значение</th>
-                                    <th>Тип</th>
-                                    <th>Действия</th>
-                                </tr>
+                                    <tr>
+                                        <th>Ключ</th>
+                                        <th>Значение</th>
+                                        <th>Тип</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="text" class="admin-filter-input" data-name="key"></th>
+                                        <th><input type="text" class="admin-filter-input" data-name="value"></th>
+                                        <th><input type="text" class="admin-filter-input" data-name="type"></th>
+                                    </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody">
                                 @forelse($siteElements as $siteElement)
                                     <tr>
                                         <td>
@@ -136,4 +141,8 @@
             <!-- ============================================================== -->
         </div>
     </div>
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/admin/assets/js/elements/main.js") }}"></script>
 @endsection

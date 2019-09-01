@@ -24,10 +24,33 @@ class Category extends Model
     }
 
     /**
+     * @return int
+     */
+    public function productsCount()
+    {
+        $total = $this->products()->count();
+
+        foreach ($this->children as $subCategory)
+        {
+            $total += $subCategory->products->count();
+        }
+
+        return $total;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function parent()
     {
         return $this->hasOne(Category::class, 'id', 'pid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'pid', 'id');
     }
 }

@@ -255,6 +255,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::post("store", "SiteElementController@store")->name("admin-site-elements-store");
         Route::get("show/{id}", "SiteElementController@show")->name("admin-site-elements-show");
         Route::post("getValueBlock", "SiteElementController@getValueBlock")->name("admin-site-elements-get-value-block");
+        Route::post('filter', "SiteElementController@filter");
     });
 
     Route::group(['prefix' => "ceo"], function() {
