@@ -51,10 +51,11 @@ class BasketObject implements BasketObjectInterface
     public function addProduct(Product $product)
     {
         if ($this->hasProduct($product->getId())) {
-            BasketProduct::query()
-                ->where("basket_id", $this->basket->id)
-                ->where("product_id", $product->getId())
-                ->increment("quantity");
+            $this->changeQuantity($product, "increment");
+//            BasketProduct::query()
+//                ->where("basket_id", $this->basket->id)
+//                ->where("product_id", $product->getId())
+//                ->increment("quantity");
         } else {
             $this->basket->products()
                 ->save((new BasketProduct())
@@ -63,6 +64,58 @@ class BasketObject implements BasketObjectInterface
                     ->setQuantity(1)
                 );
         }
+    }
+
+    /**
+     * @param Product $product
+     * @param $action
+     */
+    public function changeQuantity(Product $product, $action)
+    {
+        $basketProductQuery = BasketProduct::query()
+            ->where("basket_id", $this->basket->id)
+            ->where("product_id", $product->getId());
+
+        $newQuantity = $basketProductQuery->first()->getQuantity() + (($action == "increment") ? 1 : -1);
+
+        if (!$newQuantity) {
+            $this->removeProduct($product);
+        } elseif ($newQuantity > $product->getQuantity()) {
+            //
+        } else {
+            $basketProductQuery->update(['quantity' => $newQuantity]);
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @param $action
+     * @return bool
+     */
+    private function canChangeQuantity(Product $product, $action)
+    {
+        if ($basketProduct = BasketProduct::query()
+            ->where("basket_id", $this->basket->id)
+            ->where("product_id", $product->getId())->first()) {
+
+            $quantityDiff = ($action == "increment") ? 1 : -1;
+            $productRequestedQuantity = $basketProduct->quantity + $quantityDiff;
+
+            return ($productRequestedQuantity >= 0 and $productRequestedQuantity <= $product->getQuantity());
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product)
+    {
+        BasketProduct::query()
+            ->where("basket_id", $this->basket->id)
+            ->where("product_id", $product->getId())
+            ->delete();
     }
 
     /**

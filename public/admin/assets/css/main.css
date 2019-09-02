@@ -105,3 +105,51 @@
     background-color: #007bff;
     cursor: pointer;
 }
+
+
+/*site*/
+
+#basket{
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+    margin-top:150px;
+    height: fit-content;
+    padding-left: 14px;
+    /*overflow: scroll;*/
+    /*max-height: 400px;*/
+    background-color: #9fcdff;
+    border:5px solid black;
+    border-radius: 25px;
+    padding-top:30px;
+}
+
+#basket-table{
+    /*border:1px solid black;*/
+    width:100%;
+    padding:25px;
+}
+
+#basket-table tr{
+    border:2px solid black;
+    padding:5px;
+}
+
+#basket-table td{
+    border:2px solid black;
+    padding:5px;
+    color:white;
+    font-size:25px;
+}
+
+#basket-table th{
+    border:2px solid black;
+    padding:5px;
+    color:white;
+    font-size:25px;
+}
+
+.basket-trash{
+    max-width: 20px;
+    max-height: 20px;
+}

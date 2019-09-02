@@ -75,7 +75,7 @@
                                                         <div class="card-body">
                                                             <h3 class="card-title">{{ $product->name }}</h3>
                                                             <p class="card-text">Количество: {{ $product->quantity }}</p>
-                                                            <a href="{{ route('admin-products-show', ['id' => $product->id]) }}" class="btn btn-primary">Купить</a>
+                                                            <button data-id="{{ $product->id }}" class="btn btn-primary add-to-basket">Купить</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -93,4 +93,10 @@
         </div>
     </div>
 
+    <div class="dropdown-menu dropdown-menu-right modal" id="basket"></div>
+
+@endsection
+
+@section("custom-js")
+    <script src="{{ asset("public/site/js/order.js") }}"></script>
 @endsection

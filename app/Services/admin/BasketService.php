@@ -65,6 +65,25 @@ class BasketService implements BasketServiceInterface
     }
 
     /**
+     * @param $productId
+     */
+    public function changeQuantity($productId)
+    {
+        $this->getBasketObject()->changeQuantity(
+            Product::find($productId),
+            $this->request->input('action')
+        );
+    }
+
+    /**
+     * @param $productId
+     */
+    public function removeBasketProduct($productId)
+    {
+        $this->getBasketObject()->removeProduct(Product::find($productId));
+    }
+
+    /**
      * @return array
      */
     public function getBasketData() // TODO refactor

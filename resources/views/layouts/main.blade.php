@@ -222,6 +222,13 @@
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset("public/admin/assets/vendor/jquery/jquery-3.3.1.min.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/vendor/bootstrap/js/bootstrap.bundle.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/libs/js/main-js.js") }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+
+    @yield("custom-js")
+    @yield("custom-css")
+
 </body>
 </html>

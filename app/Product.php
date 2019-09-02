@@ -135,6 +135,14 @@ class Product extends Model
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
     /***********************/
     /* end accessors block */
     /***********************/

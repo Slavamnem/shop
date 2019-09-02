@@ -17,6 +17,16 @@ interface BasketServiceInterface
     public function addBasketProduct($productId);
 
     /**
+     * @param $productId
+     */
+    public function changeQuantity($productId);
+
+    /**
+     * @param $productId
+     */
+    public function removeBasketProduct($productId);
+
+    /**
      * @return array
      */
     public function getBasketData();

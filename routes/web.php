@@ -17,6 +17,12 @@ Route::group(['namespace' => 'Site'], function(){
     Route::get('/tracks', 'TrackController@index')->name('tracks');
     Route::get('/clips', 'ClipController@index')->name('clips');
     Route::get('/contacts', 'SocialMediaController@index')->name('contacts');
+
+    Route::group(['prefix' => 'order'], function(){
+        Route::get('add_basket_product', 'OrderController@addBasketProduct')->name('order-add-basket-product');
+        Route::get('change_quantity', 'OrderController@changeQuantity')->name('order-change-quantity-product');
+        Route::get('remove_basket_product', 'OrderController@removeProduct')->name('order-remove-product');
+    });
 });
 
 //Route::get('/', function () {

@@ -21,6 +21,17 @@ interface BasketObjectInterface
     public function addProduct(Product $product);
 
     /**
+     * @param Product $product
+     * @param $quantity
+     */
+    public function changeQuantity(Product $product, $quantity);
+
+    /**
+     * @param Product $product
+     */
+    public function removeProduct(Product $product);
+
+    /**
      * @param Client $client
      */
     public function setClient(Client $client);
