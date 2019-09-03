@@ -13,6 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         "admin/groups/variations",
-        "admin/*"
+        "admin/*",
+        'order/*'
     ];
 }

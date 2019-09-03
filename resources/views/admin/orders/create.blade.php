@@ -156,7 +156,7 @@
                         </div>
                         <div class="col-md-5">
                             <h3>Корзина <button class="btn btn-danger remove-basket" type="button">Удалить</button></h3>
-                            <table id="basket" class="table table-striped table-bordered" style="width:100%">
+                            <table id="admin-basket" class="table table-striped table-bordered" style="width:100%">
                                 @include('admin.orders.basket')
                             </table>
                         </div>

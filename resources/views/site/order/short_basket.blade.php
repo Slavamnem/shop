@@ -42,14 +42,3 @@
         </tfoot>
     @endif
 </table>
-
-<br>
-<div class="row">
-    <div class="col-md-4">
-        <button class="btn btn-warning" data-dismiss="modal">Продолжить покупки</button>
-    </div>
-    <div class="col-md-4 col-md-offset-4">
-        <a href="{{ route('order-checkout') }}" target="blank" class="btn btn-success">Оформить заказ</a>
-    </div>
-</div>
-<br>

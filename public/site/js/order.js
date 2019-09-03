@@ -61,16 +61,59 @@ $( document ).ready(function() {
     });
 
 
-    $('.admin-filter-input').on("input", function(){
-        var field = $(this).data("name");
-        var value = $(this).val();
+
+    $('#order_client_phone').on("input", function(){
+        var phone = $(this).val();
 
         $.ajax({
-            url: "/admin/categories/filter",
+            url: "/order/get_client_data",
             method: 'POST',
-            data: {field: field, value: value},
+            data: {field: "phone", value: phone},
             success: function(res) {
-                $('.tbody').html(res);
+                if (res = JSON.parse(res)) {
+                    $("#order_client_name").val(res.name);
+                    $("#order_client_last_name").val(res.last_name);
+                    $("#order_client_email").val(res.email);
+                }
+            },
+            error: function(){
+                //alert("error");
+            }
+        });
+    });
+
+    $('#order_client_email').on("input", function(){
+        var email = $(this).val();
+
+        $.ajax({
+            url: "/order/get_client_data",
+            method: 'POST',
+            data: {field: "email", value: email},
+            success: function(res) {
+                if (res = JSON.parse(res)) {
+                    $("#order_client_name").val(res.name);
+                    $("#order_client_last_name").val(res.last_name);
+                    $("#order_client_phone").val(res.phone);
+                }
+            },
+            error: function(){
+                //alert("error");
+            }
+        });
+    });
+
+    $("#order-city").on("change", function () {
+        var cityRef = $(this).val();
+        var deliveryType = $("#order-delivery-type").val();
+
+        $.ajax({
+            url: "/order/selectCity",
+            data: {"cityRef": cityRef, "deliveryType": deliveryType},
+            method: 'POST',
+            success: function(res){
+                if (res) {
+                    $(".warehouses").html(res);
+                }
             },
             error: function(){
                 alert("error");
@@ -78,16 +121,17 @@ $( document ).ready(function() {
         });
     });
 
-    $('.generate-slug').on("click", function(){
-
-        var name = $('#name').val();
+    $("#order-delivery-type").on("change", function () {
+        var deliveryType = $(this).val();
+        //alert(deliveryType); exit();
 
         $.ajax({
-            url: "/admin/ajax/translate",
+            url: "/order/selectDeliveryType",
+            data: {"deliveryType": deliveryType},
             method: 'POST',
-            data: {value: name},
-            success: function(res) {
-                $('#slug').val(res);
+            success: function(res){
+                //alert(res);
+                $(".warehouses").html(res);
             },
             error: function(){
                 alert("error");

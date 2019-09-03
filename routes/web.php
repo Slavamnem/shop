@@ -22,6 +22,11 @@ Route::group(['namespace' => 'Site'], function(){
         Route::get('add_basket_product', 'OrderController@addBasketProduct')->name('order-add-basket-product');
         Route::get('change_quantity', 'OrderController@changeQuantity')->name('order-change-quantity-product');
         Route::get('remove_basket_product', 'OrderController@removeProduct')->name('order-remove-product');
+        Route::get('checkout', 'OrderController@checkout')->name('order-checkout');
+        Route::post('create_order', 'OrderController@createOrder')->name('checkout-create-order');
+        Route::post('get_client_data', "OrderController@getClientData");
+        Route::any("selectCity", "OrderController@selectCity")->name("orders-select-city");
+        Route::any("selectDeliveryType", "OrderController@selectDeliveryType")->name("orders-select-delivery-type");
     });
 });
 

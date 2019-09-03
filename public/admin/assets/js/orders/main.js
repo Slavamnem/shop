@@ -84,7 +84,7 @@ $( document ).ready(function() {
             data: {"newProductId": newProductId},
             method: 'POST',
             success: function(res){
-                $("#basket").html(res);
+                $("#admin-basket").html(res);
             },
             error: function(){
                 alert("error");
@@ -97,7 +97,7 @@ $( document ).ready(function() {
             url: "/admin/orders/remove_basket",
             method: 'POST',
             success: function(res){
-                $("#basket").html(res);
+                $("#admin-basket").html(res);
             },
             error: function(){
                 alert("error");

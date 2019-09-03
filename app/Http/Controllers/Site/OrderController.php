@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\City;
+use App\Client;
+use App\Http\Requests\Admin\CreateOrderRequest;
+use App\Notifications\DefaultNotification;
+use App\Notifications\NewOrderNotification;
+use App\Product;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
@@ -76,5 +82,66 @@ class OrderController extends Controller
         $this->basketService->removeBasketProduct($this->request->input("productId"));
 
         return view("site.order.basket", $this->basketService->getBasketData())->render();
+    }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function selectCity()
+    {
+        $this->basketService->selectCity();
+
+        return $this->deliveryStrategy->getStrategy($this->request->input("deliveryType"))->getCityWareHousesBlock();
+    }
+
+    /**
+     * @return string
+     * @throws \Throwable
+     */
+    public function selectDeliveryType()
+    {
+        return $this->deliveryStrategy->getStrategy($this->request->input("deliveryType"))->getCityWareHousesBlock();
+    }
+
+    /**
+     * @return false|string
+     */
+    public function getClientData()
+    {
+        return json_encode(Client::query()
+            ->where($this->request->input("field"), $this->request->input("value"))
+            ->first());
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function checkout()
+    {
+        $data = array_merge($this->service->getData(), [
+            "cities"   => City::all(),
+            "products" => Product::all(),
+            'basket'   => view("site.order.short_basket", $this->basketService->getBasketData())
+        ]);
+
+        //dump($data['basket']);
+
+        return view("site.order.checkout", $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  CreateOrderRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createOrder(CreateOrderRequest $request)
+    {
+        $this->service->createOrder();
+        $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
+        $this->service->getOrder()->notify(new DefaultNotification());
+
+        return redirect()->route("main");
     }
 }

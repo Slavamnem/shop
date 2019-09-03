@@ -89,26 +89,6 @@ class BasketObject implements BasketObjectInterface
 
     /**
      * @param Product $product
-     * @param $action
-     * @return bool
-     */
-    private function canChangeQuantity(Product $product, $action)
-    {
-        if ($basketProduct = BasketProduct::query()
-            ->where("basket_id", $this->basket->id)
-            ->where("product_id", $product->getId())->first()) {
-
-            $quantityDiff = ($action == "increment") ? 1 : -1;
-            $productRequestedQuantity = $basketProduct->quantity + $quantityDiff;
-
-            return ($productRequestedQuantity >= 0 and $productRequestedQuantity <= $product->getQuantity());
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Product $product
      */
     public function removeProduct(Product $product)
     {
