@@ -153,3 +153,15 @@
     max-width: 20px;
     max-height: 20px;
 }
+
+#checkout-main-block{
+    background-color: #9fcdff;
+    padding:15px;
+    border-radius: 20px;
+}
+
+/*#product-card-container{*/
+    /*background-color: #9fcdff;*/
+    /*color:black!important;*/
+    /*display: inline!important;*/
+/*}*/

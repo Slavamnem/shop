@@ -12,7 +12,7 @@
     <title>{{ 'Milan Shop' }}</title>
 
     <!-- Styles -->
-    <link href="../public/css/app.css" rel="stylesheet">
+    {{--<link href="../public/css/app.css" rel="stylesheet">--}}
     <link href="../public/css/main.css" rel="stylesheet">
     {{--<link rel='stylesheet' href="{{ asset('css/main.css') }}">--}}
 

@@ -17,6 +17,7 @@ Route::group(['namespace' => 'Site'], function(){
     Route::get('/tracks', 'TrackController@index')->name('tracks');
     Route::get('/clips', 'ClipController@index')->name('clips');
     Route::get('/contacts', 'SocialMediaController@index')->name('contacts');
+    Route::get('/product/{slug}', 'ProductCardController@index')->name('product-card');
 
     Route::group(['prefix' => 'order'], function(){
         Route::get('add_basket_product', 'OrderController@addBasketProduct')->name('order-add-basket-product');

@@ -4,7 +4,7 @@
     <div class="container" style="background-color: grey">
         <div class="row">
             <div class="col-md-12 col-md-offset-0">
-                <div class="panel panel-default" style="background-color: grey">
+                <div class="panel panel-default" id="checkout-main-block">
 
                     <br>
                     <h2 align="center">Оформление заказа</h2>
@@ -12,6 +12,7 @@
                     <div id="basket" style="margin-top:0px !important;">
                         {!! $basket !!}
                     </div>
+                    <br>
                     {{--@include('site.order.basket', ['basketProduct' => $basketProducts])--}}
 
                     <form method="POST" action="{{ route('checkout-create-order') }}" enctype="multipart/form-data">
@@ -109,7 +110,7 @@
                             <textarea name="description" id="description" cols="40" rows="10">{{ old("description") }}</textarea>
                         </div>
 
-                        <button class="btn btn-primary" type="submit">Добавить заказ</button>
+                        <button class="btn btn-success" type="submit">Добавить заказ</button>
                     </form>
 
                 </div>

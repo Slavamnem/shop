@@ -65,7 +65,7 @@
                                             @foreach($category->products as $product)
                                                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                                     <div class="card">
-                                                        <a href="{{ route('admin-products-show', ['id' => $product->id]) }}" class="">
+                                                        <a href="{{ route('product-card', ['id' => $product->id, 'slug' => $product->getFullSlug()]) }}" class="">
                                                             @if(!empty($product->mainImage->url))
                                                                 <img class="card-img-top stock-img img-fluid" src="{{ @asset("storage/app/{$product->mainImage->url}") }}" alt="Card image cap">
                                                             @else

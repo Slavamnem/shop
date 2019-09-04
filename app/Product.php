@@ -143,6 +143,11 @@ class Product extends Model
         return $this->quantity;
     }
 
+    public function getFullSlug()
+    {
+        return $this->category->slug . "_" . $this->slug . "_" . $this->id;
+    }
+
     /***********************/
     /* end accessors block */
     /***********************/
