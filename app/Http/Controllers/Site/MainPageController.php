@@ -26,7 +26,7 @@ class MainPageController extends Controller
     public function index()
     {
         $categories = Category::query()->whereNull('pid')->get();
-        $categories = Category::query()->get();
+        //$categories = Category::query()->get();
         return view('index', compact('categories'));
     }
 }

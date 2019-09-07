@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Services\Admin\Interfaces\ProductServiceInterface;
+use App\Services\Admin\ProductService;
 use App\Services\Admin\ShareService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -156,6 +158,17 @@ class Product extends Model
     /* extra methods block */
     /***********************/
 
+    /**
+     * @return float|int
+     */
+    public function getRealPriceAttribute()
+    {
+        return resolve(ProductServiceInterface::class)->getPrice($this);
+    }
+
+    /**
+     * @return array
+     */
     public static function getImagesAttributesKeys()
     {
         return ["image", "small_image"];

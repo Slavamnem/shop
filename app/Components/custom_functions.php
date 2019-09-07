@@ -20,10 +20,12 @@ if (!function_exists('array_init')) {
 }
 
 if (!function_exists('element')) {
-    function element($key)
+    function element($key, $default = null)
     {
         if ($element = \App\SiteElement::where('key', $key)->first()) {
             return $element->value;
         }
+
+        return $default;
     }
 }

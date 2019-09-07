@@ -27,6 +27,8 @@ use App\Services\Admin\SiteElementsService;
 use App\Services\Admin\StatisticService;
 use App\Services\Admin\UserService;
 use App\Services\NovaPoshtaService;
+use App\Services\Site\Api\CatalogProductsService;
+use App\Services\Site\Interfaces\CatalogProductsServiceInterface;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -99,6 +101,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(BasketServiceInterface::class, BasketService::class);
         $this->app->bind(SiteElementsServiceInterface::class, SiteElementsService::class);
+        $this->app->bind(CatalogProductsServiceInterface::class, CatalogProductsService::class);
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 

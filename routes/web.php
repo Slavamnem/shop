@@ -29,6 +29,11 @@ Route::group(['namespace' => 'Site'], function(){
         Route::any("selectCity", "OrderController@selectCity")->name("orders-select-city");
         Route::any("selectDeliveryType", "OrderController@selectDeliveryType")->name("orders-select-delivery-type");
     });
+
+    Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
+        Route::get('get_filtered_products', 'CatalogProductsController@getFilteredProducts')->name('api-get-filtered-products');
+        Route::get('test_get_filtered_products', 'CatalogProductsController@testGetFilteredProducts')->name('api-test-get-filtered-products');
+    });
 });
 
 //Route::get('/', function () {

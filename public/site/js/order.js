@@ -39,8 +39,7 @@ $( document ).ready(function() {
         });
     });
 
-
-    $('.add-to-basket').on("click", function() {
+    $(document).on("click", ".add-to-basket", function() {
 
         var productId = $(this).data('id');
 
@@ -59,7 +58,6 @@ $( document ).ready(function() {
             }
         });
     });
-
 
 
     $('#order_client_phone').on("input", function(){

@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputText3" class="col-form-label">Цена</label>
-                                    <input id="inputText3" name="base_price" type="number" class="form-control" value="{{ $product->base_price }}" readonly="readonly">
+                                    <input id="inputText3" name="base_price" type="text" class="form-control" value="{{ $product->base_price }} грн" readonly="readonly">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputText3" class="col-form-label">Количество на складе</label>
