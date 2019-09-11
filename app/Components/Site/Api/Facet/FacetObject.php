@@ -2,11 +2,13 @@
 
 namespace App\Components\Site\Api\Facet;
 
+use App\Category;
 use App\Components\Site\Api\Facet\Interfaces\FacetItemInterface;
 use App\Components\Site\Api\Facet\Interfaces\FacetObjectInterface;
 use App\Objects\Interfaces\PaginationObjectInterface;
 use App\Objects\PriceRangeObject;
-use App\Services\Site\Api\Search\DbProductsSearchService;
+use App\Strategies\Interfaces\StrategyInterface;
+use App\Strategies\ProductsSearch\ProductsSearchStrategy;
 use Illuminate\Support\Collection;
 
 class FacetObject implements FacetObjectInterface
@@ -31,6 +33,11 @@ class FacetObject implements FacetObjectInterface
      */
     private $priceRange;
 
+    /**
+     * @var StrategyInterface
+     */
+    private $productSearchStrategy;
+
     public function __construct()
     {
         $this->facetItems = collect();
@@ -42,7 +49,15 @@ class FacetObject implements FacetObjectInterface
      */
     public function addItem(FacetItemInterface $item)
     {
-        $this->facetItems->push($item);
+        $this->facetItems->put($item->getKey(), $item);
+    }
+
+    /**
+     * @param $key
+     */
+    public function setItemMarked($key)
+    {
+        $this->facetItems->get($key)->mark();
     }
 
     /**
@@ -89,27 +104,59 @@ class FacetObject implements FacetObjectInterface
         return $this->priceRange;
     }
 
+    ///////////////////////////////////
+
     /**
      * @param $catId
      */
-    public function addFilteredCategory($catId)
+    public function addFilteredCategory($catId) //TODO strategy
     {
         $this->filteredCategories->push($catId);
+        $this->addToFilteredSubCategories($catId);
+    }
+
+    /**
+     * @param $catId
+     */
+    private function addToFilteredSubCategories($catId)
+    {
+        foreach (Category::where('pid', $catId)->get() as $subCategory) {
+            $this->filteredCategories->push($subCategory->id);
+            $this->addToFilteredSubCategories($subCategory->id);
+        }
     }
 
     /**
      * @return array
      */
-    public function getFilteredCategories()
+    public function getFilteredCategories() //TODO strategy
     {
         return $this->filteredCategories->toArray();
     }
+
+    /////////////////////////////////////////////
 
     /**
      * @return mixed
      */
     public function getProducts()
     {
-        return (new DbProductsSearchService($this))->search();
+        return $this->getProductsSearchStrategy()->getStrategy('db')->search($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductsCount()
+    {
+        return $this->getProductsSearchStrategy()->getStrategy('db')->getProductCount($this);
+    }
+
+    /**
+     * @return ProductsSearchStrategy
+     */
+    private function getProductsSearchStrategy()
+    {
+        return new ProductsSearchStrategy();
     }
 }

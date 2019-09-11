@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Components\Order\Delivery;
+namespace App\Strategies\Delivery\Strategies;
 
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\DeliveryTypeInterface;
+use App\NpWarehouses;
 
-class NullDelivery implements DeliveryTypeInterface
+class JustinDelivery implements DeliveryTypeInterface
 {
     /**
      * @param BasketObjectInterface $basket
@@ -13,7 +14,7 @@ class NullDelivery implements DeliveryTypeInterface
      */
     public function getExtraPrice(BasketObjectInterface $basket)
     {
-        return 0;
+        return 10;
     }
 
     /**
@@ -22,6 +23,8 @@ class NullDelivery implements DeliveryTypeInterface
      */
     public function getCityWareHousesBlock()
     {
-        return view("admin.orders.warehouses", ['warehouses' => collect()])->render();
+        $warehouses = collect([(new NpWarehouses(['name' => "Тестовое отделение Justin"]))]);
+
+        return view("admin.orders.warehouses", compact("warehouses"))->render();
     }
 }

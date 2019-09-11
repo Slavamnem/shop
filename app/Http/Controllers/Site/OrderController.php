@@ -11,7 +11,7 @@ use App\Product;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
-use App\Strategies\DeliveryStrategy;
+use App\Strategies\Delivery\DeliveryStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

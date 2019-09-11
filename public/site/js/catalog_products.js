@@ -17,7 +17,7 @@ $( document ).ready(function() {
 
 function getFilteredProducts(page = 1) {
     $.ajax({
-        url: "/api/test_get_filtered_products",
+        url: "/api/get_catalog_data",
         method: 'GET',
         data: {request: getCatalogRequestObject(), page: page},
         success: function (res) {

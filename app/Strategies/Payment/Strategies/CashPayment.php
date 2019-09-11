@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components\Order\Payment;
+namespace App\Strategies\Payment\Strategies;
 
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\PaymentTypeInterface;

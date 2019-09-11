@@ -10,5 +10,5 @@ interface CatalogProductsServiceInterface
      * @param CatalogProductsFilterRequest $request
      * @return mixed
      */
-    public function getFilteredProducts(CatalogProductsFilterRequest $request);
+    public function buildFacetObject(CatalogProductsFilterRequest $request);
 }

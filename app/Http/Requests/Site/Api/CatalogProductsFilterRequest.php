@@ -47,6 +47,15 @@ class CatalogProductsFilterRequest extends FormRequest
     }
 
     /**
+     * @param $catId
+     * @return bool
+     */
+    public function isFilteredCategory($catId)
+    {
+        return in_array($catId, $this->getFilteredCategories());
+    }
+
+    /**
      * @return mixed
      */
     public function getMinPrice()
@@ -71,7 +80,6 @@ class CatalogProductsFilterRequest extends FormRequest
      */
     public function getPage()
     {
-        return 2;//@$this->page ?? 1;
         return @array_get($this->getRequestData(), 'page', 1);
     }
 }

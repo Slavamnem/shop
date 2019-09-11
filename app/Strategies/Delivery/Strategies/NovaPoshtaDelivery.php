@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components\Order\Delivery;
+namespace App\Strategies\Delivery\Strategies;
 
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\DeliveryTypeInterface;

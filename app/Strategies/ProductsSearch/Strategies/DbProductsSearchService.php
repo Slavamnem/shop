@@ -1,26 +1,15 @@
 <?php
 
-namespace App\Services\Site\Api\Search;
+namespace App\Strategies\ProductsSearch\Strategies;
 
-use App\Components\Site\Api\Facet\Interfaces\FacetObjectInterface;
 use App\Product;
 use App\Services\Site\Interfaces\ProductsSearchServiceInterface;
 
-class DbProductsSearchService implements ProductsSearchServiceInterface
+class DbProductsSearchService extends AbstractProductsSearchService implements ProductsSearchServiceInterface
 {
-    /**
-     * @var
-     */
-    private $query;
-    /**
-     * @var FacetObjectInterface
-     */
-    private $facetObject;
-
-    public function __construct(FacetObjectInterface $facetObject)
+    public function __construct()
     {
-        $this->facetObject = $facetObject;
-        $this->initQuery();
+        parent::__construct();
     }
 
     public function initQuery()
@@ -28,16 +17,23 @@ class DbProductsSearchService implements ProductsSearchServiceInterface
         $this->query = Product::query();
     }
 
-    public function search()
+    /**
+     * @return mixed
+     */
+    public function getCountQueryResult()
     {
-        $this->addPriceConditions();
-        $this->addCategoryConditions();
-        //$this->addLimit($this->facetObject->getPriceRange()->getMinPrice());
+        return $this->query->count();
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getSearchQueryResult()
+    {
         return $this->query->paginate(element('catalog-per-page'));
     }
 
-    private function addPriceConditions()
+    public function addPriceConditions()
     {
         $this->query = $this->query
             ->where('base_price', '>=', $this->facetObject->getPriceRange()->getMinPrice())
@@ -54,7 +50,7 @@ class DbProductsSearchService implements ProductsSearchServiceInterface
     /**
      * @param $limit
      */
-    private function addLimit($limit)
+    public function addLimit($limit)
     {
         $this->query = $this->query->take($limit);
     }

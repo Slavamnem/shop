@@ -35,6 +35,11 @@ interface FacetObjectInterface
     public function getPriceRange();
 
     /**
+     * @param $key
+     */
+    public function setItemMarked($key);
+
+    /**
      * @param $catId
      */
     public function addFilteredCategory($catId);
@@ -43,4 +48,14 @@ interface FacetObjectInterface
      * @return array
      */
     public function getFilteredCategories();
+
+    /**
+     * @return mixed
+     */
+    public function getProducts(); //TODO сомнительные функции, подумать
+
+    /**
+     * @return mixed
+     */
+    public function getProductsCount(); //TODO сомнительные функции, подумать
 }

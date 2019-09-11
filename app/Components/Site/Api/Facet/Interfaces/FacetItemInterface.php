@@ -7,6 +7,11 @@ interface FacetItemInterface
     /**
      * @return mixed
      */
+    public function getKey();
+
+    /**
+     * @return mixed
+     */
     public function getTitle();
 
     /**
@@ -33,6 +38,17 @@ interface FacetItemInterface
     public function mark();
 
     public function unMark();
+
+    /**
+     * @param FacetObjectInterface $facetObject
+     * @return $this
+     */
+    public function setFacetObject(FacetObjectInterface $facetObject);
+
+    /**
+     * @return FacetObjectInterface
+     */
+    public function getFacetObject();
 
     public function getMatchProductCount();
 

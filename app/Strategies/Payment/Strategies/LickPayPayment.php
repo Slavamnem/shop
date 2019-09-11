@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Components\Order\Payment;
+namespace App\Strategies\Payment\Strategies;
 
 use App\Components\Interfaces\BasketObjectInterface;
 use App\Components\Interfaces\PaymentTypeInterface;
 
-class CashOnDeliveryPayment implements PaymentTypeInterface
+class LickPayPayment implements PaymentTypeInterface
 {
     /**
      * @param BasketObjectInterface $basket
@@ -13,6 +13,6 @@ class CashOnDeliveryPayment implements PaymentTypeInterface
      */
     public function getExtraPrice(BasketObjectInterface $basket)
     {
-        return 100;
+        return 0;
     }
 }

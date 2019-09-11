@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Strategies\Payment;
 
 use App\Components\Interfaces\PaymentTypeInterface;
-use App\Components\Order\Delivery\JustinDelivery;
-use App\Components\Order\Delivery\NovaPoshtaDelivery;
-use App\Components\Order\Delivery\PickUpDelivery;
-use App\Components\Order\Payment\CashOnDeliveryPayment;
-use App\Components\Order\Payment\CashPayment;
-use App\Components\Order\Payment\LickPayPayment;
-use App\Components\Order\Payment\NullPayment;
 use App\Strategies\Interfaces\StrategyInterface;
+use App\Strategies\Payment\Strategies\CashOnDeliveryPayment;
+use App\Strategies\Payment\Strategies\CashPayment;
+use App\Strategies\Payment\Strategies\LickPayPayment;
+use App\Strategies\Payment\Strategies\NullPayment;
 use Illuminate\Support\Collection;
 
 class PaymentStrategy implements StrategyInterface

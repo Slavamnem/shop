@@ -4,36 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\City;
 use App\Client;
-use App\Components\Basket;
-use App\Components\BasketProduct;
-use App\Components\RestApi\Justin;
 use App\Components\RestApi\NovaPoshta;
-use App\DeliveryType;
-use App\Enums\DeliveryTypesEnum;
-use App\Enums\OrderStatusEnum;
-use App\Enums\PaymentTypesEnum;
 use App\Http\Middleware\SectionsAccess\OrdersAccessMiddleware;
 use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
-use App\NpWarehouses;
 use App\Order;
-use App\OrderProduct;
-use App\OrderStatus;
-use App\PaymentType;
 use App\Product;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
-use App\Services\NovaPoshtaService;
-use App\Strategies\DeliveryStrategy;
+use App\Strategies\Delivery\DeliveryStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller

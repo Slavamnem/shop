@@ -2,17 +2,26 @@
 
 namespace App\Components\Site\Api\Facet;
 
+use App\Category;
 use App\Components\Site\Api\Facet\Interfaces\FacetItemInterface;
+use App\Components\Site\Api\Facet\Interfaces\FacetObjectInterface;
+use App\Http\Requests\Site\Api\CatalogProductsFilterRequest;
+use App\Strategies\FacetItem\FacetItemStrategy;
+use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
 class FacetItem implements FacetItemInterface
 {
     /**
-     * @var
+     * @var string
+     */
+    private $key;
+    /**
+     * @var string
      */
     private $title;
     /**
-     * @var
+     * @var attribute name in html checkbox
      */
     private $attributeName;
     /**
@@ -23,10 +32,32 @@ class FacetItem implements FacetItemInterface
      * @var Collection
      */
     private $childrenItems;
+    /**
+     * @var FacetObjectInterface
+     */
+    private $facetObject;
+    /**
+     * @var StrategyInterface
+     */
+    private $facetItemStrategy;
 
-    public function __construct()
+    /**
+     * FacetItem constructor.
+     * @param $key
+     */
+    public function __construct($key)
     {
+        $this->key = $key;
         $this->childrenItems = collect();
+        $this->facetItemStrategy = new FacetItemStrategy();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKey()
+    {
+        return $this->key;
     }
 
     /**
@@ -65,11 +96,18 @@ class FacetItem implements FacetItemInterface
         return $this->attributeName;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsMarked()
     {
         return $this->isMarked;
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setIsMarked($value)
     {
         $this->isMarked = $value;
@@ -86,9 +124,30 @@ class FacetItem implements FacetItemInterface
         $this->isMarked = false;
     }
 
+    /**
+     * @param FacetObjectInterface $facetObject
+     * @return $this
+     */
+    public function setFacetObject(FacetObjectInterface $facetObject)
+    {
+        $this->facetObject = $facetObject;
+        return $this;
+    }
+
+    /**
+     * @return FacetObjectInterface
+     */
+    public function getFacetObject()
+    {
+        return $this->facetObject;
+    }
+
+    /**
+     * @return int
+     */
     public function getMatchProductCount()
     {
-        return 7; //TODO
+        return $this->facetItemStrategy->getStrategy('category')->getMatchProductCount($this);
     }
 
     /**
@@ -105,5 +164,22 @@ class FacetItem implements FacetItemInterface
     public function getChildren()
     {
         return $this->childrenItems;
+    }
+
+    //
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     * @param Category $category
+     * @param FacetObjectInterface $facetObject
+     * @return FacetItem
+     */
+    public static function createCategoryFacetItem(CatalogProductsFilterRequest $request, Category $category, FacetObjectInterface $facetObject)
+    {
+        return (new self("category-{$category->id}"))
+            ->setTitle($category->name)
+            ->setAttributeName("category[{$category->id}]")
+            ->setIsMarked($request->isFilteredCategory($category->id))
+            ->setFacetObject($facetObject);
     }
 }

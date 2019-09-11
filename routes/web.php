@@ -32,7 +32,7 @@ Route::group(['namespace' => 'Site'], function(){
 
     Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('get_filtered_products', 'CatalogProductsController@getFilteredProducts')->name('api-get-filtered-products');
-        Route::get('test_get_filtered_products', 'CatalogProductsController@testGetFilteredProducts')->name('api-test-get-filtered-products');
+        Route::get('get_catalog_data', 'CatalogProductsController@getCatalogData')->name('api-get-catalog-data');
     });
 });
 

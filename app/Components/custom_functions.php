@@ -29,3 +29,10 @@ if (!function_exists('element')) {
         return $default;
     }
 }
+
+if (!function_exists('clone_object')) {
+    function clone_object($object)
+    {
+        return unserialize(serialize($object));
+    }
+}

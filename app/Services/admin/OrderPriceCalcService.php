@@ -3,14 +3,10 @@
 namespace App\Services\Admin;
 
 use App\Components\Interfaces\BasketObjectInterface;
-use App\Components\Interfaces\DeliveryTypeInterface;
-use App\Components\Interfaces\PaymentTypeInterface;
-use App\Enums\DeliveryTypesEnum;
-use App\Enums\PaymentTypesEnum;
 use App\Services\Admin\Interfaces\OrderPriceCalcServiceInterface;
-use App\Strategies\DeliveryStrategy;
+use App\Strategies\Delivery\DeliveryStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
-use App\Strategies\PaymentStrategy;
+use App\Strategies\Payment\PaymentStrategy;
 
 class OrderPriceCalcService implements OrderPriceCalcServiceInterface
 {

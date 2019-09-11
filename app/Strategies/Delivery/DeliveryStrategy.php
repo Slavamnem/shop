@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Strategies\Delivery;
 
 use App\Components\Interfaces\DeliveryTypeInterface;
-use App\Components\Order\Delivery\JustinDelivery;
-use App\Components\Order\Delivery\NovaPoshtaDelivery;
-use App\Components\Order\Delivery\NullDelivery;
-use App\Components\Order\Delivery\PickUpDelivery;
+use App\Strategies\Delivery\Strategies\JustinDelivery;
+use App\Strategies\Delivery\Strategies\NovaPoshtaDelivery;
+use App\Strategies\Delivery\Strategies\NullDelivery;
+use App\Strategies\Delivery\Strategies\PickUpDelivery;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
