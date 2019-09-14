@@ -24,6 +24,11 @@ class FacetObject implements FacetObjectInterface
     private $filteredCategories;
 
     /**
+     * @var
+     */
+    private $filteredAttributesValues;
+
+    /**
      * @var PaginationObjectInterface
      */
     private $paginator;
@@ -134,6 +139,23 @@ class FacetObject implements FacetObjectInterface
         return $this->filteredCategories->toArray();
     }
 
+    /**
+     * @param $attribute
+     * @param $value
+     */
+    public function addFilteredAttributeValue($attribute, $value)
+    {
+        $this->filteredAttributesValues[$attribute][] = $value;
+    }
+
+    /**
+     * @param $attribute
+     * @return array
+     */
+    public function getFilteredAttributeValues($attribute)
+    {
+        return (array)@$this->filteredAttributesValues[$attribute];
+    }
     /////////////////////////////////////////////
 
     /**

@@ -3,9 +3,9 @@
 namespace App\Enums;
 
 use App\Components\Enum;
-use App\Components\Order\Payment\CashOnDeliveryPayment;
-use App\Components\Order\Payment\CashPayment;
-use App\Components\Order\Payment\LickPayPayment;
+use App\Strategies\Payment\Strategies\CashOnDeliveryPayment;
+use App\Strategies\Payment\Strategies\CashPayment;
+use App\Strategies\Payment\Strategies\LickPayPayment;
 
 class PaymentTypesEnum extends AbstractEnum
 {

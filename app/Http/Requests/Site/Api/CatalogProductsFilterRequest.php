@@ -56,6 +56,25 @@ class CatalogProductsFilterRequest extends FormRequest
     }
 
     /**
+     * @param $attribute
+     * @return array
+     */
+    public function getFilteredAttributeValues($attribute)
+    {
+        return array_keys((array)@array_get($this->getRequestData(), $attribute));
+    }
+
+    /**
+     * @param $attribute
+     * @param $valueId
+     * @return bool
+     */
+    public function isFilteredAttributeValue($attribute, $valueId)
+    {
+        return in_array($valueId, $this->getFilteredAttributeValues($attribute));
+    }
+
+    /**
      * @return mixed
      */
     public function getMinPrice()

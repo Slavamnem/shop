@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: user
+ * Date: 14.09.2019
+ * Time: 22:41
+ */
 
 namespace App\Components\Site\Api\Facet;
 
@@ -11,36 +17,36 @@ use App\Strategies\FacetItem\FacetItemStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
-class FacetItem implements FacetItemInterface//extends AbstractFacetItem
+abstract class AbstractFacetItem implements FacetItemInterface
 {
     /**
      * @var string
      */
-    private $key;
+    protected $key;
     /**
      * @var string
      */
-    private $title;
+    protected $title;
     /**
      * @var attribute name in html checkbox
      */
-    private $attributeName;
+    protected $attributeName;
     /**
      * @var bool
      */
-    private $isMarked;
+    protected $isMarked;
     /**
      * @var Collection
      */
-    private $childrenItems;
+    protected $childrenItems;
     /**
      * @var FacetObjectInterface
      */
-    private $facetObject;
+    protected $facetObject;
     /**
      * @var StrategyInterface
      */
-    private $facetItemStrategy;
+    protected $facetItemStrategy;
 
     /**
      * FacetItem constructor.
@@ -115,14 +121,22 @@ class FacetItem implements FacetItemInterface//extends AbstractFacetItem
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function mark()
     {
         $this->isMarked = true;
+        return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function unMark()
     {
         $this->isMarked = false;
+        return $this;
     }
 
     /**
@@ -144,11 +158,27 @@ class FacetItem implements FacetItemInterface//extends AbstractFacetItem
     }
 
     /**
+     * @param FacetItemInterface $item
+     */
+    public function addChildItem(FacetItemInterface $item)
+    {
+        // empty
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChildren()
+    {
+        return collect();
+    }
+
+    /**
      * @return int
      */
     public function getMatchProductCount()
     {
-        return $this->facetItemStrategy->getStrategy('category')->getMatchProductCount($this);
+        return 0;
     }
 
     /**
@@ -159,55 +189,37 @@ class FacetItem implements FacetItemInterface//extends AbstractFacetItem
         return false;
     }
 
-    /**
- * @param FacetItemInterface $item
- */
-    public function addChildItem(FacetItemInterface $item)
-    {
-        $this->childrenItems->push($item);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getChildren()
-    {
-        return $this->childrenItems;
-    }
-
-    //
-
-    /**
-     * @param CatalogProductsFilterRequest $request
-     * @param Category $category
-     * @param FacetObjectInterface $facetObject
-     * @return FacetItemInterface
-     */
-    public static function createCategoryFacetItem(CatalogProductsFilterRequest $request, Category $category, FacetObjectInterface $facetObject)
-    {
-        return (new CategoryFacetItem("category-{$category->id}"))
-            ->setTitle($category->name)
-            ->setAttributeName("category[{$category->id}]")
-            ->setIsMarked($request->isFilteredCategory($category->id))
-            ->setFacetObject($facetObject);
-    }
-
-    /**
-     * @param AttributeFacetItemObject $object
-     * @param FacetObjectInterface $facetObject
-     * @return FacetItem
-     */
-    public static function createAttributeFacetItem(AttributeFacetItemObject $object, FacetObjectInterface $facetObject)
-    {
-        return (new self($object->getItemKey()))
-            ->setTitle($object->getAttributeTitle())
-            ->setAttributeName($object->getHtmlName())
-            ->setIsMarked($object->getRequest()
-                ->isFilteredAttributeValue(
-                    $object->getAttributeName(),
-                    $object->getAttributeValue()
-                )
-            )
-            ->setFacetObject($facetObject);
-    }
+//    /**
+//     * @param CatalogProductsFilterRequest $request
+//     * @param Category $category
+//     * @param FacetObjectInterface $facetObject
+//     * @return AbstractFacetItem
+//     */
+//    public static function createCategoryFacetItem(CatalogProductsFilterRequest $request, Category $category, FacetObjectInterface $facetObject)
+//    {
+//        return (new self("category-{$category->id}"))
+//            ->setTitle($category->name)
+//            ->setAttributeName("category[{$category->id}]")
+//            ->setIsMarked($request->isFilteredCategory($category->id))
+//            ->setFacetObject($facetObject);
+//    }
+//
+//    /**
+//     * @param AttributeFacetItemObject $object
+//     * @param FacetObjectInterface $facetObject
+//     * @return AbstractFacetItem
+//     */
+//    public static function createAttributeFacetItem(AttributeFacetItemObject $object, FacetObjectInterface $facetObject)
+//    {
+//        return (new self($object->getItemKey()))
+//            ->setTitle($object->getAttributeTitle())
+//            ->setAttributeName($object->getHtmlName())
+//            ->setIsMarked($object->getRequest()
+//                ->isFilteredAttributeValue(
+//                    $object->getAttributeName(),
+//                    $object->getAttributeValue()
+//                )
+//            )
+//            ->setFacetObject($facetObject);
+//    }
 }

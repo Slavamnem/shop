@@ -9,8 +9,10 @@
 namespace App\Strategies\FacetItem;
 
 
+use App\Strategies\FacetItem\Strategies\AttributeFacetItemStrategy;
 use App\Strategies\FacetItem\Strategies\CategoryFacetItemStrategy;
 use App\Strategies\FacetItem\Strategies\NullFacetItemStrategy;
+use App\Strategies\FacetItem\Strategies\PropertyFacetItemStrategy;
 use App\Strategies\Interfaces\FacetItemStrategyInterface;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
@@ -31,8 +33,8 @@ class FacetItemStrategy implements StrategyInterface
     {
         $this->strategies = collect();
         $this->strategies->put('category', new CategoryFacetItemStrategy());
-        //$this->strategies->put('property', new CategoryFacetItemStrategy());
-        //$this->strategies->put('attribute', new CategoryFacetItemStrategy());
+        $this->strategies->put('attribute', new AttributeFacetItemStrategy());
+        $this->strategies->put('property', new PropertyFacetItemStrategy());
     }
 
     /**

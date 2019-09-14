@@ -3,9 +3,9 @@
 namespace App\Enums;
 
 use App\Components\Enum;
-use App\Components\Order\Delivery\JustinDelivery;
-use App\Components\Order\Delivery\NovaPoshtaDelivery;
-use App\Components\Order\Delivery\PickUpDelivery;
+use App\Strategies\Delivery\Strategies\JustinDelivery;
+use App\Strategies\Delivery\Strategies\NovaPoshtaDelivery;
+use App\Strategies\Delivery\Strategies\PickUpDelivery;
 
 class DeliveryTypesEnum extends AbstractEnum
 {

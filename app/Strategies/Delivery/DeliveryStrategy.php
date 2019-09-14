@@ -3,6 +3,7 @@
 namespace App\Strategies\Delivery;
 
 use App\Components\Interfaces\DeliveryTypeInterface;
+use App\Enums\DeliveryTypesEnum;
 use App\Strategies\Delivery\Strategies\JustinDelivery;
 use App\Strategies\Delivery\Strategies\NovaPoshtaDelivery;
 use App\Strategies\Delivery\Strategies\NullDelivery;
@@ -25,9 +26,9 @@ class DeliveryStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put(1, new NovaPoshtaDelivery());
-        $this->strategies->put(2, new JustinDelivery());
-        $this->strategies->put(3, new PickUpDelivery());
+        $this->strategies->put(DeliveryTypesEnum::NOVA_POSHTA, new NovaPoshtaDelivery());
+        $this->strategies->put(DeliveryTypesEnum::JUSTIN, new JustinDelivery());
+        $this->strategies->put(DeliveryTypesEnum::SELF, new PickUpDelivery());
     }
 
     /**

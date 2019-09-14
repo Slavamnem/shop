@@ -44,6 +44,11 @@ class Product extends Model
         'size_id' => 'Размер',
     ];
 
+    const FACET_ATTRIBUTES = [
+        'color_id',
+        'size_id'
+    ];
+
     /*******************/
     /* Relations block */
     /*******************/
@@ -145,11 +150,13 @@ class Product extends Model
         return $this->quantity;
     }
 
+    /**
+     * @return string
+     */
     public function getFullSlug()
     {
         return $this->category->slug . "_" . $this->slug . "_" . $this->id;
     }
-
     /***********************/
     /* end accessors block */
     /***********************/
@@ -191,6 +198,15 @@ class Product extends Model
     public function getFieldsTranslations()
     {
         return $this->fieldsTranslations;
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function getFieldTranslation($key)
+    {
+        return array_get($this->fieldsTranslations, $key, null);
     }
 
     /***************************/

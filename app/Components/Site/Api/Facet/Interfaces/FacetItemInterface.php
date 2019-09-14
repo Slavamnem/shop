@@ -33,11 +33,26 @@ interface FacetItemInterface
 
     public function getIsMarked();
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setIsMarked($value);
 
+    /**
+     * @return $this
+     */
     public function mark();
 
+    /**
+     * @return $this
+     */
     public function unMark();
+
+    /**
+     * @return bool
+     */
+    public function isSection();
 
     /**
      * @param FacetObjectInterface $facetObject

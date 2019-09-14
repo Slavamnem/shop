@@ -19,7 +19,9 @@ class CatalogProductsService implements CatalogProductsServiceInterface
         $facetObjectBuilder = FacetObjectBuilder::create();
         $facetObjectBuilder->setPriceRange($request);
         $facetObjectBuilder->setPaginator($request);
+        // TODO нужно задавать разделители блоков фасетки
         $facetObjectBuilder->setCategoriesItems($request);
+        $facetObjectBuilder->setAttributesItems($request);
 
         return $facetObjectBuilder->getFacetObject();
     }

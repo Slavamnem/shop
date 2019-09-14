@@ -47,6 +47,15 @@ class DbProductsSearchService extends AbstractProductsSearchService implements P
         }
     }
 
+    public function addAttributesConditions()
+    {
+        foreach (Product::FACET_ATTRIBUTES as $attribute) {
+            if ($this->facetObject->getFilteredAttributeValues($attribute)) {
+                $this->query = $this->query->whereIn($attribute, $this->facetObject->getFilteredAttributeValues($attribute));
+            }
+        }
+    }
+
     /**
      * @param $limit
      */

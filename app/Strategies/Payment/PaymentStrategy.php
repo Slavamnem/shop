@@ -3,6 +3,7 @@
 namespace App\Strategies\Payment;
 
 use App\Components\Interfaces\PaymentTypeInterface;
+use App\Enums\PaymentTypesEnum;
 use App\Strategies\Interfaces\StrategyInterface;
 use App\Strategies\Payment\Strategies\CashOnDeliveryPayment;
 use App\Strategies\Payment\Strategies\CashPayment;
@@ -25,9 +26,9 @@ class PaymentStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put(1, new LickPayPayment());
-        $this->strategies->put(2, new CashPayment());
-        $this->strategies->put(3, new CashOnDeliveryPayment());
+        $this->strategies->put(PaymentTypesEnum::LIQ_PAY, new LickPayPayment());
+        $this->strategies->put(PaymentTypesEnum::CASH, new CashPayment());
+        $this->strategies->put(PaymentTypesEnum::CASH_ON_DELIVERY, new CashOnDeliveryPayment());
     }
 
     /**

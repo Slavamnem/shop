@@ -29,6 +29,7 @@ abstract class AbstractProductsSearchService implements ProductsSearchServiceInt
         $this->initQuery();
         $this->addPriceConditions();
         $this->addCategoryConditions();
+        $this->addAttributesConditions();
 
         return $this->getCountQueryResult();
     }
@@ -43,6 +44,7 @@ abstract class AbstractProductsSearchService implements ProductsSearchServiceInt
         $this->initQuery();
         $this->addPriceConditions();
         $this->addCategoryConditions();
+        $this->addAttributesConditions();
         //$this->addLimit($this->facetObject->getPriceRange()->getMinPrice());
 
         return $this->getSearchQueryResult();
@@ -57,6 +59,8 @@ abstract class AbstractProductsSearchService implements ProductsSearchServiceInt
     abstract function addPriceConditions();
 
     abstract function addCategoryConditions();
+
+    abstract function addAttributesConditions();
 
     abstract function addLimit($limit);
 }
