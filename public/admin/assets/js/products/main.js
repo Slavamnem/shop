@@ -1,5 +1,19 @@
 $( document ).ready(function() {
 
+    $(document).on("change", '.properties-list', function(){
+        $.ajax({
+            url: "/admin/products/get-property-values",
+            method: 'POST',
+            data: {property: $(this).val()},
+            success: function(res) {
+                $(".property_values").html(res);
+            },
+            error: function(){
+                alert("Ошибка индексации");
+            }
+        });
+    });
+
     $('.index-products').on("click", function(){
         $.ajax({
             url: "/admin/products/index_products",
@@ -55,6 +69,7 @@ $( document ).ready(function() {
             method: 'POST',
             success: function(res) {
                 $('#new-properties').append(res);
+                $('.add-new-property').hide();
             },
             error: function(){
                 alert("error");
@@ -81,5 +96,6 @@ $( document ).ready(function() {
 
     $(document).on('click', '.delete-property', function(){
         $(this).parents(".product-property").html("");
+        $('.add-new-property').show();
     });
 });

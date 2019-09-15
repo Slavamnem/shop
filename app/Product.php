@@ -99,7 +99,16 @@ class Product extends Model
     public function properties()
     {
         return $this->belongsToMany(Property::class, "product_properties","product_id", "property_id")
-            ->withPivot(['value', 'ordering'])->orderBy("ordering");
+            ->withPivot(['property_value_id', 'ordering'])->orderBy("ordering");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function propertyValues()
+    {
+        return $this->belongsToMany(PropertyValue::class, "product_properties","product_id", "property_value_id")
+            ->withPivot(['property_id', 'ordering']);
     }
 
     /**

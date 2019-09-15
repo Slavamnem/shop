@@ -62,6 +62,18 @@ interface FacetObjectInterface
     public function getFilteredAttributeValues($attribute);
 
     /**
+     * @param $property
+     * @param $value
+     */
+    public function addFilteredPropertyValue($property, $value);
+
+    /**
+     * @param $property
+     * @return array
+     */
+    public function getFilteredPropertyValues($property);
+
+    /**
      * @return mixed
      */
     public function getProducts(); //TODO сомнительные функции, подумать

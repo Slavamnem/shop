@@ -11,13 +11,16 @@ use App\Components\Site\Api\Facet\FacetItem;
 use App\Components\Site\Api\Facet\FacetObject;
 use App\Components\Site\Api\Facet\Interfaces\FacetItemInterface;
 use App\Components\Site\Api\Facet\Interfaces\FacetObjectInterface;
+use App\Components\Site\Api\Facet\PropertyFacetItem;
 use App\Components\Site\Api\Facet\SectionFacetItem;
 use App\Http\Requests\Site\Api\CatalogProductsFilterRequest;
 use App\Objects\AttributeFacetItemObject;
 use App\Objects\PaginationObject;
 use App\Objects\PriceRangeObject;
+use App\Objects\PropertyFacetItemObject;
 use App\Objects\SectionFacetItemObject;
 use App\Product;
+use App\Property;
 use App\Size;
 
 class FacetObjectBuilder implements FacetObjectBuilderInterface
@@ -43,7 +46,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setPriceRange(CatalogProductsFilterRequest $request)
+    public function addPriceRange(CatalogProductsFilterRequest $request)
     {
         $this->facetObject->setPriceRange((new PriceRangeObject())
             ->setMinPrice($request->getMinPrice())
@@ -54,7 +57,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setPaginator(CatalogProductsFilterRequest $request)
+    public function addPaginator(CatalogProductsFilterRequest $request)
     {
         $this->facetObject->setPaginator((new PaginationObject())
             ->setCurrentPage($request->getPage())
@@ -64,7 +67,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setCategoriesItems(CatalogProductsFilterRequest $request) //TODO сделать фабричные методы в классах айтемов
+    public function addCategoriesItems(CatalogProductsFilterRequest $request)
     {
         $categorySection = (new SectionFacetItem('categories'))
             ->setTitle((new Product())->getFieldTranslation('category_id'))
@@ -82,15 +85,58 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setAttributesItems(CatalogProductsFilterRequest $request)
+    public function addAttributesItems(CatalogProductsFilterRequest $request)
     {
-//        $colorSection = SectionFacetItem::create(
-//            (new SectionFacetItemObject())
-//                ->setKey('colors')
-//                ->setTitle((new Product())->getFieldTranslation('color_id'))
-//                ->setFacetObject($this->facetObject)
-//        );
+        $this->addColorsItems($request);
+        $this->addSizesItems($request);
+    }
 
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
+    public function addPropertiesItems(CatalogProductsFilterRequest $request)
+    {
+        foreach (Property::all() as $property) {
+            $section = (new SectionFacetItem("property-{$property->id}"))
+                ->setTitle($property->name)
+                ->setAttributeName('')
+                ->setIsMarked(false)
+                ->setFacetObject($this->facetObject);
+
+            foreach ($property->values as $propertyValue) {
+                $section->addChildItem($this->getPropertyItem(
+                    (new PropertyFacetItemObject())
+                        ->setRequest($request)
+                        ->setPropertyTitle($propertyValue->value)
+                        ->setPropertyName("property-{$property->id}")
+                        ->setPropertyValue($propertyValue->id)
+                    )
+                );
+            }
+
+            $this->facetObject->addItem($section);
+        }
+    }
+
+    /**
+     * @return FacetObject|FacetObjectInterface
+     */
+    public function getFacetObject()
+    {
+        return $this->facetObject;
+    }
+
+
+
+    # private section
+
+
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
+    private function addColorsItems(CatalogProductsFilterRequest $request)
+    {
         $colorSection = (new SectionFacetItem('colors'))
             ->setTitle((new Product())->getFieldTranslation('color_id'))
             ->setAttributeName('')
@@ -109,9 +155,13 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
         }
 
         $this->facetObject->addItem($colorSection);
+    }
 
-        ///////////////////////////////////////////
-
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
+    private function addSizesItems(CatalogProductsFilterRequest $request)
+    {
         $sizeSection = (new SectionFacetItem('sizes'))
             ->setTitle((new Product())->getFieldTranslation('size_id'))
             ->setAttributeName('')
@@ -133,14 +183,6 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     }
 
     /**
-     * @return FacetObject|FacetObjectInterface
-     */
-    public function getFacetObject()
-    {
-        return $this->facetObject;
-    }
-
-    /**
      * @param CatalogProductsFilterRequest $request
      * @param $category
      * @return CategoryFacetItem
@@ -155,8 +197,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
             ->setTitle($category->name)
             ->setAttributeName("category[{$category->id}]")
             ->setIsMarked($request->isFilteredCategory($category->id))
-            ->setFacetObject($this->facetObject);
-        //$facetItem = FacetItem::createCategoryFacetItem($request, $category, $this->facetObject); // вынести из класса FacetItem
+            ->setFacetObject($this->facetObject); //$facetItem = FacetItem::createCategoryFacetItem($request, $category, $this->facetObject); // вынести из класса FacetItem
 
         foreach ($category->children as $childCategory) {
             $facetItem->addChildItem(
@@ -171,7 +212,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
      * @param AttributeFacetItemObject $object
      * @return AttributeFacetItem
      */
-    private function getAttributeItem(AttributeFacetItemObject $object)
+    private function getAttributeItem(AttributeFacetItemObject $object) //TODO дублирование кода получения айтема
     {
         if ($object->getRequest()->isFilteredAttributeValue($object->getAttributeName(), $object->getAttributeValue())) {
             $this->facetObject->addFilteredAttributeValue($object->getAttributeName(), $object->getAttributeValue());
@@ -181,6 +222,23 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
             ->setTitle($object->getAttributeTitle())
             ->setAttributeName($object->getHtmlName())
             ->setIsMarked($object->getRequest()->isFilteredAttributeValue($object->getAttributeName(), $object->getAttributeValue()))
+            ->setFacetObject($this->facetObject);
+    }
+
+    /**
+     * @param PropertyFacetItemObject $object
+     * @return mixed
+     */
+    private function getPropertyItem(PropertyFacetItemObject $object) //TODO дублирование кода получения айтема
+    {
+        if ($object->getRequest()->isFilteredPropertyValue($object->getPropertyName(), $object->getPropertyValue())) {
+            $this->facetObject->addFilteredPropertyValue($object->getPropertyName(), $object->getPropertyValue());
+        }
+
+        return (new PropertyFacetItem($object->getItemKey()))
+            ->setTitle($object->getPropertyTitle())
+            ->setAttributeName($object->getHtmlName())
+            ->setIsMarked($object->getRequest()->isFilteredPropertyValue($object->getPropertyName(), $object->getPropertyValue()))
             ->setFacetObject($this->facetObject);
     }
 }

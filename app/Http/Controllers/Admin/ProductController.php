@@ -19,6 +19,7 @@ use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
 use App\Property;
+use App\PropertyValue;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
 use App\Services\ElasticSearchService;
@@ -210,6 +211,15 @@ class ProductController extends Controller
     {
         $properties = Property::all();
         return view("admin.properties.new-property", compact('properties'))->render();
+    }
+
+    public function getPropertyValues()
+    {
+        $propertyValues = PropertyValue::query()
+            ->where('property_id', $this->request->input('property'))
+            ->get();
+
+        return view("admin.properties.property-values", compact('propertyValues'))->render();
     }
 
     /**

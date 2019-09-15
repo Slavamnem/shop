@@ -9,8 +9,8 @@ class ProductProperty extends Model
     protected $table = "product_properties";
 
     protected $fillable = [
-        'value',
         'property_id',
-        'product_id'
+        'product_id',
+        'property_value_id'
     ];
 }

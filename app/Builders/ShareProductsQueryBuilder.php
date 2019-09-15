@@ -35,16 +35,28 @@ class ShareProductsQueryBuilder implements ShareProductsQueryBuilderInterface
     public function addPropertyCondition(Condition $condition)
     {
         if ($condition->getDelimiter() == ConditionDelimiterTypesEnum::AND) {
-            $this->queryBuilder = $this->queryBuilder->whereHas("properties", function($q) use($condition){
-                $q->where("product_properties.property_id", $condition->getPropertyConditionId())
-                    ->where("product_properties.value", $condition->getOperation(), $condition->getCurrentValue());
+            $this->queryBuilder = $this->queryBuilder->whereHas("propertyValues", function($q) use($condition){
+                $q->where("property_values.property_id", $condition->getPropertyConditionId())
+                    ->where("property_values.id", $condition->getOperation(), $condition->getCurrentValue());
             });
         } else {
-            $this->queryBuilder = $this->queryBuilder->orWhereHas("properties", function($q) use($condition){
-                $q->where("product_properties.property_id", $condition->getPropertyConditionId())
-                    ->where("product_properties.value", $condition->getOperation(), $condition->getCurrentValue());
+            $this->queryBuilder = $this->queryBuilder->orWhereHas("propertyValues", function($q) use($condition){
+                $q->where("property_values.property_id", $condition->getPropertyConditionId())
+                    ->where("property_values.id", $condition->getOperation(), $condition->getCurrentValue());
             });
         }
+
+//        if ($condition->getDelimiter() == ConditionDelimiterTypesEnum::AND) {
+//            $this->queryBuilder = $this->queryBuilder->whereHas("properties", function($q) use($condition){
+//                $q->where("product_properties.property_id", $condition->getPropertyConditionId())
+//                    ->where("product_properties.value", $condition->getOperation(), $condition->getCurrentValue());
+//            });
+//        } else {
+//            $this->queryBuilder = $this->queryBuilder->orWhereHas("properties", function($q) use($condition){
+//                $q->where("product_properties.property_id", $condition->getPropertyConditionId())
+//                    ->where("product_properties.value", $condition->getOperation(), $condition->getCurrentValue());
+//            });
+//        }
     }
 
     /**

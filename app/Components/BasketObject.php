@@ -162,7 +162,7 @@ class BasketObject implements BasketObjectInterface
         $weight = 0;
 
         foreach ($this->getProducts() as $basketProduct) {
-            //TODO refactor
+            //TODO fix
             if ($weightProperty = $basketProduct->product->properties()->where("name", ProductPropertiesEnum::NEW_WEIGHT()->getValue())->first()) {
                 $weight += (int)$weightProperty->pivot->value;
             }

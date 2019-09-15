@@ -111,10 +111,10 @@
                         </table>
                     </div>
                     <div class="tab-pane fade" id="outline-four" role="tabpanel" aria-labelledby="tab-outline-four">
-                        @forelse($product->properties as $property)
+                        @forelse($product->propertyValues as $propertyValue)
                             <div class="form-group">
-                                <label for="inputText3" class="col-form-label">{{ $property->name }}</label>
-                                <input id="inputText3" name="name" type="text" class="form-control" value="{{ $property->pivot->value }}" readonly="readonly">
+                                <label for="inputText3" class="col-form-label">{{ $propertyValue->property->name }}</label>
+                                <input id="inputText3" name="name" type="text" class="form-control" value="{{ $propertyValue->value }}" readonly="readonly">
                             </div>
                         @empty
                             <h3></h3>

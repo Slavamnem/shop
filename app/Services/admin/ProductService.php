@@ -130,7 +130,7 @@ class ProductService implements ProductServiceInterface
         foreach ($request->getProperties() as $number => $propertyId) {
             if ($propertyValue = $request->getPropertyValue($number)) {
                 $properties->put($propertyId, [
-                    "value"    => $propertyValue,
+                    "property_value_id" => $propertyValue,
                     "ordering" => $request->getPropertyOrdering($number)
                 ]);
             }

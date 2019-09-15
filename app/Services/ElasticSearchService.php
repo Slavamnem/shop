@@ -105,12 +105,12 @@ class ElasticSearchService
     {
         $properties = [];
 
-        foreach ($product->properties as $property) {
+        foreach ($product->propertyValues as $propertyValue) {
             $properties[] = [
-                "id"       => $property->id,
-                "name"     => $property->name,
-                "value"    => $property->pivot->value,
-                "ordering" => $property->pivot->ordering
+                "id"       => $propertyValue->pivot->property_id,
+                "name"     => $propertyValue->property->name,
+                "value"    => $propertyValue->value,
+                "ordering" => $propertyValue->pivot->ordering
             ];
         }
 

@@ -21,8 +21,8 @@ class PropertyFacetItemStrategy implements FacetItemStrategyInterface
     {
         $fcObj = clone_object($facetItem->getFacetObject());
 
-        //list($attribute, $value) = explode("-", $facetItem->getKey());
-        //$fcObj->addFilteredAttributeValue($attribute, $value);
+        list($property, $value) = explode(":", $facetItem->getKey());
+        $fcObj->addFilteredPropertyValue($property, $value);
 
         return $fcObj->getProductsCount();
     }

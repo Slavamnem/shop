@@ -75,6 +75,25 @@ class CatalogProductsFilterRequest extends FormRequest
     }
 
     /**
+     * @param $property
+     * @return array
+     */
+    public function getFilteredPropertyValues($property)
+    {
+        return array_keys((array)@array_get($this->getRequestData(), $property));
+    }
+
+    /**
+     * @param $property
+     * @param $propertyValueId
+     * @return bool
+     */
+    public function isFilteredPropertyValue($property, $propertyValueId)
+    {
+        return in_array($propertyValueId, $this->getFilteredPropertyValues($property));
+    }
+
+    /**
      * @return mixed
      */
     public function getMinPrice()

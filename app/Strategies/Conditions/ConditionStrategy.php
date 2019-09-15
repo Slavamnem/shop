@@ -38,7 +38,7 @@ class ConditionStrategy implements StrategyInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {
-            return new NullCondition();
+            return new PropertyCondition($type);
         }
 
         return $this->strategies->get($type);

@@ -37,6 +37,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
        Route::any('save-products-as-xml', "ProductController@saveAsXml")->name('save-products-as-xml');
        Route::any('save-products-as-txt', "ProductController@saveAsTxt")->name('save-products-as-txt');
        Route::any('add-new-property', "ProductController@addNewProperty")->name('add-new-property');
+       Route::any('get-property-values', "ProductController@getPropertyValues")->name('get-property-values');
        Route::any('add-new-image', "ProductController@addNewImage")->name('add-new-image');
        Route::post('filter', "ProductController@filter");
        Route::post('get_products', "ProductController@getProducts");

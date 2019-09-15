@@ -3,6 +3,8 @@
 namespace App\Strategies\ProductsSearch\Strategies;
 
 use App\Product;
+use App\Property;
+use App\PropertyValue;
 use App\Services\Site\Interfaces\ProductsSearchServiceInterface;
 
 class DbProductsSearchService extends AbstractProductsSearchService implements ProductsSearchServiceInterface
@@ -52,6 +54,18 @@ class DbProductsSearchService extends AbstractProductsSearchService implements P
         foreach (Product::FACET_ATTRIBUTES as $attribute) {
             if ($this->facetObject->getFilteredAttributeValues($attribute)) {
                 $this->query = $this->query->whereIn($attribute, $this->facetObject->getFilteredAttributeValues($attribute));
+            }
+        }
+    }
+
+    public function addPropertiesConditions()
+    {
+        foreach (Property::all() as $property) {
+            if ($this->facetObject->getFilteredPropertyValues("property-{$property->id}")) {
+                $this->query = $this->query->whereHas("propertyValues", function($query) use($property){
+                    $query->where("property_values.property_id", $property->id)
+                        ->whereIn("property_values.id", $this->facetObject->getFilteredPropertyValues("property-{$property->id}"));
+                });
             }
         }
     }

@@ -17,11 +17,11 @@ class CatalogProductsService implements CatalogProductsServiceInterface
     {
         //dump($request->getRequestData()); //dump($request->getFilteredCategories());
         $facetObjectBuilder = FacetObjectBuilder::create();
-        $facetObjectBuilder->setPriceRange($request);
-        $facetObjectBuilder->setPaginator($request);
-        // TODO нужно задавать разделители блоков фасетки
-        $facetObjectBuilder->setCategoriesItems($request);
-        $facetObjectBuilder->setAttributesItems($request);
+        $facetObjectBuilder->addPriceRange($request);
+        $facetObjectBuilder->addPaginator($request);
+        $facetObjectBuilder->addCategoriesItems($request);
+        $facetObjectBuilder->addAttributesItems($request);
+        $facetObjectBuilder->addPropertiesItems($request);
 
         return $facetObjectBuilder->getFacetObject();
     }

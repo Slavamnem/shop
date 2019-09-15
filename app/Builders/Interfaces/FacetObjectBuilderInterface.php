@@ -16,17 +16,27 @@ interface FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setPriceRange(CatalogProductsFilterRequest $request);
+    public function addPriceRange(CatalogProductsFilterRequest $request);
 
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setPaginator(CatalogProductsFilterRequest $request);
+    public function addPaginator(CatalogProductsFilterRequest $request);
 
     /**
      * @param CatalogProductsFilterRequest $request
      */
-    public function setCategoriesItems(CatalogProductsFilterRequest $request);
+    public function addCategoriesItems(CatalogProductsFilterRequest $request);
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
+    public function addAttributesItems(CatalogProductsFilterRequest $request);
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
+    public function addPropertiesItems(CatalogProductsFilterRequest $request);
 
     /**
      * @return FacetObject|FacetObjectInterface

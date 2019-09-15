@@ -252,23 +252,28 @@
                                     </div>
                                 </div>
                             </div>
-                            @forelse($product->properties as $property)
+                            @forelse($product->propertyValues as $propertyValue)
                                 <div class="form-group product-property">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <select name="properties[]" class="form-control">
                                                 @forelse($properties as $propertyItem)
-                                                    <option <?php if($property->id == $propertyItem->id) echo "selected"; ?> value="{{$propertyItem->id}}">{{$propertyItem->name}}</option>
+                                                    <option <?php if($propertyValue->property_id == $propertyItem->id) echo "selected"; ?> value="{{$propertyItem->id}}">{{$propertyItem->name}}</option>
                                                 @empty
                                                 @endforelse
                                             </select>
                                         </div>
                                         <h2>=</h2>
                                         <div class="col-md-4">
-                                            <input id="inputText3" name="properties_values[]" type="text" class="form-control" value="{{ $property->pivot->value }}">
+                                            <select name="properties_values[]" class="form-control">
+                                                @foreach($propertyValue->property->values as $propertyVal)
+                                                    <option <?php if($propertyValue->id == $propertyVal->id) echo "selected"; ?> value="{{$propertyVal->id}}">{{$propertyVal->value}}</option>
+                                                @endforeach
+                                            </select>
+                                            {{--<input id="inputText3" name="properties_values[]" type="text" class="form-control" value="{{ $propertyValue->value }}">--}}
                                         </div>
                                         <div class="col-md-2">
-                                            <input id="inputText4" name="properties_ordering[]" type="number" class="form-control" value="{{ $property->pivot->ordering }}">
+                                            <input id="inputText4" name="properties_ordering[]" type="number" class="form-control" value="{{ $propertyValue->pivot->ordering }}">
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-danger delete-property" type="button">Удалить</button>
