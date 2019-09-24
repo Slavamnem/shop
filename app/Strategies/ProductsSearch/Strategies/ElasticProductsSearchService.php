@@ -52,6 +52,11 @@ class ElasticProductsSearchService extends AbstractProductsSearchService impleme
         // TODO: Implement addPropertiesConditions() method.
     }
 
+    public function sortProducts()
+    {
+
+    }
+
     /**
      * @param $limit
      */

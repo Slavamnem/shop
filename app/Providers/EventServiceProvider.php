@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\Attack;
 use App\Events\NewOrderEvent;
+use App\Listeners\AttackListener;
 use App\Listeners\MailSendListener;
 use App\Listeners\NewOrderListener;
 use Illuminate\Support\Facades\Event;
@@ -24,7 +26,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewOrderEvent::class => [
             NewOrderListener::class
-        ]
+        ],
+        Attack::class => [
+            AttackListener::class
+        ],
     ];
 
     /**

@@ -46,6 +46,14 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
+    public function setSortingType(CatalogProductsFilterRequest $request)
+    {
+        $this->facetObject->setSortingType($request->getSortingType());
+    }
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
     public function addPriceRange(CatalogProductsFilterRequest $request)
     {
         $this->facetObject->setPriceRange((new PriceRangeObject())

@@ -39,6 +39,14 @@ class CatalogProductsFilterRequest extends FormRequest
     }
 
     /**
+     * @return string
+     */
+    public function getSortingType()
+    {
+        return $this->input('sorting', 'popular');
+    }
+
+    /**
      * @return array
      */
     public function getFilteredCategories()

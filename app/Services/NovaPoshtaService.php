@@ -59,7 +59,7 @@ class NovaPoshtaService implements NovaPoshtaServiceInterface
      */
     public function getDeliveryCost(BasketObjectInterface $basketObject)
     {
-        return $this->novaPoshta->getOrderPrice([
+        return @$this->novaPoshta->getOrderPrice([
             "CitySender"    => env('NOVA_POSHTA_CITY_SENDER'), //Odessa
             "CityRecipient" => $basketObject->getCity()->ref,
             "Weight"        => $basketObject->getBasketWeight(),

@@ -16,6 +16,11 @@ interface FacetObjectBuilderInterface
     /**
      * @param CatalogProductsFilterRequest $request
      */
+    public function setSortingType(CatalogProductsFilterRequest $request);
+
+    /**
+     * @param CatalogProductsFilterRequest $request
+     */
     public function addPriceRange(CatalogProductsFilterRequest $request);
 
     /**

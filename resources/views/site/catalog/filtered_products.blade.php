@@ -5,6 +5,19 @@
                 {{--<h2 align="center">{{$category->name}}</h2>--}}
             {{--</div>--}}
 
+            <div class="row">
+                <div class="col-md-2">
+                    <h4>Сортировка</h4>
+                </div>
+                <div class="col-md-3">
+                    <select name="sorting" id="sorting" data-page="{{ $products->currentPage() }}">
+                        <option value="popular" @if($sorting == "popular") {{ 'selected' }} @endif>По попуярности</option>
+                        <option value="price-asc" @if($sorting == "price-asc") {{ 'selected' }} @endif>По возрастанию цены</option>
+                        <option value="price-desc" @if($sorting == "price-desc") {{ 'selected' }} @endif>По убыванию цены</option>
+                    </select>
+                </div>
+            </div>
+
             @if($products->total() > $products->perPage())
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <nav aria-label="Page navigation example">
@@ -40,6 +53,7 @@
                             </a>
                             <div class="card-body">
                                 <h3 class="card-title">{{ $product->name }}</h3>
+                                <h3 class="card-title">Продано: {{ $product->orders->sum("quantity") }}</h3>
                                 <p class="card-text">Цена: {{ $product->realPrice }}</p>
                                 <p class="card-text">Количество: {{ $product->quantity }}</p>
                                 <button data-id="{{ $product->id }}" class="btn btn-primary add-to-basket">Купить</button>

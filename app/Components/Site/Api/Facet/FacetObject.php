@@ -48,6 +48,11 @@ class FacetObject implements FacetObjectInterface
      */
     private $productSearchStrategy;
 
+    /**
+     * @var
+     */
+    private $sortingType;
+
     public function __construct()
     {
         $this->facetItems = collect();
@@ -178,6 +183,24 @@ class FacetObject implements FacetObjectInterface
     public function getFilteredPropertyValues($property)
     {
         return (array)@$this->filteredPropertiesValues[$property];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSortingType()
+    {
+        return $this->sortingType;
+    }
+
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function setSortingType($type)
+    {
+        $this->sortingType = $type;
+        return $this;
     }
     /////////////////////////////////////////////
 

@@ -6,8 +6,12 @@ use App\Builders\ConditionsBuilder;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Builders\ShareProductsQueryBuilder;
+use App\Components\AppCenter;
+use App\Components\Interfaces\AppCenterInterface;
 use App\Components\Interfaces\NovaPoshtaInterface;
+use App\Components\Interfaces\SecurityCenterInterface;
 use App\Components\RestApi\NovaPoshta;
+use App\Components\SecurityCenter;
 use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
@@ -50,8 +54,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
-
         Queue::before(function (JobProcessing $event) {
             // $event->connectionName
             // $event->job
@@ -111,6 +113,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(OrderService::class);
         $this->app->bind(OrderPriceCalcService::class);
+
+        $this->app->singleton(AppCenter::class);
+        $this->app->singleton(SecurityCenter::class, SecurityCenter::class);
+        $this->app->singleton(AppCenterInterface::class, AppCenter::class);
+        $this->app->singleton(SecurityCenterInterface::class, SecurityCenter::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

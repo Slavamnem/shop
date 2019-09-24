@@ -3,11 +3,14 @@
 namespace App\Http\Middleware;
 
 use App\AdminAuth;
+use App\Components\SecurityCenter;
 use Closure;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
-class AdminAuthMiddleware
+class SiteAccessMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,15 +21,13 @@ class AdminAuthMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (env('ADMIN_PANEL_ACCESS') == 0) exit();
+        if (!App::make(SecurityCenter::class)->checkUserIp()) exit();
+
+        Log::info('request: ' . json_encode($request->all(), JSON_UNESCAPED_UNICODE));
+
+        if (App::make(SecurityCenter::class)->requestHasThreat()) exit();
 
         $response = $next($request);
-
-        AdminAuth::create([
-            'user_id'    => Auth::id(),
-            'trace'      => debug_backtrace(),
-            'ip_address' => $_SERVER['REMOTE_ADDR']
-        ]);
 
         return $response;
     }

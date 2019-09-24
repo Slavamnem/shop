@@ -76,6 +76,17 @@ interface FacetObjectInterface
     /**
      * @return mixed
      */
+    public function getSortingType();
+
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function setSortingType($type);
+
+    /**
+     * @return mixed
+     */
     public function getProducts(); //TODO сомнительные функции, подумать
 
     /**

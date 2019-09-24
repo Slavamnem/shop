@@ -45,7 +45,7 @@ class CatalogProductsController extends Controller
         $facetObject = $this->service->buildFacetObject($request);
 
         return [
-            'products' => view('site.catalog.filtered_products', ['products' => $facetObject->getProducts()])->render(),
+            'products' => view('site.catalog.filtered_products', ['sorting' => $facetObject->getSortingType(), 'products' => $facetObject->getProducts()])->render(),
             'facet' => view('site.catalog.filtered_facet', ['facetObject' => $facetObject])->render()
         ];
 

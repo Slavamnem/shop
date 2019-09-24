@@ -24,6 +24,20 @@ class SectionFacetItem extends CompositeFacetItem implements FacetItemInterface
         return true;
     }
 
+    /**
+     * @return int
+     */
+    public function getMatchProductCount()
+    {
+        $matchProductCount = 0;
+
+        foreach ($this->getChildren() as $childItem) {
+            $matchProductCount += $childItem->getMatchProductCount();
+        }
+
+        return $matchProductCount;
+    }
+
     /** TODO unused
      * @param SectionFacetItemObject $object
      * @return SectionFacetItem

@@ -6,12 +6,21 @@ use App\Product;
 use App\Property;
 use App\PropertyValue;
 use App\Services\Site\Interfaces\ProductsSearchServiceInterface;
+use App\Strategies\Interfaces\StrategyInterface;
+use App\Strategies\ProductSort\ProductSortStrategy;
+use App\Strategies\ProductsSearch\ProductsSearchStrategy;
 
 class DbProductsSearchService extends AbstractProductsSearchService implements ProductsSearchServiceInterface
 {
+    /**
+     * @var StrategyInterface
+     */
+    private $sortStrategy;
+
     public function __construct()
     {
         parent::__construct();
+        $this->sortStrategy = new ProductSortStrategy();
     }
 
     public function initQuery()
@@ -68,6 +77,11 @@ class DbProductsSearchService extends AbstractProductsSearchService implements P
                 });
             }
         }
+    }
+
+    public function sortProducts()
+    {
+        $this->sortStrategy->getStrategy($this->facetObject->getSortingType())->sort($this->query);
     }
 
     /**

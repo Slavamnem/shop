@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Site;
 
 use App\City;
 use App\Client;
+use App\Components\AppCenter;
+use App\Components\Signals\Signal;
 use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
@@ -15,6 +17,7 @@ use App\Strategies\Delivery\DeliveryStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 
 class OrderController extends Controller
 {
@@ -69,6 +72,8 @@ class OrderController extends Controller
     public function changeQuantity()
     {
         $this->basketService->changeQuantity($this->request->input("productId"));
+
+        App::make(AppCenter::class)->sendSignal(new Signal());
 
         return view("site.order.basket", $this->basketService->getBasketData())->render();
     }

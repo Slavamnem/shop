@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['namespace' => 'Site'], function(){
+Route::group(['namespace' => 'Site', 'middleware' => ['site-access']], function(){
     Route::get('/', 'MainPageController@index')->name('main');
     Route::get('/poster', 'PosterController@index')->name('poster');
     Route::get('/tracks', 'TrackController@index')->name('tracks');

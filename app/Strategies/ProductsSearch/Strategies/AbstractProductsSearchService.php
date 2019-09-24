@@ -47,6 +47,7 @@ abstract class AbstractProductsSearchService implements ProductsSearchServiceInt
         $this->addCategoryConditions();
         $this->addAttributesConditions();
         $this->addPropertiesConditions();
+        $this->sortProducts();
         //$this->addLimit($this->facetObject->getPriceRange()->getMinPrice());
 
         return $this->getSearchQueryResult();
@@ -65,6 +66,8 @@ abstract class AbstractProductsSearchService implements ProductsSearchServiceInt
     abstract function addAttributesConditions();
 
     abstract function addPropertiesConditions();
+
+    abstract function sortProducts();
 
     abstract function addLimit($limit);
 }

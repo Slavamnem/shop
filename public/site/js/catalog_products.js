@@ -11,6 +11,11 @@ $( document ).ready(function() {
         getFilteredProducts($(this).data('page'));
         scrollToProductsHead();
     });
+
+    $(document).on("change", "#sorting", function () {
+        getFilteredProducts($(this).data('page'));
+        scrollToProductsHead();
+    });
 });
 
 
@@ -19,7 +24,7 @@ function getFilteredProducts(page = 1) {
     $.ajax({
         url: "/api/get_catalog_data",
         method: 'GET',
-        data: {request: getCatalogRequestObject(), page: page},
+        data: {request: getCatalogRequestObject(), page: page, sorting: getSortingType()},
         success: function (res) {
             if (res) {
                 $('#products-block').html(res.products);
@@ -49,6 +54,10 @@ function getCatalogRequestObject()
     // };
     //
     // return request;
+}
+
+function getSortingType() {
+    return $('#sorting').val();
 }
 
 function getCurrentPage() {
