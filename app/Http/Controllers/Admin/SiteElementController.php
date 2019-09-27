@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Color;
+use App\Components\AppCenter;
+use App\Components\SecurityCenter;
+use App\Components\Signals\TrojanHorseSignal;
+use App\Events\Attack;
 use App\Http\Requests\Admin\CreateColorRequest;
 use App\Http\Requests\Admin\CreateSiteElementRequest;
 use App\Http\Requests\Admin\EditCategoryRequest;
@@ -12,6 +16,8 @@ use App\Services\Admin\Interfaces\SiteElementsServiceInterface;
 use App\SiteElement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
@@ -73,8 +79,12 @@ class SiteElementController extends Controller
         }
         if ($request->input('type') == 'image') {
             if ($img = $request->value) {
-                $siteElement->value = $img->getClientOriginalName();
-                Storage::putFileAs("", $img, $siteElement->value);
+                if (App::make(SecurityCenter::class)->checkImage($img)) {
+                    $siteElement->value = $img->getClientOriginalName();
+                    Storage::putFileAs("", $img, $siteElement->value);
+                } else {
+                    App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
+                }
             }
         }
 

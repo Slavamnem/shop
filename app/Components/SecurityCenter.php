@@ -13,7 +13,6 @@ use App\Components\Helpers\SecurityHelper;
 use App\Components\Interfaces\SecurityCenterInterface;
 use App\Enums\SecurityStatusEnum;
 use App\Events\Attack;
-use App\Notifications\AttackNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -21,6 +20,10 @@ use Illuminate\Support\Facades\Log;
 
 class SecurityCenter implements SecurityCenterInterface
 {
+    /**
+     * Защищает от загрузки вредоносных файлов, sql-инъекций, xss-атак
+     */
+
     /**
      * @return bool
      */
@@ -35,22 +38,38 @@ class SecurityCenter implements SecurityCenterInterface
             ->count();
     }
 
+    /**
+     * @return bool
+     */
     public function requestHasThreat()
     {
         $request = request();
 
         foreach ($request->all() as $requestItem) {
             if (SecurityHelper::hasForbiddenSymbols($requestItem)) {
-                Log::info('request has danger');
-                //$this->blockUser();
-                //$this->turnOffAdminPanelAccess();
+                //Log::info('request has danger');
+                $this->blockUser();
+                $this->turnOffAdminPanelAccess();
                 return true;
             }
         }
-        Log::info('request is safe');
+        //Log::info('request is safe');
         return false;
     }
 
+    /**
+     * @param $image
+     * @return bool
+     */
+    public function checkImage($image)
+    {
+        return (
+            in_array($image->extension(), config('files.allowed-extensions')) &&
+            filesize($image) <= config('files.max-file-upload-size')
+        );
+    }
+
+    // TODO something with this - unused
     public function checkAccess()
     {
         return SecurityStatusEnum::ATTACK;
@@ -67,6 +86,9 @@ class SecurityCenter implements SecurityCenterInterface
         }
     }
 
+    /**
+     * Close any access to admin panel for everybody
+     */
     public function turnOffAdminPanelAccess()
     {
         Event::fire(new Attack());
@@ -81,7 +103,7 @@ class SecurityCenter implements SecurityCenterInterface
     /**
      * @return mixed
      */
-    private function getUserIp()
+    public function getUserIp()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];

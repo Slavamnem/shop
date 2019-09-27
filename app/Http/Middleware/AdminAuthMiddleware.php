@@ -3,9 +3,12 @@
 namespace App\Http\Middleware;
 
 use App\AdminAuth;
+use App\Components\SecurityCenter;
 use Closure;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class AdminAuthMiddleware
 {
@@ -18,7 +21,12 @@ class AdminAuthMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (env('ADMIN_PANEL_ACCESS') == 0) exit();
+        if (env('ADMIN_PANEL_ACCESS') == 0) {
+            exit();
+        } elseif (!App::make(SecurityCenter::class)->checkUserIp() or App::make(SecurityCenter::class)->requestHasThreat()) {
+            echo(Lang::get('access_messages.blocked_user_message'));
+            exit();
+        }
 
         $response = $next($request);
 

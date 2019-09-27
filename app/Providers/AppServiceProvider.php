@@ -7,11 +7,15 @@ use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Builders\ShareProductsQueryBuilder;
 use App\Components\AppCenter;
+use App\Components\Helpers\SqlHelper;
 use App\Components\Interfaces\AppCenterInterface;
 use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\Interfaces\SecurityCenterInterface;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\SecurityCenter;
+use App\Components\Signals\DeleteRecordSignal;
+use App\Events\Attack;
+use App\Events\MessageToTelegram;
 use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
@@ -36,8 +40,10 @@ use App\Services\Site\Interfaces\CatalogProductsServiceInterface;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\View;
@@ -83,8 +89,17 @@ class AppServiceProvider extends ServiceProvider
 
 
         DB::listen(function($query){
-            //dump($query->sql);
-            self::$total++;
+//            dump($query->sql);
+
+            if (strpos($query->sql, 'delete ') !== false) {
+                Event::fire(new MessageToTelegram(
+                    "Пользователь " . @Auth::user()->login . "(" . Auth::id() . ")" . " удалил запись. \nЗапрос: " . SqlHelper::restoreSql($query)
+                ));
+
+                App::make(AppCenter::class)->sendSignal(new DeleteRecordSignal());
+            }
+
+            //self::$total++;
             //dump(self::$total);
         });
     }

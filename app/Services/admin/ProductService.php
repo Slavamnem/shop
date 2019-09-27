@@ -5,7 +5,10 @@ namespace App\Services\Admin;
 use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Category;
 use App\Color;
+use App\Components\AppCenter;
 use App\Components\Helpers\ProductHelper;
+use App\Components\SecurityCenter;
+use App\Components\Signals\TrojanHorseSignal;
 use App\Enums\ProductStatusEnum;
 use App\Http\Requests\Admin\ProductRequest;
 use App\ModelGroup;
@@ -20,6 +23,7 @@ use App\Services\TranslatorService;
 use App\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -269,15 +273,20 @@ class ProductService implements ProductServiceInterface
     {
         foreach ($request->getNewImages() as $imgId => $img) {
             $imageName = $this->generateProductImageName($product, $img);
-            Storage::putFileAs("products", $img, $imageName);
 
-            $product->images()->create([
-                'url'        => "products/{$imageName}",
-                'product_id' => $product->getId(),
-                'main'       => $request->getNewImageIsMain($imgId),
-                'preview'    => $request->getNewImageIsPreview($imgId),
-                'ordering'   => $request->getNewImageOrdering($imgId),
-            ]);
+            if (App::make(SecurityCenter::class)->checkImage($img)) {
+                Storage::putFileAs("products", $img, $imageName);
+
+                $product->images()->create([
+                    'url' => "products/{$imageName}",
+                    'product_id' => $product->getId(),
+                    'main' => $request->getNewImageIsMain($imgId),
+                    'preview' => $request->getNewImageIsPreview($imgId),
+                    'ordering' => $request->getNewImageOrdering($imgId),
+                ]);
+            } else {
+                App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
+            }
         }
     }
 }

@@ -18,10 +18,20 @@ class AttackNotification extends Notification
     use Queueable;
 
     /**
-     * Create a new notification instance.
-     * @return void
+     * @var
      */
-    public function __construct(){}
+    private $message;
+
+    /**
+     * Create a new notification instance.
+     *
+     * AttackNotification constructor.
+     * @param null $message
+     */
+    public function __construct($message = null)
+    {
+        $this->message = $message;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -36,7 +46,9 @@ class AttackNotification extends Notification
 
     public function toTelegram(AdminAuth $adminAuth)
     {
-        $content = "Атака! Попытка взлома сайта! Закрываю доступ к админ панели.";
+        if (!$content = $this->message) {
+            $content = "Атака! Попытка взлома сайта! Закрываю доступ к админ панели.";
+        }
 
         return TelegramMessage::create()
             ->to(273791920)  //OrderBot (only me)

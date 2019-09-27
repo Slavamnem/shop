@@ -24,7 +24,7 @@ class SecurityHelper
     public static function hasForbiddenSymbols($value)
     {
         foreach (self::$blackList as $blackListItem) {
-            if (strpos($value, $blackListItem) !== false) {
+            if (is_string($value) and strpos($value, $blackListItem) !== false) {
                 return true;
             }
         }

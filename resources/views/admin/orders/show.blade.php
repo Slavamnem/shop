@@ -78,6 +78,12 @@
                                         <label for="inputText3" class="col-form-label">Отделение Новой Почты</label>
                                         <input id="inputText3" name="warehouse" type="text" class="form-control" value="{{ $order->warehouse }}" readonly="readonly">
                                     </div>
+                                    @if($order->description)
+                                        <div class="form-group">
+                                            <label for="inputText3" class="col-form-label">Комментарий</label>
+                                            <textarea class="form-control" name="description" id="" cols="30" rows="5" readonly="readonly">{{ $order->description }}</textarea>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 

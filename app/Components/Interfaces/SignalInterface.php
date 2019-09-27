@@ -10,5 +10,14 @@ namespace App\Components\Interfaces;
 
 interface SignalInterface
 {
+    /**
+     * @param $message
+     * @return $this
+     */
+    public function setMessage($message);
 
+    /**
+     * @return null
+     */
+    public function getMessage();
 }

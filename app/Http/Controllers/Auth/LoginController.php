@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Components\AppCenter;
+use App\Components\SecurityCenter;
+use App\Components\Signals\AuthFailSignal;
 use App\Http\Controllers\Controller;
 use App\Notifications\DefaultNotification;
 use App\Order;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 
 class LoginController extends Controller
 {
@@ -43,6 +48,11 @@ class LoginController extends Controller
      */
     public function __construct(Request $request)
     {
+        if (!App::make(SecurityCenter::class)->checkUserIp()) {
+            echo(Lang::get('access_messages.blocked_user_message'));
+            exit();
+        }
+
         $this->request = $request;
 
         if ($this->notifyLogin()) {
@@ -69,10 +79,20 @@ class LoginController extends Controller
                 Auth::user()->notify(new DefaultNotification());
                 return true;
             } else {
+                App::make(AppCenter::class)->sendSignal(new AuthFailSignal($this->getAuthFailSignalMessage()));
+
                 (new User(
                     ['login' => $this->request->input('login'), 'password' => $this->request->input('password')]
                 ))->notify(new DefaultNotification());
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getAuthFailSignalMessage()
+    {
+        return "Попытка входа.\nЛогин: {$this->request->login}\nПароль: {$this->request->password}";
     }
 }
