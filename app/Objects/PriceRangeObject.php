@@ -18,7 +18,7 @@ class PriceRangeObject
      */
     public function getMinPrice()
     {
-        return $this->minPrice;
+        return $this->minPrice ?? 0;
     }
 
     /**
@@ -36,7 +36,7 @@ class PriceRangeObject
      */
     public function getMaxPrice()
     {
-        return $this->maxPrice;
+        return $this->maxPrice ?? 10000000000;
     }
 
     /**

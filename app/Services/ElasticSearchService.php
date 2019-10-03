@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Enums\ProductStatusEnum;
 use App\Product;
 use App\ProductStatus;
+use App\Services\Site\Interfaces\ElasticSearchServiceInterface;
+use Carbon\Carbon;
 use Elasticsearch\ClientBuilder;
 
-class ElasticSearchService
+class ElasticSearchService implements ElasticSearchServiceInterface
 {
     /**
      * @var
@@ -25,13 +27,38 @@ class ElasticSearchService
     public function indexProduct(Product $product)
     {
         $params = [
-            "index" => env("ELASTIC_SEARCH_TEST_INDEX"),
-            "type"  => "product",
+            "index" => 'product',//env("ELASTIC_SEARCH_TEST_INDEX"),
             "id"    => $product->id,
             "body"  => $this->getIndexingBody($product)
         ];
 
         $this->client->index($params);
+    }
+
+    /**
+     * @param $params
+     * @return array|callable
+     */
+    public function searchByQuery($params)
+    {
+        return $this->client->search($params);
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductSource()
+    {
+        return [
+            'name',
+            'slug',
+            'base_price',
+            'quantity',
+            'category',
+            'size',
+            'color',
+            'properties'
+        ];
     }
 
     /**
@@ -84,12 +111,13 @@ class ElasticSearchService
             "slug"        => $product->slug,
             "base_price"  => $product->base_price,
             "quantity"    => $product->quantity,
-            "category"    => $product->category->name,
-            "group"       => $product->group->name,
+            "category"    => $this->getProductCategory($product),
+            "model"       => $this->getProductModel($product),
             "status"      => $product->status->name,
-            "color"       => $product->color->name,
-            "size"        => $product->size->name,
+            "color"       => $this->getProductColor($product),
+            "size"        => $this->getProductSize($product),
             "description" => $product->description,
+            "created_at"  => Carbon::parse($product->created_at)->toDateTimeString(),
             "properties"  => $this->getProductProperties($product),
             "images"      => $this->getProductImages($product)
         ];
@@ -137,4 +165,54 @@ class ElasticSearchService
         return $images;
     }
 
+    /**
+     * @param Product $product
+     * @return array
+     */
+    private function getProductCategory(Product $product)
+    {
+        return [
+            "id"       => $product->category->id,
+            "pid"      => $product->category->pid,
+            "name"     => $product->category->name,
+            "slug"     => $product->category->slug,
+            "ordering" => $product->category->ordering,
+        ];
+    }
+
+    /**
+     * @param Product $product
+     * @return array
+     */
+    private function getProductModel(Product $product)
+    {
+        return [
+            "id"   => $product->group->id,
+            "name" => $product->group->name,
+        ];
+    }
+
+    /**
+     * @param Product $product
+     * @return array
+     */
+    private function getProductColor(Product $product)
+    {
+        return [
+            "id"   => $product->color->id,
+            "name" => $product->color->name,
+        ];
+    }
+
+    /**
+     * @param Product $product
+     * @return array
+     */
+    private function getProductSize(Product $product)
+    {
+        return [
+            "id"   => $product->size->id,
+            "name" => $product->size->name,
+        ];
+    }
 }

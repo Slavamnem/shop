@@ -34,9 +34,11 @@ use App\Services\Admin\ShareService;
 use App\Services\Admin\SiteElementsService;
 use App\Services\Admin\StatisticService;
 use App\Services\Admin\UserService;
+use App\Services\ElasticSearchService;
 use App\Services\NovaPoshtaService;
 use App\Services\Site\Api\CatalogProductsService;
 use App\Services\Site\Interfaces\CatalogProductsServiceInterface;
+use App\Services\Site\Interfaces\ElasticSearchServiceInterface;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -133,6 +135,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SecurityCenter::class, SecurityCenter::class);
         $this->app->singleton(AppCenterInterface::class, AppCenter::class);
         $this->app->singleton(SecurityCenterInterface::class, SecurityCenter::class);
+
+        $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

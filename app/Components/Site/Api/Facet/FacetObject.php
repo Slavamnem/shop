@@ -205,11 +205,12 @@ class FacetObject implements FacetObjectInterface
     /////////////////////////////////////////////
 
     /**
+     * @param string $type
      * @return mixed
      */
-    public function getProducts()
+    public function getProducts($type = 'db')
     {
-        return $this->getProductsSearchStrategy()->getStrategy('db')->search($this);
+        return $this->getProductsSearchStrategy()->getStrategy($type)->search($this);
     }
 
     /**
