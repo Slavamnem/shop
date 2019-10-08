@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Events\Attack;
 use App\Events\MessageToTelegram;
 use App\Events\NewOrderEvent;
+use App\Events\TriggerEvent;
 use App\Listeners\AttackListener;
 use App\Listeners\MailSendListener;
 use App\Listeners\MessageToTelegramListener;
 use App\Listeners\NewOrderListener;
+use App\Listeners\TriggerEventListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -35,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
         MessageToTelegram::class => [
             MessageToTelegramListener::class
         ],
+        TriggerEvent::class => [
+            TriggerEventListener::class
+        ]
     ];
 
     /**

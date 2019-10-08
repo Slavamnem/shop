@@ -8,6 +8,7 @@ use App\Events\NewOrderEvent;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use App\Services\ElasticSearchService;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Http\Request;
@@ -28,6 +29,176 @@ use NotificationChannels\Telegram\TelegramChannel;
 
 class LearnController extends Controller
 {
+    public function elastic()
+    {
+        dump('elastic');
+
+        $elasticService = new ElasticSearchService();
+
+        $params['index'] = 'product';
+        $params['body'] = [
+            'size' => 5,
+            'from' => 0,
+            'sort' => [
+                'base_price' => [
+                    'order' => 'desc'
+                ]
+            ],
+            '_source' => $this->getSource(),
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'term' => [
+                                'quantity' => 11
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        [
+                            'terms' => [
+                                'category.id' => [1, 3]
+                            ]
+                        ],
+                        [
+//                            'match' => [
+//                                //'name' => 'белый XLL',
+//                                'name' => [
+//                                    'query' => 'белый XLL',
+//                                    'operator' => 'or'
+//                                ]
+//                            ],
+                            'match_phrase' => [
+                                'name' => [
+                                    'query' => 'Test белый',
+                                    'slop' => 2
+                                ]
+                            ]
+                        ],
+                        [
+                            'wildcard' => [
+                                'color.name' => 'бе?ый'
+                            ]
+                        ],
+                        [
+                            'exists' => [
+                                'field' => 'category.name'//description
+                            ]
+                        ],
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'base_price' => [
+                                                'lte' => 280
+                                            ],
+                                        ]
+                                    ],
+                                    [
+                                        'range' => [
+                                            'created_at' => [
+                                                'gte' => '2019-10-04 00:00:00'
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'script_fields' => [
+                'real_price' => [
+                    'script' => [
+                        'source' => "params['_source']['base_price'] - 10"
+                    ]
+                ]
+            ]
+        ];
+
+        echo "<pre>";
+        print_r($elasticService->searchByQuery($params));
+        echo "</pre>";
+    }
+
+    public function planfix()
+    {
+        dump('planfix');
+
+        $client = new \GuzzleHttp\Client();
+
+        $apiUrl = 'https://test.planfix.ru/chat/api';
+        $apiUrl = 'https://milanshop.planfix.ru/webchat/api';
+
+        $requestData = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'PostmanRuntime/7.17.1',
+            'Accept' => '*/*',
+            'Cache-Control' => 'no-cache',
+            'Postman-Token' => '475f8e16-18ed-45c0-832e-40ef0e251a05',
+            'Host' => 'milanshop.planfix.ru',
+            'Accept-Encoding' => 'gzip, deflate',
+            'Content-Length' => 0,
+            'Connection' => 'keep-alive',
+            'json' => [
+                'cmd'=>'newMessage',
+                'providerId'=>'support',
+                'chatId'=>'29712971',
+                'planfix_token'=>'f41a5a224ca6e611c2a155e18ba0b378',
+                'message'=>'Здравствуйте, есть вопрос',
+                'contactId'=>'57487124',
+                'contactName'=>'Иван',
+                'contactLastName'=>'Иванов',
+                'contactIco'=>'https://superchat.io/avatars/183712.png',
+                'contactEmail'=>'ivan@ivanov.com',
+                'contactPhone'=>'79051234567',
+                'contactData'=>'пришёл по запросу газовые котлы',
+            ]
+        ];
+
+        try {
+            dump('before');
+            dump($client->request('POST', $apiUrl, $requestData));
+
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            dump($e->getMessage());
+            // Catch all 4XX errors
+
+            // To catch exactly error 400 use
+            if ($e->getResponse()->getStatusCode() == '400') {
+                echo "Got response 400";
+            }
+
+            // You can check for whatever error status code you need
+
+        } catch (\Exception $e) {
+
+            // There was another exception.
+
+        }
+
+    }
+
+    public function getSource()
+    {
+        return [
+            'name',
+            'slug',
+            'base_price',
+            'quantity',
+            'category',
+            //'model',
+            'size',
+            'color',
+            'properties',
+            //'images',
+            //'description',
+            'created_at'
+        ];
+    }
+
+
     public function storageLearn()
     {
         Storage::disk("public")->prepend('test-file.txt', 'Prepended Text');
@@ -576,4 +747,6 @@ class CarIterator implements \Iterator
     {
 
     }
+
+
 }

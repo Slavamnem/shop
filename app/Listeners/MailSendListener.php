@@ -25,6 +25,6 @@ class MailSendListener
      */
     public function handle($event)
     {
-        dump("mail sended!");
+        //dump("mail sended!");
     }
 }

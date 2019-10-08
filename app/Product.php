@@ -164,7 +164,7 @@ class Product extends Model
      */
     public function getFullSlug()
     {
-        return 9;//$this->category->slug . "_" . $this->slug . "_" . $this->id;
+        return $this->category->slug . "_" . $this->slug . "_" . $this->id;
     }
     /***********************/
     /* end accessors block */

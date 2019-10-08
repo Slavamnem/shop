@@ -44,6 +44,10 @@ Route::get('/test1', function () {
     dump("test1");
 });
 
+Route::any('/elastic', 'LearnController@elastic');
+
+Route::any('/planfix', 'LearnController@planfix');
+
 Auth::routes();
 
 Route::get('/home', 'MainPageController@index')->name('home');

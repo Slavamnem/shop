@@ -75,6 +75,7 @@ class AppCenter implements AppCenterInterface
     {
         $currentDeletionsCount = UserAction::query()
             ->where('user_id', Auth::id())
+            ->whereNotNull('user_id')
             ->where('type', UserActionsEnum::DELETE_RECORD)
             ->whereDate('created_at', '>=', Carbon::today()->toDateTimeString())
             ->count();

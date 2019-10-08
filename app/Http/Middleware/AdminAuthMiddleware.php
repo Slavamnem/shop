@@ -4,10 +4,13 @@ namespace App\Http\Middleware;
 
 use App\AdminAuth;
 use App\Components\SecurityCenter;
+use App\Enums\EmailTemplatesEnum;
+use App\Events\TriggerEvent;
 use Closure;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
 
 class AdminAuthMiddleware
@@ -35,6 +38,11 @@ class AdminAuthMiddleware
             'trace'      => debug_backtrace(),
             'ip_address' => $_SERVER['REMOTE_ADDR']
         ]);
+
+//        Event::fire((new TriggerEvent())
+//            ->setDataForTemplate(['id' => 777])
+//            ->setEmailTemplateId(EmailTemplatesEnum::ORDER_CREATED)
+//        );
 
         return $response;
     }

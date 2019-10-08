@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\City;
 use App\Client;
 use App\Components\RestApi\NovaPoshta;
+use App\Enums\EmailTemplatesEnum;
+use App\Events\TriggerEvent;
 use App\Http\Middleware\SectionsAccess\OrdersAccessMiddleware;
 use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Http\Requests\Admin\EditOrderRequest;
@@ -19,6 +21,7 @@ use App\Strategies\Delivery\DeliveryStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
@@ -112,6 +115,8 @@ class OrderController extends Controller
         $this->service->createOrder();
         $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
         $this->service->getOrder()->notify(new DefaultNotification());
+
+        Event::fire(TriggerEvent::createOrderCreatedEvent($this->service->getOrder()));
 
         return redirect()->route("admin-orders-edit", ['id' => $this->service->getOrder()->id]);
     }

@@ -30,7 +30,8 @@ class ProductCardController extends Controller
      */
     public function index(Request $request, $slug)
     {
-        $data = $this->productService->getData($request->input('id'));
+        //$data = $this->productService->getData($request->input('id'));
+        $data = $this->productService->getData(substr($slug, strrpos($slug, "_") + 1));
 
         return view("site.product.card", $data);
     }

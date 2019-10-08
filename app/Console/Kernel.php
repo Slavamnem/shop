@@ -2,7 +2,11 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CleanOldData;
+use App\Console\Commands\GenerateSiteMap;
 use App\Console\Commands\GetPopularProducts;
+use App\Console\Commands\IndexProducts;
+use App\Console\Commands\SendEmails;
 use App\Console\Commands\SyncNovaPoshtaCities;
 use App\Console\Commands\SyncNovaPoshtaWarehouses;
 use App\Console\Commands\TestCommand;
@@ -22,7 +26,11 @@ class Kernel extends ConsoleKernel
         TestCommand2::class,
         SyncNovaPoshtaCities::class,
         SyncNovaPoshtaWarehouses::class,
-        GetPopularProducts::class
+        GetPopularProducts::class,
+        CleanOldData::class,
+        IndexProducts::class,
+        SendEmails::class,
+        GenerateSiteMap::class
     ];
 
     /**

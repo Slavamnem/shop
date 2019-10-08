@@ -47,10 +47,12 @@ class SecurityCenter implements SecurityCenterInterface
 
         foreach ($request->all() as $requestItem) {
             if (SecurityHelper::hasForbiddenSymbols($requestItem)) {
-                //Log::info('request has danger');
-                $this->blockUser();
-                $this->turnOffAdminPanelAccess();
-                return true;
+                Log::info('request has danger');
+                Log::info('request: ' . json_encode($request->all(), JSON_UNESCAPED_UNICODE));
+                //$this->blockUser();
+                //$this->turnOffAdminPanelAccess();
+                //return true;
+                return false;
             }
         }
         //Log::info('request is safe');

@@ -14,7 +14,7 @@ class SecurityHelper
      * @var array
      */
     private static $blackList = [
-        'SELECT', 'INSERT', 'UPDATE', 'DROP', 'TRUNCATE', '/', '?', '<', '>', '(', ')'
+        'SELECT', 'INSERT', 'UPDATE', 'DROP', 'TRUNCATE', '?', '<', '>', '(', ')'// '/'
     ];
 
     /**
