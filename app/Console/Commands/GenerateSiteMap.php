@@ -94,7 +94,8 @@ class GenerateSiteMap extends Command
     {
         return [
             'link' => $pageLink,
-            'priority' => 1 //TODO
+            'priority' => 1, //TODO
+            'lastmod' => '2019'
         ];
     }
 }

@@ -37,7 +37,7 @@ class LearnController extends Controller
 
         $params['index'] = 'product';
         $params['body'] = [
-            'size' => 5,
+            'size' => 0,
             'from' => 0,
             'sort' => [
                 'base_price' => [
@@ -68,10 +68,16 @@ class LearnController extends Controller
 //                                    'operator' => 'or'
 //                                ]
 //                            ],
-                            'match_phrase' => [
-                                'name' => [
-                                    'query' => 'Test белый',
-                                    'slop' => 2
+//                            'match_phrase' => [
+//                                'name' => [
+//                                    'query' => 'Test белый',
+//                                    'slop' => 2
+//                                ]
+//                            ],
+                            'multi_match' => [
+                                'query' => 'Test белый Футболки',
+                                'fields' => [
+                                    'name', 'category.name'
                                 ]
                             ]
                         ],
@@ -112,6 +118,94 @@ class LearnController extends Controller
                 'real_price' => [
                     'script' => [
                         'source' => "params['_source']['base_price'] - 10"
+                    ]
+                ]
+            ],
+            'aggs' => [
+                'avg_price' => [
+                    'avg' => [
+                        'field' => 'base_price'
+                    ]
+                ],
+                'max_price' => [
+                    'max' => [
+                        'field' => 'base_price'
+                    ]
+                ],
+                'sum_quantity' => [
+                    'sum' => [
+                        'field' => 'quantity'
+                    ]
+                ],
+                'my hits' => [
+                    'top_hits' => [
+                        'size' => 2,
+                        'from' => 1,
+                        //'sort'
+                    ]
+                ],
+                'cats' => [
+                    'terms' => [
+                        'field' => 'category.id',
+//                        'order' => [
+//                            'base_price' => 'asc'
+//                        ]
+                    ],
+                    'aggs' => [
+                        'cats-tops' => [
+                            'top_hits' => [
+                                '_source' => ['name', 'base_price'],
+                                'size' => 10
+                            ]
+                        ],
+                        'avg_price' => [
+                            'avg' => [
+                                'field' => 'base_price'
+                            ]
+                        ]
+                    ]
+                ],
+                'filtered_products' => [
+                    'filter' => [
+//                        'terms' => [
+////                            'quantity' => [1, 10],
+////                            //'base_price' => 270
+////                        ],
+                        'range' => [
+                            'quantity' => [
+                                'gte' => 3
+                            ]
+                        ]
+                    ],
+                    'aggs' => [
+                        'avg_price' => [
+                            'avg' => [
+                                'field' => 'base_price'
+                            ]
+                        ],
+                        'tops' => [
+                            'top_hits' => [
+                                'size' => 10
+                            ]
+                        ]
+                    ]
+                ],
+                'ranges_products' => [
+                    'range' => [
+                        'field' => 'base_price',
+                        'ranges' => [
+                            ['from' => 0, 'to' => 100, 'key' => 'cheap'],
+                            ['from' => 101, 'to' => 250, 'key' => 'middle'],
+                            ['from' => 251, 'to' => 500, 'key' => 'expensive'],
+                        ]
+                    ],
+                    'aggs' => [
+                        'tops' => [
+                            'top_hits' => [
+                                'size' => 3,
+                                '_source' => ['name', 'base_price']
+                            ]
+                        ]
                     ]
                 ]
             ]
