@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Color;
+use App\Components\RestApi\Exchange;
+use App\Components\RestApi\NewYorkTimes;
 use App\Components\RestApi\NovaPoshta;
 use App\Events\NewOrderEvent;
 use App\Notifications\NewOrderNotification;
@@ -31,13 +33,16 @@ class LearnController extends Controller
 {
     public function elastic()
     {
+        dump((new NewYorkTimes())->getLatestTopArticles());
         dump('elastic');
+
+        return 'end';
 
         $elasticService = new ElasticSearchService();
 
         $params['index'] = 'product';
         $params['body'] = [
-            'size' => 0,
+            'size' => 3,
             'from' => 0,
             'sort' => [
                 'base_price' => [
@@ -121,6 +126,22 @@ class LearnController extends Controller
                     ]
                 ]
             ],
+            'post_filter' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'term' => [
+                                'category.id' => 1
+                            ]
+                        ],
+                        [
+                            'terms' => [
+                                'base_price' => [0, 270]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
             'aggs' => [
                 'avg_price' => [
                     'avg' => [
@@ -165,15 +186,48 @@ class LearnController extends Controller
                         ]
                     ]
                 ],
+                'multi_filtered_products' => [
+                    'filters' => [
+                        'filters' => [
+                            'price-filter' => [
+                                'term' => [
+                                    'base_price' => 270
+                                ]
+                            ]
+                        ]
+                    ],
+                    'aggs' => [
+                        'tops' => [
+                            'top_hits' => [
+                                'size' => 10,
+                                '_source' => ['name', 'base_price']
+                            ]
+                        ]
+                    ]
+                ],
                 'filtered_products' => [
                     'filter' => [
 //                        'terms' => [
 ////                            'quantity' => [1, 10],
 ////                            //'base_price' => 270
 ////                        ],
-                        'range' => [
-                            'quantity' => [
-                                'gte' => 3
+//                        'range' => [
+//                            'quantity' => [
+//                                'gte' => 3
+//                            ]
+//                        ],
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'term' => [
+                                        'category.id' => 1
+                                    ]
+                                ],
+                                [
+                                    'terms' => [
+                                        'base_price' => [0, 270]
+                                    ]
+                                ]
                             ]
                         ]
                     ],

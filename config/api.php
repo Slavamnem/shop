@@ -9,5 +9,10 @@ return [
         'api-url'      => env('JUSTIN_URL'),
         'api-login'    => env('JUSTIN_LOGIN'),
         'api-password' => env('JUSTIN_PASSWORD')
+    ],
+    'exchange-url' => 'https://api.exchangerate-api.com/v4/latest/',
+    'new-york-times' => [
+        'base-url' => 'https://api.nytimes.com/',
+        'api-key' => 'sk1sKccGKG1TIZBrae2fkZDHO63b2rlT'
     ]
 ];

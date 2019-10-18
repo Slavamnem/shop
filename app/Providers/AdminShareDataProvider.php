@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Components\RestApi\Exchange;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +16,8 @@ class AdminShareDataProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share("data", 777);
+        View::share("usd_rate", (new Exchange())->getRate());
+        View::share("eur_rate", (new Exchange())->getRate('EUR', "UAH"));
     }
 
     /**

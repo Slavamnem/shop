@@ -14,6 +14,12 @@ class OrderResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'          => $this->id,
+            'status_id'   => $this->status->name,
+            'sum'         => $this->sum,
+            'client_id'   => $this->client->name,
+            'description' => $this->description,
+        ];
     }
 }

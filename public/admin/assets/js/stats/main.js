@@ -14,4 +14,22 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $('#export-order-stats').on("click", function(){
+
+        $.ajax({
+            url: "/admin/stats/export",
+            method: 'GET',
+            // data: {checked: checked},
+            success: function(res) {
+                //alert(res);
+                //alert('9');
+                // $('#top-products-list').html(res);
+            },
+            error: function(){
+                alert("error");
+            }
+        });
+
+    });
 });

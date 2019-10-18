@@ -40,6 +40,8 @@
                     
                 </div>
 
+                <a class="btn btn-success" href="{{ route('admin-stats-export') }}" id="export-order-stats-">Export</a>
+
             </div>
         {{--</div>--}}
     {{--</div>--}}
@@ -48,4 +50,5 @@
 @section("custom-js")
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/chartist.min.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/Chartistjs.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/js/stats/main.js") }}"></script>
 @endsection

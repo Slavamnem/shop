@@ -22,11 +22,13 @@ use App\Services\Admin\ClientService;
 use App\Services\Admin\ConditionsService;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
+use App\Services\Admin\Interfaces\NewYorkTimesServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\Admin\Interfaces\SiteElementsServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\Interfaces\UserServiceInterface;
+use App\Services\Admin\NewYorkTimesService;
 use App\Services\Admin\OrderPriceCalcService;
 use App\Services\Admin\OrderService;
 use App\Services\Admin\ProductService;
@@ -137,6 +139,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SecurityCenterInterface::class, SecurityCenter::class);
 
         $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
+        $this->app->singleton(NewYorkTimesServiceInterface::class, NewYorkTimesService::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

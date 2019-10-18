@@ -178,8 +178,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         NotificationChannels\Telegram\TelegramServiceProvider::class,
         \App\Providers\ModulesServiceProvider::class,
-        \App\Providers\AdminShareDataProvider::class
-
+        \App\Providers\AdminShareDataProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -228,7 +228,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Conditions' => \App\Components\Facades\Conditions::class
+        'Conditions' => \App\Components\Facades\Conditions::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

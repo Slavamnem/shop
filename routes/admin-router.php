@@ -232,6 +232,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("top_products", "StatisticController@getTopProducts")->name("admin-stats-top-products");
         Route::get("products_list", "StatisticController@getProductsList")->name("admin-stats-products-list-products");
         Route::get("top_clients", "StatisticController@getTopClients")->name("admin-stats-top-clients");
+        Route::get("export", "StatisticController@export")->name("admin-stats-export");
 
         Route::post("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
         Route::post("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
@@ -282,6 +283,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 //        Route::post('filer_table', "AjaxController@getFilteredData");
     });
 
+    Route::get("new-york-times", "NewYorkTimesController@index")->name("admin-new-york-times");
 });
 
 

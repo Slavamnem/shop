@@ -40,6 +40,14 @@
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item">
                             <div id="custom-search" class="top-search-bar">
+                                <p>
+                                    <span>USD: {{ $usd_rate }}</span> <span>EUR: {{ $eur_rate }}</span>
+                                    <audio src="http://www.last.fm/music/Disturbed/_/Believ"></audio>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div id="custom-search" class="top-search-bar">
                                 <h4 align="center" class="alert-success">Welcome, {{ Auth::user()->name }}({{ implode(", ", Auth::user()->roles->pluck("name")->toArray()) }})</h4>
                             </div>
                         </li>
@@ -346,6 +354,10 @@
                                 <a class="nav-link @if(@$activeMenuItem == "roles"){ {{ "active" }} } @endif" href="{{ route("admin-roles") }}"><i class="fas fa-fw fa-table"></i>Роли</a>
                             </li>
                             @endif
+
+                            <li class="nav-item ">
+                                <a class="nav-link @if(@$activeMenuItem == "NewYorkTimes"){ {{ "active" }} } @endif" href="{{ route("admin-new-york-times") }}"><i class="fas fa-fw fa-table"></i>NewYorkTimes</a>
+                            </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>UI Elements</a>

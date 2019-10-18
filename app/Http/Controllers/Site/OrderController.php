@@ -6,6 +6,7 @@ use App\City;
 use App\Client;
 use App\Components\AppCenter;
 use App\Components\Signals\Signal;
+use App\Events\TriggerEvent;
 use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
@@ -18,6 +19,7 @@ use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
 
 class OrderController extends Controller
 {
@@ -146,6 +148,8 @@ class OrderController extends Controller
         $this->service->createOrder();
         $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
         $this->service->getOrder()->notify(new DefaultNotification());
+
+        Event::fire(TriggerEvent::createOrderCreatedEvent($this->service->getOrder()));
 
         return redirect()->route("main");
     }
