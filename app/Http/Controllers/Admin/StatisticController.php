@@ -7,12 +7,14 @@ use App\Category;
 use App\Client;
 use App\DeliveryType;
 use App\Enums\PaymentTypesEnum;
+use App\Enums\ReportTypesEnum;
 use App\Exports\OrdersExport;
 use App\Http\Middleware\SectionsAccess\StatsAccessMiddleware;
 use App\Http\Requests\Admin\EditOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
+use App\Objects\CreateReportRequestObject;
 use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
@@ -20,6 +22,7 @@ use App\Product;
 use App\Services\Admin\ExcelService;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\OrderService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -121,48 +124,66 @@ class StatisticController extends Controller
         return response()->json($this->service->getOrdersPaymentTypesStats());
     }
 
-    public function export()
+
+
+
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportAllOrders()
     {
-        return response()->download((new ExcelService())->getAllOrdersReportDocument()->getPath());
+        return response()->download((new ExcelService())
+            ->getAllOrdersReportDocument((new CreateReportRequestObject())
+                ->setFromDate(Carbon::createFromTimestamp(strtotime('-1 month'))->toDateTimeString())
+                ->setTillDate(Carbon::now()->toDateTimeString())
+            )
+            ->getPath()
+        );
+    }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportYearOrders() //TODO maybe one function with period and type arguments
+    {
+        return response()->download((new ExcelService())
+            ->getOrdersStatsReportDocument((new CreateReportRequestObject())
+                ->setType(ReportTypesEnum::YEAR())
+                ->setFromDate(Carbon::createFromTimestamp(strtotime('2019-01-01'))->toDateTimeString())
+                ->setTillDate(Carbon::now()->toDateTimeString())
+            )
+            ->getPath()
+        );
+    }
 
-        dump((new ExcelService())->getAllOrdersReport());
-        dd(1);
-        $builder = new ExcelDocumentBuilder;
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportMonthOrders()
+    {
+        return response()->download((new ExcelService())
+            ->getOrdersStatsReportDocument((new CreateReportRequestObject())
+                ->setType(ReportTypesEnum::MONTH())
+                ->setFromDate(Carbon::createFromTimestamp(strtotime('2019-10-01'))->toDateTimeString())
+                ->setTillDate(Carbon::now()->toDateTimeString())
+            )
+            ->getPath()
+        );
+    }
 
-        $builder->createDocument('orders');
-
-        $builder->addRow(['1', '2', '3', '4', '5'], 1);
-
-        foreach (Order::all() as $key => $order) {
-            $builder->addRow((new OrderResource($order))->toArray(request()), $key + 2);
-        }
-
-        $builder->saveDocument();
-
-        return response()->download($builder->getDocument()->getPath());
-
-        /*
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-
-        $sheet->setCellValue("A1", 'Город');
-        $sheet->setCellValue("B1", 'Сумма');
-        $sheet->setCellValue("C1", 'Отделение');
-
-        foreach (Order::all() as $key => $order) {
-            $sheet->setCellValue("A" . ($key + 2), $order->city);
-            $sheet->setCellValue("B" . ($key + 2), $order->sum);
-            $sheet->setCellValue("C" . ($key + 2), $order->warehouse);
-        }
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('test4.xlsx');
-
-        return response()->download('./test4.xlsx');
-
-        //return Excel::download(new OrdersExport(), 'invoices.xlsx');
-        */
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportDayOrders()
+    {
+        return response()->download((new ExcelService())
+            ->getOrdersStatsReportDocument((new CreateReportRequestObject())
+                ->setType(ReportTypesEnum::DAY())
+                ->setFromDate(Carbon::createFromTimestamp(strtotime('today'))->toDateTimeString())
+                ->setTillDate(Carbon::now()->toDateTimeString())
+            )
+            ->getPath()
+        );
     }
 }

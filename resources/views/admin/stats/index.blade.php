@@ -40,7 +40,10 @@
                     
                 </div>
 
-                <a class="btn btn-success" href="{{ route('admin-stats-export') }}" id="export-order-stats-">Export</a>
+                <a class="btn btn-success" href="{{ route('admin-orders-all-export') }}" id="export-order-stats-">Export</a>
+                <a class="btn btn-success" href="{{ route('admin-orders-year-export') }}" id="export-order-stats-">Export Year</a>
+                <a class="btn btn-success" href="{{ route('admin-orders-month-export') }}" id="export-order-stats-">Export Month</a>
+                <a class="btn btn-success" href="{{ route('admin-orders-day-export') }}" id="export-order-stats-">Export Day</a>
 
             </div>
         {{--</div>--}}

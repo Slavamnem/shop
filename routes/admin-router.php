@@ -232,7 +232,10 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("top_products", "StatisticController@getTopProducts")->name("admin-stats-top-products");
         Route::get("products_list", "StatisticController@getProductsList")->name("admin-stats-products-list-products");
         Route::get("top_clients", "StatisticController@getTopClients")->name("admin-stats-top-clients");
-        Route::get("export", "StatisticController@export")->name("admin-stats-export");
+        Route::get("exportAllOrders", "StatisticController@exportAllOrders")->name("admin-orders-all-export");
+        Route::get("exportYearOrders", "StatisticController@exportYearOrders")->name("admin-orders-year-export");
+        Route::get("exportMonthOrders", "StatisticController@exportMonthOrders")->name("admin-orders-month-export");
+        Route::get("exportDayOrders", "StatisticController@exportDayOrders")->name("admin-orders-day-export");
 
         Route::post("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
         Route::post("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
