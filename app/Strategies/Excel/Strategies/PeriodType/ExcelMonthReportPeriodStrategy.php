@@ -6,14 +6,14 @@
  * Time: 0:14
  */
 
-namespace App\Strategies\Excel\Strategies;
+namespace App\Strategies\Excel\Strategies\PeriodType;
 
 use App\Objects\ProfitPeriodItemObject;
-use App\Strategies\Interfaces\ExcelReportStrategyInterface;
+use App\Strategies\Interfaces\ExcelReportPeriodStrategyInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class ExcelMonthReportStrategy implements ExcelReportStrategyInterface
+class ExcelMonthReportPeriodStrategy implements ExcelReportPeriodStrategyInterface
 {
     /**
      * @param Collection $orders

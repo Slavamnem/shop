@@ -232,6 +232,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("top_products", "StatisticController@getTopProducts")->name("admin-stats-top-products");
         Route::get("products_list", "StatisticController@getProductsList")->name("admin-stats-products-list-products");
         Route::get("top_clients", "StatisticController@getTopClients")->name("admin-stats-top-clients");
+
         Route::get("exportAllOrders", "StatisticController@exportAllOrders")->name("admin-orders-all-export");
         Route::get("exportYearOrders", "StatisticController@exportYearOrders")->name("admin-orders-year-export");
         Route::get("exportMonthOrders", "StatisticController@exportMonthOrders")->name("admin-orders-month-export");
@@ -274,6 +275,11 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 //        Route::post('filter', "CeoController@filter");
 
         Route::any("modifications", "ModelGroupController@getModificationsBlock")->name("admin-groups-get-modifications");
+    });
+
+    Route::group(['prefix' => "reports"], function() {
+        Route::get("", "ReportController@index")->name("admin-reports");
+        Route::any("export", "ReportController@export")->name("admin-export");
     });
 
     Route::group(['prefix' => "email"], function() {

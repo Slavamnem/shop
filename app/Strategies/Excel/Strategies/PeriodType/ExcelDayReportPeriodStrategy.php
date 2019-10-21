@@ -6,13 +6,13 @@
  * Time: 0:14
  */
 
-namespace App\Strategies\Excel\Strategies;
+namespace App\Strategies\Excel\Strategies\PeriodType;
 
 use App\Objects\ProfitPeriodItemObject;
-use App\Strategies\Interfaces\ExcelReportStrategyInterface;
+use App\Strategies\Interfaces\ExcelReportPeriodStrategyInterface;
 use Illuminate\Support\Collection;
 
-class ExcelDayReportStrategy implements ExcelReportStrategyInterface
+class ExcelDayReportPeriodStrategy implements ExcelReportPeriodStrategyInterface
 {
     /**
      * @param Collection $orders
@@ -36,8 +36,8 @@ class ExcelDayReportStrategy implements ExcelReportStrategyInterface
     }
 
     /**
-     * @return string
-     */
+ * @return string
+ */
     public function getTypePeriodName()
     {
         return "Час";

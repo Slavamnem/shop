@@ -8,11 +8,15 @@
 
 namespace App\Strategies\Excel;
 
+use App\Enums\ReportPeriodTypesEnum;
 use App\Enums\ReportTypesEnum;
-use App\Strategies\Excel\Strategies\ExcelDayReportStrategy;
-use App\Strategies\Excel\Strategies\ExcelMonthReportStrategy;
-use App\Strategies\Excel\Strategies\ExcelNullReportTypeStrategy;
-use App\Strategies\Excel\Strategies\ExcelYearReportStrategy;
+use App\Strategies\Excel\Strategies\Types\AllOrdersReportStrategy;
+use App\Strategies\Excel\Strategies\Types\ClientsStatsReportStrategy;
+use App\Strategies\Excel\Strategies\Types\NullReportStrategy;
+use App\Strategies\Excel\Strategies\Types\OrdersStatsReportStrategy;
+use App\Strategies\Excel\Strategies\Types\ProductsStatsReportStrategy;
+use App\Strategies\Excel\Strategies\Types\TopClientsReportStrategy;
+use App\Strategies\Excel\Strategies\Types\TopProductsReportStrategy;
 use App\Strategies\Interfaces\ExcelReportStrategyInterface;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
@@ -32,9 +36,12 @@ class ExcelReportTypeStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put(ReportTypesEnum::YEAR()->getValue(), new ExcelYearReportStrategy());
-        $this->strategies->put(ReportTypesEnum::MONTH()->getValue(), new ExcelMonthReportStrategy());
-        $this->strategies->put(ReportTypesEnum::DAY()->getValue(), new ExcelDayReportStrategy());
+        $this->strategies->put(ReportTypesEnum::ALL_ORDERS, new AllOrdersReportStrategy());
+        $this->strategies->put(ReportTypesEnum::ORDERS_STATS, new OrdersStatsReportStrategy());
+        $this->strategies->put(ReportTypesEnum::TOP_PRODUCTS, new TopProductsReportStrategy());
+        $this->strategies->put(ReportTypesEnum::PRODUCTS_STATS, new ProductsStatsReportStrategy());
+        $this->strategies->put(ReportTypesEnum::TOP_CLIENTS, new TopClientsReportStrategy());
+        $this->strategies->put(ReportTypesEnum::CLIENTS_STATS, new ClientsStatsReportStrategy());
     }
 
     /**
@@ -43,7 +50,7 @@ class ExcelReportTypeStrategy implements StrategyInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {
-            return new ExcelNullReportTypeStrategy();
+            return new NullReportStrategy();
         }
 
         return $this->strategies->get($type);

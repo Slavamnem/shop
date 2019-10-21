@@ -73,6 +73,7 @@ class UserPolicy
     {
         return $user->hasRole(['developer', 'superadmin', 'admin', 'moderator']);
     }
+
     /**
      * @param User $user
      * @return mixed
@@ -197,5 +198,14 @@ class UserPolicy
     public function watchSiteElements(User $user)
     {
         return $user->hasRole(['developer', 'superadmin', 'admin']);
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function watchReports(User $user)
+    {
+        return $user->hasRole(['developer', 'superadmin', 'admin', 'order-manager']);
     }
 }

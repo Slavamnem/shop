@@ -29,7 +29,7 @@
                             <table class="table">
                                 <thead class="bg-light">
                                 <tr class="border-0">
-                                    <th class="border-0">Рейтинг</th>
+                                    <th class="border-0">Id</th>
                                     <th class="border-0">Фото</th>
                                     <th class="border-0">Название</th>
                                     <th class="border-0">Продано</th>

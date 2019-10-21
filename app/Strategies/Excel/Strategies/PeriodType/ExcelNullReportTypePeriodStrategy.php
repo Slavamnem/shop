@@ -6,12 +6,12 @@
  * Time: 0:14
  */
 
-namespace App\Strategies\Excel\Strategies;
+namespace App\Strategies\Excel\Strategies\PeriodType;
 
-use App\Strategies\Interfaces\ExcelReportStrategyInterface;
+use App\Strategies\Interfaces\ExcelReportPeriodStrategyInterface;
 use Illuminate\Support\Collection;
 
-class ExcelNullReportTypeStrategy implements ExcelReportStrategyInterface
+class ExcelNullReportTypePeriodStrategy implements ExcelReportPeriodStrategyInterface
 {
     /**
      * @param Collection $orders

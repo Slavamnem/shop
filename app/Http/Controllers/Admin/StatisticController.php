@@ -7,7 +7,7 @@ use App\Category;
 use App\Client;
 use App\DeliveryType;
 use App\Enums\PaymentTypesEnum;
-use App\Enums\ReportTypesEnum;
+use App\Enums\ReportPeriodTypesEnum;
 use App\Exports\OrdersExport;
 use App\Http\Middleware\SectionsAccess\StatsAccessMiddleware;
 use App\Http\Requests\Admin\EditOrderRequest;
@@ -149,7 +149,7 @@ class StatisticController extends Controller
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
-                ->setType(ReportTypesEnum::YEAR())
+                ->setType(ReportPeriodTypesEnum::YEAR())
                 ->setFromDate(Carbon::createFromTimestamp(strtotime('2019-01-01'))->toDateTimeString())
                 ->setTillDate(Carbon::now()->toDateTimeString())
             )
@@ -164,7 +164,7 @@ class StatisticController extends Controller
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
-                ->setType(ReportTypesEnum::MONTH())
+                ->setType(ReportPeriodTypesEnum::MONTH())
                 ->setFromDate(Carbon::createFromTimestamp(strtotime('2019-10-01'))->toDateTimeString())
                 ->setTillDate(Carbon::now()->toDateTimeString())
             )
@@ -179,7 +179,7 @@ class StatisticController extends Controller
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
-                ->setType(ReportTypesEnum::DAY())
+                ->setType(ReportPeriodTypesEnum::DAY())
                 ->setFromDate(Carbon::createFromTimestamp(strtotime('today'))->toDateTimeString())
                 ->setTillDate(Carbon::now()->toDateTimeString())
             )

@@ -20,8 +20,10 @@ use App\Notification;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
 use App\Services\Admin\ConditionsService;
+use App\Services\Admin\ExcelService;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\ClientServiceInterface;
+use App\Services\Admin\Interfaces\ExcelServiceInterface;
 use App\Services\Admin\Interfaces\NewYorkTimesServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
@@ -140,6 +142,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
         $this->app->singleton(NewYorkTimesServiceInterface::class, NewYorkTimesService::class);
+        $this->app->singleton(ExcelServiceInterface::class, ExcelService::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

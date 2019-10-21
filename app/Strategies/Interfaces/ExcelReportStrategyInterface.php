@@ -8,18 +8,20 @@
 
 namespace App\Strategies\Interfaces;
 
-use Illuminate\Support\Collection;
+use App\Builders\Interfaces\DocumentBuilderInterface;
+use App\Objects\CreateReportRequestObject;
 
 interface ExcelReportStrategyInterface
 {
     /**
-     * @param Collection $orders
-     * @return array|Collection
-     */
-    public function getOrdersStatsData(Collection $orders);
-
-    /**
      * @return string
      */
-    public function getTypePeriodName();
+    public function getReportName();
+
+    /**
+     * @param DocumentBuilderInterface $builder
+     * @param CreateReportRequestObject $requestObject
+     * @return mixed
+     */
+    public function setReportData(DocumentBuilderInterface $builder, CreateReportRequestObject $requestObject);
 }

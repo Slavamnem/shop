@@ -2,7 +2,7 @@
 
 namespace App\Objects;
 
-use App\Enums\ReportTypesEnum;
+use App\Enums\ReportPeriodTypesEnum;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -19,7 +19,11 @@ class CreateReportRequestObject
     /**
      * @var
      */
-    private $type;
+    private $reportType;
+    /**
+     * @var
+     */
+    private $periodType;
 
     /**
      * @param $value
@@ -36,7 +40,7 @@ class CreateReportRequestObject
      */
     public function getFromDate()
     {
-        return $this->fromDate ?? Carbon::now()->toDateTimeString();
+        return $this->fromDate ?? Carbon::yesterday()->toDateTimeString();
     }
 
     /**
@@ -61,17 +65,35 @@ class CreateReportRequestObject
      * @param $value
      * @return $this
      */
-    public function setType($value)
+    public function setPeriodType($value)
     {
-        $this->type = $value;
+        $this->periodType = $value;
         return $this;
     }
 
     /**
-     * @return ReportTypesEnum
+     * @return ReportPeriodTypesEnum
      */
-    public function getType()
+    public function getPeriodType()
     {
-        return $this->type;
+        return $this->periodType;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setReportType($value)
+    {
+        $this->reportType = $value;
+        return $this;
+    }
+
+    /**
+     * @return ReportPeriodTypesEnum
+     */
+    public function getReportType()
+    {
+        return $this->reportType;
     }
 }

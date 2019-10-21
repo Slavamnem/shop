@@ -240,9 +240,11 @@
                             </li>
                             @endif
 
-                            {{--<li class="nav-item ">--}}
-                                {{--<a class="nav-link @if(@$activeMenuItem == "stats"){ {{ "active" }} } @endif" href="{{ route("admin-stats") }}"><i class="fas fa-fw fa-table"></i>Статистика</a>--}}
-                            {{--</li>--}}
+                            @if(Auth::user()->can('watchReports', \App\User::class))
+                                <li class="nav-item ">
+                                    <a class="nav-link @if(@$activeMenuItem == "reports"){ {{ "active" }} } @endif" href="{{ route("admin-reports") }}"><i class="fas fa-fw fa-table"></i>Отчеты</a>
+                                </li>
+                            @endif
 
                             @if(Auth::user()->can('watchCategories', \App\User::class))
                             <li class="nav-item ">
