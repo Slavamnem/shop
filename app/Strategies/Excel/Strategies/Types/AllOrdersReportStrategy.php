@@ -58,17 +58,4 @@ class AllOrdersReportStrategy extends AbstractReportTypeStrategy implements Exce
     {
         return 'all_orders_report' . Carbon::now()->format('Y_m_d');
     }
-
-    /**
-     * @param CreateReportRequestObject $requestObject
-     */
-    private function setOrdersStatsReportHead(CreateReportRequestObject $requestObject)
-    {
-        $this->builder->addRow([
-            $this->reportTypeStrategy->getStrategy($requestObject->getType()->getValue())->getTypePeriodName(),
-            'Прибыль',
-            'Средний чек',
-            'Количество заказов'
-        ], 1);
-    }
 }

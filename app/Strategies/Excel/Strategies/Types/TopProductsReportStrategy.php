@@ -11,8 +11,10 @@ namespace App\Strategies\Excel\Strategies\Types;
 use App\Builders\Interfaces\DocumentBuilderInterface;
 use App\Objects\CreateReportRequestObject;
 use App\Order;
+use App\Product;
 use App\Strategies\Interfaces\ExcelReportStrategyInterface;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class TopProductsReportStrategy extends AbstractReportTypeStrategy implements ExcelReportStrategyInterface
 {
@@ -24,6 +26,27 @@ class TopProductsReportStrategy extends AbstractReportTypeStrategy implements Ex
     public function setReportData(DocumentBuilderInterface $builder, CreateReportRequestObject $requestObject)
     {
         $this->initialize($builder, $requestObject);
+
+        $products = Product::query()->with('orders')->get();
+        $products = $this->getProductsSales($products);
+        $products = $products->sortByDesc('sold');
+        $products = $products->map(function($product) {
+            return [
+                'Id товара'     => $product->id,
+                'Название'      => $product->name,
+                'Продано'       => $product->sold,
+                'Цена'          => $product->real_price,
+                'Общая прибыль' => $product->profit,
+            ];
+        });
+
+        if ($products->isNotEmpty()) {
+            $builder->addRow(array_keys($products->first()), 1);
+        }
+
+        foreach ($products->values() as $key => $product) {
+            $builder->addRow($product, $key + 2);
+        }
     }
 
     /**
@@ -34,13 +57,17 @@ class TopProductsReportStrategy extends AbstractReportTypeStrategy implements Ex
         return 'top_products_report' . Carbon::now()->format('Y_m_d');
     }
 
-    private function setTopProductsReportHead()
+    /**
+     * @param Collection $products
+     * @return Collection
+     */
+    private function getProductsSales(Collection $products)
     {
-//        $this->builder->addRow([
-//            $this->reportPeriodTypeStrategy->getStrategy($this->requestObject->getPeriodType()->getValue())->getTypePeriodName(),
-//            'Прибыль',
-//            'Средний чек',
-//            'Количество заказов'
-//        ], 1);
+        foreach ($products as $product) {
+            $product->sold = $product->orders->sum("quantity");
+            $product->profit = $product->orders->sum("sum");
+        }
+
+        return $products;
     }
 }
