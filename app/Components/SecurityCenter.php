@@ -99,7 +99,7 @@ class SecurityCenter implements SecurityCenterInterface
 
         $envFile = str_replace('ADMIN_PANEL_ACCESS=1', 'ADMIN_PANEL_ACCESS=0', $envFile);
 
-        file_put_contents('./.env', $envFile);
+        //file_put_contents('./.env', $envFile);
     }
 
     /**

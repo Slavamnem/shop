@@ -27,7 +27,10 @@ class TopProductsReportStrategy extends AbstractReportTypeStrategy implements Ex
     {
         $this->initialize($builder, $requestObject);
 
-        $products = Product::query()->with('orders')->get();
+        $products = Product::query()->with(['orders' => function($query){
+            return $query->where('created_at', '>=', $this->requestObject->getFromDate())
+                ->where('created_at', '<=', $this->requestObject->getTillDate());
+        }])->get();
         $products = $this->getProductsSales($products);
         $products = $products->sortByDesc('sold');
         $products = $products->map(function($product) {

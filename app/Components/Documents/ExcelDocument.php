@@ -48,6 +48,7 @@ class ExcelDocument extends Document implements XmlDocumentInterface
     public function addItem($name, $value)
     {
         $this->spreadsheet->getActiveSheet()->setCellValue($name, $value);
+        $this->spreadsheet->getActiveSheet()->getProperties()->setTitle("Office 2007 XLSX Test Document");
     }
 
     /**

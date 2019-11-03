@@ -31,6 +31,97 @@ use NotificationChannels\Telegram\TelegramChannel;
 
 class LearnController extends Controller
 {
+    public function drop()
+    {
+        try {
+            $client = new Client();
+
+            $response = $client->post('https://api.dropboxapi.com/2/file_requests/get', [
+                'headers' => [
+                    'contentType' => 'application/json',
+                    'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
+                ],
+                'json' => [
+                    "id" => "AJYu7jxKJhAAAAAAAAAANA",
+                ]
+            ]);
+//            $response = $client->post('https://api.dropboxapi.com/2/files/create_folder_v2', [
+//                'headers' => [
+//                    'contentType' => 'application/json',
+//                    'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
+//                ],
+//                'json' => [
+//                    "path" => "/test4/test4",
+//                ]
+//            ]);
+
+//            $response = $client->post('https://content.dropboxapi.com/2/files/upload', [
+//                'headers' => [
+//                    'Content-Type' => 'application/octet-stream',
+//                    'Dropbox-API-Arg' =>  json_encode([
+//                        "path" => "/test5/test.jpg",
+//                        "mode" => "add",
+//                        "autorename" => true,
+//                        "mute" => false,
+//                        "strict_conflict" => false
+//                    ]),
+//                    'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
+//                ],
+//                'json' => [
+//                    "path" => "/test5/test.jpg",
+//                ],
+//                'multipart' => [
+//                    [
+//                        'name' => 'testfile',
+//                        'contents' => file_get_contents('https://glavcom.ua/img/article/5339/69_main.jpg'),
+//                    ]
+//                ]
+//            ]);
+
+            dump($response);
+            dump($response->getBody()->getContents());
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+        }
+    }
+
+    private function saveToDropBox($img)
+    {
+        $client = new Client();
+
+        //dump($img);
+        //dd($_FILES);
+        $response = $client->post('https://content.dropboxapi.com/2/files/upload', [
+            'headers' => [
+                'Content-Type' => 'application/octet-stream',
+                'Dropbox-API-Arg' =>  json_encode([
+                    "path" => "/test6/test3.jpg",
+                ]),
+                'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
+            ],
+//            'json' => [
+//                "path" => "/test5/test2.jpg",
+//            ],
+            'body' => fopen('https://spacenews.com/wp-content/uploads/2018/05/24359364107_152b0152ff_k-879x485.jpg', 'r'),
+//            'multipart' => [
+//                [
+//                    'name' => 'test1.jpg',
+//                    //'contents' => $img,
+//                    'contents' => fopen('https://spacenews.com/wp-content/uploads/2018/05/24359364107_152b0152ff_k-879x485.jpg', 'r'),
+//                    //'contents' => fopen($img->getRealPath(), 'r'),
+//                    'filename' => $img->getClientOriginalName()
+//                ]
+//            ]
+        ]);
+
+        dd($response->getBody()->getContents());
+    }
+
+    public function drive()
+    {
+        return view('learn.index');
+    }
+
     public function elastic()
     {
         dump((new NewYorkTimes())->getLatestTopArticles());

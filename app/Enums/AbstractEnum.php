@@ -33,6 +33,14 @@ abstract class AbstractEnum extends Enum
     }
 
     /**
+     * @return array
+     */
+    public static function getAllEnums()
+    {
+        return (new static())->getEnums();
+    }
+
+    /**
      * @return mixed
      */
     public function getValue()
@@ -44,8 +52,8 @@ abstract class AbstractEnum extends Enum
      * @param $id
      * @return mixed
      */
-    public function getValueById($id)
+    public static function getValueById($id)
     {
-        return array_get($this->enums, $id, null);
+        return array_get((new static())->getEnums(), $id, null);
     }
 }

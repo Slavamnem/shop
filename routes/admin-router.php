@@ -308,6 +308,8 @@ Route::group(['prefix' => "learn"], function(){
     Route::any("blade", "LearnController@blade");
 
     Route::any("insta", "LearnController@insta");
+    Route::any("drive", "LearnController@drive");
+    Route::any("drop", "LearnController@drop");
 
 
     Route::any("api1", "LearnController@api1");

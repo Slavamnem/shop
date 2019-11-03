@@ -58,7 +58,10 @@ class TopClientsReportStrategy extends AbstractReportTypeStrategy implements Exc
      */
     private function getClients()
     {
-        $clients = Client::query()->with('orders')->get();
+        $clients = Client::query()->with(['orders' => function($query){
+            return $query->where('created_at', '>=', $this->requestObject->getFromDate())
+                ->where('created_at', '<=', $this->requestObject->getTillDate());
+        }])->get();
 
         foreach ($clients as $client) {
             $client->profit = $client->orders->sum('sum');

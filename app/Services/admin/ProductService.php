@@ -21,6 +21,7 @@ use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\TranslatorService;
 use App\Size;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -277,6 +278,8 @@ class ProductService implements ProductServiceInterface
             if (App::make(SecurityCenter::class)->checkImage($img)) {
                 Storage::putFileAs("products", $img, $imageName);
 
+                //$this->saveToDropBox($img);
+
                 $product->images()->create([
                     'url' => "products/{$imageName}",
                     'product_id' => $product->getId(),
@@ -285,7 +288,7 @@ class ProductService implements ProductServiceInterface
                     'ordering' => $request->getNewImageOrdering($imgId),
                 ]);
             } else {
-                App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
+                //App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
             }
         }
     }
