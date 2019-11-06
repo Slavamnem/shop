@@ -17,6 +17,7 @@ use App\Product;
 use App\ProductImage;
 use App\ProductStatus;
 use App\Property;
+use App\Services\RestApi\Interfaces\ImageStorageServiceInterface;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
 use App\Services\TranslatorService;
@@ -38,16 +39,22 @@ class ProductService implements ProductServiceInterface
      * @var ShareServiceInterface
      */
     private $shareService;
+    /**
+     * @var ImageStorageServiceInterface
+     */
+    private $imageStorageService;
 
     /**
      * ProductService constructor.
      * @param Request $request
      * @param ShareServiceInterface $shareService
+     * @param ImageStorageServiceInterface $imageStorageService
      */
-    public function __construct(Request $request, ShareServiceInterface $shareService)
+    public function __construct(Request $request, ShareServiceInterface $shareService, ImageStorageServiceInterface $imageStorageService)
     {
         $this->request = $request;
         $this->shareService = $shareService;
+        $this->imageStorageService = $imageStorageService;
     }
 
     /**
@@ -276,19 +283,17 @@ class ProductService implements ProductServiceInterface
             $imageName = $this->generateProductImageName($product, $img);
 
             if (App::make(SecurityCenter::class)->checkImage($img)) {
-                Storage::putFileAs("products", $img, $imageName);
-
-                //$this->saveToDropBox($img);
-
+                //Storage::putFileAs("products", $img, $imageName); //TODO полностью заменить на внешний сервис
+                //dd($this->imageStorageService->upload($img));
                 $product->images()->create([
-                    'url' => "products/{$imageName}",
+                    'url' => $this->imageStorageService->upload($img),
                     'product_id' => $product->getId(),
                     'main' => $request->getNewImageIsMain($imgId),
                     'preview' => $request->getNewImageIsPreview($imgId),
                     'ordering' => $request->getNewImageOrdering($imgId),
                 ]);
             } else {
-                //App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
+                App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
             }
         }
     }

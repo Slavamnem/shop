@@ -79,12 +79,14 @@ class SecurityCenter implements SecurityCenterInterface
 
     public function blockUser()
     {
-        try {
-            DB::table('black_list')->insert([
-                'ip' => $this->getUserIp()
-            ]);
-        } catch (\Exception $e) {
-            Log::info('Error. Trying to insert black ip which already exists.');
+        if (env('APP_ENV') == 'production') {
+            try {
+                DB::table('black_list')->insert([
+                    'ip' => $this->getUserIp()
+                ]);
+            } catch (\Exception $e) {
+                Log::info('Error. Trying to insert black ip which already exists.');
+            }
         }
     }
 
@@ -93,13 +95,15 @@ class SecurityCenter implements SecurityCenterInterface
      */
     public function turnOffAdminPanelAccess()
     {
-        Event::fire(new Attack());
+        if (env('APP_ENV') == 'production') {
+            Event::fire(new Attack());
 
-        $envFile = file_get_contents('./.env');
+            $envFile = file_get_contents('./.env');
 
-        $envFile = str_replace('ADMIN_PANEL_ACCESS=1', 'ADMIN_PANEL_ACCESS=0', $envFile);
+            $envFile = str_replace('ADMIN_PANEL_ACCESS=1', 'ADMIN_PANEL_ACCESS=0', $envFile);
 
-        //file_put_contents('./.env', $envFile);
+            file_put_contents('./.env', $envFile);
+        }
     }
 
     /**

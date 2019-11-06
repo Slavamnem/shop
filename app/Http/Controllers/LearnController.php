@@ -36,13 +36,13 @@ class LearnController extends Controller
         try {
             $client = new Client();
 
-            $response = $client->post('https://api.dropboxapi.com/2/file_requests/get', [
+            $response = $client->post('https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings', [
                 'headers' => [
                     'contentType' => 'application/json',
                     'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
                 ],
                 'json' => [
-                    "id" => "AJYu7jxKJhAAAAAAAAAANA",
+                    "path" => "/test6/test4.jpg",
                 ]
             ]);
 //            $response = $client->post('https://api.dropboxapi.com/2/files/create_folder_v2', [

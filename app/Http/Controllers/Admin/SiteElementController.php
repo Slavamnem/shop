@@ -137,8 +137,12 @@ class SiteElementController extends Controller
         }
         if ($request->input('type') == 'image') {
             if ($img = $request->value) {
-                $siteElement->value = $img->getClientOriginalName();
-                Storage::putFileAs("", $img, $siteElement->value);
+                if (App::make(SecurityCenter::class)->checkImage($img)) {
+                    $siteElement->value = $img->getClientOriginalName();
+                    Storage::putFileAs("", $img, $siteElement->value);
+                } else {
+                    App::make(AppCenter::class)->sendSignal(new TrojanHorseSignal());
+                }
             }
         }
 

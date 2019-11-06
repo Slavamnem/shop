@@ -7,16 +7,18 @@ use App\Components\Interfaces\SaveDataToFileInterface;
 use App\Http\Requests\Admin\ProductRequest;
 use App\ModelGroup;
 use App\Product;
+use App\Services\RestApi\Interfaces\ImageStorageServiceInterface;
 use Illuminate\Http\Request;
 
 interface ProductServiceInterface
 {
     /**
-     * ProductService constructor.
+     * ProductServiceInterface constructor.
      * @param Request $request
      * @param ShareServiceInterface $shareService
+     * @param ImageStorageServiceInterface $imageStorageService
      */
-    public function __construct(Request $request, ShareServiceInterface $shareService);
+    public function __construct(Request $request, ShareServiceInterface $shareService, ImageStorageServiceInterface $imageStorageService);
 
     /**
      * Get data for products views

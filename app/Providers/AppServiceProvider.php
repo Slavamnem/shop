@@ -9,14 +9,17 @@ use App\Builders\ShareProductsQueryBuilder;
 use App\Components\AppCenter;
 use App\Components\Helpers\SqlHelper;
 use App\Components\Interfaces\AppCenterInterface;
+use App\Components\Interfaces\DropBoxClientInterface;
 use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\Interfaces\SecurityCenterInterface;
+use App\Components\RestApi\DropBox;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\SecurityCenter;
 use App\Components\Signals\DeleteRecordSignal;
 use App\Events\Attack;
 use App\Events\MessageToTelegram;
 use App\Notification;
+use App\Services\RestApi\Interfaces\ImageStorageServiceInterface;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
 use App\Services\Admin\ConditionsService;
@@ -40,6 +43,7 @@ use App\Services\Admin\StatisticService;
 use App\Services\Admin\UserService;
 use App\Services\ElasticSearchService;
 use App\Services\NovaPoshtaService;
+use App\Services\RestApi\DropBoxService;
 use App\Services\Site\Api\CatalogProductsService;
 use App\Services\Site\Interfaces\CatalogProductsServiceInterface;
 use App\Services\Site\Interfaces\ElasticSearchServiceInterface;
@@ -129,6 +133,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
         $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);
+        $this->app->bind(DropBoxClientInterface::class, DropBox::class);
+        $this->app->bind(ImageStorageServiceInterface::class, DropBoxService::class);
         $this->app->bind(NovaPoshtaInterface::class, NovaPoshta::class);
         $this->app->bind(NovaPoshta::class);
 

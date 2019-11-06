@@ -14,5 +14,10 @@ return [
     'new-york-times' => [
         'base-url' => 'https://api.nytimes.com/',
         'api-key' => 'sk1sKccGKG1TIZBrae2fkZDHO63b2rlT'
+    ],
+    'dropbox' => [
+        'app-key' => env('DROPBOX_APP_KEY'),
+        'app-secret' => env('DROPBOX_APP_SECRET'),
+        'access-token' => env('DROPBOX_ACCESS_TOKEN'),
     ]
 ];

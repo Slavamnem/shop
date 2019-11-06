@@ -198,8 +198,8 @@
                                         <div class="row">
                                             <input type="hidden" name="oldImages[]" value="{{ $image->id }}">
                                             <div class="col-md-4">
-                                                <img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">
-                                                {{--<input type="file" name="images[]" class="custom-file-input" id="customFile" style="opacity:1!important;">--}}
+                                                {{--<img src="{{ asset("storage/app/{$image->url}") }}" alt="User Avatar" class=" img-fluid">--}}
+                                                <img src="{{ $image->url }}" alt="User Avatar" class=" img-fluid">
                                             </div>
                                             <div class="col-md-2">
                                                 <input type="checkbox" name="oldImagesMain[{{$image->id}}]" value="1" class="generator" id="switch19" @if($image->main) {{ "checked" }} @endif>
