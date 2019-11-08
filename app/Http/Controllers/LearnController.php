@@ -26,6 +26,9 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use InstagramAPI\Instagram;
+use Mailgun\HttpClient\HttpClientConfigurator;
+use Mailgun\Hydrator\ArrayHydrator;
+use Mailgun\Mailgun;
 use NotificationChannels\Telegram\Telegram;
 use NotificationChannels\Telegram\TelegramChannel;
 
@@ -117,9 +120,130 @@ class LearnController extends Controller
         dd($response->getBody()->getContents());
     }
 
-    public function drive()
+    function drive()
     {
-        return view('learn.index');
+        # Instantiate the client.
+        $configurator = new HttpClientConfigurator();
+        $configurator->setApiKey('9da1a302b83a027ad4ca7575fc14129c-f696beb4-eae61afe');
+
+        $mgClient = new Mailgun($configurator, new ArrayHydrator());
+        //$mgClient = new Mailgun('f696beb4-eae61afe');
+        $domain = "sandboxde06fcca8afb407cbfc34954a3241b2e.mailgun.org";
+
+        # Make the call to the client.
+        $result = $mgClient->messages()->send($domain, [
+            'from'    => 'vzelinskiy@stud.onu.edu.ua',
+            'to'      => 'vzelinskiy@stud.onu.edu.ua',
+            'subject' => 'The PHP SDK is awesome!',
+            'text'    => 'It is so simple to send a message2.'
+        ]);
+//        $result = $mgClient->sendMessage("$domain",
+//            array('from'    => 'Mailgun Sandbox <postmaster@sandboxde06fcca8afb407cbfc34954a3241b2e.mailgun.org>',
+//                'to'      => 'Viacheslav <vzelinskiy@stud.onu.edu.ua>',
+//                'subject' => 'Hello Viacheslav',
+//                'text'    => 'Congratulations Viacheslav, you just sent an email with Mailgun!  You are truly awesome! '));
+
+        dd($result);
+// You can see a record of this email in your logs: https://app.mailgun.com/app/logs.
+
+    }
+
+    function getClient()
+    {
+        $client = new \Google_Client();
+        $client->setApplicationName('Google Drive API PHP Quickstart');
+        $client->setScopes(\Google_Service_Drive::DRIVE_METADATA_READONLY);
+        $client->setAuthConfig('./storage/app/credentials.json');
+        $client->setAccessType('offline');
+        $client->setPrompt('select_account consent');
+
+        // Load previously authorized token from a file, if it exists.
+        // The file token.json stores the user's access and refresh tokens, and is
+        // created automatically when the authorization flow completes for the first
+        // time.
+        $tokenPath = 'token.json';
+        if (file_exists($tokenPath)) {
+            $accessToken = json_decode(file_get_contents($tokenPath), true);
+            $client->setAccessToken($accessToken);
+        }
+
+        // If there is no previous token or it's expired.
+        if ($client->isAccessTokenExpired()) {
+            // Refresh the token if possible, else fetch a new one.
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            } else {
+                // Request authorization from the user.
+                $authUrl = $client->createAuthUrl();
+                printf("Open the following link in your browser:\n%s\n", $authUrl);
+                print 'Enter verification code: ';
+                $authCode = trim(fgets(STDIN));
+
+                // Exchange authorization code for an access token.
+                $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+                $client->setAccessToken($accessToken);
+
+                // Check to see if there was an error.
+                if (array_key_exists('error', $accessToken)) {
+                    throw new \Exception(join(', ', $accessToken));
+                }
+            }
+            // Save the token to a file.
+            if (!file_exists(dirname($tokenPath))) {
+                mkdir(dirname($tokenPath), 0700, true);
+            }
+            file_put_contents($tokenPath, json_encode($client->getAccessToken()));
+        }
+        return $client;
+    }
+
+    public function drive2()
+    {
+        $client = $this->getClient();
+        dd($client);
+        $service = new \Google_Service_Drive($client);
+
+// Print the names and IDs for up to 10 files.
+        $optParams = array(
+            'pageSize' => 10,
+            'fields' => 'nextPageToken, files(id, name)'
+        );
+        $results = $service->files->listFiles($optParams);
+
+        if (count($results->getFiles()) == 0) {
+            print "No files found.\n";
+        } else {
+            print "Files:\n";
+            foreach ($results->getFiles() as $file) {
+                printf("%s (%s)\n", $file->getName(), $file->getId());
+            }
+        }
+
+        /*
+       // dd(file_get_contents('./storage/app/credentials.json'));
+        $client = new \Google_Client();
+        $client->setAuthConfig('./storage/app/credentials.json');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        $client->setIncludeGrantedScopes(true);
+
+        $client->addScope(\Google_Service_Drive::DRIVE_FILE, \Google_Service_Drive::DRIVE_APPDATA, \Google_Service_Drive::DRIVE, \Google_Service_Drive::DRIVE_METADATA);
+        $accessToken = json_decode(file_get_contents('./storage/app/credentials.json'), true);
+        $client->setAccessToken($accessToken);
+
+        if ($client->isAccessTokenExpired()) {
+            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            file_put_contents('credentials.json', json_encode($client->getAccessToken()));
+        }
+
+        $service = new \Google_Service_Drive($client);
+        $results = $service->files->listFiles();
+        dd($results);
+        $fileId = 'yourfileid';
+        $file = $service->files->get($fileId, array('alt' => 'media'));
+        file_put_contents("hello.pdf",$file->getBody());
+
+       // return view('learn.index');*/
     }
 
     public function elastic()

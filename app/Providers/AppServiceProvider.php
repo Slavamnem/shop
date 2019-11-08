@@ -7,12 +7,15 @@ use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Builders\ShareProductsQueryBuilder;
 use App\Components\AppCenter;
+use App\Components\EmailDrivers\MailGunDriver;
 use App\Components\Helpers\SqlHelper;
 use App\Components\Interfaces\AppCenterInterface;
 use App\Components\Interfaces\DropBoxClientInterface;
+use App\Components\Interfaces\EmailDriverInterface;
 use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\Interfaces\SecurityCenterInterface;
 use App\Components\RestApi\DropBox;
+use App\Components\RestApi\MailGunClient;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\SecurityCenter;
 use App\Components\Signals\DeleteRecordSignal;
@@ -135,6 +138,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);
         $this->app->bind(DropBoxClientInterface::class, DropBox::class);
         $this->app->bind(ImageStorageServiceInterface::class, DropBoxService::class);
+        $this->app->bind(EmailDriverInterface::class, MailGunDriver::class);
         $this->app->bind(NovaPoshtaInterface::class, NovaPoshta::class);
         $this->app->bind(NovaPoshta::class);
 

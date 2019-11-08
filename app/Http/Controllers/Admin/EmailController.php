@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Components\Interfaces\EmailDriverInterface;
 use App\Mail\MailSender;
+use App\Objects\SendEmailsRequestObject;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
+    /**
+     * @var EmailDriverInterface
+     */
+    private $emailDriver;
+
+    /**
+     * EmailController constructor.
+     * @param EmailDriverInterface $emailDriver
+     */
+    public function __construct(EmailDriverInterface $emailDriver)
+    {
+        $this->emailDriver = $emailDriver;
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -30,11 +46,12 @@ class EmailController extends Controller
      */
     public function sendEmail(Request $request)
     {
-        Mail::to($request->input("receiver_email"))->send(new MailSender(
-            "Уведомление от MilanShop",
-            $request->input("message"),
-            "order-answer"
-        ));
+        $this->emailDriver->send((new SendEmailsRequestObject())
+            ->addReceiver($request->input("receiver_email"))
+            ->setSubject("Уведомление от MilanShop!!!")
+            ->setMessage($request->input("message"))
+            ->setTemplate("order-answer")
+        );
 
         return redirect()->route("admin-orders");
     }

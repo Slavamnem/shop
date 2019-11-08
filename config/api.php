@@ -19,5 +19,10 @@ return [
         'app-key' => env('DROPBOX_APP_KEY'),
         'app-secret' => env('DROPBOX_APP_SECRET'),
         'access-token' => env('DROPBOX_ACCESS_TOKEN'),
+    ],
+    'mailgun' => [
+        'from-email' => 'vzelinskiy@stud.onu.edu.ua',
+        'api-key' => env('MAILGUN_API_KEY', '9da1a302b83a027ad4ca7575fc14129c-f696beb4-eae61afe'),
+        'domain' => env('MAILGUN_DOMAIN', 'sandboxde06fcca8afb407cbfc34954a3241b2e.mailgun.org')
     ]
 ];
