@@ -6,7 +6,7 @@ use App\Order;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class OrdersExport implements FromCollection
+class OrdersExport implements FromCollection // unused, for test
 {
     /**
     * @return \Illuminate\Support\Collection

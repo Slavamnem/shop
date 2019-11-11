@@ -35,7 +35,7 @@ class MailGunDriver implements EmailDriverInterface
                 ->setReceiver($receiver)
                 ->setSubject($emailsRequest->getSubject())
                 ->setMessage($emailsRequest->getMessage())
-            ); //dump($response);
+            ); //dd($response);
         }
     }
 }

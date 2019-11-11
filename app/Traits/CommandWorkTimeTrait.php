@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait CommandWorkTimeTrait
+trait CommandWorkTimeTrait //TODO делать парочку трейтов (фильтры для crud)
 {
     public function showCommandTime()
     {
