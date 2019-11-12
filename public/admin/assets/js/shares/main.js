@@ -35,7 +35,7 @@ $( document ).ready(function() {
         });
     });
 
-    var conditionId= $("#conditions").data("amount");
+    var conditionId = $("#conditions").data("amount");
     var conditionsAmount = $("#conditions").data("amount");
 
     $('.add-new-condition').on("click", function(){
