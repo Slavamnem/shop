@@ -29,6 +29,7 @@ class ShareProductsQueryBuilder implements ShareProductsQueryBuilderInterface
         $this->queryBuilder = $this->queryBuilder->where('id', $productId);
         return $this;
     }
+
     /**
      * @param Condition $condition
      */

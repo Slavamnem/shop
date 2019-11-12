@@ -203,7 +203,7 @@ class ProductService implements ProductServiceInterface
         $modificationProductObject->getNewProducts()->push([
             'name'        => $this->generateProductName($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
             'slug'        => $this->generateProductSlug($modificationProductObject->getColor()->getId(), $modificationProductObject->getSize()->getId()),
-            'base_price'  => 0, //TODO сделать во время создания модификаций возможностб указать всем цену и количество
+            'base_price'  => 0, //TODO сделать во время создания модификаций возможность указать всем цену и количество
             'quantity'    => 0,
             'category_id' => $modificationProductObject->getModel()->category_id,
             'description' => '',
@@ -280,7 +280,7 @@ class ProductService implements ProductServiceInterface
     private function saveNewImages(Product $product, ProductRequest $request): void
     {
         foreach ($request->getNewImages() as $imgId => $img) {
-            $imageName = $this->generateProductImageName($product, $img);
+            //$imageName = $this->generateProductImageName($product, $img);
 
             if (App::make(SecurityCenter::class)->checkImage($img)) {
                 //Storage::putFileAs("products", $img, $imageName); //TODO полностью заменить на внешний сервис
