@@ -21,7 +21,7 @@ class ConditionStrategy implements StrategyInterface
         $this->loadStrategies();
     }
 
-    public function loadStrategies()
+    public function loadStrategies() //TODO внутри стратегий один раз искать и записывать в поле внутреннее
     {
         $this->strategies = collect();
         $this->strategies->put('id', new IdCondition());
