@@ -2,47 +2,67 @@
 
 namespace App\Enums;
 
-use App\Components\ShareConditions\ConditionTypes\IdConditionType;
-use App\Strategies\Conditions\PropertyConditionType;
+use App\Components\ShareConditions\Factory\BaseShareConditionsFactory;
+use App\Components\ShareConditions\Factory\FullShareConditionsFactory;
+use App\Components\ShareConditions\Factory\TimeShareConditionsFactory;
+use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 
-class ConditionTypesEnum extends AbstractEnum
+class ConditionTypesEnum extends AbstractEnum //TODO разобраться в энамах общая страутура, статика или нет, как возвращать классы привязанные
 {
-    public const ID = 'id';
+    public const BASE = 'base';
+    public const FULL = 'full';
+    public const TIME = 'time';
 
-    public $enums = [
-        self::ID => IdConditionType::class
+    private $enums = [
+        self::BASE => 'Базовый',
+        self::FULL => 'Расширенный',
+        self::TIME => 'Временный',
+    ];
+
+    private $enumsFactory = [
+        self::BASE => BaseShareConditionsFactory::class,
+        self::FULL => FullShareConditionsFactory::class,
+        self::TIME => TimeShareConditionsFactory::class,
     ];
 
     /**
+     * @return ShareConditionsFactory
+     */
+    public function getTypeFactory()
+    {
+        return new (array_get($this->enumsFactory, $this->getValue()));
+    }
+
+    /**
      * @param $type
-     * @return mixed
+     * @return ConditionTypesEnum
      */
-    public function getTypeClass($type)
+    public static function CREATE($type)
     {
-        return new (array_get($this->enums, $type))($type);
+        return new self($type);
     }
 
     /**
-     * @return OrderStatusEnum
+     * @return ConditionTypesEnum
      */
-    public static function WAIT_FOR_PAYMENT()
+    public static function BASE()
     {
-        return new self(self::WAIT_FOR_PAYMENT);
+        return new self(self::BASE);
     }
 
     /**
-     * @return OrderStatusEnum
+     * @return ConditionTypesEnum
      */
-    public static function PAID()
+    public static function FULL()
     {
-        return new self(self::PAID);
+        return new self(self::FULL);
     }
 
     /**
-     * @return OrderStatusEnum
+     * @return ConditionTypesEnum
      */
-    public static function CANCELED()
+    public static function TIME()
     {
-        return new self(self::CANCELED);
+        return new self(self::TIME);
     }
 }

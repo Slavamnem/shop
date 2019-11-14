@@ -4,15 +4,17 @@ namespace App\Strategies\Conditions;
 
 use App\ModelGroup;
 
-class ModelCondition
+class ModelCondition extends AbstractCondition
 {
     /**
-     * @return ModelGroup[]|\Illuminate\Database\Eloquent\Collection
+     * @return $this|\Illuminate\Support\Collection
      */
-    public function getValues()
+    public function setValues()
     {
-        return ModelGroup::all()->mapWithKeys(function($group){
+        $this->values = ModelGroup::all()->mapWithKeys(function($group){
             return [$group->id => $group->name];
         });
+
+        return $this;
     }
 }

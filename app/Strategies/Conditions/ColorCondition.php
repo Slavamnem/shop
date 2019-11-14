@@ -4,15 +4,17 @@ namespace App\Strategies\Conditions;
 
 use App\Color;
 
-class ColorCondition
+class ColorCondition extends AbstractCondition
 {
     /**
-     * @return Color[]|\Illuminate\Database\Eloquent\Collection
+     * @return $this|AbstractCondition
      */
-    public function getValues()
+    public function setValues()
     {
-        return Color::all()->mapWithKeys(function($color){
+        $this->values = Color::all()->mapWithKeys(function($color){
             return [$color->id => $color->name];
         });
+
+        return $this;
     }
 }

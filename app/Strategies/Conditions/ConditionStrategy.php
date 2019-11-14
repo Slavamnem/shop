@@ -21,15 +21,15 @@ class ConditionStrategy implements StrategyInterface
         $this->loadStrategies();
     }
 
-    public function loadStrategies() //TODO singletons, memory saving
+    public function loadStrategies()
     {
         $this->strategies = collect();
         $this->strategies->put('id', IdCondition::Instance());
-        $this->strategies->put('category_id', new CategoryCondition());
-        $this->strategies->put('group_id', new ModelCondition());
-        $this->strategies->put('status_id', new StatusCondition());
-        $this->strategies->put('color_id', new ColorCondition());
-        $this->strategies->put('size_id', new SizeCondition());
+        $this->strategies->put('category_id', CategoryCondition::Instance());
+        $this->strategies->put('group_id', ModelCondition::Instance());
+        $this->strategies->put('status_id', StatusCondition::Instance());
+        $this->strategies->put('color_id', ColorCondition::Instance());
+        $this->strategies->put('size_id', SizeCondition::Instance());
     }
 
     /**

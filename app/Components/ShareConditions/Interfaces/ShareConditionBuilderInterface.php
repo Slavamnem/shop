@@ -1,18 +1,29 @@
 <?php
 
-namespace App\Builders\Interfaces;
+namespace App\Components\ShareConditions\Interfaces;
 
 use App\Components\Condition;
 use App\Components\ConditionsBox;
 
-interface ConditionsBuilderInterface //TODO deprecated
+interface ShareConditionBuilderInterface
 {
-    public function createBox();
+    /**
+     * @param ShareConditionsFactory $factory
+     * @return $this
+     */
+    public function createBox(ShareConditionsFactory $factory);
 
     /**
-     * @param $value
+     * @param $id
+     * @return $this
      */
-    public function setDelimiter($value);
+    public function setBoxId($id);
+
+    /**
+     * @param Delimiter $delimiter
+     * @return $this
+     */
+    public function setDelimiter(Delimiter $delimiter);
 
     /**
      * @param Condition $condition

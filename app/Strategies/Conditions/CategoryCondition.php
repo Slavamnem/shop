@@ -4,15 +4,17 @@ namespace App\Strategies\Conditions;
 
 use App\Category;
 
-class CategoryCondition
+class CategoryCondition extends AbstractCondition
 {
     /**
-     * @return Category[]|\Illuminate\Database\Eloquent\Collection
+     * @return $this|AbstractCondition
      */
-    public function getValues()
+    public function setValues()
     {
-        return Category::all()->mapWithKeys(function($category){
+        $this->values = Category::all()->mapWithKeys(function($category){
             return [$category->id => $category->name];
         });
+
+        return $this;
     }
 }

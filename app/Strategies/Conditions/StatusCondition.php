@@ -4,15 +4,17 @@ namespace App\Strategies\Conditions;
 
 use App\ProductStatus;
 
-class StatusCondition
+class StatusCondition extends AbstractCondition
 {
     /**
-     * @return ProductStatus[]|\Illuminate\Database\Eloquent\Collection
+     * @return $this|AbstractCondition
      */
-    public function getValues()
+    public function setValues()
     {
-        return ProductStatus::all()->mapWithKeys(function($status){
+        $this->values = ProductStatus::all()->mapWithKeys(function($status){
             return [$status->id => $status->name];
         });
+
+        return $this;
     }
 }

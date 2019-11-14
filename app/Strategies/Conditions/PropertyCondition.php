@@ -4,7 +4,7 @@ namespace App\Strategies\Conditions;
 
 use App\PropertyValue;
 
-class PropertyCondition
+class PropertyCondition extends AbstractCondition
 {
     /**
      * @var
@@ -17,15 +17,17 @@ class PropertyCondition
     }
 
     /**
-     * @return array
+     * @return $this|AbstractCondition
      */
-    public function getValues()
+    public function setValues()
     {
-        return PropertyValue::query()
+        $this->values = PropertyValue::query()
             ->where('property_id', $this->propertyId)
             ->get()
             ->mapWithKeys(function($propertyValue){
                 return [$propertyValue->id => $propertyValue->value];
             });
+
+        return $this;
     }
 }

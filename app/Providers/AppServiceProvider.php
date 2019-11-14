@@ -18,6 +18,8 @@ use App\Components\RestApi\DropBox;
 use App\Components\RestApi\MailGunClient;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\SecurityCenter;
+use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
+use App\Components\ShareConditions\ShareConditionBuilders\ShareConditionBuilder;
 use App\Components\Signals\DeleteRecordSignal;
 use App\Events\Attack;
 use App\Events\MessageToTelegram;
@@ -132,7 +134,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BasketServiceInterface::class, BasketService::class);
         $this->app->bind(SiteElementsServiceInterface::class, SiteElementsService::class);
         $this->app->bind(CatalogProductsServiceInterface::class, CatalogProductsService::class);
-        $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
+        $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class); //TODO deprecated
+        $this->app->bind(ShareConditionBuilderInterface::class, ShareConditionBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
         $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);

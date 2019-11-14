@@ -63,7 +63,7 @@ abstract class AbstractConditionBox implements ConditionBlock
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getConditionBlocks()
+    public function getConditionBlocks() : Collection
     {
         return $this->conditionBlocks;
     }

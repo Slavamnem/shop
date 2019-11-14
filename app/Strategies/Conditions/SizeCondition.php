@@ -4,15 +4,17 @@ namespace App\Strategies\Conditions;
 
 use App\Size;
 
-class SizeCondition
+class SizeCondition extends AbstractCondition
 {
     /**
-     * @return Size[]|\Illuminate\Database\Eloquent\Collection
+     * @return $this|AbstractCondition
      */
-    public function getValues()
+    public function setValues()
     {
-        return Size::all()->mapWithKeys(function($size){
+        $this->values = Size::all()->mapWithKeys(function($size){
             return [$size->id => $size->name];
         });
+
+        return $this;
     }
 }

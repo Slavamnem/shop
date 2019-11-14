@@ -2,12 +2,17 @@
 
 namespace App\Services\Admin;
 
+use App\Adapters\ShareConditionsAdapter;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
+use App\Builders\ShareConditionBuilder;
 use App\Category;
 use App\Color;
 use App\Components\Condition;
 use App\Components\ConditionsBox;
+use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
 use App\ConditionOperation;
+use App\Enums\ConditionDelimiterTypesEnum;
+use App\Enums\ConditionTypesEnum;
 use App\ModelGroup;
 use App\Product;
 use App\ProductStatus;
@@ -45,16 +50,52 @@ class ConditionsService
      * ConditionsService constructor.
      * @param ShareServiceInterface $shareService
      * @param ProductServiceInterface $productService
-     * @param ConditionsBuilderInterface $builder
+     * @param ShareConditionBuilderInterface $builder
      */
-    public function __construct(ShareServiceInterface $shareService, ProductServiceInterface $productService, ConditionsBuilderInterface $builder)
-    {
+    public function __construct(
+        ShareServiceInterface $shareService,
+        ProductServiceInterface $productService,
+        ShareConditionBuilderInterface $builder
+    ) {
         $this->shareService = $shareService;
         $this->productService = $productService;
         $this->conditionsBoxBuilder = $builder;
         $this->conditionsStrategy = new ConditionStrategy();
 
         $this->loadData();
+    }
+
+    /**
+     * @param $share
+     * @return mixed
+     */
+    public function getExistingConditionsV2($share) // TODO adapter that will give me conditions data from share
+    {
+        $shareConditionsAdapter = new ShareConditionsAdapter($share);
+        $type = 'base';
+        $delimiter = 'or';
+
+        $this->conditionsBoxBuilder
+            ->createBox(ConditionTypesEnum::CREATE($type)->getTypeFactory())
+            ->setBoxId(1)
+            ->setDelimiter(ConditionDelimiterTypesEnum::getClass($delimiter));
+
+
+
+       ////////////////////////////////////////// old
+
+
+
+        $this->conditionsBoxBuilder->setDelimiter($this->getConditionsDelimiter($share));
+        $this->conditionsBoxBuilder->setConditionsList($this->getConditionsList());
+        $this->conditionsBoxBuilder->setOperationsList($this->getOperationsList());
+
+        foreach ($share->conditions as $id => $conditionData) {
+            $this->conditionsBoxBuilder->addCondition(Condition::createFromShareData($id, $conditionData));
+            $this->conditionsBoxBuilder->setValuesList($id, $this->getValuesList($conditionData[array_keys($conditionData)[0]]["field"]));
+        }
+
+        return $this->conditionsBoxBuilder->getConditionsBox();
     }
 
     /**

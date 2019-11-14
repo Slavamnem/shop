@@ -1,30 +1,51 @@
 <?php
 
-namespace App\Builders;
+namespace App\Components\ShareConditions\ShareConditionBuilders;
 
 use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Components\Condition;
 use App\Components\ConditionsBox;
+use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\Delimiter;
+use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
+use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 use Illuminate\Support\Collection;
 
-class ConditionsBuilder implements ConditionsBuilderInterface //TODO deprecated
+class ShareConditionBuilder implements ShareConditionBuilderInterface
 {
     /**
-     * @var ConditionsBox
+     * @var ConditionBlock
      */
     private $conditionsBox;
 
-    public function createBox()
+    /**
+     * @param ShareConditionsFactory $factory
+     * @return $this
+     */
+    public function createBox(ShareConditionsFactory $factory)
     {
-        $this->conditionsBox = new ConditionsBox();
+        $this->conditionsBox = $factory->getConditionBox();
+        return $this;
     }
 
     /**
-     * @param $value
+     * @param $id
+     * @return $this
      */
-    public function setDelimiter($value)
+    public function setBoxId($id)
     {
-        $this->conditionsBox->setDelimiter($value);
+        $this->conditionsBox->setId($id);
+        return $this;
+    }
+
+    /**
+     * @param Delimiter $delimiter
+     * @return $this
+     */
+    public function setDelimiter(Delimiter $delimiter)
+    {
+        $this->conditionsBox->setDelimiter($delimiter);
+        return $this;
     }
 
     /**
