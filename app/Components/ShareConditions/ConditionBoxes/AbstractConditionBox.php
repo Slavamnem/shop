@@ -9,8 +9,10 @@
 namespace App\Components\ShareConditions\ConditionBoxes;
 
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\ConditionBox;
 use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
 use App\Components\ShareConditions\Interfaces\Delimiter;
+use App\Components\ShareConditions\Interfaces\OperationList;
 use Illuminate\Support\Collection;
 
 abstract class AbstractConditionBox implements ConditionBlock
@@ -19,6 +21,10 @@ abstract class AbstractConditionBox implements ConditionBlock
      * @var
      */
     protected $id;
+    /**
+     * @var
+     */
+    protected $parentId;
     /**
      * @var Collection
      */
@@ -31,6 +37,10 @@ abstract class AbstractConditionBox implements ConditionBlock
      * @var ConditionsFieldsListInterface
      */
     private $fieldsList;
+    /**
+     * @var OperationList
+     */
+    private $operationsList;
 
     /**
      * AbstractConditionBox constructor.
@@ -60,10 +70,28 @@ abstract class AbstractConditionBox implements ConditionBlock
         return $this;
     }
 
+    /*
+     * @return mixed
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * @param $id
+     * @return ConditionBlock
+     */
+    public function setParentId($id)
+    {
+        $this->parentId = $id;
+        return $this;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getConditionBlocks() : Collection
+    public function getChildConditionBlocks() : Collection
     {
         return $this->conditionBlocks;
     }
@@ -71,7 +99,7 @@ abstract class AbstractConditionBox implements ConditionBlock
     /**
      * @param ConditionBlock $condition
      */
-    public function addConditionBlock(ConditionBlock $condition)
+    public function addChildConditionBlock(ConditionBlock $condition)
     {
         $this->conditionBlocks->put($condition->getId(), $condition);
     }
@@ -80,7 +108,7 @@ abstract class AbstractConditionBox implements ConditionBlock
      * @param $id
      * @return ConditionBlock
      */
-    public function getConditionBlock($id) : ConditionBlock
+    public function getChildConditionBlock($id) : ConditionBlock
     {
         return $this->conditionBlocks->get($id);
     }
@@ -95,9 +123,9 @@ abstract class AbstractConditionBox implements ConditionBlock
 
     /**
      * @param Delimiter $delimiter
-     * @return AbstractConditionBox
+     * @return ConditionBlock
      */
-    public function setDelimiter(Delimiter $delimiter): AbstractConditionBox
+    public function setDelimiter(Delimiter $delimiter): ConditionBlock
     {
         $this->delimiter = $delimiter;
         return $this;
@@ -119,5 +147,22 @@ abstract class AbstractConditionBox implements ConditionBlock
     {
         $this->fieldsList = $fieldsList;
         return $this;
+    }
+
+    /**
+     * @return OperationList
+     */
+    public function getOperationsList(): OperationList
+    {
+        return $this->operationsList;
+    }
+
+    /**
+     * @param OperationList $operationsList
+     * @return ConditionBlock
+     */
+    public function setOperationsList(OperationList $operationsList): ConditionBlock
+    {
+        $this->operationsList = $operationsList;
     }
 }

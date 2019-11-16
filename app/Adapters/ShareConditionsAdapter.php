@@ -8,6 +8,8 @@
 
 namespace App\Adapters;
 
+use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 use App\Share;
 
 class ShareConditionsAdapter
@@ -25,4 +27,41 @@ class ShareConditionsAdapter
     {
         $this->share = $share;
     }
+
+    /**
+     * @return int
+     */
+    public function getMainBlockId()
+    {
+        return 1;
+    }
+
+    /**
+     * @param ConditionBlock $conditionBlock
+     * @return \Illuminate\Support\Collection
+     */
+    public function getChildConditionsBlocksData(ConditionBlock $conditionBlock)
+    {
+        return collect();
+    }
+
+    /**
+     * @param ShareConditionsFactory $factory
+     * @param $childBlockData
+     * @return ConditionBlock
+     */
+    public function createConditionFromData(ShareConditionsFactory $factory, $childBlockData)
+    {
+        return $factory->getCondition();
+    }
 }
+
+/*
+
+
+[
+
+]
+
+
+ */

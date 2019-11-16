@@ -20,26 +20,33 @@ interface ShareConditionBuilderInterface
     public function setBoxId($id);
 
     /**
+     * @param $id
+     * @return $this
+     */
+    public function setParentId($id);
+
+    /**
      * @param Delimiter $delimiter
      * @return $this
      */
     public function setDelimiter(Delimiter $delimiter);
 
     /**
-     * @param Condition $condition
-     * @return mixed
+     * @param ConditionBlock $conditionBlock
+     * @return $this
      */
-    public function addCondition(Condition $condition);
+    public function addConditionBlock(ConditionBlock $conditionBlock);
 
     /**
-     * @param $conditionsList
+     * @param ConditionsFieldsListInterface $conditionsList
+     * @return $this
      */
-    public function setConditionsList($conditionsList);
+    public function setFieldsList(ConditionsFieldsListInterface $conditionsList);
 
     /**
-     * @param $operationsList
+     * @param OperationList $operationsList
      */
-    public function setOperationsList($operationsList);
+    public function setOperationsList(OperationList $operationsList);
 
     /**
      * @param $id
@@ -51,10 +58,10 @@ interface ShareConditionBuilderInterface
      * @param $id
      * @return Condition
      */
-    public function getCondition($id);
+    public function getChildConditionBlock($id);
 
     /**
-     * @return ConditionsBox
+     * @return ConditionBlock
      */
-    public function getConditionsBox();
+    public function getConditionBlock();
 }

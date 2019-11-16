@@ -8,7 +8,16 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
-interface ConditionBox
+interface ConditionBox extends ConditionBlock //TODO condition interface
 {
+    /**
+     * @return Delimiter
+     */
+    public function getDelimiter(): Delimiter;
 
+    /**
+     * @param Delimiter $delimiter
+     * @return ConditionBox
+     */
+    public function setDelimiter(Delimiter $delimiter): ConditionBox;
 }

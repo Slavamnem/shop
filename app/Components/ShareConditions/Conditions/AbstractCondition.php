@@ -9,7 +9,10 @@
 namespace App\Components\ShareConditions\Conditions;
 
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
 use App\Components\ShareConditions\Interfaces\ConditionStatus;
+use App\Components\ShareConditions\Interfaces\Delimiter;
+use App\Components\ShareConditions\Interfaces\OperationList;
 use App\Strategies\Conditions\ConditionStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
@@ -23,7 +26,11 @@ abstract class AbstractCondition implements ConditionBlock
     /**
      * @var
      */
-    protected $type;
+    protected $parentId;
+    /**
+     * @var
+     */
+    protected $type; //TODO unused?
     /**
      * @var ConditionStatus
      */
@@ -44,6 +51,14 @@ abstract class AbstractCondition implements ConditionBlock
      * @var StrategyInterface
      */
     protected $conditionsStrategy;
+    /**
+     * @var ConditionsFieldsListInterface
+     */
+    private $fieldsList;
+    /**
+     * @var OperationList
+     */
+    private $operationsList;
 
     /**
      * AbstractCondition constructor.
@@ -71,6 +86,24 @@ abstract class AbstractCondition implements ConditionBlock
     public function getId()
     {
         return $this->id;
+    }
+
+    /*
+     * @return mixed
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * @param $id
+     * @return ConditionBlock
+     */
+    public function setParentId($id)
+    {
+        $this->parentId = $id;
+        return $this;
     }
 
     /**
@@ -171,26 +204,80 @@ abstract class AbstractCondition implements ConditionBlock
         return $this->conditionsStrategy->getStrategy($this->getType())->getValues();
     }
 
+    /**
+     * @return ConditionsFieldsListInterface
+     */
+    public function getFieldsList(): ConditionsFieldsListInterface
+    {
+        return $this->fieldsList;
+    }
+
+    /**
+     * @param ConditionsFieldsListInterface $fieldsList
+     * @return AbstractCondition
+     */
+    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): AbstractCondition
+    {
+        $this->fieldsList = $fieldsList;
+        return $this;
+    }
+
+    /**
+     * @return OperationList
+     */
+    public function getOperationsList(): OperationList
+    {
+        return $this->operationsList;
+    }
+
+    /**
+     * @param OperationList $operationsList
+     * @return ConditionBlock
+     */
+    public function setOperationsList(OperationList $operationsList): ConditionBlock
+    {
+        $this->operationsList = $operationsList;
+    }
+
+    /**
+     * @return Delimiter|null
+     */
+    public function getDelimiter(): Delimiter{
+        return null;
+    }
+
+    /**
+     * @param Delimiter $delimiter
+     * @return ConditionBlock
+     */
+    public function setDelimiter(Delimiter $delimiter): ConditionBlock
+    {
+        return $this;
+    }
+
     ////////////
 
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getConditionBlocks() : Collection
+    public function getChildConditionBlocks() : Collection
     {
         return collect();
     }
 
     /**
      * @param ConditionBlock $condition
+     * @return $this|ConditionBlock
      */
-    public function addConditionBlock(ConditionBlock $condition){}
+    public function addChildConditionBlock(ConditionBlock $condition){
+        return $this;
+    }
 
     /**
      * @param $id
      * @return ConditionBlock|null
      */
-    public function getConditionBlock($id) : ConditionBlock
+    public function getChildConditionBlock($id) : ConditionBlock
     {
         return null;
     }

@@ -9,7 +9,9 @@ use App\Category;
 use App\Color;
 use App\Components\Condition;
 use App\Components\ConditionsBox;
+use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
+use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 use App\ConditionOperation;
 use App\Enums\ConditionDelimiterTypesEnum;
 use App\Enums\ConditionTypesEnum;
@@ -19,6 +21,7 @@ use App\ProductStatus;
 use App\Property;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
+use App\Share;
 use App\Size;
 use App\Strategies\Conditions\ConditionStrategy;
 use Illuminate\Support\Collection;
@@ -66,26 +69,47 @@ class ConditionsService
     }
 
     /**
+     * @param Share $share
+     * @param ConditionBlock $conditionBlock
+     * @param ShareConditionsFactory $factory
+     */
+    private function setConditionBlockChild(Share $share, ConditionBlock $conditionBlock, ShareConditionsFactory $factory)
+    {
+        $shareConditionsAdapter = new ShareConditionsAdapter($share);
+
+        foreach ($shareConditionsAdapter->getChildConditionsBlocksData($conditionBlock->getId()) as $childBlockData) {
+            $childBlock = $shareConditionsAdapter->createConditionFromData($factory, $childBlockData);
+
+            $this->setConditionBlockChild($share, $childBlock, $factory);
+
+            $conditionBlock->addChildConditionBlock($childBlock);
+        }
+    }
+
+    /**
      * @param $share
      * @return mixed
      */
     public function getExistingConditionsV2($share) // TODO adapter that will give me conditions data from share
     {
+        // Решить будут ли все блоки одного типа - тогда ребенку передается список и операции родителя или внутренний блок может не соответсвовать внешнему
         $shareConditionsAdapter = new ShareConditionsAdapter($share);
         $type = 'base';
         $delimiter = 'or';
 
+        $factory = ConditionTypesEnum::CREATE($type)->getTypeFactory();
+
         $this->conditionsBoxBuilder
-            ->createBox(ConditionTypesEnum::CREATE($type)->getTypeFactory())
-            ->setBoxId(1)
+            ->createBox($factory)
+            ->setBoxId($shareConditionsAdapter->getMainBlockId())
             ->setDelimiter(ConditionDelimiterTypesEnum::getClass($delimiter));
 
 
-
+        $this->setConditionBlockChild($share, $this->conditionsBoxBuilder->getConditionBlock(), $factory);
        ////////////////////////////////////////// old
 
 
-
+    /*
         $this->conditionsBoxBuilder->setDelimiter($this->getConditionsDelimiter($share));
         $this->conditionsBoxBuilder->setConditionsList($this->getConditionsList());
         $this->conditionsBoxBuilder->setOperationsList($this->getOperationsList());
@@ -96,6 +120,7 @@ class ConditionsService
         }
 
         return $this->conditionsBoxBuilder->getConditionsBox();
+    */
     }
 
     /**

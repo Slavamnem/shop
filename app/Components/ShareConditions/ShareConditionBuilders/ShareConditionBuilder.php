@@ -3,16 +3,21 @@
 namespace App\Components\ShareConditions\ShareConditionBuilders;
 
 use App\Builders\Interfaces\ConditionsBuilderInterface;
-use App\Components\Condition;
-use App\Components\ConditionsBox;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\ConditionBox;
+use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
 use App\Components\ShareConditions\Interfaces\Delimiter;
+use App\Components\ShareConditions\Interfaces\OperationList;
 use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 use Illuminate\Support\Collection;
 
 class ShareConditionBuilder implements ShareConditionBuilderInterface
 {
+    /**
+     * @var ShareConditionsFactory
+     */
+    private $factory;
     /**
      * @var ConditionBlock
      */
@@ -24,7 +29,12 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      */
     public function createBox(ShareConditionsFactory $factory)
     {
-        $this->conditionsBox = $factory->getConditionBox();
+        $this->factory = $factory;
+
+        $this->conditionsBox = $this->factory->getConditionBox()
+            ->setFieldsList($this->factory->getFieldsList())
+            ->setOperationsList($this->factory->getOperationList());
+
         return $this;
     }
 
@@ -33,6 +43,16 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      * @return $this
      */
     public function setBoxId($id)
+    {
+        $this->conditionsBox->setId($id);
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function setParentId($id)
     {
         $this->conditionsBox->setId($id);
         return $this;
@@ -49,25 +69,34 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
     }
 
     /**
-     * @param Condition $condition
+     * @param ConditionBlock $conditionBlock
+     * @return $this|ShareConditionBuilderInterface
      */
-    public function addCondition(Condition $condition)
+    public function addConditionBlock(ConditionBlock $conditionBlock)
     {
-        $this->conditionsBox->addCondition($condition);
+        $this->conditionsBox->addChildConditionBlock(
+            $conditionBlock
+                ->setFieldsList($this->factory->getFieldsList())
+                ->setOperationsList($this->factory->getOperationList())
+        );
+
+        return $this;
     }
 
     /**
-     * @param $conditionsList
+     * @param ConditionsFieldsListInterface $conditionsList
+     * @return $this
      */
-    public function setConditionsList($conditionsList)
+    public function setFieldsList(ConditionsFieldsListInterface $conditionsList) //TODO maybe will be unused
     {
-        $this->conditionsBox->setConditionsList($conditionsList);
+        $this->conditionsBox->setFieldsList($conditionsList);
+        return $this;
     }
 
     /**
-     * @param $operationsList
+     * @param OperationList $operationsList
      */
-    public function setOperationsList($operationsList)
+    public function setOperationsList(OperationList $operationsList) //TODO maybe will be unused
     {
         $this->conditionsBox->setOperationsList($operationsList);
     }
@@ -76,24 +105,24 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      * @param $id
      * @param $valuesList
      */
-    public function setValuesList($id, $valuesList)
+    public function setValuesList($id, $valuesList) //TODO
     {
-        $this->getCondition($id)->setValuesList($valuesList);
+        //$this->getChildConditionBlock($id)->setValuesList($valuesList);
     }
 
     /**
      * @param $id
-     * @return Condition
+     * @return ConditionBlock|null
      */
-    public function getCondition($id)
+    public function getChildConditionBlock($id)
     {
-        return $this->conditionsBox->getCondition($id);
+        return $this->conditionsBox->getChildConditionBlock($id);
     }
 
     /**
-     * @return mixed
+     * @return ConditionBlock
      */
-    public function getConditionsBox()
+    public function getConditionBlock()
     {
         return $this->conditionsBox;
     }

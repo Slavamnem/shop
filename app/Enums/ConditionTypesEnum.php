@@ -7,18 +7,24 @@ use App\Components\ShareConditions\Factory\FullShareConditionsFactory;
 use App\Components\ShareConditions\Factory\TimeShareConditionsFactory;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 
-class ConditionTypesEnum extends AbstractEnum //TODO разобраться в энамах общая страутура, статика или нет, как возвращать классы привязанные
+class ConditionTypesEnum extends AbstractEnum //TODO разобраться в енамах общая структура, статика или нет, как возвращать классы привязанные
 {
     public const BASE = 'base';
     public const FULL = 'full';
     public const TIME = 'time';
 
+    /**
+     * @var array
+     */
     private $enums = [
         self::BASE => 'Базовый',
         self::FULL => 'Расширенный',
         self::TIME => 'Временный',
     ];
 
+    /**
+     * @var array
+     */
     private $enumsFactory = [
         self::BASE => BaseShareConditionsFactory::class,
         self::FULL => FullShareConditionsFactory::class,
