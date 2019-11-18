@@ -9,14 +9,14 @@ use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 
 class ConditionTypesEnum extends AbstractEnum //TODO разобраться в енамах общая структура, статика или нет, как возвращать классы привязанные
 {
-    public const BASE = 'base';
-    public const FULL = 'full';
-    public const TIME = 'time';
+    public const BASE = 1;
+    public const FULL = 2;
+    public const TIME = 3;
 
     /**
      * @var array
      */
-    private $enums = [
+    protected $enums = [
         self::BASE => 'Базовый',
         self::FULL => 'Расширенный',
         self::TIME => 'Временный',
@@ -25,7 +25,7 @@ class ConditionTypesEnum extends AbstractEnum //TODO разобраться в �
     /**
      * @var array
      */
-    private $enumsFactory = [
+    protected $enumsFactory = [
         self::BASE => BaseShareConditionsFactory::class,
         self::FULL => FullShareConditionsFactory::class,
         self::TIME => TimeShareConditionsFactory::class,
@@ -36,7 +36,8 @@ class ConditionTypesEnum extends AbstractEnum //TODO разобраться в �
      */
     public function getTypeFactory()
     {
-        return new (array_get($this->enumsFactory, $this->getValue()));
+        $factoryClass = array_get($this->enumsFactory, $this->getValue());
+        return new $factoryClass;
     }
 
     /**

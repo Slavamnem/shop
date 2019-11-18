@@ -13,7 +13,7 @@ interface ShareConditionsFactory
     /**
      * @return ConditionBox
      */
-    public function getConditionBox() : ConditionBox;
+    public function getConditionBox() : ConditionBlock;
 
     /**
      * @return ConditionBlock

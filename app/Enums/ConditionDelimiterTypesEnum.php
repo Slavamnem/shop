@@ -39,6 +39,7 @@ class ConditionDelimiterTypesEnum extends AbstractEnum
      */
     public static function getClass($key)
     {
-        return new (self::ENUM_CLASSES[$key]);
+        $delimiterClass = self::ENUM_CLASSES[$key];
+        return new $delimiterClass;
     }
 }

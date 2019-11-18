@@ -10,7 +10,9 @@ use App\Events\NewOrderEvent;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use App\Services\Admin\ConditionsService;
 use App\Services\ElasticSearchService;
+use App\Share;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Http\Request;
@@ -34,6 +36,63 @@ use NotificationChannels\Telegram\TelegramChannel;
 
 class LearnController extends Controller
 {
+    public function cond()
+    {
+        dump('cond');
+
+        $conditionsData = [
+            'id' => 23421421,
+            'pid' => 0,
+            'delimiter' => 'or',
+            'entity' => 'box',
+            'type_id' => 1, //base
+            'active_from' => '',
+            'active_to' => '',
+            'conditionBlocks' => [
+                [
+                    'id' => 543534,
+                    'pid' => 23421421,
+                    'entity' => 'condition',
+                    'type_id' => 3, //time
+                    'field' => 'id',
+                    'operation_id' => 1,
+                    'value' => 3,
+                    'active_from' => '2019-10-10 12:00:00',
+                    'active_to' => '2019-15-12 12:00:00',
+                ],
+                [
+                    'id' => 4234234,
+                    'pid' => 23421421,
+                    'delimiter' => 'and',
+                    'entity' => 'box',
+                    'type_id' => 3, //base
+                    'active_from' => '2019-10-10 12:00:00',
+                    'active_to' => '2019-15-12 12:00:00',
+                    'conditionBlocks' => [
+                        [
+                            'id' => 635345,
+                            'pid' => 4234234,
+                            'entity' => 'condition',
+                            'type_id' => 1, //base
+                            'field' => 'base_price',
+                            'operation_id' => 2,
+                            'value' => 400,
+                            'active_from' => '',
+                            'active_to' => '',
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        Share::find(6)->update(['conditions' => $conditionsData]);
+
+        $conditionsData = Share::find(6)->conditions;
+        dump($conditionsData);
+
+        resolve(ConditionsService::class)->getExistingConditionsV2(Share::find(6));
+    }
+
     public function drop()
     {
         try {

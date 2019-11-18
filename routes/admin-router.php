@@ -300,6 +300,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
 ///
 Route::group(['prefix' => "learn"], function(){
     Route::any("test", "LearnController@storageLearn");
+    Route::any("cond", "LearnController@cond");
     Route::any("lang", "LearnController@lang");
     Route::any("email", "LearnController@email");
     Route::any("pagination", "LearnController@pagination");

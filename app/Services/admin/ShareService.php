@@ -41,7 +41,7 @@ class ShareService implements ShareServiceInterface
      * @param ShareRequest $request
      * @return mixed|void
      */
-    public function setConditions(Share $share, ShareRequest $request)
+    public function setConditions(Share $share, ShareRequest $request) //TODO отдельные сервисы для сохранения условий и определения цены товара
     {
         $conditionsData = [];
 

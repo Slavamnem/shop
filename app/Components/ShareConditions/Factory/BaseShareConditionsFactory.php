@@ -21,9 +21,9 @@ use App\Components\ShareConditions\OperationLists\BaseOperationList;
 class BaseShareConditionsFactory implements ShareConditionsFactory
 {
     /**
-     * @return ConditionBox
+     * @return ConditionBlock
      */
-    public function getConditionBox(): ConditionBox
+    public function getConditionBox(): ConditionBlock
     {
         return new BaseConditionBox();
     }

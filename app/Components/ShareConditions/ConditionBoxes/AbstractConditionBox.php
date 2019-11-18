@@ -141,9 +141,9 @@ abstract class AbstractConditionBox implements ConditionBlock
 
     /**
      * @param ConditionsFieldsListInterface $fieldsList
-     * @return AbstractConditionBox
+     * @return ConditionBlock
      */
-    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): AbstractConditionBox
+    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): ConditionBlock
     {
         $this->fieldsList = $fieldsList;
         return $this;
@@ -164,5 +164,6 @@ abstract class AbstractConditionBox implements ConditionBlock
     public function setOperationsList(OperationList $operationsList): ConditionBlock
     {
         $this->operationsList = $operationsList;
+        return $this;
     }
 }
