@@ -62,12 +62,12 @@ class ShareConditionsAdapter
     }
 
     /**
-     * @param ConditionBlock $conditionBlock
+     * @param array $conditionBlockData
      * @return \Illuminate\Support\Collection
      */
-    public function getChildConditionsBlocksData(ConditionBlock $conditionBlock)
+    public function getChildConditionsBlocksData($conditionBlockData)
     {
-        return collect();
+        return array_get($conditionBlockData, 'conditionBlocks', []);
     }
 
     /**
@@ -77,13 +77,16 @@ class ShareConditionsAdapter
      */
     public function createConditionBlockFromData(ShareConditionsFactory $factory, $childBlockData) //TODO
     {
-        if ($childBlockData['entity'] == 'condition') {
+        if (array_get($childBlockData, 'entity') == 'condition') {
             return $factory->getCondition()
-                ->setId($childBlockData['id'])
-                ->setParentId($childBlockData['pid'])
+                ->setId(array_get($childBlockData, 'id'))
+                ->setParentId(array_get($childBlockData, 'pid'))
+                ->setField(array_get($childBlockData, 'field'))
+                ->setOperation(array_get($childBlockData, 'operation_id'))
+                ->setCurrentValue(array_get($childBlockData, 'value'))
                 ->setFieldsList($factory->getFieldsList())
                 ->setOperationsList($factory->getOperationList());
-        } elseif ($childBlockData['entity'] == 'box') {
+        } elseif (array_get($childBlockData, 'entity') == 'box') {
             return $factory->getConditionBox();
         }
 

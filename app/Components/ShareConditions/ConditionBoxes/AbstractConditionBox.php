@@ -11,11 +11,12 @@ namespace App\Components\ShareConditions\ConditionBoxes;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ConditionBox;
 use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
+use App\Components\ShareConditions\Interfaces\ConditionStatus;
 use App\Components\ShareConditions\Interfaces\Delimiter;
 use App\Components\ShareConditions\Interfaces\OperationList;
 use Illuminate\Support\Collection;
 
-abstract class AbstractConditionBox implements ConditionBlock
+abstract class AbstractConditionBox implements ConditionBlock //TODO сделать AbstractConditionBlock реализованными общими методоми и пустышками различнми
 {
     /**
      * @var
@@ -154,7 +155,7 @@ abstract class AbstractConditionBox implements ConditionBlock
      */
     public function getOperationsList(): OperationList
     {
-        return $this->operationsList;
+        return @$this->operationsList;
     }
 
     /**
@@ -164,6 +165,91 @@ abstract class AbstractConditionBox implements ConditionBlock
     public function setOperationsList(OperationList $operationsList): ConditionBlock
     {
         $this->operationsList = $operationsList;
+        return $this;
+    }
+
+    /**
+     * @param ConditionStatus $status
+     * @return ConditionBlock
+     */
+    public function changeStatus(ConditionStatus $status) : ConditionBlock
+    {
+        return $this;
+    }
+
+    /**
+     * @return ConditionStatus
+     */
+    public function getStatus() : ConditionStatus
+    {
+        return null; //TODO
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return null;
+    }
+
+    /**
+     * @param mixed $type
+     * @return ConditionBlock
+     */
+    public function setType($type) : ConditionBlock
+    {
+        return $this;
+    }
+
+    /**
+     * @param $value
+     * @return ConditionBlock
+     */
+    public function setField($value) : ConditionBlock
+    {
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getField()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOperation(): string
+    {
+        return null;
+    }
+
+    /**
+     * @param string $operation
+     * @return ConditionBlock
+     */
+    public function setOperation(string $operation): ConditionBlock
+    {
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentValue()
+    {
+        return null;
+    }
+
+    /**
+     * @param $value
+     * @return ConditionBlock
+     */
+    public function setCurrentValue($value) : ConditionBlock
+    {
         return $this;
     }
 }

@@ -8,6 +8,7 @@
 
 namespace App\Components\ShareConditions\Conditions;
 
+use App\Components\ShareConditions\ConditionBoxes\AbstractConditionBox;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
 use App\Components\ShareConditions\Interfaces\ConditionStatus;
@@ -34,7 +35,7 @@ abstract class AbstractCondition implements ConditionBlock
     /**
      * @var ConditionStatus
      */
-    protected $status;
+    protected $status; //TODO
     /**
      * @var
      */
@@ -108,9 +109,9 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param ConditionStatus $status
-     * @return $this
+     * @return ConditionBlock
      */
-    public function changeStatus(ConditionStatus $status)
+    public function changeStatus(ConditionStatus $status) : ConditionBlock
     {
         $this->status = $status;
         return $this;
@@ -134,9 +135,9 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param mixed $type
-     * @return AbstractCondition
+     * @return ConditionBlock
      */
-    public function setType($type)
+    public function setType($type) : ConditionBlock
     {
         $this->type = $type;
         return $this;
@@ -144,9 +145,9 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param $value
-     * @return $this
+     * @return ConditionBlock
      */
-    public function setField($value)
+    public function setField($value) : ConditionBlock
     {
         $this->field = $value;
         return $this;
@@ -170,9 +171,9 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param string $operation
-     * @return AbstractCondition
+     * @return ConditionBlock
      */
-    public function setOperation(string $operation): AbstractCondition
+    public function setOperation(string $operation): ConditionBlock
     {
         $this->operation = $operation;
         return $this;
@@ -188,9 +189,9 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param $value
-     * @return $this
+     * @return ConditionBlock
      */
-    public function setCurrentValue($value)
+    public function setCurrentValue($value) : ConditionBlock
     {
         $this->currentValue = $value;
         return $this;
@@ -267,6 +268,15 @@ abstract class AbstractCondition implements ConditionBlock
     }
 
     /**
+     * @param $id
+     * @return ConditionBlock
+     */
+    public function getChildConditionBlock($id) : ConditionBlock
+    {
+        return $this;
+    }
+
+    /**
      * @param ConditionBlock $condition
      * @return $this|ConditionBlock
      */
@@ -275,10 +285,10 @@ abstract class AbstractCondition implements ConditionBlock
     }
 
     /**
-     * @param $id
-     * @return ConditionBlock|null
+     * @param $blockData
+     * @return ConditionBlock
      */
-    public function getChildConditionBlock($id) : ConditionBlock
+    public function getChildBlockData($blockData) : ConditionBlock
     {
         return null;
     }

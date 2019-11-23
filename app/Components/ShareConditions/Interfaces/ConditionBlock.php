@@ -35,6 +35,61 @@ interface ConditionBlock
     public function setParentId($id);
 
     /**
+     * @param ConditionStatus $status
+     * @return ConditionBlock
+     */
+    public function changeStatus(ConditionStatus $status) : ConditionBlock;
+
+    /**
+     * @return ConditionStatus
+     */
+    public function getStatus() : ConditionStatus;
+
+    /**
+     * @return mixed
+     */
+    public function getType();
+
+    /**
+     * @param mixed $type
+     * @return ConditionBlock
+     */
+    public function setType($type) : ConditionBlock;
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setField($value);
+
+    /**
+     * @return mixed
+     */
+    public function getField();
+
+    /**
+     * @return string
+     */
+    public function getOperation(): string;
+
+    /**
+     * @param string $operation
+     * @return ConditionBlock
+     */
+    public function setOperation(string $operation): ConditionBlock;
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentValue();
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setCurrentValue($value);
+
+    /**
      * @param ConditionBlock $conditionBlock
      * @return ConditionBlock
      */

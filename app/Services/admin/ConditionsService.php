@@ -85,8 +85,10 @@ class ConditionsService
         //TODO продумать обход
         foreach ($childData as $childBlockData) {
             $childBlock = $shareConditionsAdapter->createConditionBlockFromData($factory, $childBlockData);
+            //dump($childBlock);
+            dump(@$childBlock->getOperationsList()->getList());
 
-            $this->setConditionBlockChild($share, $childBlock, $factory, $childBlockData);
+            $this->setConditionBlockChild($share, $childBlock, $factory, (array)@$childBlockData['conditionBlocks']);
 
             $conditionBlock->addChildConditionBlock($childBlock);
         }
