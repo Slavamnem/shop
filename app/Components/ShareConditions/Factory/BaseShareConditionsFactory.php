@@ -11,37 +11,38 @@ namespace App\Components\ShareConditions\Factory;
 use App\Components\ShareConditions\ConditionBoxes\BaseConditionBox;
 use App\Components\ShareConditions\Conditions\BaseCondition;
 use App\Components\ShareConditions\ConditionsFieldsList;
+use App\Components\ShareConditions\Interfaces\Condition;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ConditionBox;
 use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
-use App\Components\ShareConditions\Interfaces\OperationList;
+use App\Components\ShareConditions\Interfaces\OperationsList;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
-use App\Components\ShareConditions\OperationLists\BaseOperationList;
+use App\Components\ShareConditions\OperationLists\BaseOperationsList;
 
 class BaseShareConditionsFactory implements ShareConditionsFactory
 {
     /**
-     * @return ConditionBlock
+     * @return ConditionBox
      */
-    public function getConditionBox(): ConditionBlock
+    public function getConditionBox(): ConditionBox
     {
         return new BaseConditionBox();
     }
 
     /**
-     * @return ConditionBlock
+     * @return Condition
      */
-    public function getCondition(): ConditionBlock
+    public function getCondition(): Condition
     {
         return new BaseCondition();
     }
 
     /**
-     * @return OperationList
+     * @return OperationsList
      */
-    public function getOperationList(): OperationList
+    public function getOperationList(): OperationsList
     {
-        return new BaseOperationList();
+        return new BaseOperationsList();
     }
 
     /**

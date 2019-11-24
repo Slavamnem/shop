@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Adapters\Interfaces\ShareConditionsAdapterInterface;
+use App\Adapters\ShareConditionsAdapter;
 use App\Builders\ConditionsBuilder;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
@@ -156,6 +158,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
         $this->app->singleton(NewYorkTimesServiceInterface::class, NewYorkTimesService::class);
         $this->app->singleton(ExcelServiceInterface::class, ExcelService::class);
+
+        $this->app->singleton(ShareConditionsAdapterInterface::class, ShareConditionsAdapter::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

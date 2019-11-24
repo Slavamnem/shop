@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Adapters\Interfaces\ShareConditionsAdapterInterface;
 use App\Adapters\ShareConditionsAdapter;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Builders\ShareConditionBuilder;
@@ -9,8 +10,10 @@ use App\Category;
 use App\Color;
 use App\Components\Condition;
 use App\Components\ConditionsBox;
+use App\Components\ShareConditions\ConditionBoxes\AbstractConditionBox;
 use App\Components\ShareConditions\Conditions\AbstractCondition;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\Interfaces\ConditionBox;
 use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
 use App\ConditionOperation;
@@ -49,6 +52,10 @@ class ConditionsService
      * @var ConditionStrategy
      */
     private $conditionsStrategy;
+    /**
+     * @var ShareConditionsAdapterInterface
+     */
+    private $shareConditionsAdapter;
 
     /**
      * ConditionsService constructor.
@@ -66,68 +73,19 @@ class ConditionsService
         $this->conditionsBoxBuilder = $builder;
         $this->conditionsStrategy = new ConditionStrategy();
 
-        $this->loadData();
+        $this->loadData(); //TODO remove
     }
 
     /**
-     * @param Share $share
-     * @param ConditionBlock $conditionBlock
-     * @param ShareConditionsFactory $factory
+     * @param ShareConditionsAdapterInterface $shareConditionsAdapter
      */
-    private function setConditionBlockChild(Share $share, ConditionBlock $conditionBlock, ShareConditionsFactory $factory, $childData) //TODO params
-    {
-        if ($conditionBlock instanceof AbstractCondition) {
-            return;
-        }
-
-        $shareConditionsAdapter = new ShareConditionsAdapter($share);
-
-        //TODO продумать обход
-        foreach ($childData as $childBlockData) {
-            $childBlock = $shareConditionsAdapter->createConditionBlockFromData($factory, $childBlockData);
-            //dump($childBlock);
-            dump(@$childBlock->getOperationsList()->getList());
-
-            $this->setConditionBlockChild($share, $childBlock, $factory, (array)@$childBlockData['conditionBlocks']);
-
-            $conditionBlock->addChildConditionBlock($childBlock);
-        }
-    }
-
-    /**
-     * @param $share
-     * @return mixed
-     */
-    public function getExistingConditionsV2($share) // TODO adapter that will give me conditions data from share
+    public function getExistingConditionsV2(ShareConditionsAdapterInterface $shareConditionsAdapter)
     {
         // Решить будут ли все блоки одного типа - тогда ребенку передается список и операции родителя или внутренний блок может не соответсвовать внешнему
-        $shareConditionsAdapter = new ShareConditionsAdapter($share);
+        $conditionBox = $shareConditionsAdapter->createConditionBox();
 
-        $factory = ConditionTypesEnum::CREATE($shareConditionsAdapter->getMainBlockTypeId())->getTypeFactory();
-
-        $this->conditionsBoxBuilder
-            ->createBox($factory)
-            ->setBoxId($shareConditionsAdapter->getMainBlockId())
-            ->setDelimiter(ConditionDelimiterTypesEnum::getClass($shareConditionsAdapter->getMainBlockDelimiter()));
-
-
-        $this->setConditionBlockChild($share, $this->conditionsBoxBuilder->getConditionBlock(), $factory, $shareConditionsAdapter->getMainBlockChildData());
-        dd($this->conditionsBoxBuilder->getConditionBlock());
-        ////////////////////////////////////////// old
-
-
-    /*
-        $this->conditionsBoxBuilder->setDelimiter($this->getConditionsDelimiter($share));
-        $this->conditionsBoxBuilder->setConditionsList($this->getConditionsList());
-        $this->conditionsBoxBuilder->setOperationsList($this->getOperationsList());
-
-        foreach ($share->conditions as $id => $conditionData) {
-            $this->conditionsBoxBuilder->addCondition(Condition::createFromShareData($id, $conditionData));
-            $this->conditionsBoxBuilder->setValuesList($id, $this->getValuesList($conditionData[array_keys($conditionData)[0]]["field"]));
-        }
-
-        return $this->conditionsBoxBuilder->getConditionsBox();
-    */
+        dump($conditionBox);
+        dump($conditionBox->show());
     }
 
     /**

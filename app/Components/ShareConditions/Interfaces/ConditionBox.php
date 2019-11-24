@@ -8,7 +8,9 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
-interface ConditionBox extends ConditionBlock //TODO condition interface
+use Illuminate\Support\Collection;
+
+interface ConditionBox extends ConditionBlock
 {
     /**
      * @return Delimiter
@@ -20,4 +22,20 @@ interface ConditionBox extends ConditionBlock //TODO condition interface
      * @return ConditionBox
      */
     public function setDelimiter(Delimiter $delimiter): ConditionBox;
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getChildren() : Collection;
+
+    /**
+     * @param ConditionBlock $conditionBlock
+     */
+    public function addChild(ConditionBlock $conditionBlock);
+
+    /**
+     * @param $id
+     * @return ConditionBlock
+     */
+    public function getChildById($id) : ConditionBlock;
 }

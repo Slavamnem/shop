@@ -8,26 +8,67 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
-interface Condition
+use Illuminate\Support\Collection;
+
+interface Condition extends ConditionBlock
 {
-    /**
-     * @param int $value
-     * @return $this
-     */
-    public function setId($value);
-
-    /**
-     * @return int
-     */
-    public function getId() : int;
-
     /**
      * @return string
      */
     public function getField();
 
     /**
-     * @return array
+     * @param $value
+     * @return Condition
      */
-    public function getOperations() : array;
+    public function setField($value) : Condition;
+
+    /**
+     * @return string
+     */
+    public function getOperationId(): string;
+
+    /**
+     * @param string $id
+     * @return Condition
+     */
+    public function setOperationId($id): Condition;
+
+    /**
+     * @return string
+     */
+    public function getValue();
+
+    /**
+     * @param $value
+     * @return Condition
+     */
+    public function setValue($value) : Condition;
+
+    /**
+     * @return ConditionsFieldsListInterface
+     */
+    public function getFieldsList(): ConditionsFieldsListInterface;
+
+    /**
+     * @param ConditionsFieldsListInterface $fieldsList
+     * @return Condition
+     */
+    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): Condition;
+
+    /**
+     * @return OperationsList
+     */
+    public function getOperationsList(): OperationsList;
+
+    /**
+     * @param OperationsList $operationsList
+     * @return Condition
+     */
+    public function setOperationsList(OperationsList $operationsList): Condition;
+
+    /**
+     * @return Collection
+     */
+    public function getValuesList() : Collection;
 }

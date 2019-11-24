@@ -2,24 +2,20 @@
 
 namespace App\Components\ShareConditions\ShareConditionBuilders;
 
-use App\Builders\Interfaces\ConditionsBuilderInterface;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ConditionBox;
-use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
 use App\Components\ShareConditions\Interfaces\Delimiter;
-use App\Components\ShareConditions\Interfaces\OperationList;
 use App\Components\ShareConditions\Interfaces\ShareConditionBuilderInterface;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
-use Illuminate\Support\Collection;
 
-class ShareConditionBuilder implements ShareConditionBuilderInterface
+class ShareConditionBuilder implements ShareConditionBuilderInterface //unused
 {
     /**
      * @var ShareConditionsFactory
      */
     private $factory;
     /**
-     * @var ConditionBlock
+     * @var ConditionBox
      */
     private $conditionsBox;
 
@@ -31,9 +27,7 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
     {
         $this->factory = $factory;
 
-        $this->conditionsBox = $this->factory->getConditionBox()
-            ->setFieldsList($this->factory->getFieldsList())
-            ->setOperationsList($this->factory->getOperationList());
+        $this->conditionsBox = $this->factory->getConditionBox();
 
         return $this;
     }
@@ -52,9 +46,9 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      * @param $id
      * @return $this
      */
-    public function setParentId($id)
+    public function setBoxPid($id)
     {
-        $this->conditionsBox->setId($id);
+        $this->conditionsBox->setPid($id);
         return $this;
     }
 
@@ -62,7 +56,7 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      * @param Delimiter $delimiter
      * @return $this
      */
-    public function setDelimiter(Delimiter $delimiter)
+    public function setBoxDelimiter(Delimiter $delimiter)
     {
         $this->conditionsBox->setDelimiter($delimiter);
         return $this;
@@ -72,57 +66,26 @@ class ShareConditionBuilder implements ShareConditionBuilderInterface
      * @param ConditionBlock $conditionBlock
      * @return $this|ShareConditionBuilderInterface
      */
-    public function addConditionBlock(ConditionBlock $conditionBlock)
+    public function addBoxChild(ConditionBlock $conditionBlock)
     {
-        $this->conditionsBox->addChildConditionBlock(
-            $conditionBlock
-                ->setFieldsList($this->factory->getFieldsList())
-                ->setOperationsList($this->factory->getOperationList())
-        );
+        $this->conditionsBox->addChild($conditionBlock);
 
         return $this;
-    }
-
-    /**
-     * @param ConditionsFieldsListInterface $conditionsList
-     * @return $this
-     */
-    public function setFieldsList(ConditionsFieldsListInterface $conditionsList) //TODO maybe will be unused
-    {
-        $this->conditionsBox->setFieldsList($conditionsList);
-        return $this;
-    }
-
-    /**
-     * @param OperationList $operationsList
-     */
-    public function setOperationsList(OperationList $operationsList) //TODO maybe will be unused
-    {
-        $this->conditionsBox->setOperationsList($operationsList);
-    }
-
-    /**
-     * @param $id
-     * @param $valuesList
-     */
-    public function setValuesList($id, $valuesList) //TODO
-    {
-        //$this->getChildConditionBlock($id)->setValuesList($valuesList);
     }
 
     /**
      * @param $id
      * @return ConditionBlock|null
      */
-    public function getChildConditionBlock($id)
+    public function getChild($id)
     {
-        return $this->conditionsBox->getChildConditionBlock($id);
+        return $this->conditionsBox->getChildById($id);
     }
 
     /**
-     * @return ConditionBlock
+     * @return ConditionBox
      */
-    public function getConditionBlock()
+    public function getConditionBox()
     {
         return $this->conditionsBox;
     }

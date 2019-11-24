@@ -8,11 +8,13 @@
 
 namespace App\Components\ShareConditions\Factory;
 
+use App\Components\ShareConditions\ConditionsFieldsList;
 use App\Components\ShareConditions\Interfaces\Condition;
 use App\Components\ShareConditions\Interfaces\ConditionBox;
-use App\Components\ShareConditions\Interfaces\OperationList;
+use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
+use App\Components\ShareConditions\Interfaces\OperationsList;
 use App\Components\ShareConditions\Interfaces\ShareConditionsFactory;
-use App\Components\ShareConditions\OperationLists\FullOperationList;
+use App\Components\ShareConditions\OperationLists\FullOperationsList;
 
 class FullShareConditionsFactory implements ShareConditionsFactory
 {
@@ -33,10 +35,18 @@ class FullShareConditionsFactory implements ShareConditionsFactory
     }
 
     /**
-     * @return OperationList
+     * @return OperationsList
      */
-    public function getOperationList(): OperationList
+    public function getOperationList(): OperationsList
     {
-        return new FullOperationList();
+        return new FullOperationsList();
+    }
+
+    /**
+     * @return ConditionsFieldsListInterface
+     */
+    public function getFieldsList() : ConditionsFieldsListInterface
+    {
+        return new ConditionsFieldsList();
     }
 }

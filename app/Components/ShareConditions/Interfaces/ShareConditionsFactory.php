@@ -13,17 +13,17 @@ interface ShareConditionsFactory
     /**
      * @return ConditionBox
      */
-    public function getConditionBox() : ConditionBlock;
+    public function getConditionBox() : ConditionBox;
 
     /**
-     * @return ConditionBlock
+     * @return Condition
      */
-    public function getCondition() : ConditionBlock;
+    public function getCondition() : Condition;
 
     /**
-     * @return OperationList
+     * @return OperationsList
      */
-    public function getOperationList() : OperationList;
+    public function getOperationList() : OperationsList;
 
     /**
      * @return ConditionsFieldsListInterface

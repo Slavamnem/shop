@@ -8,10 +8,10 @@
 
 namespace App\Components\ShareConditions\OperationLists;
 
-use App\Components\ShareConditions\Interfaces\OperationList;
+use App\Components\ShareConditions\Interfaces\OperationsList;
 use App\ConditionOperation;
 
-class BaseOperationList implements OperationList
+class BaseOperationsList implements OperationsList
 {
     /**
      * @return array

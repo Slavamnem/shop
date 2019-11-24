@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Adapters\ShareConditionsAdapter;
 use App\Color;
 use App\Components\RestApi\Exchange;
 use App\Components\RestApi\NewYorkTimes;
@@ -48,7 +49,7 @@ class LearnController extends Controller
             'type_id' => 1, //base
             'active_from' => '',
             'active_to' => '',
-            'conditionBlocks' => [
+            'children' => [
                 [
                     'id' => 543534,
                     'pid' => 23421421,
@@ -68,7 +69,7 @@ class LearnController extends Controller
                     'type_id' => 3, //base
                     'active_from' => '2019-10-10 12:00:00',
                     'active_to' => '2019-15-12 12:00:00',
-                    'conditionBlocks' => [
+                    'children' => [
                         [
                             'id' => 635345,
                             'pid' => 4234234,
@@ -90,7 +91,7 @@ class LearnController extends Controller
         $conditionsData = Share::find(6)->conditions;
         dump($conditionsData);
 
-        resolve(ConditionsService::class)->getExistingConditionsV2(Share::find(6));
+        resolve(ConditionsService::class)->getExistingConditionsV2(new ShareConditionsAdapter(Share::find(6)));
     }
 
     public function drop()

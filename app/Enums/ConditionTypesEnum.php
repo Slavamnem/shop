@@ -36,7 +36,7 @@ class ConditionTypesEnum extends AbstractEnum //TODO разобраться в �
      */
     public function getTypeFactory()
     {
-        $factoryClass = array_get($this->enumsFactory, $this->getValue());
+        $factoryClass = array_get($this->enumsFactory, $this->getValue(), \stdClass::class);
         return new $factoryClass;
     }
 

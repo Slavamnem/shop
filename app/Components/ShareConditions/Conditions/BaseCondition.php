@@ -14,6 +14,6 @@ class BaseCondition extends AbstractCondition implements ConditionBlock
 {
     public function show()
     {
-        return 'Hi its BaseCondition';
+        dump('Hi its BaseCondition' . ' My id is: ' . $this->getId());
     }
 }

@@ -8,34 +8,16 @@
 
 namespace App\Components\ShareConditions\Conditions;
 
-use App\Components\ShareConditions\ConditionBoxes\AbstractConditionBox;
-use App\Components\ShareConditions\Interfaces\ConditionBlock;
+use App\Components\ShareConditions\AbstractConditionBlock;
+use App\Components\ShareConditions\Interfaces\Condition;
 use App\Components\ShareConditions\Interfaces\ConditionsFieldsListInterface;
-use App\Components\ShareConditions\Interfaces\ConditionStatus;
-use App\Components\ShareConditions\Interfaces\Delimiter;
-use App\Components\ShareConditions\Interfaces\OperationList;
+use App\Components\ShareConditions\Interfaces\OperationsList;
 use App\Strategies\Conditions\ConditionStrategy;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
-abstract class AbstractCondition implements ConditionBlock
+abstract class AbstractCondition extends AbstractConditionBlock implements Condition
 {
-    /**
-     * @var
-     */
-    protected $id;
-    /**
-     * @var
-     */
-    protected $parentId;
-    /**
-     * @var
-     */
-    protected $type; //TODO unused?
-    /**
-     * @var ConditionStatus
-     */
-    protected $status; //TODO
     /**
      * @var
      */
@@ -43,11 +25,11 @@ abstract class AbstractCondition implements ConditionBlock
     /**
      * @var string
      */
-    protected $operation;
+    protected $operationId;
     /**
      * @var
      */
-    private $currentValue;
+    private $value;
     /**
      * @var StrategyInterface
      */
@@ -57,7 +39,7 @@ abstract class AbstractCondition implements ConditionBlock
      */
     private $fieldsList;
     /**
-     * @var OperationList
+     * @var OperationsList
      */
     private $operationsList;
 
@@ -66,91 +48,7 @@ abstract class AbstractCondition implements ConditionBlock
      */
     public function __construct()
     {
-        $this->conditionsStrategy = new ConditionStrategy();
-    }
-
-    abstract function show();
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setId($value)
-    {
-        $this->id = $value;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /*
-     * @return mixed
-     */
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
-
-    /**
-     * @param $id
-     * @return ConditionBlock
-     */
-    public function setParentId($id)
-    {
-        $this->parentId = $id;
-        return $this;
-    }
-
-    /**
-     * @param ConditionStatus $status
-     * @return ConditionBlock
-     */
-    public function changeStatus(ConditionStatus $status) : ConditionBlock
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return ConditionStatus
-     */
-    public function getStatus() : ConditionStatus
-    {
-        return $this->status;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param mixed $type
-     * @return ConditionBlock
-     */
-    public function setType($type) : ConditionBlock
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * @param $value
-     * @return ConditionBlock
-     */
-    public function setField($value) : ConditionBlock
-    {
-        $this->field = $value;
-        return $this;
+        $this->conditionsStrategy = new ConditionStrategy();//TODO di
     }
 
     /**
@@ -162,47 +60,49 @@ abstract class AbstractCondition implements ConditionBlock
     }
 
     /**
-     * @return string
+     * @param $value
+     * @return Condition
      */
-    public function getOperation(): string
+    public function setField($value) : Condition
     {
-        return $this->operation;
+        $this->field = $value;
+        return $this;
     }
 
     /**
-     * @param string $operation
-     * @return ConditionBlock
+     * @return string
      */
-    public function setOperation(string $operation): ConditionBlock
+    public function getOperationId(): string
     {
-        $this->operation = $operation;
+        return $this->operationId;
+    }
+
+    /**
+     * @param $id
+     * @return Condition
+     */
+    public function setOperationId($id): Condition
+    {
+        $this->operationId = $id;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getCurrentValue()
+    public function getValue()
     {
-        return $this->currentValue;
+        return $this->value;
     }
 
     /**
      * @param $value
-     * @return ConditionBlock
+     * @return Condition
      */
-    public function setCurrentValue($value) : ConditionBlock
+    public function setValue($value) : Condition
     {
-        $this->currentValue = $value;
+        $this->value = $value;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValuesList()
-    {
-        return $this->conditionsStrategy->getStrategy($this->getType())->getValues();
     }
 
     /**
@@ -215,81 +115,37 @@ abstract class AbstractCondition implements ConditionBlock
 
     /**
      * @param ConditionsFieldsListInterface $fieldsList
-     * @return ConditionBlock
+     * @return Condition
      */
-    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): ConditionBlock
+    public function setFieldsList(ConditionsFieldsListInterface $fieldsList): Condition
     {
         $this->fieldsList = $fieldsList;
         return $this;
     }
 
     /**
-     * @return OperationList
+     * @return OperationsList
      */
-    public function getOperationsList(): OperationList
+    public function getOperationsList(): OperationsList
     {
         return $this->operationsList;
     }
 
     /**
-     * @param OperationList $operationsList
-     * @return ConditionBlock
+     * @param OperationsList $operationsList
+     * @return Condition
      */
-    public function setOperationsList(OperationList $operationsList): ConditionBlock
+    public function setOperationsList(OperationsList $operationsList): Condition
     {
         $this->operationsList = $operationsList;
         return $this;
     }
 
     /**
-     * @return Delimiter|null
+     * @return Collection
      */
-    public function getDelimiter(): Delimiter{
-        return null;
-    }
-
-    /**
-     * @param Delimiter $delimiter
-     * @return ConditionBlock
-     */
-    public function setDelimiter(Delimiter $delimiter): ConditionBlock
+    public function getValuesList() : Collection
     {
-        return $this;
-    }
-
-    ////////////
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getChildConditionBlocks() : Collection
-    {
-        return collect();
-    }
-
-    /**
-     * @param $id
-     * @return ConditionBlock
-     */
-    public function getChildConditionBlock($id) : ConditionBlock
-    {
-        return $this;
-    }
-
-    /**
-     * @param ConditionBlock $condition
-     * @return $this|ConditionBlock
-     */
-    public function addChildConditionBlock(ConditionBlock $condition){
-        return $this;
-    }
-
-    /**
-     * @param $blockData
-     * @return ConditionBlock
-     */
-    public function getChildBlockData($blockData) : ConditionBlock
-    {
-        return null;
+        return $this->conditionsStrategy->getStrategy($this->getType())->getValues();
     }
 }

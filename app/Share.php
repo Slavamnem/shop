@@ -5,6 +5,14 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string name
+ * @property string slug
+ * @property array conditions
+ *
+ * Class Share
+ * @package App
+ */
 class Share extends Model
 {
     protected $fillable = [

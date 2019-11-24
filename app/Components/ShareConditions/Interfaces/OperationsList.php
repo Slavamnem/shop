@@ -8,7 +8,7 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
-interface OperationList
+interface OperationsList
 {
     /**
      * @return array
