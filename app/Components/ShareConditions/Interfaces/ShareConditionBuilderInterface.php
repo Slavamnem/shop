@@ -2,63 +2,17 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
-use App\Components\Condition;
-use App\Components\ConditionsBox;
+use App\Adapters\Interfaces\ShareConditionsAdapterInterface;
 
 interface ShareConditionBuilderInterface
 {
     /**
-     * @param ShareConditionsFactory $factory
+     * @param ShareConditionsAdapterInterface $shareConditionsAdapter
      * @return $this
      */
-    public function createBox(ShareConditionsFactory $factory);
+    public function createEmptyBox(ShareConditionsAdapterInterface $shareConditionsAdapter);
 
-    /**
-     * @param $id
-     * @return $this
-     */
-    public function setBoxId($id);
-
-    /**
-     * @param $id
-     * @return $this
-     */
-    public function setBoxPid($id);
-
-    /**
-     * @param Delimiter $delimiter
-     * @return $this
-     */
-    public function setBoxDelimiter(Delimiter $delimiter);
-
-    /**
-     * @param ConditionBlock $conditionBlock
-     * @return $this|ShareConditionBuilderInterface
-     */
-    public function addBoxChild(ConditionBlock $conditionBlock);
-
-//    /**
-////     * @param ConditionsFieldsListInterface $conditionsList
-////     * @return $this
-////     */
-////    public function setFieldsList(ConditionsFieldsListInterface $conditionsList);
-////
-////    /**
-////     * @param OperationsList $operationsList
-////     */
-////    public function setOperationsList(OperationsList $operationsList);
-////
-////    /**
-////     * @param $id
-////     * @param $valuesList
-////     */
-////    public function setValuesList($id, $valuesList);
-
-    /**
-     * @param $id
-     * @return ConditionBlock|null
-     */
-    public function getChild($id);
+    public function fillBox();
 
     /**
      * @return ConditionBox

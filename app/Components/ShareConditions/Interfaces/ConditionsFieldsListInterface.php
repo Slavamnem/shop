@@ -16,7 +16,7 @@ interface ConditionsFieldsListInterface
     /**
      * @return ConditionsFieldsList
      */
-    public static function Instance();
+    public static function getInstance();
 
     /**
      * @return Collection

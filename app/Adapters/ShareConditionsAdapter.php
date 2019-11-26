@@ -39,24 +39,41 @@ class ShareConditionsAdapter implements ShareConditionsAdapterInterface
     }
 
     /**
-     * @return Condition|ConditionBlock|ConditionBox|mixed
+     * @return ConditionBlock
      */
-    public function createConditionBox()
+    public function createMainBox()
     {
-        return $this->createConditionBlockFromData($this->share->conditions);
+        return $this->createConditionBoxFromData($this->share->conditions);
     }
 
     /**
      * @param $conditionBlockData
      * @return ConditionBlock|Condition|ConditionBox
      */
-    public function createConditionBlockFromData($conditionBlockData)
+    public function createConditionBlock($conditionBlockData)
     {
         if (array_get($conditionBlockData, 'entity') == 'condition') {
             return $this->createConditionFromData($conditionBlockData);
         } elseif (array_get($conditionBlockData, 'entity') == 'box') {
             return $this->createConditionBoxFromData($conditionBlockData);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMainBlockChildren()
+    {
+        return array_get($this->share->conditions, 'children', []);
+    }
+
+    /**
+     * @param array $conditionBoxData
+     * @return \Illuminate\Support\Collection
+     */
+    public function getConditionBlockChildren($conditionBoxData)
+    {
+        return array_get($conditionBoxData, 'children', []);
     }
 
     /**
@@ -81,17 +98,10 @@ class ShareConditionsAdapter implements ShareConditionsAdapterInterface
      */
     private function createConditionBoxFromData($conditionBlockData)
     {
-        $conditionBox = $this->factory->getConditionBox()
+        return $this->factory->getConditionBox()
             ->setDelimiter(ConditionDelimiterTypesEnum::getClass(array_get($conditionBlockData, 'delimiter', 'and')))
             ->setId(array_get($conditionBlockData, 'id'))
             ->setPid(array_get($conditionBlockData, 'pid'));
-
-        foreach ($this->getConditionBlockChildren($conditionBlockData) as $childData)
-        {
-            $conditionBox->addChild($this->createConditionBlockFromData($childData));
-        }
-
-        return $conditionBox;
     }
 
     /**
@@ -100,15 +110,6 @@ class ShareConditionsAdapter implements ShareConditionsAdapterInterface
     private function getMainBlockTypeId()
     {
         return array_get($this->share->conditions, 'type_id', null);
-    }
-
-    /**
-     * @param array $conditionBoxData
-     * @return \Illuminate\Support\Collection
-     */
-    private function getConditionBlockChildren($conditionBoxData)
-    {
-        return array_get($conditionBoxData, 'children', []);
     }
 }
 

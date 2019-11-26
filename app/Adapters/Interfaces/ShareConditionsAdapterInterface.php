@@ -11,18 +11,28 @@ namespace App\Adapters\Interfaces;
 use App\Components\ShareConditions\Interfaces\Condition;
 use App\Components\ShareConditions\Interfaces\ConditionBlock;
 use App\Components\ShareConditions\Interfaces\ConditionBox;
-use App\Share;
 
 interface ShareConditionsAdapterInterface
 {
     /**
-     * @return mixed
+     * @return ConditionBlock
      */
-    public function createConditionBox();
+    public function createMainBox();
 
     /**
      * @param $conditionBlockData
      * @return ConditionBlock|Condition|ConditionBox
      */
-    public function createConditionBlockFromData($conditionBlockData);
+    public function createConditionBlock($conditionBlockData);
+
+    /**
+     * @return mixed
+     */
+    public function getMainBlockChildren();
+
+    /**
+     * @param array $conditionBoxData
+     * @return \Illuminate\Support\Collection
+     */
+    public function getConditionBlockChildren($conditionBoxData);
 }

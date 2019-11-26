@@ -13,15 +13,40 @@ use App\ConditionOperation;
 
 class BaseOperationsList implements OperationsList
 {
+    /*
+     * array
+     */
+    private $list;
+    /**
+     * @var BaseOperationsList
+     */
+    private static $instance;
+
+    /**
+     * @return BaseOperationsList
+     */
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     /**
      * @return array
      */
-    public function getList(): array
+    public function getList() : array
     {
-        return ConditionOperation::query()
-            ->where('extra', 0)
-            ->get()
-            ->pluck('name')
-            ->toArray();
+        if (empty($this->list)) {
+            $this->list = ConditionOperation::query()
+                ->where('extra', 0)
+                ->get()
+                ->pluck('name')
+                ->toArray();
+        }
+
+        return $this->list;
     }
 }

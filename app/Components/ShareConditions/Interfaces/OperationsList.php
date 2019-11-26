@@ -8,8 +8,15 @@
 
 namespace App\Components\ShareConditions\Interfaces;
 
+use App\Components\ShareConditions\OperationLists\BaseOperationsList;
+
 interface OperationsList
 {
+    /**
+     * @return BaseOperationsList
+     */
+    public static function getInstance();
+
     /**
      * @return array
      */

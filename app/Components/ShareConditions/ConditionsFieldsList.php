@@ -27,14 +27,10 @@ class ConditionsFieldsList implements ConditionsFieldsListInterface
     /**
      * @return ConditionsFieldsList
      */
-    public static function Instance()
+    public static function getInstance()
     {
         if (!self::$instance) {
-            $conditionsFieldsList = new self();
-            $conditionsFieldsList->addProductFields();
-            $conditionsFieldsList->addProductProperties();
-
-            self::$instance = $conditionsFieldsList;
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -45,6 +41,11 @@ class ConditionsFieldsList implements ConditionsFieldsListInterface
      */
     public function getList()
     {
+        if (empty($this->list)) {
+            $this->addProductFields();
+            $this->addProductProperties();
+        }
+
         return $this->list;
     }
 

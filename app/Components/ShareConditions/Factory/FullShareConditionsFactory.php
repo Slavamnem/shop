@@ -39,7 +39,7 @@ class FullShareConditionsFactory implements ShareConditionsFactory
      */
     public function getOperationList(): OperationsList
     {
-        return new FullOperationsList();
+        return FullOperationsList::getInstance();
     }
 
     /**
@@ -47,6 +47,6 @@ class FullShareConditionsFactory implements ShareConditionsFactory
      */
     public function getFieldsList() : ConditionsFieldsListInterface
     {
-        return new ConditionsFieldsList();
+        return ConditionsFieldsList::getInstance();
     }
 }

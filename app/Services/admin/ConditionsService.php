@@ -81,11 +81,11 @@ class ConditionsService
      */
     public function getExistingConditionsV2(ShareConditionsAdapterInterface $shareConditionsAdapter)
     {
-        // Решить будут ли все блоки одного типа - тогда ребенку передается список и операции родителя или внутренний блок может не соответсвовать внешнему
-        $conditionBox = $shareConditionsAdapter->createConditionBox();
+        $this->conditionsBoxBuilder->createEmptyBox($shareConditionsAdapter);
+        $this->conditionsBoxBuilder->fillBox();
+        dump($this->conditionsBoxBuilder->getConditionBox());
 
-        dump($conditionBox);
-        dump($conditionBox->show());
+        // Решить будут ли все блоки одного типа - тогда ребенку передается список и операции родителя или внутренний блок может не соответсвовать внешнему
     }
 
     /**

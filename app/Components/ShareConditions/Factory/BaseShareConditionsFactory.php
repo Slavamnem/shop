@@ -42,7 +42,7 @@ class BaseShareConditionsFactory implements ShareConditionsFactory
      */
     public function getOperationList(): OperationsList
     {
-        return new BaseOperationsList();
+        return BaseOperationsList::getInstance();
     }
 
     /**
@@ -50,6 +50,6 @@ class BaseShareConditionsFactory implements ShareConditionsFactory
      */
     public function getFieldsList() : ConditionsFieldsListInterface
     {
-        return new ConditionsFieldsList();
+        return ConditionsFieldsList::getInstance();
     }
 }
