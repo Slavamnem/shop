@@ -36,21 +36,20 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
 
     /**
      * FacetObjectBuilder constructor.
-     * @param CatalogProductsFilterRequest $catalogProductsFilterRequest
      */
-    private function __construct(CatalogProductsFilterRequest $catalogProductsFilterRequest)
+    public function __construct()
     {
         $this->facetObject = new FacetObject();
-        $this->catalogProductsFilterRequest = $catalogProductsFilterRequest;
     }
 
     /**
      * @param CatalogProductsFilterRequest $catalogProductsFilterRequest
-     * @return FacetObjectBuilder|FacetObjectBuilderInterface
+     * @return FacetObjectBuilderInterface
      */
-    public static function create(CatalogProductsFilterRequest $catalogProductsFilterRequest)
+    public function setCatalogProductsFilterRequest(CatalogProductsFilterRequest $catalogProductsFilterRequest)
     {
-        return new self($catalogProductsFilterRequest);
+        $this->catalogProductsFilterRequest = $catalogProductsFilterRequest;
+        return $this;
     }
 
     /**

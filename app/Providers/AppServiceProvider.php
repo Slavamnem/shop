@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Builders\ConditionsBuilder;
+use App\Builders\FacetObjectBuilder;
 use App\Builders\Interfaces\ConditionsBuilderInterface;
+use App\Builders\Interfaces\FacetObjectBuilderInterface;
 use App\Builders\Interfaces\ShareProductsQueryBuilderInterface;
 use App\Builders\ShareProductsQueryBuilder;
 use App\Components\AppCenter;
@@ -153,6 +155,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
         $this->app->singleton(NewYorkTimesServiceInterface::class, NewYorkTimesService::class);
         $this->app->singleton(ExcelServiceInterface::class, ExcelService::class);
+
+        $this->app->singleton(FacetObjectBuilderInterface::class, FacetObjectBuilder::class);
 
         $this->app->bind('conditions', ConditionsService::class);
     }

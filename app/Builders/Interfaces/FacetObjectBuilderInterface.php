@@ -12,7 +12,7 @@ interface FacetObjectBuilderInterface
      * @param CatalogProductsFilterRequest $catalogProductsFilterRequest
      * @return FacetObjectBuilderInterface
      */
-    public static function create(CatalogProductsFilterRequest $catalogProductsFilterRequest);
+    public function setCatalogProductsFilterRequest(CatalogProductsFilterRequest $catalogProductsFilterRequest);
 
     /**
      * @return $this
