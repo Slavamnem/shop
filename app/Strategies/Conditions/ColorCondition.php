@@ -7,14 +7,17 @@ use App\Color;
 class ColorCondition extends AbstractCondition
 {
     /**
-     * @return $this|AbstractCondition
+     * @param null $type
+     * @return $this|mixed
      */
-    public function setValues()
+    public function getValues($type = null)
     {
-        $this->values = Color::all()->mapWithKeys(function($color){
-            return [$color->id => $color->name];
-        });
+        if (empty($this->values)) {
+            $this->values = Color::all()->mapWithKeys(function ($color) {
+                return [$color->id => $color->name];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

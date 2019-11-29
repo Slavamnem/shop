@@ -7,14 +7,17 @@ use App\Category;
 class CategoryCondition extends AbstractCondition
 {
     /**
-     * @return $this|AbstractCondition
+     * @param null $type
+     * @return $this|mixed
      */
-    public function setValues()
+    public function getValues($type = null)
     {
-        $this->values = Category::all()->mapWithKeys(function($category){
-            return [$category->id => $category->name];
-        });
+        if (empty($this->values)) {
+            $this->values = Category::all()->mapWithKeys(function($category){
+                return [$category->id => $category->name];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

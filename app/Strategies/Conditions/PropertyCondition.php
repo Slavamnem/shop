@@ -7,27 +7,25 @@ use App\PropertyValue;
 class PropertyCondition extends AbstractCondition
 {
     /**
-     * @var
+     * @param null $type
+     * @return $this|mixed
      */
-    private $propertyId;
-
-    public function __construct($type)
+    public function getValues($type = null)
     {
-        $this->propertyId = array_get(explode("-", $type), 1);
-    }
+        dump('prop');
+        if (empty($this->values)) {
+            if ($propertyId = array_get(explode("-", $type), 1)) {
+                $this->values = PropertyValue::query()
+                    ->where('property_id', $propertyId)
+                    ->get()
+                    ->mapWithKeys(function ($propertyValue) {
+                        return [$propertyValue->id => $propertyValue->value];
+                    });
+            } else {
+                $this->values = collect();
+            }
+        }
 
-    /**
-     * @return $this|AbstractCondition
-     */
-    public function setValues()
-    {
-        $this->values = PropertyValue::query()
-            ->where('property_id', $this->propertyId)
-            ->get()
-            ->mapWithKeys(function($propertyValue){
-                return [$propertyValue->id => $propertyValue->value];
-            });
-
-        return $this;
+        return $this->values;
     }
 }

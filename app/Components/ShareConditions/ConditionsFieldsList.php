@@ -42,11 +42,12 @@ class ConditionsFieldsList implements ConditionsFieldsListInterface
     public function getList()
     {
         if (empty($this->list)) {
+            $this->list = collect();
             $this->addProductFields();
             $this->addProductProperties();
         }
 
-        return $this->list;
+        return $this->list->toArray();
     }
 
     private function addProductFields()

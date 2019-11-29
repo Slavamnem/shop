@@ -7,14 +7,17 @@ use App\Product;
 class IdCondition extends AbstractCondition
 {
     /**
-     * @return $this
+     * @param null $type
+     * @return $this|mixed
      */
-    protected function setValues()
+    public function getValues($type = null)
     {
-        $this->values = Product::all()->mapWithKeys(function($product){
-            return [$product->id => $product->name . " (id: {$product->id})"];
-        });
+        if (empty($this->values)) {
+            $this->values = Product::all()->mapWithKeys(function ($product) {
+                return [$product->id => $product->name . " (id: {$product->id})"];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

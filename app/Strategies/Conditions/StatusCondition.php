@@ -7,14 +7,17 @@ use App\ProductStatus;
 class StatusCondition extends AbstractCondition
 {
     /**
-     * @return $this|AbstractCondition
+     * @param null $type
+     * @return $this|mixed
      */
-    public function setValues()
+    public function getValues($type = null)
     {
-        $this->values = ProductStatus::all()->mapWithKeys(function($status){
-            return [$status->id => $status->name];
-        });
+        if (empty($this->values)) {
+            $this->values = ProductStatus::all()->mapWithKeys(function ($status) {
+                return [$status->id => $status->name];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

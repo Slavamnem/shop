@@ -146,6 +146,12 @@ abstract class AbstractCondition extends AbstractConditionBlock implements Condi
      */
     public function getValuesList() : Collection
     {
-        return $this->conditionsStrategy->getStrategy($this->getType())->getValues();
+        dump($this->getField());
+        dump('1');
+        dump($this->conditionsStrategy->getStrategy($this->getField()));
+        dump('4');
+        dump($this->conditionsStrategy->getStrategy($this->getField())->getValues($this->getField()));
+        //return collect([1 => 'fdf']);
+        return $this->conditionsStrategy->getStrategy($this->getField())->getValues($this->getField());
     }
 }

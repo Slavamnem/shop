@@ -24,12 +24,12 @@ class ConditionStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put('id', IdCondition::Instance());
-        $this->strategies->put('category_id', CategoryCondition::Instance());
-        $this->strategies->put('group_id', ModelCondition::Instance());
-        $this->strategies->put('status_id', StatusCondition::Instance());
-        $this->strategies->put('color_id', ColorCondition::Instance());
-        $this->strategies->put('size_id', SizeCondition::Instance());
+        $this->strategies->put('id', IdCondition::getInstance());
+        $this->strategies->put('category_id', CategoryCondition::getInstance());
+        $this->strategies->put('group_id', ModelCondition::getInstance());
+        $this->strategies->put('status_id', StatusCondition::getInstance());
+        $this->strategies->put('color_id', ColorCondition::getInstance());
+        $this->strategies->put('size_id', SizeCondition::getInstance());
     }
 
     /**
@@ -37,10 +37,13 @@ class ConditionStrategy implements StrategyInterface
      * @return mixed
      */
     public function getStrategy($type){
+        dump(2);
         if (!$this->strategies->has($type)) {
-            return new PropertyCondition($type);
+            return PropertyCondition::getInstance();
         }
+        dump(3);
 
+        dump($type);
         return $this->strategies->get($type);
     }
 }

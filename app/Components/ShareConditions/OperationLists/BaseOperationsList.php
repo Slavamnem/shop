@@ -43,7 +43,7 @@ class BaseOperationsList implements OperationsList
             $this->list = ConditionOperation::query()
                 ->where('extra', 0)
                 ->get()
-                ->pluck('name')
+                ->pluck('name', 'id')
                 ->toArray();
         }
 

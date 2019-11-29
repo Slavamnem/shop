@@ -7,14 +7,17 @@ use App\Size;
 class SizeCondition extends AbstractCondition
 {
     /**
-     * @return $this|AbstractCondition
+     * @param null $type
+     * @return $this|mixed
      */
-    public function setValues()
+    public function getValues($type = null)
     {
-        $this->values = Size::all()->mapWithKeys(function($size){
-            return [$size->id => $size->name];
-        });
+        if (empty($this->values)) {
+            $this->values = Size::all()->mapWithKeys(function ($size) {
+                return [$size->id => $size->name];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

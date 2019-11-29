@@ -14,14 +14,6 @@ class BaseConditionBox extends AbstractConditionBox implements ConditionBlock
 {
     public function show()
     {
-        dump("_________________Hi, I'am BaseConditionBox. My id is: " . $this->getId() . " Start:___________________");
-
-        foreach ($this->getChildren() as $child) {
-            $child->show();
-        }
-
-        dump('________________End________________');
-
-        //return "Hi, I'am BaseConditionBox";
+        return view('admin.shares.conditions.box', ['box' => $this]);//->render();
     }
 }

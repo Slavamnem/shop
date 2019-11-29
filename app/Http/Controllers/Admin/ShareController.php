@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Adapters\ShareConditionsAdapter;
 use App\Category;
 use App\Color;
 use App\Components\Facades\Conditions;
@@ -93,9 +94,11 @@ class ShareController extends Controller
     public function show($id)
     {
         $share = Share::find($id);
-        $conditionsBox = Conditions::getExistingConditions($share);
+        $conditionsBox = Conditions::getExistingConditionsV2(new ShareConditionsAdapter($share));
 
-        return view("admin.shares.show", compact("share", "conditionsBox"));
+        //dd($conditionsBox);
+
+        return view("admin.shares.show2", compact("share", "conditionsBox"));
     }
 
     /**

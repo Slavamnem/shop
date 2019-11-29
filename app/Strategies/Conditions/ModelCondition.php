@@ -7,14 +7,17 @@ use App\ModelGroup;
 class ModelCondition extends AbstractCondition
 {
     /**
-     * @return $this|\Illuminate\Support\Collection
+     * @param null $type
+     * @return $this|mixed
      */
-    public function setValues()
+    public function getValues($type = null)
     {
-        $this->values = ModelGroup::all()->mapWithKeys(function($group){
-            return [$group->id => $group->name];
-        });
+        if (empty($this->values)) {
+            $this->values = ModelGroup::all()->mapWithKeys(function ($group) {
+                return [$group->id => $group->name];
+            });
+        }
 
-        return $this;
+        return $this->values;
     }
 }

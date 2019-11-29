@@ -17,32 +17,25 @@ abstract class AbstractCondition
      */
     protected $values;
     /**
-     * @var IdCondition
+     * @var AbstractCondition
      */
     protected static $instance;
 
     /**
-     * @return IdCondition
+     * @return AbstractCondition
      */
-    public static function Instance()
+    public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = (new static())->setValues();
+            self::$instance = new static();
         }
 
         return self::$instance;
     }
 
     /**
+     * @param null $type
      * @return Collection
      */
-    public function getValues()
-    {
-        return $this->values;
-    }
-
-    /**
-     * @return $this
-     */
-    abstract protected function setValues();
+    abstract public function getValues($type = null);
 }
