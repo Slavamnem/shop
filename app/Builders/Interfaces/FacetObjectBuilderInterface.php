@@ -9,39 +9,40 @@ use App\Http\Requests\Site\Api\CatalogProductsFilterRequest;
 interface FacetObjectBuilderInterface
 {
     /**
+     * @param CatalogProductsFilterRequest $catalogProductsFilterRequest
      * @return FacetObjectBuilderInterface
      */
-    public static function create();
+    public static function create(CatalogProductsFilterRequest $catalogProductsFilterRequest);
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function setSortingType(CatalogProductsFilterRequest $request);
+    public function setSortingType();
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function addPriceRange(CatalogProductsFilterRequest $request);
+    public function setPriceRange();
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function addPaginator(CatalogProductsFilterRequest $request);
+    public function setPagination();
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function addCategoriesItems(CatalogProductsFilterRequest $request);
+    public function setCategoriesItems();
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function addAttributesItems(CatalogProductsFilterRequest $request);
+    public function setAttributesItems();
 
     /**
-     * @param CatalogProductsFilterRequest $request
+     * @return $this
      */
-    public function addPropertiesItems(CatalogProductsFilterRequest $request);
+    public function setPropertiesItems();
 
     /**
      * @return FacetObject|FacetObjectInterface

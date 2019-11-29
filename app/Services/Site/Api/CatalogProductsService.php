@@ -17,14 +17,13 @@ class CatalogProductsService implements CatalogProductsServiceInterface
     public function buildFacetObject(CatalogProductsFilterRequest $request)
     {
         //dump($request->getRequestData()); //dump($request->getFilteredCategories());
-        $facetObjectBuilder = FacetObjectBuilder::create();
-        $facetObjectBuilder->setSortingType($request);
-        $facetObjectBuilder->addPriceRange($request);
-        $facetObjectBuilder->addPaginator($request);
-        $facetObjectBuilder->addCategoriesItems($request);
-        $facetObjectBuilder->addAttributesItems($request);
-        $facetObjectBuilder->addPropertiesItems($request);
-
-        return $facetObjectBuilder->getFacetObject();
+        return FacetObjectBuilder::create($request)
+            ->setSortingType()
+            ->setPriceRange()
+            ->setPagination()
+            ->setCategoriesItems()
+            ->setAttributesItems()
+            ->setPropertiesItems()
+            ->getFacetObject();
     }
 }

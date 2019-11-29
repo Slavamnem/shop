@@ -28,7 +28,7 @@ abstract class AbstractFacetItem implements FacetItemInterface
      */
     protected $title;
     /**
-     * @var attribute name in html checkbox
+     * @var string   attribute name in html checkbox
      */
     protected $attributeName;
     /**
