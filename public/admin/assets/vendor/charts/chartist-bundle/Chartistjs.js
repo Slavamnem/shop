@@ -165,35 +165,14 @@
             url: "/admin/stats/orders_payment_types_stats",
             method: 'GET',
             async: false,
-            success: function(res) {
-                console.log(res);
-                //res = jQuery.parseJSON(res);
-                values = res['values'];
-                labels = res['labels'];
+            success: function(graphicData) {
+                console.log(graphicData);
+                displayOrdersPaymentsGraphic(graphicData)
             },
             error: function(){
                 alert("error");
             },
         });
-
-        if ($('.ct-chart-multilines').length) {
-            new Chartist.Bar('.ct-chart-multilines', {
-                labels: labels,
-                series: values
-            }, {
-                seriesBarDistance: 10,
-                axisX: {
-                    offset: 60
-                },
-                axisY: {
-                    offset: 80,
-                    labelInterpolationFnc: function(value) {
-                        return value + ' грн'
-                    },
-                    scaleMinSpace: 15
-                }
-            });
-        }
 
         // end custom section
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -605,5 +584,26 @@ function displayOrdersCurrentMonthStatsGraphic(graphicData) {
                     scaleMinSpace: 10
                 }
             });
+    }
+}
+
+function displayOrdersPaymentsGraphic(graphicData) {
+    if ($('.ct-chart-multilines').length) {
+        new Chartist.Bar('.ct-chart-multilines', {
+            labels: graphicData['labels'],
+            series: graphicData['values']
+        }, {
+            seriesBarDistance: 10,
+            axisX: {
+                offset: 60
+            },
+            axisY: {
+                offset: 80,
+                labelInterpolationFnc: function(value) {
+                    return value + ' грн'
+                },
+                scaleMinSpace: 15
+            }
+        });
     }
 }

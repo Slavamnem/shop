@@ -68,8 +68,7 @@ class StatisticService implements StatisticServiceInterface
         foreach (Order::thisMonth()->get() as $order) {
             $graphicDataObject->incrementItem($order->created_at->day - 1, $order->sum);
         }
-       // return 1;
-//dd($this->getGraphicData($graphicDataObject));
+
         return $this->getGraphicData($graphicDataObject);
     }
 
