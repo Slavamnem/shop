@@ -2,6 +2,9 @@
 
 namespace App\Services\Admin;
 
+use App\Adapters\GraphicResourceItems\OrderGraphicResourceItemAdapter;
+use App\Components\Graphics\MultipleBarDiagram;
+use App\Components\Graphics\Resources\OrderGraphicResource;
 use App\Enums\PaymentTypesEnum;
 use App\Objects\GraphicDataObject;
 use App\Order;
@@ -91,10 +94,34 @@ class StatisticService implements StatisticServiceInterface
         }
 
         return [
+            "title" => "Доход по типам оплаты (картой и наличкой)",
             "values" => $profit,
             'labels' => array_values(lang('months'))
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function getTest()
+    {
+        return (new MultipleBarDiagram())
+            ->setTitle('Test diagram with orders!')
+            ->addResource(new OrderGraphicResource(
+                Order::query()
+                    ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
+                    ->get()
+                    ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })
+            ))
+            ->addResource(new OrderGraphicResource(
+                Order::query()
+                    ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
+                    ->get()
+                    ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })
+            ))
+            ->getGraphicData();
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection

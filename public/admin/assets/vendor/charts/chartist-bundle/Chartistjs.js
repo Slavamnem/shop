@@ -158,9 +158,6 @@
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        var values = null;
-        var labels = null;
-
         $.ajax({
             url: "/admin/stats/orders_payment_types_stats",
             method: 'GET',
@@ -168,6 +165,19 @@
             success: function(graphicData) {
                 console.log(graphicData);
                 displayOrdersPaymentsGraphic(graphicData)
+            },
+            error: function(){
+                alert("error");
+            },
+        });
+
+        $.ajax({
+            url: "/admin/stats/test_graphic",
+            method: 'GET',
+            async: false,
+            success: function(graphicData) {
+                console.log(graphicData);
+                displayTestGraphic(graphicData)
             },
             error: function(){
                 alert("error");
@@ -559,7 +569,8 @@ function displayOrdersStatsGraphic(graphicData)
                     },
                     scaleMinSpace: 10
                 }
-            });
+            }
+        );
     }
 }
 
@@ -589,10 +600,16 @@ function displayOrdersCurrentMonthStatsGraphic(graphicData) {
 
 function displayOrdersPaymentsGraphic(graphicData) {
     if ($('.ct-chart-multilines').length) {
+        $('#year-sales-payment-types').html(graphicData['title']);
+        //$('#year-sales-payment-types').parent().css("background-color", "green");
+
+        //$('#year-sales-payment-types').parent().parent().children('<h3>').css("background-color", "green");
+
         new Chartist.Bar('.ct-chart-multilines', {
             labels: graphicData['labels'],
             series: graphicData['values']
-        }, {
+        },
+        {
             seriesBarDistance: 10,
             axisX: {
                 offset: 60
@@ -605,5 +622,31 @@ function displayOrdersPaymentsGraphic(graphicData) {
                 scaleMinSpace: 15
             }
         });
+    }
+}
+
+function displayTestGraphic(graphicData) {
+    if ($('.ct-chart-multilines2').length) {
+        $('#test_graphic').html(graphicData['title']);
+        //$('#year-sales-payment-types').parent().css("background-color", "green");
+        //$('#year-sales-payment-types').parent().parent().children('<h3>').css("background-color", "green");
+
+        new Chartist.Bar('.ct-chart-multilines2', {
+                labels: graphicData['labels'],
+                series: graphicData['values']
+            },
+            {
+                seriesBarDistance: 10,
+                axisX: {
+                    offset: 60
+                },
+                axisY: {
+                    offset: 80,
+                    labelInterpolationFnc: function(value) {
+                        return value + ' грн'
+                    },
+                    scaleMinSpace: 15
+                }
+            });
     }
 }

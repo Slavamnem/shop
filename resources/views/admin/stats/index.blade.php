@@ -30,9 +30,18 @@
 
                     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         <div class="card">
-                            <h5 class="card-header">Доход по типам оплаты (картой и наличкой)</h5>
+                            <h5 class="card-header" id="year-sales-payment-types"></h5>
                             <div class="card-body">
                                 <div class="ct-chart-multilines ct-golden-section"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header" id="test_graphic"></h5>
+                            <div class="card-body">
+                                <div class="ct-chart-multilines2 ct-golden-section"></div>
                             </div>
                         </div>
                     </div>

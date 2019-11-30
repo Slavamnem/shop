@@ -124,6 +124,15 @@ class StatisticController extends Controller
         return response()->json($this->service->getOrdersPaymentTypesStats());
     }
 
+    //test
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTest()
+    {
+        return response()->json($this->service->getTest());
+    }
+
 
 
 
