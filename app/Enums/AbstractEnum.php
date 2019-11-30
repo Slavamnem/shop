@@ -49,6 +49,14 @@ abstract class AbstractEnum extends Enum
     }
 
     /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return array_get($this->enums, $this->getValue());
+    }
+
+    /**
      * @param $id
      * @return mixed
      */

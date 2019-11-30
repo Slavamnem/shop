@@ -19,6 +19,12 @@ class PaymentTypesEnum extends AbstractEnum
         self::CASH_ON_DELIVERY => CashOnDeliveryPayment::class
     ];
 
+    protected $enums = [
+        self::LIQ_PAY          => "Оплата картой онлайн",
+        self::CASH             => "Оплата наличными",
+        self::CASH_ON_DELIVERY => "Наложенный платеж"
+    ];
+
     /**
      * @return array
      */

@@ -107,18 +107,24 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new MultipleBarDiagram())
             ->setTitle('Test diagram with orders!')
-            ->addResource(new OrderGraphicResource(
-                Order::query()
-                    ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
-                    ->get()
-                    ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })
-            ))
-            ->addResource(new OrderGraphicResource(
-                Order::query()
-                    ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
-                    ->get()
-                    ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })
-            ))
+            ->addResource((new OrderGraphicResource())
+                ->setType('year') //TODO
+                ->setResourceItems(
+                    Order::query()
+                        ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
+                        ->get()
+                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, PaymentTypesEnum::LIQ_PAY()->getName()); })
+                )
+            )
+            ->addResource((new OrderGraphicResource())
+                ->setType('year')
+                ->setResourceItems(
+                    Order::query()
+                        ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
+                        ->get()
+                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, PaymentTypesEnum::CASH()->getName()); })
+                )
+            )
             ->getGraphicData();
     }
 

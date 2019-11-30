@@ -8,8 +8,22 @@
 
 namespace App\Components\Graphics;
 
+use Illuminate\Support\Collection;
+
 interface GraphicResource
 {
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setType($value);
+
+    /**
+     * @param Collection $resourceItems
+     * @return GraphicResource
+     */
+    public function setResourceItems(Collection $resourceItems);
+
     /**
      * @return array
      */

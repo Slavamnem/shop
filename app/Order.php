@@ -20,6 +20,8 @@ use Illuminate\Notifications\Notifiable;
  * @property string city
  * @property string warehouse
  * @property int basket_id
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class Order extends Model
 {

@@ -19,10 +19,6 @@ class MultipleBarDiagram implements Graphic
     /**
      * @var Collection
      */
-    private $items;
-    /**
-     * @var Collection
-     */
     private $graphicResources;
 
     /**
@@ -68,7 +64,7 @@ class MultipleBarDiagram implements Graphic
     {
         return [
             'title'  => $this->getTitle(),
-            'labels' => array_values($this->graphicResources->first()->getLabels()),
+            'labels' => $this->graphicResources->first()->getLabels(),
             'values' => $this->graphicResources->map(function(GraphicResource $graphicResource){ return $graphicResource->getValues(); })->toArray(),
         ];
     }

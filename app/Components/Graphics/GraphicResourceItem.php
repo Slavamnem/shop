@@ -11,12 +11,22 @@ namespace App\Components\Graphics;
 interface GraphicResourceItem
 {
     /**
-     * @return array
+     * @return array|int
      */
-    public function getLabel();
+    public function getYearLabel();
 
     /**
-     * @return array
+     * @return array|int
+     */
+    public function getMonthLabel();
+
+    /**
+     * @return null|string
+     */
+    public function getVariationLabel();
+
+    /**
+     * @return array|float
      */
     public function getValue();
 }

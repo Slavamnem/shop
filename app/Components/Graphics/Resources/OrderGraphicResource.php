@@ -10,22 +10,56 @@ namespace App\Components\Graphics\Resources;
 
 use App\Components\Graphics\GraphicResource;
 use App\Components\Graphics\GraphicResourceItem;
+use App\Strategies\Graphics\GraphicResource\GraphicResourceTypeStrategy;
+use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
 class OrderGraphicResource implements GraphicResource
 {
     /**
+     * @var string
+     */
+    private $type;
+    /**
      * @var Collection
      */
     private $resourceItems;
+    /**
+     * @var StrategyInterface
+     */
+    private $graphicResourceTypeStrategy;
 
     /**
      * OrderGraphicResource constructor.
-     * @param Collection $unfilteredItems
      */
-    public function __construct(Collection $unfilteredItems)
+    public function __construct()
     {
-        $this->setResourceItems($unfilteredItems);
+        $this->graphicResourceTypeStrategy = new GraphicResourceTypeStrategy();
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setType($value)
+    {
+        $this->type = $value;
+        return $this;
+    }
+
+    /**
+     * @param Collection $resourceItems
+     * @return GraphicResource
+     */
+    public function setResourceItems(Collection $resourceItems)
+    {
+        $this->resourceItems = collect();
+
+        foreach ($resourceItems as $resourceItem) {
+            $this->incrementItem($resourceItem);
+        }
+
+        return $this;
     }
 
     /**
@@ -33,7 +67,7 @@ class OrderGraphicResource implements GraphicResource
      */
     public function getLabels()
     {
-        return $this->resourceItems->keys()->all();
+        return array_values($this->resourceItems->keys()->all());
     }
 
     /**
@@ -45,23 +79,12 @@ class OrderGraphicResource implements GraphicResource
     }
 
     /**
-     * @param Collection $unfilteredItems
-     */
-    private function setResourceItems(Collection $unfilteredItems)
-    {
-        $this->resourceItems = collect();
-
-        foreach ($unfilteredItems as $resourceItem) {
-            $this->incrementItem($resourceItem->getLabel(), $resourceItem);
-        }
-    }
-
-    /**
-     * @param $key
      * @param GraphicResourceItem $resourceItem
      */
-    private function incrementItem($key, GraphicResourceItem $resourceItem)
+    private function incrementItem(GraphicResourceItem $resourceItem)
     {
-        $this->resourceItems->put($key, $this->resourceItems->get($key) + $resourceItem->getValue());
+        $resourceItemKey = $this->graphicResourceTypeStrategy->getStrategy($this->type)->getResourceItemLabel($resourceItem);
+
+        $this->resourceItems->put($resourceItemKey, $this->resourceItems->get($resourceItemKey) + $resourceItem->getValue());
     }
 }

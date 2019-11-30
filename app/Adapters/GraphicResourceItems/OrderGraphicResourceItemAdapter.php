@@ -17,22 +17,44 @@ class OrderGraphicResourceItemAdapter implements GraphicResourceItem
      * @var Order
      */
     private $order;
+    /**
+     * @var string
+     */
+    private $type;
 
     /**
      * OrderGraphicResourceItemAdapter constructor.
      * @param Order $order
+     * @param null $type
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $type = null)
     {
         $this->order = $order;
+        $this->type = $type;
     }
 
     /**
      * @return array|int
      */
-    public function getLabel()
+    public function getYearLabel()
     {
         return lang("months." . $this->order->created_at->format('F'));
+    }
+
+    /**
+     * @return array|int
+     */
+    public function getMonthLabel()
+    {
+        return $this->order->created_at->day - 1;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getVariationLabel()
+    {
+        return $this->type;
     }
 
     /**
