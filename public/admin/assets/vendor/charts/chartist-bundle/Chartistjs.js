@@ -124,106 +124,52 @@
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // custom orders stats
-        var profit = null;
-        var labels = null;
-
         $.ajax({
             url: "/admin/stats/orders_stats",
-            method: 'POST',
+            method: 'GET',
             async: false,
-            success: function(res) {
-                console.log(res);
-                //res = jQuery.parseJSON(res);
-                profit = res['profit'];
-                labels = res['labels'];
-                //alert(res);
+            success: function(graphicData) {
+                //console.log(graphicData);
+                displayOrdersStatsGraphic(graphicData);
             },
             error: function(){
                 alert("error");
             },
         });
 
-
-        if ($('.ct-chart-area').length) {
-            new Chartist.Line('.ct-chart-area', {
-                    labels: labels,
-                    series: [
-                        profit
-                    ]
-                },
-                {
-                    low: 0,
-                    showArea: true,
-                    axisY: {
-                        offset: 80,
-                        labelInterpolationFnc: function(value) {
-                            return value + ' грн'
-                        },
-                        scaleMinSpace: 10
-                    }
-                });
-        }
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        var monthProfit = null;
-        var monthLabels = null;
 
         $.ajax({
             url: "/admin/stats/orders_stats_month",
-            method: 'POST',
+            method: 'GET',
             async: false,
-            success: function(res) {
-                //console.log(res);
-                //res = jQuery.parseJSON(res);
-                monthProfit = res['profit'];
-                monthLabels = res['labels'];
-                //alert(res);
+            success: function(graphicData) {
+                displayOrdersCurrentMonthStatsGraphic(graphicData)
             },
             error: function(){
                 alert("error");
             },
         });
 
-        if ($('.ct-chart-area-month').length) {
-            new Chartist.Line('.ct-chart-area-month', {
-                    labels: monthLabels,
-                    series: [
-                        monthProfit
-                    ]
-                },
-                {
-                    low: 0,
-                    showArea: true,
-                    axisY: {
-                        offset: 80,
-                        labelInterpolationFnc: function(value) {
-                            return value + ' грн'
-                        },
-                        scaleMinSpace: 10
-                    }
-                });
-        }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         var values = null;
-        //var labels = null;
+        var labels = null;
 
         $.ajax({
             url: "/admin/stats/orders_payment_types_stats",
-            method: 'POST',
+            method: 'GET',
             async: false,
             success: function(res) {
                 console.log(res);
                 //res = jQuery.parseJSON(res);
                 values = res['values'];
                 labels = res['labels'];
-                //console.log(values);
             },
             error: function(){
                 alert("error");
@@ -612,3 +558,52 @@
     });
 
 })(window, document, window.jQuery);
+
+function displayOrdersStatsGraphic(graphicData)
+{
+    if ($('.ct-chart-area').length) {
+        $('#year-sales-title').html(graphicData['title']);
+
+        new Chartist.Line('.ct-chart-area', {
+                labels: graphicData['labels'],
+                series: [
+                    graphicData['values']
+                ]
+            },
+            {
+                low: 0,
+                showArea: true,
+                axisY: {
+                    offset: 80,
+                    labelInterpolationFnc: function(value) {
+                        return value + ' грн'
+                    },
+                    scaleMinSpace: 10
+                }
+            });
+    }
+}
+
+function displayOrdersCurrentMonthStatsGraphic(graphicData) {
+    if ($('.ct-chart-area-month').length) {
+        $('#month-sales-title').html(graphicData['title']);
+
+        new Chartist.Line('.ct-chart-area-month', {
+                labels: graphicData['labels'],
+                series: [
+                    graphicData['values']
+                ]
+            },
+            {
+                low: 0,
+                showArea: true,
+                axisY: {
+                    offset: 80,
+                    labelInterpolationFnc: function(value) {
+                        return value + ' грн'
+                    },
+                    scaleMinSpace: 10
+                }
+            });
+    }
+}

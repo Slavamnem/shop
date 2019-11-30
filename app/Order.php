@@ -7,12 +7,31 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class Order
+ * @package App
+ * @property int id
+ * @property int status_id
+ * @property double sum
+ * @property int client_id
+ * @property string description
+ * @property int payment_type_id
+ * @property int delivery_type_id
+ * @property string city
+ * @property string warehouse
+ * @property int basket_id
+ */
 class Order extends Model
 {
     use Notifiable;
 
+    /**
+     * @var string
+     */
     protected $table = "orders";
-
+    /**
+     * @var array
+     */
     protected $fillable = [
         "status_id",
         "sum",

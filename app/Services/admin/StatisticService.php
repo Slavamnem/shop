@@ -3,9 +3,11 @@
 namespace App\Services\Admin;
 
 use App\Enums\PaymentTypesEnum;
+use App\Objects\GraphicDataObject;
 use App\Order;
 use App\Product;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -30,17 +32,27 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStats()
     {
-        $orders = Order::all();
+        $graphicDataObject = (new GraphicDataObject())
+            ->setTitle('Динамика продаж за год')
+            ->createSkeleton(lang('months'));
 
-        $profit = array_init(0, 12); // TODO change, fill wrong data at start
-
-        foreach ($orders as $order) {
-            $profit[$order->created_at->month - 1] += $order->sum;
+        foreach (Order::all() as $order) {
+            $graphicDataObject->incrementItem(lang("months." . $order->created_at->format('F')), $order->sum);
         }
 
+        return $this->getGraphicData($graphicDataObject);
+    }
+
+    /**
+     * @param GraphicDataObject $dataObject
+     * @return array
+     */
+    private function getGraphicData(GraphicDataObject $dataObject) //TODO adapter for user_actions that will have getTitle(), getLabels(), getValues()
+    {
         return [
-            "profit" => $profit,
-            'labels' => lang('months')
+            'title'  => $dataObject->getTitle(),
+            'labels' => $dataObject->getLabels(),
+            'values' => $dataObject->getValues(),
         ];
     }
 
@@ -49,17 +61,16 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStatsMonth()
     {
-        $orders = Order::thisMonth()->get();
+        $graphicDataObject = (new GraphicDataObject())
+            ->setTitle('Динамика продаж за месяц')
+            ->createSkeleton(range(1, 31));
 
-        $profit = array_init(0, 31);
-        foreach ($orders as $order) {
-            $profit[$order->created_at->day - 1] += $order->sum;
+        foreach (Order::thisMonth()->get() as $order) {
+            $graphicDataObject->incrementItem($order->created_at->day - 1, $order->sum);
         }
-
-        return [
-            "profit" => $profit,
-            'labels' => range(1, 31)
-        ];
+       // return 1;
+//dd($this->getGraphicData($graphicDataObject));
+        return $this->getGraphicData($graphicDataObject);
     }
 
     /**
@@ -82,7 +93,7 @@ class StatisticService implements StatisticServiceInterface
 
         return [
             "values" => $profit,
-            'labels' => lang('months')
+            'labels' => array_values(lang('months'))
         ];
     }
 

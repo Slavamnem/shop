@@ -224,7 +224,7 @@ class FacetObject implements FacetObjectInterface
     /**
      * @return ProductsSearchStrategy
      */
-    private function getProductsSearchStrategy()
+    private function getProductsSearchStrategy() //Factory Method
     {
         return new ProductsSearchStrategy();
     }

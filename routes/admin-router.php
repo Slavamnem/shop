@@ -238,9 +238,9 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("exportMonthOrders", "StatisticController@exportMonthOrders")->name("admin-orders-month-export");
         Route::get("exportDayOrders", "StatisticController@exportDayOrders")->name("admin-orders-day-export");
 
-        Route::post("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
-        Route::post("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
-        Route::post("orders_payment_types_stats", "StatisticController@getOrdersPaymentTypesStats")->name("admin-stats-orders-payment-types");
+        Route::get("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
+        Route::get("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
+        Route::get("orders_payment_types_stats", "StatisticController@getOrdersPaymentTypesStats")->name("admin-stats-orders-payment-types");
 //        Route::get("edit/{id}", "ProductController@edit")->name("admin-products-edit");
 //        Route::post("update/{id}", "ProductController@update")->name("admin-products-update");
 //        Route::any("delete/{id}", "ProductController@destroy")->name("admin-products-delete");

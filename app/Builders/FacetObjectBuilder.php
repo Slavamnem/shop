@@ -98,7 +98,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
             ->setFacetObject($this->facetObject);
 
         foreach (Category::with('children')->whereNull('pid')->get() as $category) {
-            $categorySection->addChildItem($this->getCategoryItem($this->catalogProductsFilterRequest, $category));
+            $categorySection->addChildItem($this->getCategoryItem($this->catalogProductsFilterRequest, $category)); //TODO adapter
         }
 
         $this->facetObject->addItem($categorySection);
@@ -129,7 +129,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
                 ->setFacetObject($this->facetObject);
 
             foreach ($property->values as $propertyValue) {
-                $section->addChildItem($this->getPropertyItem(
+                $section->addChildItem($this->getPropertyItem( //TODO adapter
                     (new PropertyFacetItemObject())
                         ->setRequest($this->catalogProductsFilterRequest)
                         ->setPropertyTitle($propertyValue->value)
@@ -171,7 +171,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
 
         foreach (Color::all() as $color) {
             $colorSection->addChildItem(
-                $this->getAttributeItem((new AttributeFacetItemObject())
+                $this->getAttributeItem((new AttributeFacetItemObject()) //TODO adapter
                     ->setRequest($this->catalogProductsFilterRequest)
                     ->setAttributeTitle($color->name)
                     ->setAttributeName("color_id")
@@ -198,7 +198,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
 
         foreach (Size::all() as $size) {
             $sizeSection->addChildItem(
-                $this->getAttributeItem((new AttributeFacetItemObject())
+                $this->getAttributeItem((new AttributeFacetItemObject()) //TODO adapter
                     ->setRequest($this->catalogProductsFilterRequest)
                     ->setAttributeTitle($size->name)
                     ->setAttributeName("size_id")
@@ -217,7 +217,7 @@ class FacetObjectBuilder implements FacetObjectBuilderInterface
      * @param $category
      * @return CategoryFacetItem
      */
-    private function getCategoryItem(CatalogProductsFilterRequest $request, $category)
+    private function getCategoryItem(CatalogProductsFilterRequest $request, $category) //TODO strategy
     {
         if ($request->isFilteredCategory($category->id)) {
             $this->facetObject->addFilteredCategory($category->id);
