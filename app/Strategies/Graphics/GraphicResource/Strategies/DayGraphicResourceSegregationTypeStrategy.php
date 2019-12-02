@@ -11,7 +11,7 @@ namespace App\Strategies\Graphics\GraphicResource\Strategies;
 use App\Components\Graphics\GraphicResourceItem;
 use App\Strategies\Interfaces\GraphicResourceTypeStrategyInterface;
 
-class MonthGraphicResourceTypeStrategy implements GraphicResourceTypeStrategyInterface
+class DayGraphicResourceSegregationTypeStrategy implements GraphicResourceTypeStrategyInterface
 {
     /**
      * @param GraphicResourceItem $resourceItem
@@ -19,6 +19,6 @@ class MonthGraphicResourceTypeStrategy implements GraphicResourceTypeStrategyInt
      */
     public function getResourceItemLabel(GraphicResourceItem $resourceItem)
     {
-        return $resourceItem->getMonthLabel();
+        return $resourceItem->getDayLabel();
     }
 }

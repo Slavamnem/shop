@@ -8,7 +8,23 @@
 
 namespace App\Components\Graphics;
 
-class SingleBarDiagram implements Graphic
+/**
+ * @description Needs only one resource
+ *
+ * Class SingleBarDiagram
+ * @package App\Components\Graphics
+ */
+class SingleBarDiagram extends AbstractGraphic implements Graphic
 {
-
+    /**
+     * @return array
+     */
+    public function getGraphicData()
+    {
+        return [
+            'title'  => $this->getTitle(),
+            'labels' => $this->graphicResources->first()->getLabels(),
+            'values' => [$this->graphicResources->first()->getValues()],
+        ];
+    }
 }

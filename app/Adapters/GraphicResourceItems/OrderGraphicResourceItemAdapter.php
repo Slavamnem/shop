@@ -50,6 +50,14 @@ class OrderGraphicResourceItemAdapter implements GraphicResourceItem
     }
 
     /**
+     * @return int
+     */
+    public function getDayLabel()
+    {
+        return $this->order->created_at->hour;
+    }
+
+    /**
      * @return null|string
      */
     public function getVariationLabel()

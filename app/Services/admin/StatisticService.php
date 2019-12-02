@@ -5,6 +5,8 @@ namespace App\Services\Admin;
 use App\Adapters\GraphicResourceItems\OrderGraphicResourceItemAdapter;
 use App\Components\Graphics\MultipleBarDiagram;
 use App\Components\Graphics\Resources\OrderGraphicResource;
+use App\Components\Graphics\SingleBarDiagram;
+use App\Enums\GraphicSegregationTypesEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Objects\GraphicDataObject;
 use App\Order;
@@ -105,10 +107,32 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getTest()
     {
+        dump(1);
+        return (new SingleBarDiagram())
+            ->setTitle('Test diagram with orders!')
+            ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO
+            ->addResource((new OrderGraphicResource())
+                ->setResourceItems(
+                    Order::query()
+                        ->get()
+                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, '7'); })
+                )
+            )
+            ->getGraphicData();
+    }
+    // TODO сортировка лейблов
+    // TODO один лейбл приходит для мультибара с типом вариация
+    // TODO
+
+    /**
+     * @return array
+     */
+    public function getTest2()
+    {
         return (new MultipleBarDiagram())
             ->setTitle('Test diagram with orders!')
+            ->setSegregationType('year')
             ->addResource((new OrderGraphicResource())
-                ->setType('year') //TODO
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
@@ -117,7 +141,6 @@ class StatisticService implements StatisticServiceInterface
                 )
             )
             ->addResource((new OrderGraphicResource())
-                ->setType('year')
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())

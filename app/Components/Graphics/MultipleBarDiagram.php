@@ -8,55 +8,8 @@
 
 namespace App\Components\Graphics;
 
-use Illuminate\Support\Collection;
-
-class MultipleBarDiagram implements Graphic
+class MultipleBarDiagram extends AbstractGraphic implements Graphic
 {
-    /**
-     * @var string
-     */
-    private $title;
-    /**
-     * @var Collection
-     */
-    private $graphicResources;
-
-    /**
-     * MultipleBarDiagram constructor.
-     */
-    public function __construct()
-    {
-        $this->graphicResources = collect();
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     * @return Graphic
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @param GraphicResource $graphicResource
-     * @return Graphic
-     */
-    public function addResource(GraphicResource $graphicResource)
-    {
-        $this->graphicResources->push($graphicResource);
-        return $this;
-    }
-
     /**
      * @return array
      */

@@ -11,7 +11,7 @@ namespace App\Strategies\Graphics\GraphicResource\Strategies;
 use App\Components\Graphics\GraphicResourceItem;
 use App\Strategies\Interfaces\GraphicResourceTypeStrategyInterface;
 
-class NullGraphicResourceTypeStrategy implements GraphicResourceTypeStrategyInterface
+class VariationGraphicResourceSegregationTypeStrategy implements GraphicResourceTypeStrategyInterface
 {
     /**
      * @param GraphicResourceItem $resourceItem
@@ -19,6 +19,6 @@ class NullGraphicResourceTypeStrategy implements GraphicResourceTypeStrategyInte
      */
     public function getResourceItemLabel(GraphicResourceItem $resourceItem)
     {
-        return "Undefined resource type";
+        return $resourceItem->getVariationLabel();
     }
 }

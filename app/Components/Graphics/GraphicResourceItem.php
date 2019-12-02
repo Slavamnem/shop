@@ -21,6 +21,11 @@ interface GraphicResourceItem
     public function getMonthLabel();
 
     /**
+     * @return int
+     */
+    public function getDayLabel();
+
+    /**
      * @return null|string
      */
     public function getVariationLabel();
