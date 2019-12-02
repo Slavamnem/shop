@@ -13,17 +13,6 @@ use Illuminate\Support\Collection;
 interface GraphicResource
 {
     /**
-     * @return string
-     */
-    public function getSegregationType(): string;
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setSegregationType($value);
-
-    /**
      * @param Collection $resourceItems
      * @return GraphicResource
      */

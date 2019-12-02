@@ -17,44 +17,14 @@ use Illuminate\Support\Collection;
 abstract class AbstractGraphicResource implements GraphicResource
 {
     /**
-     * @var string
-     */
-    protected $segregationType;
-    /**
      * @var Collection
      */
     protected $resourceItems;
-    /**
-     * @var StrategyInterface
-     */
-    protected $segregationTypeStrategy;
 
     /**
-     * OrderGraphicResource constructor.
+     * AbstractGraphicResource constructor.
      */
-    public function __construct()
-    {
-        $this->segregationTypeStrategy = new GraphicResourceSegregationTypeStrategy();
-    }
-
-    /**
-     * @return string
-     */
-    public function getSegregationType(): string
-    {
-        return $this->segregationType;
-    }
-
-    /**
-     * @param $value
-     * @return GraphicResource
-     */
-    public function setSegregationType($value)
-    {
-        dd($value);
-        $this->segregationType = $value;
-        return $this;
-    }
+    public function __construct(){}
 
     /**
      * @param Collection $resourceItems
@@ -65,7 +35,7 @@ abstract class AbstractGraphicResource implements GraphicResource
         $this->resourceItems = collect();
 
         foreach ($resourceItems as $resourceItem) {
-            $this->incrementItem($resourceItem);
+            $this->incrementResourceItem($resourceItem);
         }
 
         return $this;
@@ -76,7 +46,7 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getLabels()
     {
-        return array_values($this->resourceItems->keys()->all());
+        return array_values($this->resourceItems->keys()->all()); //TODO sorting
     }
 
     /**
@@ -84,17 +54,22 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getValues()
     {
-        return $this->resourceItems->values()->all();
+        return $this->resourceItems->values()->all(); //TODO sorting
     }
 
     /**
      * @param GraphicResourceItem $resourceItem
      */
-    protected function incrementItem(GraphicResourceItem $resourceItem)
+    protected function incrementResourceItem(GraphicResourceItem $resourceItem)
     {
-        dump($this->getSegregationType());
-        $resourceItemKey = $this->segregationTypeStrategy->getStrategy($this->segregationType)->getResourceItemLabel($resourceItem);
+        $resourceItemKey = $this->getItemLabel($resourceItem);
 
         $this->resourceItems->put($resourceItemKey, $this->resourceItems->get($resourceItemKey) + $resourceItem->getValue());
     }
+
+    /**
+     * @param GraphicResourceItem $resourceItem
+     * @return mixed
+     */
+    abstract protected function getItemLabel(GraphicResourceItem $resourceItem);
 }

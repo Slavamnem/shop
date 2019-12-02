@@ -3,8 +3,10 @@
 namespace App\Services\Admin;
 
 use App\Adapters\GraphicResourceItems\OrderGraphicResourceItemAdapter;
+use App\Client;
 use App\Components\Graphics\MultipleBarDiagram;
-use App\Components\Graphics\Resources\OrderGraphicResource;
+use App\Components\Graphics\Resources\VariationGraphicResource;
+use App\Components\Graphics\Resources\YearGraphicResource;
 use App\Components\Graphics\SingleBarDiagram;
 use App\Enums\GraphicSegregationTypesEnum;
 use App\Enums\PaymentTypesEnum;
@@ -107,15 +109,19 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getTest()
     {
-        dump(1);
+       // dump(1);
         return (new SingleBarDiagram())
             ->setTitle('Test diagram with orders!')
-            ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO
-            ->addResource((new OrderGraphicResource())
+            ->addResource((new VariationGraphicResource())
                 ->setResourceItems(
                     Order::query()
                         ->get()
-                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, '7'); })
+                        ->map(function($order) { return new OrderGraphicResourceItemAdapter(
+                            $order,
+                            function($order) {
+                                return Client::find($order->client_id)->name;
+                            });
+                        })
                 )
             )
             ->getGraphicData();
@@ -131,21 +137,20 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new MultipleBarDiagram())
             ->setTitle('Test diagram with orders!')
-            ->setSegregationType('year')
-            ->addResource((new OrderGraphicResource())
+            ->addResource((new YearGraphicResource())
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
                         ->get()
-                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, PaymentTypesEnum::LIQ_PAY()->getName()); })
+                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })//, PaymentTypesEnum::LIQ_PAY()->getName()); })
                 )
             )
-            ->addResource((new OrderGraphicResource())
+            ->addResource((new YearGraphicResource())
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
                         ->get()
-                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order, PaymentTypesEnum::CASH()->getName()); })
+                        ->map(function($order){ return new OrderGraphicResourceItemAdapter($order); })//, PaymentTypesEnum::CASH()->getName()); })
                 )
             )
             ->getGraphicData();

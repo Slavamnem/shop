@@ -23,17 +23,6 @@ interface Graphic
     public function setTitle($title);
 
     /**
-     * @return string
-     */
-    public function getSegregationType(): string;
-
-    /**
-     * @param string $segregationType
-     * @return Graphic
-     */
-    public function setSegregationType(string $segregationType): Graphic;
-
-    /**
      * @param GraphicResource $graphicResource
      * @return Graphic;
      */

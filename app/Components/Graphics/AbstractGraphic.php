@@ -17,10 +17,6 @@ abstract class AbstractGraphic implements Graphic
      */
     protected $title;
     /**
-     * @var string
-     */
-    protected $segregationType;
-    /**
      * @var Collection
      */
     protected $graphicResources;
@@ -52,32 +48,12 @@ abstract class AbstractGraphic implements Graphic
     }
 
     /**
-     * @return string
-     */
-    public function getSegregationType(): string
-    {
-        return $this->segregationType;
-    }
-
-    /**
-     * @param string $segregationType
-     * @return Graphic
-     */
-    public function setSegregationType(string $segregationType): Graphic
-    {
-        dump(2);
-        $this->segregationType = $segregationType;
-        return $this;
-    }
-
-    /**
      * @param GraphicResource $graphicResource
      * @return Graphic
      */
     public function addResource(GraphicResource $graphicResource)
     {
-        dd('addResource');
-        $this->graphicResources->push($graphicResource->setSegregationType($this->getSegregationType()));
+        $this->graphicResources->push($graphicResource);
         return $this;
     }
 

@@ -11,24 +11,20 @@ namespace App\Components\Graphics;
 interface GraphicResourceItem
 {
     /**
-     * @return array|int
+     * @param $itemQualifierClosure
+     * @return mixed
      */
-    public function getYearLabel();
+    public function determineLabel($itemQualifierClosure);
 
     /**
-     * @return array|int
+     * @return \Carbon\Carbon
      */
-    public function getMonthLabel();
+    public function getCreationDate(); //TODO вынести в абстрактный класс адаптеров
 
     /**
-     * @return int
+     * @return string
      */
-    public function getDayLabel();
-
-    /**
-     * @return null|string
-     */
-    public function getVariationLabel();
+    public function getLabel();
 
     /**
      * @return array|float

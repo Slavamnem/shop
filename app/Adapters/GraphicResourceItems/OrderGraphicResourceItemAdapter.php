@@ -20,55 +20,48 @@ class OrderGraphicResourceItemAdapter implements GraphicResourceItem
     /**
      * @var string
      */
-    private $type;
+    private $label;
 
     /**
      * OrderGraphicResourceItemAdapter constructor.
      * @param Order $order
-     * @param null $type
+     * @param null $itemQualifierClosure
      */
-    public function __construct(Order $order, $type = null)
+    public function __construct(Order $order, $itemQualifierClosure = null)
     {
         $this->order = $order;
-        $this->type = $type;
+        $this->label = $itemQualifierClosure ? $this->determineLabel($itemQualifierClosure) : null;
     }
 
     /**
-     * @return array|int
+     * @param $itemQualifierClosure
+     * @return mixed
      */
-    public function getYearLabel()
+    public function determineLabel($itemQualifierClosure)
     {
-        return lang("months." . $this->order->created_at->format('F'));
+        return $itemQualifierClosure($this->order);
     }
 
     /**
-     * @return array|int
+     * @return \Carbon\Carbon
      */
-    public function getMonthLabel()
+    public function getCreationDate() //TODO вынести в абстрактный класс адаптеров
     {
-        return $this->order->created_at->day - 1;
+        return $this->order->created_at;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getDayLabel()
+    public function getLabel()
     {
-        return $this->order->created_at->hour;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getVariationLabel()
-    {
-        return $this->type;
+        return $this->label;
     }
 
     /**
      * @return array|float
      */
-    public function getValue()
+    public function getValue() //TODO причина необходимости адаптера и моста между ресурсами и айтемами
     {
         return $this->order->sum;
     }
