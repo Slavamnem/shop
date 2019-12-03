@@ -10,12 +10,12 @@ namespace App\Strategies\Graphics\GraphicResource;
 
 
 use App\Enums\GraphicSegregationTypesEnum;
-use App\Strategies\Graphics\GraphicResource\Strategies\DayGraphicResourceSegregationTypeStrategy;
-use App\Strategies\Graphics\GraphicResource\Strategies\MonthGraphicResourceSegregationTypeStrategy;
-use App\Strategies\Graphics\GraphicResource\Strategies\NullGraphicResourceSegregationTypeStrategy;
-use App\Strategies\Graphics\GraphicResource\Strategies\VariationGraphicResourceSegregationTypeStrategy;
-use App\Strategies\Graphics\GraphicResource\Strategies\YearGraphicResourceSegregationTypeStrategy;
-use App\Strategies\Interfaces\GraphicResourceTypeStrategyInterface;
+use App\Strategies\Graphics\GraphicResource\Strategies\DayGraphicResourceSegregationSegregationTypeStrategy;
+use App\Strategies\Graphics\GraphicResource\Strategies\HourGraphicResourceSegregationSegregationTypeStrategy;
+use App\Strategies\Graphics\GraphicResource\Strategies\MonthGraphicResourceSegregationSegregationTypeStrategy;
+use App\Strategies\Graphics\GraphicResource\Strategies\NullGraphicResourceSegregationSegregationTypeStrategy;
+use App\Strategies\Graphics\GraphicResource\Strategies\YearGraphicResourceSegregationSegregationTypeStrategy;
+use App\Strategies\Interfaces\GraphicResourceSegregationTypeStrategyInterface;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
@@ -34,19 +34,19 @@ class GraphicResourceSegregationTypeStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put(GraphicSegregationTypesEnum::YEAR()->getValue(), new YearGraphicResourceSegregationTypeStrategy());
-        $this->strategies->put(GraphicSegregationTypesEnum::MONTH()->getValue(), new MonthGraphicResourceSegregationTypeStrategy());
-        $this->strategies->put(GraphicSegregationTypesEnum::DAY()->getValue(), new DayGraphicResourceSegregationTypeStrategy());
-        $this->strategies->put(GraphicSegregationTypesEnum::VARIATION()->getValue(), new VariationGraphicResourceSegregationTypeStrategy());
+        $this->strategies->put(GraphicSegregationTypesEnum::YEAR()->getValue(), new YearGraphicResourceSegregationSegregationTypeStrategy());
+        $this->strategies->put(GraphicSegregationTypesEnum::MONTH()->getValue(), new MonthGraphicResourceSegregationSegregationTypeStrategy());
+        $this->strategies->put(GraphicSegregationTypesEnum::DAY()->getValue(), new DayGraphicResourceSegregationSegregationTypeStrategy());
+        $this->strategies->put(GraphicSegregationTypesEnum::HOUR()->getValue(), new HourGraphicResourceSegregationSegregationTypeStrategy());
     }
 
     /**
      * @param $type
-     * @return GraphicResourceTypeStrategyInterface
+     * @return GraphicResourceSegregationTypeStrategyInterface
      */
     public function getStrategy($type){
         if (!$this->strategies->has($type)) {
-            return new NullGraphicResourceSegregationTypeStrategy();
+            return new NullGraphicResourceSegregationSegregationTypeStrategy();
         }
 
         return $this->strategies->get($type);

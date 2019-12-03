@@ -8,26 +8,34 @@
 
 namespace App\Components\Graphics;
 
+use Carbon\Carbon;
+
 interface GraphicResourceItem
 {
     /**
-     * @param $itemQualifierClosure
-     * @return mixed
-     */
-    public function determineLabel($itemQualifierClosure);
-
-    /**
-     * @return \Carbon\Carbon
-     */
-    public function getCreationDate(); //TODO вынести в абстрактный класс адаптеров
-
-    /**
      * @return string
      */
-    public function getLabel();
+    public function getLabel() : string;
+
+    /**
+     * @param null $itemQualifierClosure
+     * @return GraphicResourceItem
+     */
+    public function setLabel($itemQualifierClosure = null) : GraphicResourceItem;
 
     /**
      * @return array|float
      */
-    public function getValue();
+    public function getValue() : string;
+
+    /**
+     * @param int $itemValueClosure
+     * @return GraphicResourceItem
+     */
+    public function setValue($itemValueClosure = 1) : GraphicResourceItem;
+
+    /**
+     * @return Carbon
+     */
+    public function getCreationDate() : Carbon;
 }

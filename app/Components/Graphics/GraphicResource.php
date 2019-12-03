@@ -19,6 +19,17 @@ interface GraphicResource
     public function setResourceItems(Collection $resourceItems);
 
     /**
+     * @return string
+     */
+    public function getSegregationType(): string;
+
+    /**
+     * @param string $segregationType
+     * @return GraphicResource
+     */
+    public function setSegregationType(string $segregationType): GraphicResource;
+
+    /**
      * @return array
      */
     public function getLabels();

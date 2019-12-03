@@ -7,7 +7,7 @@ class GraphicSegregationTypesEnum extends AbstractEnum
     public const YEAR = 1;
     public const MONTH = 2;
     public const DAY = 3;
-    public const VARIATION = 4;
+    public const HOUR = 4;
 
     /**
      * @var array
@@ -16,7 +16,7 @@ class GraphicSegregationTypesEnum extends AbstractEnum
         self::YEAR      => 'year',
         self::MONTH     => 'month',
         self::DAY       => 'day',
-        self::VARIATION => 'variation',
+        self::HOUR      => 'hour',
     ];
 
     /**
@@ -46,8 +46,8 @@ class GraphicSegregationTypesEnum extends AbstractEnum
     /**
      * @return GraphicSegregationTypesEnum
      */
-    public static function VARIATION()
+    public static function HOUR()
     {
-        return new self(self::VARIATION);
+        return new self(self::HOUR);
     }
 }

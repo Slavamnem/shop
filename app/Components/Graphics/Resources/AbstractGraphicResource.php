@@ -20,6 +20,10 @@ abstract class AbstractGraphicResource implements GraphicResource
      * @var Collection
      */
     protected $resourceItems;
+    /**
+     * @var string
+     */
+    protected $segregationType;
 
     /**
      * AbstractGraphicResource constructor.
@@ -38,6 +42,26 @@ abstract class AbstractGraphicResource implements GraphicResource
             $this->incrementResourceItem($resourceItem);
         }
 
+        $this->sortResourceItems();
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSegregationType(): string
+    {
+        return $this->segregationType;
+    }
+
+    /**
+     * @param string $segregationType
+     * @return GraphicResource
+     */
+    public function setSegregationType(string $segregationType): GraphicResource
+    {
+        $this->segregationType = $segregationType;
         return $this;
     }
 
@@ -65,6 +89,18 @@ abstract class AbstractGraphicResource implements GraphicResource
         $resourceItemKey = $this->getItemLabel($resourceItem);
 
         $this->resourceItems->put($resourceItemKey, $this->resourceItems->get($resourceItemKey) + $resourceItem->getValue());
+    }
+
+    /**
+     * @return GraphicResource
+     */
+    protected function sortResourceItems()
+    {
+        $resourceItems = $this->resourceItems->all();
+        ksort($resourceItems);
+        $this->resourceItems = collect($resourceItems);
+
+        return $this;
     }
 
     /**

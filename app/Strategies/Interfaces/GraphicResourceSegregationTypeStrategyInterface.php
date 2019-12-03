@@ -8,13 +8,20 @@
 
 namespace App\Strategies\Interfaces;
 
+use App\Components\Graphics\GraphicResource;
 use App\Components\Graphics\GraphicResourceItem;
 
-interface GraphicResourceTypeStrategyInterface
+interface GraphicResourceSegregationTypeStrategyInterface
 {
     /**
      * @param GraphicResourceItem $resourceItem
      * @return string
      */
     public function getResourceItemLabel(GraphicResourceItem $resourceItem);
+
+    /**
+     * @param GraphicResource $graphicResource
+     * @return mixed
+     */
+    public function createSegregationSkeleton(GraphicResource $graphicResource);
 }
