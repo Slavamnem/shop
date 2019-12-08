@@ -105,7 +105,15 @@ class StatisticController extends Controller
      */
     public function getOrdersStats()
     {
-        return response()->json($this->service->getOrdersStats());
+        return response()->json($this->service->getOrdersStatsGraphic()->getGraphicData());
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNotificationsStats()
+    {
+        return response()->json($this->service->getNotificationsStatsGraphic()->getGraphicData());
     }
 
     /**
@@ -113,7 +121,7 @@ class StatisticController extends Controller
      */
     public function getOrdersStatsMonth()
     {
-        return response()->json($this->service->getOrdersStatsMonth());
+        return response()->json($this->service->getOrdersStatsMonthGraphic()->getGraphicData());
     }
 
     /**
@@ -121,7 +129,7 @@ class StatisticController extends Controller
      */
     public function getOrdersPaymentTypesStats()
     {
-        return response()->json($this->service->getOrdersPaymentTypesStats());
+        return response()->json($this->service->getOrdersPaymentTypesStatsGraphic()->getGraphicData());
     }
 
     //test

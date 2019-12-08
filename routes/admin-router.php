@@ -239,6 +239,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", "middleware" => ['aut
         Route::get("exportDayOrders", "StatisticController@exportDayOrders")->name("admin-orders-day-export");
 
         Route::get("orders_stats", "StatisticController@getOrdersStats")->name("admin-stats-orders");
+        Route::get("notifications", "StatisticController@getNotificationsStats")->name("admin-stats-notifications");
         Route::get("orders_stats_month", "StatisticController@getOrdersStatsMonth")->name("admin-stats-orders-month");
         Route::get("orders_payment_types_stats", "StatisticController@getOrdersPaymentTypesStats")->name("admin-stats-orders-payment-types");
         Route::get("test_graphic", "StatisticController@getTest")->name("test_graphic");

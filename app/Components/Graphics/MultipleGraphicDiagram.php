@@ -8,7 +8,17 @@
 
 namespace App\Components\Graphics;
 
-class MultipleGraphicDiagram implements Graphic
+class MultipleGraphicDiagram extends AbstractGraphic implements Graphic
 {
-
+    /**
+     * @return array
+     */
+    public function getGraphicData()
+    {
+        return [
+            'title'  => $this->getTitle(),
+            'labels' => $this->graphicResources->first()->getLabels(),
+            'values' => $this->graphicResources->map(function(GraphicResource $graphicResource){ return $graphicResource->getValues(); })->toArray(),
+        ];
+    }
 }

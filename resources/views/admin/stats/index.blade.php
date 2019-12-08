@@ -10,11 +10,31 @@
                     <!-- ============================================================== -->
                     <!-- line chart with area  -->
                     <!-- ============================================================== -->
+
+                    {{--<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">--}}
+                        {{--<div class="card">--}}
+                            {{--<h5 class="card-header">Line Charts</h5>--}}
+                            {{--<div class="card-body">--}}
+                                {{--<canvas id="chartjs_line2"></canvas>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+
                     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
                         <div class="card">
                             <h3 class="card-header" id="year-sales-title"></h3>
                             <div class="card-body">
                                 <div class="ct-chart-area ct-golden-section"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+                        <div class="card">
+                            <h3 class="card-header" id="notifications-title"></h3>
+                            <div class="card-body">
+                                <div class="ct-chart-area-notifications ct-golden-section"></div>
                             </div>
                         </div>
                     </div>
@@ -60,6 +80,8 @@
 @endsection
 
 @section("custom-js")
+    <script src="{{ asset("public/admin/assets/vendor/charts/charts-bundle/Chart.bundle.js") }}"></script>
+    <script src="{{ asset("public/admin/assets/vendor/charts/charts-bundle/chartjs.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/chartist.min.js") }}"></script>
     <script src="{{ asset("public/admin/assets/vendor/charts/chartist-bundle/Chartistjs.js") }}"></script>
     <script src="{{ asset("public/admin/assets/js/stats/main.js") }}"></script>

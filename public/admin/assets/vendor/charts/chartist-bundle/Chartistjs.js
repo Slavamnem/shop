@@ -137,6 +137,7 @@
             },
         });
 
+        //extra();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,6 +158,20 @@
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        $.ajax({
+            url: "/admin/stats/notifications",
+            method: 'GET',
+            async: false,
+            success: function(graphicData) {
+                displayNotificationsStatsGraphic(graphicData)
+            },
+            error: function(){
+                alert("error");
+            },
+        });
+
+        /////////////////////////
 
         $.ajax({
             url: "/admin/stats/orders_payment_types_stats",
@@ -555,19 +570,16 @@ function displayOrdersStatsGraphic(graphicData)
 
         new Chartist.Line('.ct-chart-area', {
                 labels: graphicData['labels'],
-                series: [
-                    graphicData['values']
-                ]
+                series: graphicData['values']
             },
             {
-                low: 0,
                 showArea: true,
+                fullWidth: true,
+                chartPadding: {
+                    right: 40
+                },
                 axisY: {
-                    offset: 80,
-                    labelInterpolationFnc: function(value) {
-                        return value + ' грн'
-                    },
-                    scaleMinSpace: 10
+
                 }
             }
         );
@@ -648,5 +660,89 @@ function displayTestGraphic(graphicData) {
                     scaleMinSpace: 15
                 }
             });
+    }
+}
+
+function displayNotificationsStatsGraphic(graphicData) {
+    if ($('.ct-chart-area-notifications').length) {
+        $('#notifications-title').html(graphicData['title']);
+
+        new Chartist.Line('.ct-chart-area-notifications', {
+                labels: graphicData['labels'],
+                series: graphicData['values']
+            },
+            {
+                showArea: true,
+                fullWidth: true,
+                chartPadding: {
+                    right: 40
+                },
+                axisY: {
+
+                }
+            }
+        );
+    }
+}
+
+function extra()
+{
+    if ($('#chartjs_line2').length) {
+        var ctx = document.getElementById('chartjs_line2').getContext('2d');
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Almonds1',
+                    data: [12, 19, 3, 17, 6, 3, 7],
+
+                    backgroundColor: "rgba(89, 105, 255,0.5)",
+                    borderColor: "rgba(89, 105, 255,0.7)",
+                    borderWidth: 2
+                }, {
+                    label: 'Cashew',
+                    data: [2, 29, 5, 5, 2, 3, 10],
+                    backgroundColor: "rgba(255, 64, 123,0.5)",
+                    borderColor: "rgba(255, 64, 123,0.7)",
+                    borderWidth: 2
+                }]
+
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+
+                    labels: {
+                        fontColor: '#71748d',
+                        fontFamily: 'Circular Std Book',
+                        fontSize: 14,
+                    }
+                },
+
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontSize: 14,
+                            fontFamily: 'Circular Std Book',
+                            fontColor: '#71748d',
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            fontSize: 14,
+                            fontFamily: 'Circular Std Book',
+                            fontColor: '#71748d',
+                        }
+                    }]
+                }
+            }
+
+
+
+        });
     }
 }

@@ -2,22 +2,29 @@
 
 namespace App\Services\Admin\Interfaces;
 
+use App\Components\Graphics\Graphic;
+
 interface StatisticServiceInterface
 {
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersStats();
+    public function getOrdersStatsGraphic() : Graphic;
 
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersStatsMonth();
+    public function getNotificationsStatsGraphic(): Graphic;
 
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersPaymentTypesStats();
+    public function getOrdersStatsMonthGraphic() : Graphic;
+
+    /**
+     * @return Graphic
+     */
+    public function getOrdersPaymentTypesStatsGraphic() : Graphic;
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection

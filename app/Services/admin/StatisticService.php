@@ -4,13 +4,16 @@ namespace App\Services\Admin;
 
 use App\Adapters\EntityGraphicResourceItemAdapter;
 use App\Client;
+use App\Components\Graphics\Graphic;
 use App\Components\Graphics\MultipleBarDiagram;
+use App\Components\Graphics\MultipleGraphicDiagram;
 use App\Components\Graphics\Resources\VariationGraphicResource;
 use App\Components\Graphics\Resources\TimeGraphicResource;
 use App\Components\Graphics\SingleBarDiagram;
 use App\Components\Graphics\SingleGraphicDiagram;
 use App\Enums\GraphicSegregationTypesEnum;
 use App\Enums\PaymentTypesEnum;
+use App\Notification;
 use App\Objects\GraphicDataObject;
 use App\Order;
 use App\Product;
@@ -36,11 +39,11 @@ class StatisticService implements StatisticServiceInterface
     }
 
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersStats()
+    public function getOrdersStatsGraphic() : Graphic
     {
-        return (new SingleGraphicDiagram())
+        return (new MultipleGraphicDiagram())
             ->setTitle('Статистика продаж за год')
             ->addResource((new TimeGraphicResource())
                 ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
@@ -51,14 +54,38 @@ class StatisticService implements StatisticServiceInterface
                         });
                     })
                 )
-            )
-            ->getGraphicData();
+            );
     }
 
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersStatsMonth()
+    public function getNotificationsStatsGraphic() : Graphic
+    {
+        return (new MultipleGraphicDiagram())
+            ->setTitle('Статистика уведомлений (Синий - новый заказ, красный - вход в админку)')
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setResourceItems(
+                    Notification::where('preview', 'Новый заказ!')->get()->map(function($notification) {
+                        return new EntityGraphicResourceItemAdapter($notification, null, null);
+                    })
+                )
+            )
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setResourceItems(
+                    Notification::where('preview', 'Вход в админ-панель')->get()->map(function($notification) {
+                        return new EntityGraphicResourceItemAdapter($notification, null, null);
+                    })
+                )
+            );
+    }
+
+    /**
+     * @return Graphic
+     */
+    public function getOrdersStatsMonthGraphic() : Graphic
     {
         return (new SingleGraphicDiagram())
             ->setTitle('Статистика продаж за последний месяц')
@@ -71,17 +98,16 @@ class StatisticService implements StatisticServiceInterface
                         });
                     })
                 )
-            )
-            ->getGraphicData();
+            );
     }
 
     /**
-     * @return array
+     * @return Graphic
      */
-    public function getOrdersPaymentTypesStats()
+    public function getOrdersPaymentTypesStatsGraphic() : Graphic
     {
         return (new MultipleBarDiagram())
-            ->setTitle('За все время по типам оплаты')
+            ->setTitle('За все время по типам оплаты (LiqPay и наличка)')
             ->addResource((new TimeGraphicResource())
                 ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
                 ->setResourceItems(Order::query()
@@ -101,7 +127,7 @@ class StatisticService implements StatisticServiceInterface
                         return new EntityGraphicResourceItemAdapter($order, null, function($order){ return $order->sum; });
                     })
                 )
-            )->getGraphicData();
+            );
     }
     // TODO в акции добавить в интерфейс общий методы добавления и получения детей чтобы было полное единообразия работы с компонентами
     /**
