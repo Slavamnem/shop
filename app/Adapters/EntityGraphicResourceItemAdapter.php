@@ -24,7 +24,7 @@ class EntityGraphicResourceItemAdapter implements GraphicResourceItem
      */
     private $label;
     /**
-     * @var
+     * @var mixed
      */
     private $value;
 
@@ -34,7 +34,7 @@ class EntityGraphicResourceItemAdapter implements GraphicResourceItem
      * @param null $itemQualifierClosure
      * @param int $itemValueClosure
      */
-    public function __construct(Model $entity, $itemQualifierClosure = null, $itemValueClosure = 1)
+    public function __construct(Model $entity, $itemQualifierClosure = null, $itemValueClosure = null)
     {
         $this->entity = $entity;
         $this->setLabel($itemQualifierClosure);
@@ -55,7 +55,7 @@ class EntityGraphicResourceItemAdapter implements GraphicResourceItem
      */
     public function setLabel($itemQualifierClosure = null) : GraphicResourceItem
     {
-        $this->label = is_callable($itemQualifierClosure) ? $itemQualifierClosure($this->entity) : null;
+        $this->label = is_callable($itemQualifierClosure) ? $itemQualifierClosure($this->entity) : '-';
         return $this;
     }
 
@@ -71,9 +71,9 @@ class EntityGraphicResourceItemAdapter implements GraphicResourceItem
      * @param int $itemValueClosure
      * @return GraphicResourceItem
      */
-    public function setValue($itemValueClosure = 1) : GraphicResourceItem
+    public function setValue($itemValueClosure = null) : GraphicResourceItem
     {
-        $this->value = is_callable($itemValueClosure) ? $itemValueClosure($this->entity) : $itemValueClosure;
+        $this->value = is_callable($itemValueClosure) ? $itemValueClosure($this->entity) : 1;
         return $this;
     }
 

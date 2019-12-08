@@ -25,10 +25,16 @@ class DayGraphicResourceSegregationSegregationTypeStrategy implements GraphicRes
 
     /**
      * @param GraphicResource $graphicResource
-     * @return mixed|void
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function createSegregationSkeleton(GraphicResource $graphicResource)
     {
+        $resourceItems = collect();
 
+        foreach (range(0, 23) as $hour) {
+            $resourceItems->put($hour, 0);
+        }
+
+        return $resourceItems;
     }
 }

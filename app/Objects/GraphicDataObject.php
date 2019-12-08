@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
  * Class GraphicDataObject
  * @package App\Objects
  */
-class GraphicDataObject //TODO interface
+class GraphicDataObject //TODO interface !unused!
 {
     /**
      * @var string

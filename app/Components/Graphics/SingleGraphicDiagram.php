@@ -8,34 +8,17 @@
 
 namespace App\Components\Graphics;
 
-use Illuminate\Support\Collection;
-
-class SingleGraphicDiagram implements Graphic
+class SingleGraphicDiagram extends AbstractGraphic implements Graphic
 {
     /**
-     * @var
+     * @return array
      */
-    private $title;
-    /**
-     * @var Collection
-     */
-    private $items;
-
-    /**
-     * @return mixed
-     */
-    public function getTitle()
+    public function getGraphicData()
     {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     * @return Graphic
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
+        return [
+            'title'  => $this->getTitle(),
+            'labels' => $this->graphicResources->first()->getLabels(),
+            'values' => $this->graphicResources->first()->getValues(),
+        ];
     }
 }

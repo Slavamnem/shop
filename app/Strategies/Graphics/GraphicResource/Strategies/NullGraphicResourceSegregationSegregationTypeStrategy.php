@@ -20,15 +20,15 @@ class NullGraphicResourceSegregationSegregationTypeStrategy implements GraphicRe
      */
     public function getResourceItemLabel(GraphicResourceItem $resourceItem)
     {
-        return lang("months." . $resourceItem->getCreationDate()->format('F'));
+        return 'Не указан тип разбиения для временного графика';
     }
 
     /**
      * @param GraphicResource $graphicResource
-     * @return mixed|void
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function createSegregationSkeleton(GraphicResource $graphicResource)
     {
-
+        return collect();
     }
 }

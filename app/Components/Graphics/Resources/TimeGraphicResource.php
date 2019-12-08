@@ -11,7 +11,7 @@ namespace App\Components\Graphics\Resources;
 use App\Components\Graphics\GraphicResource;
 use App\Components\Graphics\GraphicResourceItem;
 use App\Strategies\Graphics\GraphicResource\GraphicResourceSegregationTypeStrategy;
-use App\Strategies\Interfaces\StrategyInterface;
+use Illuminate\Support\Collection;
 
 class TimeGraphicResource extends AbstractGraphicResource implements GraphicResource
 {
@@ -26,7 +26,23 @@ class TimeGraphicResource extends AbstractGraphicResource implements GraphicReso
     public function __construct()
     {
         $this->segregationTypeStrategy = new GraphicResourceSegregationTypeStrategy();
-        parent::__construct();
+    }
+
+    /**
+     * @param Collection $resourceItems
+     * @return GraphicResource
+     */
+    public function setResourceItems(Collection $resourceItems)
+    {
+        // Создаем сетку времени заполненную нулями так как не для каждого момента времени найдутся записи и сетка может быть не полной.
+        $this->resourceItems = $this->segregationTypeStrategy->getStrategy($this->segregationType)->createSegregationSkeleton($this);
+
+        foreach ($resourceItems as $resourceItem) {
+            $this->incrementResourceItem($resourceItem);
+        }
+
+        //$this->sortResourceItems(); // для времени не нужно сортировать чтобы не сломать порядок
+        return $this;
     }
 
     /**
@@ -36,7 +52,5 @@ class TimeGraphicResource extends AbstractGraphicResource implements GraphicReso
     public function getItemLabel(GraphicResourceItem $resourceItem)
     {
         return $this->segregationTypeStrategy->getStrategy($this->segregationType)->getResourceItemLabel($resourceItem);
-//        return $resourceItem->getLabel();
-//        return lang("months." . $resourceItem->getCreationDate()->format('F'));
     }
 }

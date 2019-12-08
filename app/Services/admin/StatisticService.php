@@ -8,6 +8,7 @@ use App\Components\Graphics\MultipleBarDiagram;
 use App\Components\Graphics\Resources\VariationGraphicResource;
 use App\Components\Graphics\Resources\TimeGraphicResource;
 use App\Components\Graphics\SingleBarDiagram;
+use App\Components\Graphics\SingleGraphicDiagram;
 use App\Enums\GraphicSegregationTypesEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Objects\GraphicDataObject;
@@ -39,28 +40,19 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStats()
     {
-        $graphicDataObject = (new GraphicDataObject())
-            ->setTitle('Динамика продаж за год')
-            ->createSkeleton(lang('months'));
-
-        foreach (Order::all() as $order) {
-            $graphicDataObject->incrementItem(lang("months." . $order->created_at->format('F')), $order->sum);
-        }
-
-        return $this->getGraphicData($graphicDataObject);
-    }
-
-    /**
-     * @param GraphicDataObject $dataObject
-     * @return array
-     */
-    private function getGraphicData(GraphicDataObject $dataObject) //TODO adapter for user_actions that will have getTitle(), getLabels(), getValues()
-    {
-        return [
-            'title'  => $dataObject->getTitle(),
-            'labels' => $dataObject->getLabels(),
-            'values' => $dataObject->getValues(),
-        ];
+        return (new SingleGraphicDiagram())
+            ->setTitle('Статистика продаж за год')
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setResourceItems(
+                    Order::thisYear()->get()->map(function($order) {
+                        return new EntityGraphicResourceItemAdapter($order, null, function($order){
+                            return $order->sum;
+                        });
+                    })
+                )
+            )
+            ->getGraphicData();
     }
 
     /**
@@ -68,42 +60,50 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStatsMonth()
     {
-        $graphicDataObject = (new GraphicDataObject())
-            ->setTitle('Динамика продаж за месяц')
-            ->createSkeleton(range(1, 31));
-
-        foreach (Order::thisMonth()->get() as $order) {
-            $graphicDataObject->incrementItem($order->created_at->day - 1, $order->sum);
-        }
-
-        return $this->getGraphicData($graphicDataObject);
+        return (new SingleGraphicDiagram())
+            ->setTitle('Статистика продаж за последний месяц')
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::MONTH()->getValue())
+                ->setResourceItems(
+                    Order::thisMonth()->get()->map(function($order) {
+                        return new EntityGraphicResourceItemAdapter($order, null, function($order){
+                            return $order->sum;
+                        });
+                    })
+                )
+            )
+            ->getGraphicData();
     }
 
     /**
      * @return array
      */
-    public function getOrdersPaymentTypesStats() //TODO refactor
+    public function getOrdersPaymentTypesStats()
     {
-        $orders = Order::all();
-
-        $profit[0] = array_init(0, 12);
-        $profit[1] = array_init(0, 12);
-
-        foreach ($orders as $order) {
-            if ($order->payment_type_id == PaymentTypesEnum::LIQ_PAY()->getValue()) {
-                $profit[0][$order->created_at->month - 1] += $order->sum;
-            } elseif ($order->payment_type_id == PaymentTypesEnum::CASH()->getValue()) {
-                $profit[1][$order->created_at->month - 1] += $order->sum;
-            }
-        }
-
-        return [
-            "title" => "Доход по типам оплаты (картой и наличкой)",
-            "values" => $profit,
-            'labels' => array_values(lang('months'))
-        ];
+        return (new MultipleBarDiagram())
+            ->setTitle('За все время по типам оплаты')
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setResourceItems(Order::query()
+                    ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
+                    ->get()
+                    ->map(function($order) {
+                        return new EntityGraphicResourceItemAdapter($order, null, function($order){ return $order->sum; });
+                    })
+                )
+            )
+            ->addResource((new TimeGraphicResource())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setResourceItems(Order::query()
+                    ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
+                    ->get()
+                    ->map(function($order) {
+                        return new EntityGraphicResourceItemAdapter($order, null, function($order){ return $order->sum; });
+                    })
+                )
+            )->getGraphicData();
     }
- //TODO в акции добавить в интерфейс общий методі добавления и получения детей чтобы было полное единообразия работы с компонентами
+    // TODO в акции добавить в интерфейс общий методы добавления и получения детей чтобы было полное единообразия работы с компонентами
     /**
      * @return array
      */
@@ -111,9 +111,9 @@ class StatisticService implements StatisticServiceInterface
     {
        // dump(1);
         return (new SingleBarDiagram())
-            ->setTitle('Test diagram with orders!')
+            ->setTitle('Заказы за все время по часам')
             ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setSegregationType(GraphicSegregationTypesEnum::DAY()->getValue())
                 ->setResourceItems(
                     Order::query()
                         ->get()
@@ -131,7 +131,6 @@ class StatisticService implements StatisticServiceInterface
             )
             ->getGraphicData();
     }
-    // TODO сортировка лейблов
     // TODO один лейбл приходит для мультибара с типом вариация
     // TODO
 
@@ -188,5 +187,27 @@ class StatisticService implements StatisticServiceInterface
         }
 
         return $products;
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @param GraphicDataObject $dataObject
+     * @return array
+     */
+    private function getGraphicData(GraphicDataObject $dataObject) //TODO deprecated
+    {
+        return [
+            'title'  => $dataObject->getTitle(),
+            'labels' => $dataObject->getLabels(),
+            'values' => $dataObject->getValues(),
+        ];
     }
 }

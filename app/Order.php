@@ -216,6 +216,15 @@ class Order extends Model
      * @param $query
      * @return mixed
      */
+    public function scopeThisYear($query)
+    {
+        return $query->whereYear("created_at", Carbon::now()->year);
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function scopeThisMonth($query)
     {
         $now = Carbon::now();

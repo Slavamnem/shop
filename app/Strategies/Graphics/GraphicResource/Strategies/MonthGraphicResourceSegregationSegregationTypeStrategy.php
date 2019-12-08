@@ -25,10 +25,16 @@ class MonthGraphicResourceSegregationSegregationTypeStrategy implements GraphicR
 
     /**
      * @param GraphicResource $graphicResource
-     * @return mixed|void
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function createSegregationSkeleton(GraphicResource $graphicResource)
     {
+        $resourceItems = collect();
 
+        foreach (range(1, 31) as $day) {
+            $resourceItems->put($day, 0);
+        }
+
+        return $resourceItems;
     }
 }

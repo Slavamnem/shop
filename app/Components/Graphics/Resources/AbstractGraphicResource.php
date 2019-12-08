@@ -10,8 +10,6 @@ namespace App\Components\Graphics\Resources;
 
 use App\Components\Graphics\GraphicResource;
 use App\Components\Graphics\GraphicResourceItem;
-use App\Strategies\Graphics\GraphicResource\GraphicResourceSegregationTypeStrategy;
-use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
 abstract class AbstractGraphicResource implements GraphicResource
@@ -24,11 +22,6 @@ abstract class AbstractGraphicResource implements GraphicResource
      * @var string
      */
     protected $segregationType;
-
-    /**
-     * AbstractGraphicResource constructor.
-     */
-    public function __construct(){}
 
     /**
      * @param Collection $resourceItems
@@ -70,7 +63,7 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getLabels()
     {
-        return array_values($this->resourceItems->keys()->all()); //TODO sorting
+        return array_values($this->resourceItems->keys()->all());
     }
 
     /**
@@ -78,7 +71,7 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getValues()
     {
-        return $this->resourceItems->values()->all(); //TODO sorting
+        return $this->resourceItems->values()->all();
     }
 
     /**

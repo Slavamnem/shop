@@ -25,10 +25,16 @@ class YearGraphicResourceSegregationSegregationTypeStrategy implements GraphicRe
 
     /**
      * @param GraphicResource $graphicResource
-     * @return mixed|void
+     * @return mixed
      */
     public function createSegregationSkeleton(GraphicResource $graphicResource)
     {
+        $resourceItems = collect();
 
+        foreach (lang("months") as $key => $month) {
+            $resourceItems->put($month, 0);
+        }
+
+        return $resourceItems;
     }
 }

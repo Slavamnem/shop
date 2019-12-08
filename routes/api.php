@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['api-auth']], function(){
+//Route::group(['middleware' => ['api-auth']], function(){
     Route::get("orders", "Api\OrderController@getOrders");
     Route::get("orders/{order}", "Api\OrderController@getOrder");
 
@@ -28,4 +28,4 @@ Route::group(['middleware' => ['api-auth']], function(){
 //   Route::any("clients/{user}", function($user){
 //       return new \App\Http\Resources\UserResource($user);
 //   });
-});
+//});
