@@ -8,7 +8,21 @@
 
 namespace App\Components\Graphics;
 
-class PieDiagram implements Graphic
+class PieDiagram extends AbstractGraphic implements Graphic
 {
-
+    /**
+     * @return array
+     */
+    public function getGraphicData()
+    {
+        return [
+            'title'   => $this->getTitle(),
+            'columns' => $this->graphicResources
+                ->first()
+                ->getResourceItems()
+                ->mapWithKeys(function($value, $key){ return [$key => [$key, $value]]; })
+                ->values()
+                ->all(),
+        ];
+    }
 }

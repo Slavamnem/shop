@@ -13,6 +13,11 @@ use Illuminate\Support\Collection;
 interface GraphicResource
 {
     /**
+     * @return Collection
+     */
+    public function getResourceItems(): Collection;
+
+    /**
      * @param Collection $resourceItems
      * @return GraphicResource
      */

@@ -124,6 +124,7 @@
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // custom orders stats
+
         $.ajax({
             url: "/admin/stats/orders_stats",
             method: 'GET',
@@ -147,7 +148,8 @@
             method: 'GET',
             async: false,
             success: function(graphicData) {
-                displayOrdersCurrentMonthStatsGraphic(graphicData)
+                //alert(graphicData);
+                displayOrdersCurrentMonthStatsGraphic(graphicData);
             },
             error: function(){
                 alert("error");
@@ -164,7 +166,7 @@
             method: 'GET',
             async: false,
             success: function(graphicData) {
-                displayNotificationsStatsGraphic(graphicData)
+                displayNotificationsStatsGraphic(graphicData);
             },
             error: function(){
                 alert("error");
@@ -193,6 +195,19 @@
             success: function(graphicData) {
                 console.log(graphicData);
                 displayTestGraphic(graphicData)
+            },
+            error: function(){
+                alert("error");
+            },
+        });
+
+        $.ajax({
+            url: "/admin/stats/orders-payment-types-pie-stats",
+            method: 'GET',
+            async: false,
+            success: function(graphicData) {
+                //console.log(graphicData);
+                displayOrdersPaymentsPieGraphic(graphicData);
             },
             error: function(){
                 alert("error");
@@ -639,7 +654,7 @@ function displayOrdersPaymentsGraphic(graphicData) {
 
 function displayTestGraphic(graphicData) {
     if ($('.ct-chart-multilines2').length) {
-        $('#test_graphic').html(graphicData['title']);
+        //$('#test_graphic').html(graphicData['title']);
         //$('#year-sales-payment-types').parent().css("background-color", "green");
         //$('#year-sales-payment-types').parent().parent().children('<h3>').css("background-color", "green");
 
@@ -682,6 +697,54 @@ function displayNotificationsStatsGraphic(graphicData) {
                 }
             }
         );
+    }
+}
+
+function displayOrdersPaymentsPieGraphic(graphicData) {
+    if ($('#c3chart_donut').length) {
+        $('#payment-types-title').html(graphicData['title']);
+
+        var chart = c3.generate({
+            bindto: "#c3chart_donut",
+            data: {
+                columns: [
+                    ['data1', 300],
+                    ['data2', 420],
+                ],
+                type: 'donut',
+                onclick: function(d, i) { console.log("onclick", d, i); },
+                onmouseover: function(d, i) { console.log("onmouseover", d, i); },
+                onmouseout: function(d, i) { console.log("onmouseout", d, i); },
+
+                colors: {
+                    data1: '#5969ff',
+                    data2: '#ff407b'
+                }
+            },
+            donut: {
+                title: ''
+            }
+        });
+        console.log(graphicData['columns']);
+        setTimeout(function() {
+            chart.load({
+                columns: graphicData['columns']
+                // columns: [
+                //     ["setosa", 5],
+                //     ["versicolor", 4],
+                //     ["virginica", 10],
+                // ]
+            });
+        }, 500);
+
+        setTimeout(function() {
+            chart.unload({
+                ids: 'data1'
+            });
+            chart.unload({
+                ids: 'data2'
+            });
+        }, 500);
     }
 }
 

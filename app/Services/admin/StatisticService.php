@@ -7,6 +7,7 @@ use App\Client;
 use App\Components\Graphics\Graphic;
 use App\Components\Graphics\MultipleBarDiagram;
 use App\Components\Graphics\MultipleGraphicDiagram;
+use App\Components\Graphics\PieDiagram;
 use App\Components\Graphics\Resources\VariationGraphicResource;
 use App\Components\Graphics\Resources\TimeGraphicResource;
 use App\Components\Graphics\SingleBarDiagram;
@@ -36,6 +37,29 @@ class StatisticService implements StatisticServiceInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    /**
+     * @return Graphic
+     */
+    public function getOrdersPaymentTypesStatsPieGraphic() : Graphic
+    {
+        return (new PieDiagram())
+            ->setTitle('За все время по типам оплаты')
+            ->addResource((new VariationGraphicResource())
+                ->setResourceItems(Order::query()
+                    ->get()
+                    ->map(function($order) {
+                        return new EntityGraphicResourceItemAdapter(
+                            $order,
+                            function($order){
+                                return PaymentTypesEnum::getValueById($order->payment_type_id);
+                            },
+                            function($order){ return $order->sum; }
+                        );
+                    })
+                )
+            );
     }
 
     /**
@@ -138,17 +162,17 @@ class StatisticService implements StatisticServiceInterface
        // dump(1);
         return (new SingleBarDiagram())
             ->setTitle('Заказы за все время по часам')
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::DAY()->getValue())
+            ->addResource((new VariationGraphicResource())
+                //->setSegregationType(GraphicSegregationTypesEnum::DAY()->getValue())
                 ->setResourceItems(
                     Order::query()
                         ->get()
                         ->map(function($order) { return new EntityGraphicResourceItemAdapter(
-                            $order, null,
-//                            function($order) {
-//                                return lang("months." . $order->created_at->format('F'));
-//                                //return Client::find($order->client_id)->name;
-//                            },
+                            $order, //null,
+                            function($order) {
+                                //return lang("months." . $order->created_at->format('F'));
+                                return Client::find($order->client_id)->name;
+                            },
                             function($order) {
                                 return $order->sum;
                             });

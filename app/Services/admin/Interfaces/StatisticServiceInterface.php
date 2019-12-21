@@ -27,6 +27,11 @@ interface StatisticServiceInterface
     public function getOrdersPaymentTypesStatsGraphic() : Graphic;
 
     /**
+     * @return Graphic
+     */
+    public function getOrdersPaymentTypesStatsPieGraphic() : Graphic;
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function getProductsList();

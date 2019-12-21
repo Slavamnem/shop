@@ -103,6 +103,14 @@ class StatisticController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
+    public function getOrdersPaymentTypesPieStats()
+    {
+        return response()->json($this->service->getOrdersPaymentTypesStatsPieGraphic()->getGraphicData());
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getOrdersStats()
     {
         return response()->json($this->service->getOrdersStatsGraphic()->getGraphicData());

@@ -24,6 +24,14 @@ abstract class AbstractGraphicResource implements GraphicResource
     protected $segregationType;
 
     /**
+     * @return Collection
+     */
+    public function getResourceItems(): Collection
+    {
+        return $this->resourceItems;
+    }
+
+    /**
      * @param Collection $resourceItems
      * @return GraphicResource
      */
