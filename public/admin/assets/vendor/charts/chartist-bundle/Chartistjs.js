@@ -710,6 +710,8 @@ function displayOrdersPaymentsPieGraphic(graphicData) {
                 columns: [
                     ['data1', 300],
                     ['data2', 420],
+                   // ['data3', 420],
+                   // ['data4', 420],
                 ],
                 type: 'donut',
                 onclick: function(d, i) { console.log("onclick", d, i); },
@@ -718,7 +720,9 @@ function displayOrdersPaymentsPieGraphic(graphicData) {
 
                 colors: {
                     data1: '#5969ff',
-                    data2: '#ff407b'
+                    data2: '#ff407b',
+                    //data3: '#ff407b',
+                   // data4: '#ff407b',
                 }
             },
             donut: {
@@ -728,11 +732,11 @@ function displayOrdersPaymentsPieGraphic(graphicData) {
         console.log(graphicData['columns']);
         setTimeout(function() {
             chart.load({
-                columns: graphicData['columns']
+                columns: graphicData['columns'],
                 // columns: [
-                //     ["setosa", 5],
-                //     ["versicolor", 4],
-                //     ["virginica", 10],
+                //     ["Наложенный платеж", 5545],
+                //     ["Оплата картой онлайн", 11186],
+                //     ["Оплата наличными", 17492],
                 // ]
             });
         }, 500);

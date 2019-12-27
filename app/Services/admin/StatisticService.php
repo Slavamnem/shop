@@ -53,7 +53,9 @@ class StatisticService implements StatisticServiceInterface
                         return new EntityGraphicResourceItemAdapter(
                             $order,
                             function($order){
+                                //return (int)($order->sum / 1000) * 1000 . " до " . ((int)($order->sum / 1000) * 1000 + 1000);
                                 return PaymentTypesEnum::getValueById($order->payment_type_id);
+                                //return Client::find($order->client_id)->name;
                             },
                             function($order){ return $order->sum; }
                         );
@@ -70,7 +72,7 @@ class StatisticService implements StatisticServiceInterface
         return (new MultipleGraphicDiagram())
             ->setTitle('Статистика продаж за год')
             ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO делать классы ресурсы года месца и тд
                 ->setResourceItems(
                     Order::thisYear()->get()->map(function($order) {
                         return new EntityGraphicResourceItemAdapter($order, null, function($order){
