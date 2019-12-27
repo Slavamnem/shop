@@ -69,10 +69,11 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStatsGraphic() : Graphic
     {
+        // TODO create trait GraphicResourceTrait, interface GraphicResourceItemInterface, add interface to model or static method maps items
         return (new MultipleGraphicDiagram())
             ->setTitle('Статистика продаж за год')
             ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO делать классы ресурсы года месца и тд
+                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO cделать классы ресурсы года месяца и тд
                 ->setResourceItems(
                     Order::thisYear()->get()->map(function($order) {
                         return new EntityGraphicResourceItemAdapter($order, null, function($order){
