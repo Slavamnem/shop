@@ -19,9 +19,25 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     protected $resourceItems;
     /**
-     * @var string
+     * @var Collection
      */
-    protected $segregationType;
+    protected $resourceGrid; //TODO возможно отдельный класс
+    /**
+     * @var
+     */
+    protected $itemsLabelDistributorClosure;
+    /**
+     * @var
+     */
+    protected $itemsValueQualifierClosure;
+
+    /**
+     * @return Collection
+     */
+    public function getResourceGrid(): Collection
+    {
+        return $this->resourceGrid;
+    }
 
     /**
      * @return Collection
@@ -35,34 +51,47 @@ abstract class AbstractGraphicResource implements GraphicResource
      * @param Collection $resourceItems
      * @return GraphicResource
      */
-    public function setResourceItems(Collection $resourceItems)
+    public function setResourceItems(Collection $resourceItems) : GraphicResource
     {
-        $this->resourceItems = collect();
-
-        foreach ($resourceItems as $resourceItem) {
-            $this->incrementResourceItem($resourceItem);
-        }
-
-        $this->sortResourceItems();
-
+        $this->resourceItems = $resourceItems;
         return $this;
     }
 
     /**
-     * @return string
+     * @param $itemsLabelDistributorClosure
+     * @return GraphicResource
      */
-    public function getSegregationType(): string
+    public function setResourceItemsLabelDistributorClosure($itemsLabelDistributorClosure) : GraphicResource
     {
-        return $this->segregationType;
+        $this->itemsLabelDistributorClosure = $itemsLabelDistributorClosure;
+        return $this;
     }
 
     /**
-     * @param string $segregationType
+     * @param $itemsValueQualifierClosure
      * @return GraphicResource
      */
-    public function setSegregationType(string $segregationType): GraphicResource
+    public function setResourceItemsValueQualifierClosure($itemsValueQualifierClosure) : GraphicResource
     {
-        $this->segregationType = $segregationType;
+        $this->itemsValueQualifierClosure = $itemsValueQualifierClosure;
+        return $this;
+    }
+
+    /**
+     * @return GraphicResource
+     */
+    public function buildResourceGrid() : GraphicResource
+    {
+        $this->resourceGrid = collect();
+
+        foreach ($this->resourceItems as $resourceItem) {
+            $resourceItem->setLabel($this->itemsLabelDistributorClosure);
+            $resourceItem->setValue($this->itemsValueQualifierClosure);
+            $this->addResourceItemToGrid($resourceItem);
+        }
+
+        $this->sortResourceGrid();
+
         return $this;
     }
 
@@ -71,7 +100,7 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getLabels()
     {
-        return array_values($this->resourceItems->keys()->all());
+        return array_values($this->resourceGrid->keys()->all());
     }
 
     /**
@@ -79,27 +108,27 @@ abstract class AbstractGraphicResource implements GraphicResource
      */
     public function getValues()
     {
-        return $this->resourceItems->values()->all();
+        return $this->resourceGrid->values()->all();
     }
 
     /**
      * @param GraphicResourceItem $resourceItem
      */
-    protected function incrementResourceItem(GraphicResourceItem $resourceItem)
+    protected function addResourceItemToGrid(GraphicResourceItem $resourceItem)
     {
-        $resourceItemKey = $this->getItemLabel($resourceItem);
+        $resourceItemKey = $this->getResourceItemLabel($resourceItem);
 
-        $this->resourceItems->put($resourceItemKey, $this->resourceItems->get($resourceItemKey) + $resourceItem->getValue());
+        $this->resourceGrid->put($resourceItemKey, $this->resourceGrid->get($resourceItemKey) + $resourceItem->getValue());
     }
 
     /**
      * @return GraphicResource
      */
-    protected function sortResourceItems()
+    protected function sortResourceGrid()
     {
-        $resourceItems = $this->resourceItems->all();
-        ksort($resourceItems);
-        $this->resourceItems = collect($resourceItems);
+        $resourceGridItems = $this->resourceGrid->all();
+        ksort($resourceGridItems);
+        $this->resourceGrid = collect($resourceGridItems);
 
         return $this;
     }
@@ -108,5 +137,5 @@ abstract class AbstractGraphicResource implements GraphicResource
      * @param GraphicResourceItem $resourceItem
      * @return mixed
      */
-    abstract protected function getItemLabel(GraphicResourceItem $resourceItem);
+    abstract protected function getResourceItemLabel(GraphicResourceItem $resourceItem);
 }

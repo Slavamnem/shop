@@ -8,21 +8,39 @@ use App\Components\Graphics\Graphic;
 use App\Components\Graphics\MultipleBarDiagram;
 use App\Components\Graphics\MultipleGraphicDiagram;
 use App\Components\Graphics\PieDiagram;
+use App\Components\Graphics\Resources\MonthGraphicResource;
 use App\Components\Graphics\Resources\VariationGraphicResource;
-use App\Components\Graphics\Resources\TimeGraphicResource;
+use App\Components\Graphics\Resources\YearGraphicResource;
 use App\Components\Graphics\SingleBarDiagram;
 use App\Components\Graphics\SingleGraphicDiagram;
-use App\Enums\GraphicSegregationTypesEnum;
 use App\Enums\PaymentTypesEnum;
 use App\Notification;
 use App\Objects\GraphicDataObject;
 use App\Order;
 use App\Product;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
+/**
+ * Описание постороения графиков
+ *
+ * Есть классы типов графиков (interface Graphic): круговая диаграмма, классический график, столбцовая диаграмма -
+ * их задача получить данные от ресурсов и передать фронту в нужном виде
+ *
+ * Есть классы ресурсов для графиков (interface GraphicResource) (по времени: годовой, месячный и тд) и вариационный
+ * различаются по типу разбиения элементов
+ * Все ресурсы строят свою сетку (временные ее предварительно нулями заполняют чтобы дырок не было и в конце не сортируют сетку)
+ *
+ * Есть элементы ресурсов (interface GraphicResourceItem), это любые модели eloquent поддерживающие трейт GraphicResourceItemTrait и имплементирующие GraphicResourceItem
+ * Их сетят в ресурсы, задают анонимные функции для определения веса элемента и его ключа для формирования сетки
+ *
+ * У каждого графика может быть сколько угодно ресурсов - это как несколько функций на координатной плоскости
+ * или несколько столбцов по каждому ключу разбиения
+ *
+ * Class StatisticService
+ * @package App\Services\Admin
+ */
 class StatisticService implements StatisticServiceInterface
 {
     /**
@@ -42,25 +60,19 @@ class StatisticService implements StatisticServiceInterface
     /**
      * @return Graphic
      */
-    public function getOrdersPaymentTypesStatsPieGraphic() : Graphic
+    public function getOrdersPaymentTypesStatsPieGraphic() : Graphic //TODO вынести отдельно от статистики заказов и клиентов в сервис графиков
     {
         return (new PieDiagram())
             ->setTitle('За все время по типам оплаты')
             ->addResource((new VariationGraphicResource())
-                ->setResourceItems(Order::query()
-                    ->get()
-                    ->map(function($order) {
-                        return new EntityGraphicResourceItemAdapter(
-                            $order,
-                            function($order){
-                                //return (int)($order->sum / 1000) * 1000 . " до " . ((int)($order->sum / 1000) * 1000 + 1000);
-                                return PaymentTypesEnum::getValueById($order->payment_type_id);
-                                //return Client::find($order->client_id)->name;
-                            },
-                            function($order){ return $order->sum; }
-                        );
-                    })
-                )
+                ->setResourceItems(Order::query()->get())
+                ->setResourceItemsLabelDistributorClosure(function($order){
+                    //return (int)($order->sum / 1000) * 1000 . " до " . ((int)($order->sum / 1000) * 1000 + 1000);
+                    return PaymentTypesEnum::getValueById($order->payment_type_id);
+                    //return Client::find($order->client_id)->name;
+                })
+                ->setResourceItemsValueQualifierClosure(function($order){ return $order->sum; })
+                ->buildResourceGrid()
             );
     }
 
@@ -69,18 +81,12 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getOrdersStatsGraphic() : Graphic
     {
-        // TODO create trait GraphicResourceTrait, interface GraphicResourceItemInterface, add interface to model or static method maps items
         return (new MultipleGraphicDiagram())
             ->setTitle('Статистика продаж за год')
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue()) //TODO cделать классы ресурсы года месяца и тд
-                ->setResourceItems(
-                    Order::thisYear()->get()->map(function($order) {
-                        return new EntityGraphicResourceItemAdapter($order, null, function($order){
-                            return $order->sum;
-                        });
-                    })
-                )
+            ->addResource((new YearGraphicResource())
+                ->setResourceItems(Order::thisYear()->get())
+                ->setResourceItemsValueQualifierClosure(function ($order) { return $order->sum; })
+                ->buildResourceGrid()
             );
     }
 
@@ -91,21 +97,13 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new MultipleGraphicDiagram())
             ->setTitle('Статистика уведомлений (Синий - новый заказ, красный - вход в админку)')
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
-                ->setResourceItems(
-                    Notification::where('preview', 'Новый заказ!')->get()->map(function($notification) {
-                        return new EntityGraphicResourceItemAdapter($notification, null, null);
-                    })
-                )
+            ->addResource((new YearGraphicResource())
+                ->setResourceItems(Notification::where('preview', 'Новый заказ!')->get())
+                ->buildResourceGrid()
             )
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
-                ->setResourceItems(
-                    Notification::where('preview', 'Вход в админ-панель')->get()->map(function($notification) {
-                        return new EntityGraphicResourceItemAdapter($notification, null, null);
-                    })
-                )
+            ->addResource((new YearGraphicResource())
+                ->setResourceItems(Notification::where('preview', 'Вход в админ-панель')->get())
+                ->buildResourceGrid()
             );
     }
 
@@ -116,15 +114,10 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new SingleGraphicDiagram())
             ->setTitle('Статистика продаж за последний месяц')
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::MONTH()->getValue())
-                ->setResourceItems(
-                    Order::thisMonth()->get()->map(function($order) {
-                        return new EntityGraphicResourceItemAdapter($order, null, function($order){
-                            return $order->sum;
-                        });
-                    })
-                )
+            ->addResource((new MonthGraphicResource())
+                ->setResourceItems(Order::thisMonth()->get())
+                ->setResourceItemsValueQualifierClosure(function($order){ return $order->sum; })
+                ->buildResourceGrid()
             );
     }
 
@@ -135,25 +128,15 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new MultipleBarDiagram())
             ->setTitle('За все время по типам оплаты (LiqPay и наличка)')
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
-                ->setResourceItems(Order::query()
-                    ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
-                    ->get()
-                    ->map(function($order) {
-                        return new EntityGraphicResourceItemAdapter($order, null, function($order){ return $order->sum; });
-                    })
-                )
+            ->addResource((new YearGraphicResource())
+                ->setResourceItems(Order::query()->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())->get())
+                ->setResourceItemsValueQualifierClosure(function($order){ return $order->sum; })
+                ->buildResourceGrid()
             )
-            ->addResource((new TimeGraphicResource())
-                ->setSegregationType(GraphicSegregationTypesEnum::YEAR()->getValue())
-                ->setResourceItems(Order::query()
-                    ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())
-                    ->get()
-                    ->map(function($order) {
-                        return new EntityGraphicResourceItemAdapter($order, null, function($order){ return $order->sum; });
-                    })
-                )
+            ->addResource((new YearGraphicResource())
+                ->setResourceItems(Order::query()->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())->get())
+                ->setResourceItemsValueQualifierClosure(function($order){ return $order->sum; })
+                ->buildResourceGrid()
             );
     }
     // TODO в акции добавить в интерфейс общий методы добавления и получения детей чтобы было полное единообразия работы с компонентами
@@ -162,25 +145,13 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getTest()
     {
-       // dump(1);
         return (new SingleBarDiagram())
             ->setTitle('Заказы за все время по часам')
             ->addResource((new VariationGraphicResource())
-                //->setSegregationType(GraphicSegregationTypesEnum::DAY()->getValue())
-                ->setResourceItems(
-                    Order::query()
-                        ->get()
-                        ->map(function($order) { return new EntityGraphicResourceItemAdapter(
-                            $order, //null,
-                            function($order) {
-                                //return lang("months." . $order->created_at->format('F'));
-                                return Client::find($order->client_id)->name;
-                            },
-                            function($order) {
-                                return $order->sum;
-                            });
-                        })
-                )
+                ->setResourceItems(Order::query()->get())
+                ->setResourceItemsLabelDistributorClosure(function($order) { return Client::find($order->client_id)->name; })
+                ->setResourceItemsValueQualifierClosure(function($order) { return $order->sum; })
+                ->buildResourceGrid()
             )
             ->getGraphicData();
     }
@@ -194,7 +165,7 @@ class StatisticService implements StatisticServiceInterface
     {
         return (new MultipleBarDiagram())
             ->setTitle('Test diagram with orders!')
-            ->addResource((new TimeGraphicResource())
+            ->addResource((new YearGraphicResource())
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::LIQ_PAY()->getValue())
@@ -202,7 +173,7 @@ class StatisticService implements StatisticServiceInterface
                         ->map(function($order){ return new EntityGraphicResourceItemAdapter($order); })//, PaymentTypesEnum::LIQ_PAY()->getName()); })
                 )
             )
-            ->addResource((new TimeGraphicResource())
+            ->addResource((new YearGraphicResource())
                 ->setResourceItems(
                     Order::query()
                         ->where('payment_type_id', PaymentTypesEnum::CASH()->getValue())

@@ -18,10 +18,10 @@ interface GraphicResourceItem
     public function getLabel() : string;
 
     /**
-     * @param null $itemQualifierClosure
+     * @param null $itemsLabelDistributorClosure
      * @return GraphicResourceItem
      */
-    public function setLabel($itemQualifierClosure = null) : GraphicResourceItem;
+    public function setLabel($itemsLabelDistributorClosure = null);
 
     /**
      * @return array|float
@@ -29,10 +29,10 @@ interface GraphicResourceItem
     public function getValue() : string;
 
     /**
-     * @param int $itemValueClosure
+     * @param null $itemsValueQualifierClosure
      * @return GraphicResourceItem
      */
-    public function setValue($itemValueClosure = 1) : GraphicResourceItem;
+    public function setValue($itemsValueQualifierClosure = null);
 
     /**
      * @return Carbon

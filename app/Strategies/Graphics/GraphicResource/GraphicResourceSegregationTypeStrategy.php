@@ -19,7 +19,7 @@ use App\Strategies\Interfaces\GraphicResourceSegregationTypeStrategyInterface;
 use App\Strategies\Interfaces\StrategyInterface;
 use Illuminate\Support\Collection;
 
-class GraphicResourceSegregationTypeStrategy implements StrategyInterface
+class GraphicResourceSegregationTypeStrategy implements StrategyInterface //deprecated
 {
     /**
      * @var Collection

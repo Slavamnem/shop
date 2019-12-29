@@ -10,8 +10,9 @@ namespace App\Components\Graphics\Resources;
 
 use App\Components\Graphics\GraphicResource;
 use App\Components\Graphics\GraphicResourceItem;
+use Illuminate\Support\Collection;
 
-class VariationGraphicResource extends AbstractGraphicResource implements GraphicResource
+class MonthGraphicResource extends AbstractTimeGraphicResource implements GraphicResource
 {
     /**
      * @param GraphicResourceItem $resourceItem
@@ -19,6 +20,11 @@ class VariationGraphicResource extends AbstractGraphicResource implements Graphi
      */
     public function getResourceItemLabel(GraphicResourceItem $resourceItem)
     {
-        return $resourceItem->getLabel();
+        return $resourceItem->getCreationDate()->day;
+    }
+
+    public function createGridSkeleton()
+    {
+        $this->resourceGrid = collect(array_fill(1, 31, 0));
     }
 }

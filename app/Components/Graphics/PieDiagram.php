@@ -19,7 +19,7 @@ class PieDiagram extends AbstractGraphic implements Graphic
             'title'   => $this->getTitle(),
             'columns' => $this->graphicResources
                 ->first()
-                ->getResourceItems()
+                ->getResourceGrid()
                 ->mapWithKeys(function($value, $key){ return [$key => [$key, $value]]; })
                 ->values()
                 ->all(),

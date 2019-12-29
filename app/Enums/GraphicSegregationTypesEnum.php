@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class GraphicSegregationTypesEnum extends AbstractEnum
+class GraphicSegregationTypesEnum extends AbstractEnum //deprecated
 {
     public const YEAR = 1;
     public const MONTH = 2;

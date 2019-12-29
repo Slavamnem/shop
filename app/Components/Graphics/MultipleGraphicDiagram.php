@@ -18,7 +18,9 @@ class MultipleGraphicDiagram extends AbstractGraphic implements Graphic
         return [
             'title'  => $this->getTitle(),
             'labels' => $this->graphicResources->first()->getLabels(),
-            'values' => $this->graphicResources->map(function(GraphicResource $graphicResource){ return $graphicResource->getValues(); })->toArray(),
+            'values' => $this->graphicResources
+                ->map(function(GraphicResource $graphicResource) { return $graphicResource->getValues(); })
+                ->toArray(),
         ];
     }
 }

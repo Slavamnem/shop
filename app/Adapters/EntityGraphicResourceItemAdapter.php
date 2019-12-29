@@ -13,7 +13,7 @@ use App\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class EntityGraphicResourceItemAdapter implements GraphicResourceItem
+class EntityGraphicResourceItemAdapter implements GraphicResourceItem //deprecated soon
 {
     /**
      * @var Model

@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Components\Graphics\GraphicResourceItem;
 use App\Enums\OrderStatusEnum;
+use App\Traits\GraphicResourceItemTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -23,9 +25,9 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon created_at
  * @property Carbon updated_at
  */
-class Order extends Model
+class Order extends Model implements GraphicResourceItem
 {
-    use Notifiable;
+    use Notifiable, GraphicResourceItemTrait;
 
     /**
      * @var string

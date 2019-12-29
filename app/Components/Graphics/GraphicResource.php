@@ -15,24 +15,35 @@ interface GraphicResource
     /**
      * @return Collection
      */
+    public function getResourceGrid(): Collection;
+
+    /**
+     * @return Collection
+     */
     public function getResourceItems(): Collection;
 
     /**
      * @param Collection $resourceItems
      * @return GraphicResource
      */
-    public function setResourceItems(Collection $resourceItems);
+    public function setResourceItems(Collection $resourceItems) : GraphicResource;
 
     /**
-     * @return string
-     */
-    public function getSegregationType(): string;
-
-    /**
-     * @param string $segregationType
+     * @param $itemsLabelDistributorClosure
      * @return GraphicResource
      */
-    public function setSegregationType(string $segregationType): GraphicResource;
+    public function setResourceItemsLabelDistributorClosure($itemsLabelDistributorClosure) : GraphicResource;
+
+    /**
+     * @param $itemsValueQualifierClosure
+     * @return GraphicResource
+     */
+    public function setResourceItemsValueQualifierClosure($itemsValueQualifierClosure) : GraphicResource;
+
+    /**
+     * @return GraphicResource
+     */
+    public function buildResourceGrid() : GraphicResource;
 
     /**
      * @return array
