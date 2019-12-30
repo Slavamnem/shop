@@ -6,7 +6,7 @@
  * Time: 17:03
  */
 
-namespace App\Components\Graphics;
+namespace App\Components\Graphics\Interfaces;
 
 interface Graphic
 {

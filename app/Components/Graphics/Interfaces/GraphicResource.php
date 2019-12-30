@@ -6,7 +6,7 @@
  * Time: 18:00
  */
 
-namespace App\Components\Graphics;
+namespace App\Components\Graphics\Interfaces;
 
 use Illuminate\Support\Collection;
 

@@ -8,9 +8,8 @@
 
 namespace App\Components\Graphics\Resources;
 
-use App\Components\Graphics\GraphicResource;
-use App\Components\Graphics\GraphicResourceItem;
-use Illuminate\Support\Collection;
+use App\Components\Graphics\Interfaces\GraphicResource;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 
 class YearGraphicResource extends AbstractTimeGraphicResource implements GraphicResource
 {

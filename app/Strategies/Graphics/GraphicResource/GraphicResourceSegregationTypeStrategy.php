@@ -6,7 +6,7 @@
  * Time: 0:57
  */
 
-namespace App\Strategies\Graphics\GraphicResource;
+namespace App\Strategies\GraphicsInterfaces\GraphicResource;
 
 
 use App\Enums\GraphicSegregationTypesEnum;

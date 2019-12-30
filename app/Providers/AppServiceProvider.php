@@ -17,13 +17,13 @@ use App\Components\Interfaces\EmailDriverInterface;
 use App\Components\Interfaces\NovaPoshtaInterface;
 use App\Components\Interfaces\SecurityCenterInterface;
 use App\Components\RestApi\DropBox;
-use App\Components\RestApi\MailGunClient;
 use App\Components\RestApi\NovaPoshta;
 use App\Components\SecurityCenter;
 use App\Components\Signals\DeleteRecordSignal;
-use App\Events\Attack;
 use App\Events\MessageToTelegram;
 use App\Notification;
+use App\Services\Admin\Interfaces\GraphicsServiceInterface;
+use App\Services\Admin\Graphics\GraphicsService;
 use App\Services\RestApi\Interfaces\ImageStorageServiceInterface;
 use App\Services\Admin\BasketService;
 use App\Services\Admin\ClientService;
@@ -126,38 +126,39 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ProductServiceInterface::class, ProductService::class);
-        $this->app->bind(ShareServiceInterface::class, ShareService::class);
-        $this->app->bind(ClientServiceInterface::class, ClientService::class);
-        $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
-        $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(BasketServiceInterface::class, BasketService::class);
-        $this->app->bind(SiteElementsServiceInterface::class, SiteElementsService::class);
-        $this->app->bind(CatalogProductsServiceInterface::class, CatalogProductsService::class);
+        $this->app->singleton(FacetObjectBuilderInterface::class, FacetObjectBuilder::class);
+        $this->app->bind('conditions', ConditionsService::class);
         $this->app->bind(ConditionsBuilderInterface::class, ConditionsBuilder::class);
         $this->app->bind(ShareProductsQueryBuilderInterface::class, ShareProductsQueryBuilder::class);
 
-        $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);
-        $this->app->bind(DropBoxClientInterface::class, DropBox::class);
-        $this->app->bind(ImageStorageServiceInterface::class, DropBoxService::class);
-        $this->app->bind(EmailDriverInterface::class, MailGunDriver::class);
-        $this->app->bind(NovaPoshtaInterface::class, NovaPoshta::class);
-        $this->app->bind(NovaPoshta::class);
-
-        $this->app->bind(OrderService::class);
-        $this->app->bind(OrderPriceCalcService::class);
 
         $this->app->singleton(AppCenter::class);
         $this->app->singleton(SecurityCenter::class, SecurityCenter::class);
         $this->app->singleton(AppCenterInterface::class, AppCenter::class);
         $this->app->singleton(SecurityCenterInterface::class, SecurityCenter::class);
 
+
+
+        /**$this->app->bind(ProductServiceInterface::class, ProductService::class);
+        $this->app->bind(ShareServiceInterface::class, ShareService::class);
+        $this->app->bind(ClientServiceInterface::class, ClientService::class);
+        $this->app->bind(StatisticServiceInterface::class, StatisticService::class);
+        $this->app->bind(GraphicsServiceInterface::class, GraphicsService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(BasketServiceInterface::class, BasketService::class);
+        $this->app->bind(SiteElementsServiceInterface::class, SiteElementsService::class);
+        $this->app->bind(CatalogProductsServiceInterface::class, CatalogProductsService::class);
         $this->app->singleton(ElasticSearchServiceInterface::class, ElasticSearchService::class);
         $this->app->singleton(NewYorkTimesServiceInterface::class, NewYorkTimesService::class);
         $this->app->singleton(ExcelServiceInterface::class, ExcelService::class);
+        $this->app->bind(NovaPoshtaServiceInterface::class, NovaPoshtaService::class);
+        $this->app->bind(ImageStorageServiceInterface::class, DropBoxService::class);
+        $this->app->bind(OrderService::class);
+        $this->app->bind(OrderPriceCalcService::class);
 
-        $this->app->singleton(FacetObjectBuilderInterface::class, FacetObjectBuilder::class);
-
-        $this->app->bind('conditions', ConditionsService::class);
+        $this->app->bind(DropBoxClientInterface::class, DropBox::class);
+        $this->app->bind(EmailDriverInterface::class, MailGunDriver::class);
+        $this->app->bind(NovaPoshtaInterface::class, NovaPoshta::class);
+        $this->app->bind(NovaPoshta::class);*/
     }
 }

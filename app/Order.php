@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Components\Graphics\GraphicResourceItem;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 use App\Enums\OrderStatusEnum;
 use App\Traits\GraphicResourceItemTrait;
 use Carbon\Carbon;

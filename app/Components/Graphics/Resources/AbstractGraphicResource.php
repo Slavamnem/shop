@@ -8,8 +8,8 @@
 
 namespace App\Components\Graphics\Resources;
 
-use App\Components\Graphics\GraphicResource;
-use App\Components\Graphics\GraphicResourceItem;
+use App\Components\Graphics\Interfaces\GraphicResource;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 use Illuminate\Support\Collection;
 
 abstract class AbstractGraphicResource implements GraphicResource

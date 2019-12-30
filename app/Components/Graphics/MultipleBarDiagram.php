@@ -8,6 +8,9 @@
 
 namespace App\Components\Graphics;
 
+use App\Components\Graphics\Interfaces\Graphic;
+use App\Components\Graphics\Interfaces\GraphicResource;
+
 class MultipleBarDiagram extends AbstractGraphic implements Graphic
 {
     /**

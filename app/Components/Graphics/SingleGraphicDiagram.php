@@ -8,6 +8,8 @@
 
 namespace App\Components\Graphics;
 
+use App\Components\Graphics\Interfaces\Graphic;
+
 class SingleGraphicDiagram extends AbstractGraphic implements Graphic
 {
     /**

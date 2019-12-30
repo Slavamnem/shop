@@ -8,8 +8,8 @@
 
 namespace App\Strategies\Graphics\GraphicResource\Strategies;
 
-use App\Components\Graphics\GraphicResource;
-use App\Components\Graphics\GraphicResourceItem;
+use App\Components\GraphicsInterfaces\GraphicResource;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 use App\Strategies\Interfaces\GraphicResourceSegregationTypeStrategyInterface;
 
 class HourGraphicResourceSegregationSegregationTypeStrategy implements GraphicResourceSegregationTypeStrategyInterface

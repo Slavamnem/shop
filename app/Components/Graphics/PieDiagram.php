@@ -8,6 +8,8 @@
 
 namespace App\Components\Graphics;
 
+use App\Components\Graphics\Interfaces\Graphic;
+
 class PieDiagram extends AbstractGraphic implements Graphic
 {
     /**

@@ -8,6 +8,8 @@
 
 namespace App\Components\Graphics;
 
+use App\Components\Graphics\Interfaces\Graphic;
+
 /**
  * @description Needs only one resource
  *

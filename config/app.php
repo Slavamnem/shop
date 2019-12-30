@@ -180,6 +180,8 @@ return [
         \App\Providers\ModulesServiceProvider::class,
         \App\Providers\AdminShareDataProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        \App\Providers\Custom\AllServicesProvider::class,
+        \App\Providers\Custom\ApiDriversProvider::class
     ],
 
     /*

@@ -8,8 +8,8 @@
 
 namespace App\Strategies\Interfaces;
 
-use App\Components\Graphics\GraphicResource;
-use App\Components\Graphics\GraphicResourceItem;
+use App\Components\GraphicsInterfaces\GraphicResource;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 
 interface GraphicResourceSegregationTypeStrategyInterface
 {

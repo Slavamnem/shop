@@ -8,13 +8,12 @@
 
 namespace App\Components\Graphics\Resources;
 
-use App\Components\Graphics\GraphicResource;
-use App\Components\Graphics\GraphicResourceItem;
-use Illuminate\Support\Collection;
+use App\Components\Graphics\Interfaces\GraphicResource;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 
 class DayGraphicResource extends AbstractTimeGraphicResource implements GraphicResource
 {
-    const LAST_HOUR = 24;
+    const DAY_HOURS_AMOUNT = 24;
 
     /**
      * @param GraphicResourceItem $resourceItem
@@ -27,6 +26,6 @@ class DayGraphicResource extends AbstractTimeGraphicResource implements GraphicR
 
     public function createGridSkeleton()
     {
-        $this->resourceGrid = collect(array_fill(0, self::LAST_HOUR, 0));
+        $this->resourceGrid = collect(array_fill(0, self::DAY_HOURS_AMOUNT, 0));
     }
 }

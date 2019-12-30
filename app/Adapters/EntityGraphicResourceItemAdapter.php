@@ -8,7 +8,7 @@
 
 namespace App\Adapters;
 
-use App\Components\Graphics\GraphicResourceItem;
+use App\Components\Graphics\Interfaces\GraphicResourceItem;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

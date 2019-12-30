@@ -20,6 +20,8 @@ use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
 use App\Services\Admin\ExcelService;
+use App\Services\Admin\GraphicsService;
+use App\Services\Admin\Interfaces\GraphicsServiceInterface;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\OrderService;
 use Carbon\Carbon;
@@ -34,7 +36,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class StatisticController extends Controller
+class StatisticController extends Controller //TODO SOLID(1)!!!
 {
     const MENU_ITEM_NAME = "stats";
 
@@ -45,17 +47,23 @@ class StatisticController extends Controller
     /**
      * @var StatisticServiceInterface
      */
-    private $service;
+    private $statisticService;
+    /**
+     * @var GraphicsServiceInterface
+     */
+    private $graphicsService;
 
     /**
      * StatisticController constructor.
      * @param Request $request
-     * @param StatisticServiceInterface $service
+     * @param StatisticServiceInterface $statisticService
+     * @param GraphicsServiceInterface $graphicsService
      */
-    public function __construct(Request $request, StatisticServiceInterface $service)
+    public function __construct(Request $request, StatisticServiceInterface $statisticService, GraphicsServiceInterface $graphicsService)
     {
         $this->request = $request;
-        $this->service = $service;
+        $this->statisticService = $statisticService;
+        $this->graphicsService = $graphicsService;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
         $this->middleware([StatsAccessMiddleware::class]);
     }
@@ -75,7 +83,7 @@ class StatisticController extends Controller
      */
     public function getTopProducts()
     {
-        $products = $this->service->getProductsList();
+        $products = $this->statisticService->getProductsList();
 
         return view("admin.stats.top_products", compact('products'));
     }
@@ -85,7 +93,7 @@ class StatisticController extends Controller
      */
     public function getProductsList()
     {
-        $products = $this->service->getProductsList();
+        $products = $this->statisticService->getProductsList();
 
         return view("admin.stats.products_list", compact('products'));
     }
@@ -105,7 +113,7 @@ class StatisticController extends Controller
      */
     public function getOrdersPaymentTypesPieStats()
     {
-        return response()->json($this->service->getOrdersPaymentTypesStatsPieGraphic()->getGraphicData());
+        return response()->json($this->graphicsService->getOrdersPaymentTypesStatsPieGraphic()->getGraphicData());
     }
 
     /**
@@ -113,7 +121,7 @@ class StatisticController extends Controller
      */
     public function getOrdersStats()
     {
-        return response()->json($this->service->getOrdersStatsGraphic()->getGraphicData());
+        return response()->json($this->graphicsService->getOrdersStatsGraphic()->getGraphicData());
     }
 
     /**
@@ -121,7 +129,7 @@ class StatisticController extends Controller
      */
     public function getNotificationsStats()
     {
-        return response()->json($this->service->getNotificationsStatsGraphic()->getGraphicData());
+        return response()->json($this->graphicsService->getNotificationsStatsGraphic()->getGraphicData());
     }
 
     /**
@@ -129,7 +137,7 @@ class StatisticController extends Controller
      */
     public function getOrdersStatsMonth()
     {
-        return response()->json($this->service->getOrdersStatsMonthGraphic()->getGraphicData());
+        return response()->json($this->graphicsService->getOrdersStatsMonthGraphic()->getGraphicData());
     }
 
     /**
@@ -137,7 +145,7 @@ class StatisticController extends Controller
      */
     public function getOrdersPaymentTypesStats()
     {
-        return response()->json($this->service->getOrdersPaymentTypesStatsGraphic()->getGraphicData());
+        return response()->json($this->graphicsService->getOrdersPaymentTypesStatsGraphic()->getGraphicData());
     }
 
     //test
@@ -146,8 +154,13 @@ class StatisticController extends Controller
      */
     public function getTest()
     {
-        return response()->json($this->service->getTest());
+        return response()->json($this->graphicsService->getTest());
     }
+
+
+
+
+
 
 
 
@@ -156,7 +169,7 @@ class StatisticController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportAllOrders()
+    public function exportAllOrders() //TODO unused
     {
         return response()->download((new ExcelService())
             ->getAllOrdersReportDocument((new CreateReportRequestObject())
@@ -170,7 +183,7 @@ class StatisticController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportYearOrders() //TODO maybe one function with period and type arguments
+    public function exportYearOrders() //TODO unused
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
@@ -185,7 +198,7 @@ class StatisticController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportMonthOrders()
+    public function exportMonthOrders() //TODO unused
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
@@ -200,7 +213,7 @@ class StatisticController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportDayOrders()
+    public function exportDayOrders() //TODO unused
     {
         return response()->download((new ExcelService())
             ->getOrdersStatsReportDocument((new CreateReportRequestObject())
