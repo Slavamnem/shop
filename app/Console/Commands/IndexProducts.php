@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\ElasticSearchService;
 use Illuminate\Console\Command;
 
@@ -28,13 +29,20 @@ class IndexProducts extends Command
     private $elasticService;
 
     /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
+
+    /**
      * IndexProducts constructor.
      * @param ElasticSearchService $elasticService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(ElasticSearchService $elasticService)
+    public function __construct(ElasticSearchService $elasticService, ProductsRepository $productsRepository)
     {
         parent::__construct();
         $this->elasticService = $elasticService;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -44,7 +52,7 @@ class IndexProducts extends Command
      */
     public function handle()
     {
-        foreach (Product::all() as $product) {
+        foreach ($this->productsRepository->getAllProducts() as $product) {
             $this->elasticService->indexProduct($product);
         }
     }

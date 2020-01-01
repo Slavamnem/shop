@@ -3,13 +3,17 @@
 namespace App;
 
 use App\Services\Admin\Interfaces\ProductServiceInterface;
-use App\Services\Admin\ProductService;
-use App\Services\Admin\ShareService;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
+/**
+ * Class Product
+ * @property integer id
+ * @property integer quantity
+ * @property string slug
+ * @property bool active
+ * @package App
+ */
 class Product extends Model
 {
     use SoftDeletes;
@@ -42,6 +46,14 @@ class Product extends Model
         'status_id' => 'Статус',
         'color_id' => 'Цвет',
         'size_id' => 'Размер',
+    ];
+
+    public static $relationsFilters = [
+        "category_id" => "category",
+        "group_id"    => "group",
+        "status_id"   => "status",
+        "color_id"    => "color",
+        "size_id"     => "size"
     ];
 
     const FACET_ATTRIBUTES = [
@@ -171,7 +183,7 @@ class Product extends Model
     /***********************/
 
     /***********************/
-    /* extra methods block */
+    /* extra methods block */ // TODO вынести отсюда в трейт или сервис
     /***********************/
 
     /**

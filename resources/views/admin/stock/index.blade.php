@@ -49,7 +49,8 @@
                                                     @endif
                                                     <div class="card-body">
                                                         <h3 class="card-title">{{ $product->name }}</h3>
-                                                        <p class="card-text">Количество: {{ $product->quantity }}</p>
+                                                        {{--<p class="card-text">Количество: {{ $product->quantity }}</p>--}}
+                                                        <p align="left">Количество: <input type="number" data-product="{{ $product->id }}" class="stock-quantity" value="{{ $product->quantity }}"></p>
                                                         <a href="{{ route('admin-products-show', ['id' => $product->id]) }}" class="btn btn-primary">Открыть товар</a>
                                                     </div>
                                                 </div>

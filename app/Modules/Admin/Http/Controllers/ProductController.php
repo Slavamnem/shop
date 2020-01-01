@@ -7,10 +7,12 @@ use App\Components\Xml;
 use App\Events\NewOrderEvent;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
 use App\Product;
 use App\Property;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
@@ -29,15 +31,21 @@ class ProductController extends Controller
      * @var ProductService
      */
     private $service;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * ProductController constructor.
      * @param ProductServiceInterface $service
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(ProductServiceInterface $service)
+    public function __construct(ProductServiceInterface $service, ProductsRepository $productsRepository)
     {
         dump("module admin");
         $this->service = $service;
+        $this->productsRepository = $productsRepository;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
     }
 
@@ -61,9 +69,7 @@ class ProductController extends Controller
 //            "Language" => "ru"
 //        ])->data);
 
-        $products = Product::with(['color', 'size', 'category'])->paginate(10);
-
-        return view("admin.products.index", compact('products'));
+        return view("admin.products.index", ['products' => $this->productsRepository->getLastProducts()]);
     }
 
     /**
@@ -89,7 +95,7 @@ class ProductController extends Controller
         $product = new Product();
 
         $product->fill($request->only($product->getFillable()));
-        $this->service->saveImages($product);
+        $this->service->saveImages($product, $request);
         $product->save();
 
         return redirect()->route("admin-products-edit", ['id' => $product->id]);
@@ -124,18 +130,18 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  EditProductRequest  $request
+     * @param  UpdateProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
 //        dump($request->all());
-        $product = Product::find($id);
+        $product = $this->productsRepository->getProductById($id);
 
         $product->fill($request->only($product->getFillable()));
-        $this->service->saveImages($product);
-        $this->service->saveProperties($product);
+        $this->service->saveImages($product, $request);
+        $this->service->saveProperties($product, $request);
 
         $product->save();
 
@@ -143,17 +149,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $this->productsRepository->getProductById($id)->delete();
 
-        return redirect()->route("admin-products");
+        return redirect()->route("admin-products"); 
     }
 
     /**
@@ -161,7 +165,7 @@ class ProductController extends Controller
      */
     public function saveAsXml()
     {
-        $data = Product::all();
+        $data = $this->productsRepository->getAllProducts();
 
         return $this->service->saveToFile(new Xml(), $data->toArray());
     }

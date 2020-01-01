@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -17,14 +18,20 @@ class StatisticService implements StatisticServiceInterface
      * @var Request
      */
     private $request;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * StatisticService constructor.
      * @param Request $request
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, ProductsRepository $productsRepository)
     {
         $this->request = $request;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -32,26 +39,14 @@ class StatisticService implements StatisticServiceInterface
      */
     public function getProductsList()
     {
-        $products = Product::query()->with('orders')->get();
-
-        $this->getProductsSales($products);
-
-        $sortField = ($this->request->input('checked') == "true") ? 'profit' : 'quantity';
-
-        return $products->sortByDesc($sortField);
+        return $this->productsRepository->getProductsWithSalesStatsOrderByDesc($this->getProductsSortColumn());
     }
 
     /**
-     * @param Collection $products
-     * @return Collection
+     * @return string
      */
-    private function getProductsSales(Collection $products)
+    private function getProductsSortColumn()
     {
-        foreach ($products as $product) {
-            $product->quantity = $product->orders->sum("quantity");
-            $product->profit = $product->orders->sum("sum");
-        }
-
-        return $products;
+        return ($this->request->input('checked') == "true") ? 'profit' : 'quantity'; //Создать кастомный реквест с этим методом TODO shit
     }
 }

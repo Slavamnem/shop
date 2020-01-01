@@ -3,20 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
-use App\DeliveryType;
 use App\Http\Middleware\SectionsAccess\StockAccessMiddleware;
-use App\Http\Requests\Admin\EditOrderRequest;
-use App\Mail\MailSender;
-use App\Notifications\NewOrderNotification;
-use App\Order;
-use App\OrderStatus;
-use App\PaymentType;
-use App\Product;
-use App\Services\Admin\OrderService;
+use App\Http\Requests\Admin\Stock\ChangeProductQuantityRequest;
+use App\Repositories\ProductsRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class StockController extends Controller
@@ -27,14 +18,20 @@ class StockController extends Controller
      * @var Request
      */
     private $request;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * StockController constructor.
      * @param Request $request
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, ProductsRepository $productsRepository)
     {
         $this->request = $request;
+        $this->productsRepository = $productsRepository;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
         $this->middleware([StockAccessMiddleware::class]);
     }
@@ -51,12 +48,11 @@ class StockController extends Controller
         return view("admin.stock.index", compact('categories'));
     }
 
-    public function changeQuantity()
+    /**
+     * @param ChangeProductQuantityRequest $request
+     */
+    public function changeQuantity(ChangeProductQuantityRequest $request)
     {
-        if ($this->request->has("productId") and $this->request->has("quantity")) {
-            Product::query()
-                ->where("id", $this->request->input("productId"))
-                ->update(['quantity' => $this->request->input("quantity")]);
-        }
+        $this->productsRepository->updateProductQuantity($request);
     }
 }

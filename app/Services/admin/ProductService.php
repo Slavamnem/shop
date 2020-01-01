@@ -10,6 +10,7 @@ use App\Components\Helpers\ProductHelper;
 use App\Components\SecurityCenter;
 use App\Components\Signals\TrojanHorseSignal;
 use App\Enums\ProductStatusEnum;
+use App\Http\Requests\Admin\Filter\EntityFilterRequest;
 use App\Http\Requests\Admin\ProductRequest;
 use App\ModelGroup;
 use App\Objects\ModificationProductObject;
@@ -17,6 +18,7 @@ use App\Product;
 use App\ProductImage;
 use App\ProductStatus;
 use App\Property;
+use App\Repositories\ProductsRepository;
 use App\Services\RestApi\Interfaces\ImageStorageServiceInterface;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\Interfaces\ShareServiceInterface;
@@ -43,46 +45,37 @@ class ProductService implements ProductServiceInterface
      * @var ImageStorageServiceInterface
      */
     private $imageStorageService;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * ProductService constructor.
      * @param Request $request
      * @param ShareServiceInterface $shareService
      * @param ImageStorageServiceInterface $imageStorageService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request, ShareServiceInterface $shareService, ImageStorageServiceInterface $imageStorageService)
-    {
+    public function __construct(
+        Request $request,
+        ShareServiceInterface $shareService,
+        ImageStorageServiceInterface $imageStorageService,
+        ProductsRepository $productsRepository
+    ) {
         $this->request = $request;
         $this->shareService = $shareService;
         $this->imageStorageService = $imageStorageService;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
+     * @param EntityFilterRequest $entityFilterRequest
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getFilteredProducts() // TODO refactor
+    public function getFilteredProducts(EntityFilterRequest $entityFilterRequest)
     {
-        $specialFields = [
-            "category_id" => "category",
-            "group_id"    => "group",
-            "status_id"   => "status",
-            "color_id"    => "color",
-            "size_id"     => "size"
-        ];
-
-        $query = Product::query()->with(['color', 'size', 'category']);
-
-        if (array_key_exists($this->request->input("field"), $specialFields)) {
-            $query = $query->whereHas($specialFields[$this->request->input("field")], function($q){
-                $q->where("name", "like", "%" . $this->request->input("value") . "%");
-            });
-        } else {
-            $query = $query->where($this->request->input("field"),"like", "%" . $this->request->input("value") . "%");
-        }
-
-        $products = $query->paginate(10);
-
-        return $products;
+        return $this->productsRepository->getFilteredItems($entityFilterRequest);
     }
 
     /**
@@ -108,10 +101,10 @@ class ProductService implements ProductServiceInterface
      * @param $id
      * @return array
      */
-    public function getData($id = null)
+    public function getData($id = null) //TODO refactor
     {
         return [
-            "product"    => ($id)? Product::find($id) : null,
+            "product"    => ($id)? $this->productsRepository->getProductById($id) : null,
             "categories" => Category::all(),
             "groups"     => ModelGroup::all(),
             "statuses"   => ProductStatus::all(),

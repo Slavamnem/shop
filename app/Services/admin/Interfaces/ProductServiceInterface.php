@@ -13,14 +13,6 @@ use Illuminate\Http\Request;
 interface ProductServiceInterface
 {
     /**
-     * ProductServiceInterface constructor.
-     * @param Request $request
-     * @param ShareServiceInterface $shareService
-     * @param ImageStorageServiceInterface $imageStorageService
-     */
-    public function __construct(Request $request, ShareServiceInterface $shareService, ImageStorageServiceInterface $imageStorageService);
-
-    /**
      * Get data for products views
      *
      * @param $id

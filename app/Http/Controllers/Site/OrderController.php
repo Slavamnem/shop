@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\CreateOrderRequest;
 use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
@@ -43,6 +44,10 @@ class OrderController extends Controller
      * @var StrategyInterface
      */
     private $deliveryStrategy;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * OrderController constructor.
@@ -50,14 +55,21 @@ class OrderController extends Controller
      * @param OrderService $service
      * @param BasketServiceInterface $basketService
      * @param NovaPoshtaServiceInterface $novaPoshtaService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request, OrderService $service, BasketServiceInterface $basketService, NovaPoshtaServiceInterface $novaPoshtaService)
-    {
+    public function __construct(
+        Request $request,
+        OrderService $service,
+        BasketServiceInterface $basketService,
+        NovaPoshtaServiceInterface $novaPoshtaService,
+        ProductsRepository $productsRepository
+    ) {
         $this->request = $request;
         $this->service = $service;
         $this->basketService = $basketService;
         $this->novaPoshtaService = $novaPoshtaService;
         $this->deliveryStrategy = new DeliveryStrategy();
+        $this->productsRepository = $productsRepository;
     }
 
     public function addBasketProduct()
@@ -128,7 +140,7 @@ class OrderController extends Controller
     {
         $data = array_merge($this->service->getData(), [
             "cities"   => City::all(),
-            "products" => Product::all(),
+            "products" => $this->productsRepository->getAllProducts(),
             'basket'   => view("site.order.short_basket", $this->basketService->getBasketData())
         ]);
 
@@ -145,7 +157,7 @@ class OrderController extends Controller
      */
     public function createOrder(CreateOrderRequest $request)
     {
-        $this->service->createOrder();
+        $this->service->createOrder(); //TODO по идее лучше пробрасывать объект реквеста и там с ним работать
         $this->service->getOrder()->notify(new NewOrderNotification($request->input("link")));
         $this->service->getOrder()->notify(new DefaultNotification());
 

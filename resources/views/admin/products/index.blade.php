@@ -81,6 +81,7 @@
                                     <th>Действия</th>
                                 </tr>
                                 <tr>
+                                    <th><input type="text" class="admin-filter-input" data-table="products" data-name="id"></th>
                                     <th><input type="text" class="admin-filter-input" data-table="products" data-name="name"></th>
                                     <th><input type="text" class="admin-filter-input" data-table="products" data-name="base_price"></th>
                                     <th><input type="text" class="admin-filter-input" data-table="products" data-name="quantity"></th>

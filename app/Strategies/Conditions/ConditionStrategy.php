@@ -24,7 +24,7 @@ class ConditionStrategy implements StrategyInterface
     public function loadStrategies()
     {
         $this->strategies = collect();
-        $this->strategies->put('id', new IdCondition());
+        $this->strategies->put('id', resolve(IdCondition::class));
         $this->strategies->put('category_id', new CategoryCondition());
         $this->strategies->put('group_id', new ModelCondition());
         $this->strategies->put('status_id', new StatusCondition());

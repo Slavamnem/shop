@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Builders\XmlDocumentBuilder;
 use App\Product;
+use App\Repositories\ProductsRepository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
@@ -30,14 +31,19 @@ class GenerateSiteMap extends Command
     private $xmlDocBuilder;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * @var ProductsRepository
      */
-    public function __construct()
+    private $productsRepository;
+
+    /**
+     * GenerateSiteMap constructor.
+     * @param ProductsRepository $productsRepository
+     */
+    public function __construct(ProductsRepository $productsRepository)
     {
         parent::__construct();
         $this->xmlDocBuilder = new XmlDocumentBuilder();
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -80,7 +86,7 @@ class GenerateSiteMap extends Command
      */
     private function addProductPages($pages)
     {
-        foreach (Product::all() as $product) {
+        foreach ($this->productsRepository->getAllProducts() as $product) {
             $pages->put($product->id, $this->getPageStructure(env('APP_URL') . '/product/' . $product->getFullSlug()));
         }
     }

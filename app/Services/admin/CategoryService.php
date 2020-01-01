@@ -31,7 +31,7 @@ class CategoryService
      * @param null $id
      * @return array
      */
-    public function getData($id = null)
+    public function getData($id = null) //TODO ужас какой-то
     {
         if ($id) {
             return [

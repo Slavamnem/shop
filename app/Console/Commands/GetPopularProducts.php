@@ -6,6 +6,7 @@ use App\Console\Commands\CommandType\CommandType;
 use App\Console\Commands\Decorators\BaseDecorator;
 use App\Console\Commands\Responses\TextResponse;
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\StatisticServiceInterface;
 use App\Services\Admin\StatisticService;
 use Illuminate\Console\Command;
@@ -31,16 +32,19 @@ class GetPopularProducts extends AbstractCommand
     protected $description = 'Command description';
 
     /**
-     * Create a new command instance.
-     *
-     * GetPopularProducts constructor.
+     * @var ProductsRepository
      */
-    public function __construct()
+    private $productRepository;
+
+    /**
+     * GetPopularProducts constructor.
+     * @param ProductsRepository $productsRepository
+     */
+    public function __construct(ProductsRepository $productsRepository)
     {
         parent::__construct();
+        $this->productRepository = $productsRepository;
     }
-
-
 
     /**
      * Execute the console command.
@@ -69,15 +73,14 @@ class GetPopularProducts extends AbstractCommand
      */
     private function getProducts()
     {
-        $service = resolve(StatisticServiceInterface::class);
-        $products = Product::query()->with('orders')->get();
-        $service->getProductsSales($products);
-        $products = $products->sortByDesc('quantity');
-
-        $products = $products->map(function($product){
-            return $product->only(['name', 'base_price', 'quantity', 'active', 'profit']);
-        });
-
-        return array_slice($products->toArray(), 0, 5);
+        return array_slice($this->productRepository
+            ->getProductsWithSalesStatsOrderByDesc('quantity')
+            ->map(function($product){
+                return $product->only(['name', 'base_price', 'quantity', 'active', 'profit']);
+            })
+            ->toArray(),
+            0,
+            5
+        );
     }
 }

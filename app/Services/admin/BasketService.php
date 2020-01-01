@@ -12,6 +12,7 @@ use App\Order;
 use App\OrderStatus;
 use App\PaymentType;
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\NovaPoshtaService;
 use Illuminate\Http\Request;
@@ -27,16 +28,22 @@ class BasketService implements BasketServiceInterface
      * @var OrderPriceCalcService
      */
     private $priceCalcService;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * BasketService constructor.
      * @param Request $request
      * @param OrderPriceCalcService $priceCalcService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request, OrderPriceCalcService $priceCalcService)
+    public function __construct(Request $request, OrderPriceCalcService $priceCalcService, ProductsRepository $productsRepository)
     {
         $this->request = $request;
         $this->priceCalcService = $priceCalcService;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -61,7 +68,7 @@ class BasketService implements BasketServiceInterface
      */
     public function addBasketProduct($productId)
     {
-        $this->getBasketObject()->addProduct(Product::find($productId));
+        $this->getBasketObject()->addProduct($this->productsRepository->getProductById($productId));
     }
 
     /**
@@ -70,7 +77,7 @@ class BasketService implements BasketServiceInterface
     public function changeQuantity($productId)
     {
         $this->getBasketObject()->changeQuantity(
-            Product::find($productId),
+            $this->productsRepository->getProductById($productId),
             $this->request->input('action')
         );
     }
@@ -80,7 +87,7 @@ class BasketService implements BasketServiceInterface
      */
     public function removeBasketProduct($productId)
     {
-        $this->getBasketObject()->removeProduct(Product::find($productId));
+        $this->getBasketObject()->removeProduct($this->productsRepository->getProductById($productId));
     }
 
     /**
@@ -89,7 +96,7 @@ class BasketService implements BasketServiceInterface
     public function getBasketData() // TODO refactor
     {
         return [
-            "basketProducts" => $this->getBasketObject()->getBasket()->products,
+            "basketProducts" => $this->getBasketObject()->getBasket()->products, //TODO method getProducts
             "sum"            => $this->getBasketObject()->getBasketPrice()
         ];
     }

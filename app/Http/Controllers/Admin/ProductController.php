@@ -13,6 +13,7 @@ use App\Events\NewOrderEvent;
 use App\Http\Middleware\SectionsAccess\ProductsAccessMiddleware;
 use App\Http\Requests\Admin\CreateProductRequest;
 use App\Http\Requests\Admin\EditProductRequest;
+use App\Http\Requests\Admin\Filter\EntityFilterRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Mail\MailSender;
 use App\Notifications\NewOrderNotification;
@@ -20,6 +21,7 @@ use App\Order;
 use App\Product;
 use App\Property;
 use App\PropertyValue;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\ProductServiceInterface;
 use App\Services\Admin\ProductService;
 use App\Services\ElasticSearchService;
@@ -50,18 +52,28 @@ class ProductController extends Controller
      * @var
      */
     private $elasticService;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * ProductController constructor.
      * @param Request $request
      * @param ProductServiceInterface $service
      * @param ElasticSearchService $elasticService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request, ProductServiceInterface $service, ElasticSearchService $elasticService)
-    {
+    public function __construct(
+        Request $request,
+        ProductServiceInterface $service,
+        ElasticSearchService $elasticService,
+        ProductsRepository $productsRepository
+    ) {
         $this->request = $request;
         $this->service = $service;
         $this->elasticService = $elasticService;
+        $this->productsRepository = $productsRepository;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
         $this->middleware([ProductsAccessMiddleware::class]);
     }
@@ -91,12 +103,7 @@ class ProductController extends Controller
 
         //dump($this->elasticService->searchByName("Футболка"));
 
-        $products = Product::query()
-            ->with(['color', 'size', 'category'])
-            ->orderByDesc('id')
-            ->paginate(10);
-
-        return view("admin.products.index", compact('products'));
+        return view("admin.products.index", ['products' => $this->productsRepository->getLastProducts()]);
     }
 
     /**
@@ -122,7 +129,7 @@ class ProductController extends Controller
 
         $product->fill($request->only($product->getFillable()));
         $product->save();
-        $this->service->saveImages($product, $request);
+        $this->service->saveImages($product, $request); //TODO засунуть может товар в реквест, так себе
         $this->service->saveProperties($product, $request);
 
         return redirect()->route("admin-products-edit", ['id' => $product->id]);
@@ -162,7 +169,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $product = Product::find($id);
+        $product = $this->productsRepository->getProductById($id);
         $product->fill($request->only($product->getFillable()));
         $product->active = array_get($request->all(), "active", 0);
         $this->service->saveImages($product, $request);
@@ -181,8 +188,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $this->productsRepository->getProductById($id)->delete();
 
         return redirect()->route("admin-products");
     }
@@ -192,7 +198,7 @@ class ProductController extends Controller
      */
     public function saveAsXml()
     {
-        return $this->service->saveToFile(new XmlDocumentBuilder(), Product::all()->toArray(), "products-new.xml");
+        return $this->service->saveToFile(new XmlDocumentBuilder(), $this->productsRepository->getAllProductsArray(), "products-new.xml");
     }
 
     /**
@@ -200,7 +206,7 @@ class ProductController extends Controller
      */
     public function saveAsTxt()
     {
-        return $this->service->saveToFile(new TxtDocumentBuilder(), Product::all()->toArray(), "products-new.txt");
+        return $this->service->saveToFile(new TxtDocumentBuilder(), $this->productsRepository->getAllProductsArray(), "products-new.txt");
     }
 
     /**
@@ -213,6 +219,10 @@ class ProductController extends Controller
         return view("admin.properties.new-property", compact('properties'))->render();
     }
 
+    /**
+     * @return string
+     * @throws \Throwable
+     */
     public function getPropertyValues()
     {
         $propertyValues = PropertyValue::query()
@@ -235,13 +245,12 @@ class ProductController extends Controller
     }
 
     /**
+     * @param EntityFilterRequest $entityFilterRequest
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function filter()
+    public function filter(EntityFilterRequest $entityFilterRequest)
     {
-        $products = $this->service->getFilteredProducts();
-
-        return view("admin.products.filtered_table", compact('products'));
+        return view("admin.products.filtered_table", ['products' => $this->service->getFilteredProducts($entityFilterRequest)]);
     }
 
     /******************************************************************************************************************/
@@ -271,9 +280,7 @@ class ProductController extends Controller
      */
     public function indexProducts()
     {
-        $products = Product::all();
-
-        foreach ($products as $product) {
+        foreach ($this->productsRepository->getAllProducts() as $product) {
             $this->elasticService->indexProduct($product);
         }
     }

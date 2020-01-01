@@ -9,7 +9,7 @@ $( document ).ready(function() {
         $.ajax({
             url: "/admin/stock/change_quantity",
             method: 'POST',
-            data: {productId: productId, quantity:quantity},
+            data: {productId: productId, quantity: quantity},
             success: function(res) {
                 // alert(res);
                 //$('#new-properties').append(res);

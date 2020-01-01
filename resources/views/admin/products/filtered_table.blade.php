@@ -1,5 +1,6 @@
 @forelse($products as $product)
     <tr>
+        <td>{{ $product->id }}</td>
         <td>
             <a href="{{ route("admin-products-show", ['id' => $product->id]) }}">
                 {{ $product->name }}

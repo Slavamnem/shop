@@ -38,7 +38,7 @@ class ExcelReportTypeStrategy implements StrategyInterface
         $this->strategies = collect();
         $this->strategies->put(ReportTypesEnum::ALL_ORDERS, new AllOrdersReportStrategy());         // DONE
         $this->strategies->put(ReportTypesEnum::ORDERS_STATS, new OrdersStatsReportStrategy());     // DONE
-        $this->strategies->put(ReportTypesEnum::TOP_PRODUCTS, new TopProductsReportStrategy());     // DONE
+        $this->strategies->put(ReportTypesEnum::TOP_PRODUCTS, resolve(TopProductsReportStrategy::class));     // DONE
         //$this->strategies->put(ReportTypesEnum::PRODUCTS_STATS, new ProductsStatsReportStrategy()); // TODO
         $this->strategies->put(ReportTypesEnum::TOP_CLIENTS, new TopClientsReportStrategy());       // DONE
         //$this->strategies->put(ReportTypesEnum::CLIENTS_STATS, new ClientsStatsReportStrategy());   // TODO

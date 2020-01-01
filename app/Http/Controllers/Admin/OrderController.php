@@ -14,6 +14,7 @@ use App\Notifications\DefaultNotification;
 use App\Notifications\NewOrderNotification;
 use App\Order;
 use App\Product;
+use App\Repositories\ProductsRepository;
 use App\Services\Admin\Interfaces\BasketServiceInterface;
 use App\Services\Admin\Interfaces\NovaPoshtaServiceInterface;
 use App\Services\Admin\OrderService;
@@ -48,6 +49,10 @@ class OrderController extends Controller
      * @var StrategyInterface
      */
     private $deliveryStrategy;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * OrderController constructor.
@@ -55,22 +60,28 @@ class OrderController extends Controller
      * @param OrderService $service
      * @param BasketServiceInterface $basketService
      * @param NovaPoshtaServiceInterface $novaPoshtaService
+     * @param ProductsRepository $productsRepository
      */
-    public function __construct(Request $request, OrderService $service, BasketServiceInterface $basketService, NovaPoshtaServiceInterface $novaPoshtaService)
-    {
+    public function __construct(
+        Request $request,
+        OrderService $service,
+        BasketServiceInterface $basketService,
+        NovaPoshtaServiceInterface $novaPoshtaService,
+        ProductsRepository $productsRepository
+    ) {
         $this->request = $request;
         $this->service = $service;
         $this->basketService = $basketService;
         $this->novaPoshtaService = $novaPoshtaService;
         $this->deliveryStrategy = new DeliveryStrategy();
+        $this->productsRepository = $productsRepository;
         View::share("activeMenuItem", self::MENU_ITEM_NAME);
         $this->middleware([OrdersAccessMiddleware::class]);
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function index()
     {
@@ -98,7 +109,7 @@ class OrderController extends Controller
     {
         $data = array_merge($this->service->getData(), [
             "cities"   => City::all(),
-            "products" => Product::all(),
+            "products" => $this->productsRepository->getAllProducts(),
         ]);
 
         return view("admin.orders.create", $data);
